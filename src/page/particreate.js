@@ -1,10 +1,23 @@
 import React from "react";
 import styled from "styled-components";
+import { Input } from "../element/index";
 
 const PartiCreate = () => {
   return (
     <>
       <GRID style={{ flexDirection: "column" }}>
+        <DIV style={{ margin: "20px" }}>
+          <Input placeholder="모임 제목을 입력해주세요" label="모임제목" />
+        </DIV>
+        <DIV style={{ margin: "20px" }}>
+          <Input placeholder="모임 제목을 입력해주세요" label="모임제목" />
+        </DIV>
+        <DIV style={{ margin: "20px" }}>
+          <Input placeholder="모임 제목을 입력해주세요" label="모임제목" />
+        </DIV>
+        <DIV style={{ margin: "20px" }}>
+          <Input placeholder="모임 제목을 입력해주세요" label="모임제목" />
+        </DIV>
         <GRID style={{ alignItems: "center", flexDirection: "column" }}>
           <INPUTDIV>
             모임제목
@@ -129,6 +142,6 @@ const BTN = styled.button`
     background: red;
   }
 `;
-
+const DIV = styled.div``;
 const TEXT = styled.div``;
 export default PartiCreate;
