@@ -5,15 +5,20 @@ const PartiView = () => {
   return (
     <>
       <GRID style={{ flexDirection: "column" }}>
+        {/* 프리뷰 뷰 */}
         <IMAGEPRIVIEW style={{ textAlign: "center" }}>
           {" "}
           나는 프리뷰이다{" "}
         </IMAGEPRIVIEW>
+        {/* 모임 제목 */}
         <TEXT style={{ fontSize: "20px", fontWeight: "bold" }}>
           {" "}
           모임 제목{" "}
         </TEXT>
         <TEXT style={{ fontSize: "14px" }}> 돈까스 / 회 / 일식 </TEXT>
+
+        {/* 모임 상세 내용 컴포넌트 */}
+
         <GRID style={{ flexDirection: "column" }}>
           <DIV style={{ margin: "14px" }}>
             <DIV style={{ display: "flex" }}>
@@ -62,6 +67,9 @@ const PartiView = () => {
             </DIV>
           </DIV>
         </GRID>
+
+        {/* 모임 상세내용 들어가는 부분 */}
+
         <GRID style={{ flexDirection: "column" }}>
           <DIV>
             <TEXT style={{ fontSize: "16px", fontWeight: "bold" }}>
@@ -82,6 +90,9 @@ const PartiView = () => {
             상세 내용 들어가는 곳
           </DIV>
         </GRID>
+
+        {/* 참여인원 정보 */}
+
         <GRID>
           <DIV>
             <TEXT style={{ fontSize: "20px", fontWeight: "bold" }}>
@@ -170,6 +181,9 @@ const PartiView = () => {
             </DIV>
           </DIV>
         </GRID>
+
+        {/* 버튼 컴포넌트 */}
+
         <GRID>
           <BTN style={{ width: "100%" }}>1:1 문의</BTN>
           <BTN style={{ width: "100%" }}>참가하기</BTN>

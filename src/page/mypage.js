@@ -5,11 +5,16 @@ const MyPage = () => {
   return (
     <>
       <GRID style={{ flexDirection: "column" }}>
+        {/* 헤더 부분 */}
+
         <GRID style={{ justifyContent: "end" }}>
           <BTN style={{ position: "absolute", left: "0px" }}>햄버거</BTN>
           <BTN>설정</BTN>
           <BTN>홈으로</BTN>
         </GRID>
+
+        {/* 프로필 사진 부분 */}
+
         <GRID style={{ flexDirection: "column" }}>
           <GRID style={{ justifyContent: "center" }}>
             <DIV>
@@ -36,6 +41,9 @@ const MyPage = () => {
               </IMAGEPRIVIEW>
             </DIV>
           </GRID>
+
+          {/* 닉네임부분 */}
+
           <GRID style={{ justifyContent: "center" }}>
             <TEXT
               style={{
@@ -51,6 +59,9 @@ const MyPage = () => {
               나는 긴 닉네임을 가진 닉네임이다
             </TEXT>
           </GRID>
+
+          {/* 디자인 / 신입부분 */}
+
           <GRID style={{ justifyContent: "center" }}>
             <DIV>
               <DIV
@@ -80,6 +91,9 @@ const MyPage = () => {
               </DIV>
             </DIV>
           </GRID>
+
+          {/* 유저 정보 부분 */}
+
           <GRID style={{ justifyContent: "center" }}>
             <DIV>
               <TEXT style={{ padding: "15px" }}>
@@ -92,6 +106,9 @@ const MyPage = () => {
               </TEXT>
             </DIV>
           </GRID>
+
+          {/* 파티 참가내역 */}
+
           <GRID style={{ flexDirection: "column" }}>
             <TEXT
               style={{

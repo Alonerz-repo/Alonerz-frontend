@@ -5,11 +5,16 @@ const main = () => {
   return (
     <>
       <GRID style={{ flexDirection: "column" }}>
+        {/* 상단 헤드 */}
+
         <GRID style={{ justifyContent: "end" }}>
           <BTN style={{ position: "absolute", left: "0px" }}>햄버거</BTN>
           <BTN>검색</BTN>
           <BTN>내정보</BTN>
         </GRID>
+
+        {/* 오늘 참여중인 파티  */}
+
         <TEXT>오늘의 참여중인 파티</TEXT>
         <GRID>
           <DIV style={{ width: "100%", margin: "20px", position: "relative" }}>
@@ -66,6 +71,9 @@ const main = () => {
             </DIV>
           </DIV>
         </GRID>
+
+        {/* 전체, 점심, 저녁 버튼 */}
+
         <GRID style={{ justifyContent: "center" }}>
           <BTN
             style={{
@@ -110,6 +118,9 @@ const main = () => {
             저녁
           </BTN>
         </GRID>
+
+        {/* 주변에서 진행중인 파티 */}
+
         <GRID style={{ flexDirection: "column" }}>
           <DIV>
             <TEXT>주변에서 진행중인 파티</TEXT>
@@ -145,6 +156,9 @@ const main = () => {
             </DIV>
           </GRID>
         </GRID>
+
+        {/* 모임 리스트 뷰 */}
+
         <GRID>
           <DIV
             style={{
