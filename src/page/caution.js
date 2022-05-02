@@ -4,14 +4,20 @@ import styled from "styled-components";
 const Coution = () => {
   return (
     <>
+      {/* 버튼 컴포넌트 */}
       <GRID style={{ position: "absolute", top: "93vh" }}>
         <BTN style={{ width: "100%" }}>동의하기</BTN>
       </GRID>
       <GRID style={{ flexDirection: "column" }}>
+        {/* 헤더 */}
+
         <GRID style={{ justifyContent: "center" }}>
           {" "}
           <TEXT>파티 개설</TEXT>
         </GRID>
+
+        {/* 주의사항 본문 */}
+
         <GRID style={{ padding: "36px", boxSizing: "border-box" }}>
           <DIV
             style={{
@@ -30,11 +36,6 @@ const Coution = () => {
 };
 
 const DIV = styled.div`
-  box-sizing: border-box;
-`;
-const IMAGEPRIVIEW = styled.div`
-  background: skyblue;
-  padding: 100px;
   box-sizing: border-box;
 `;
 const GRID = styled.div`
