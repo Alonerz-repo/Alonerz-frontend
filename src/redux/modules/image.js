@@ -17,7 +17,9 @@ const initialState = {
 };
 
 const uploadImageFB = (image) => {
-  return function (dispatch, getState, { history }) {};
+  return function (dispatch, getState, { history }) {
+    
+  };
 };
 
 export default handleActions(
