@@ -1,16 +1,35 @@
 import React from "react";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { useSelector, useDispatch } from "react-redux";
+import Upload from '../Upload'
+import {Image} from '../element'
+import KakaoMap from '../KakaoMap'
 
 const TestPage = () => {
-  const test = useSelector((state) => (state.user.asd ? state.user.asd : ""));
+  const preview = useSelector((state) => state.image.preview)
+  const test = useSelector((state) => state.user.user)
+  const dispatch = useDispatch()
+  const handleAction = () => {
+    const career = {
+      part: "q",
+      year: "w",
+      description:"d"
+    }
+    dispatch(userActions.deleteCareerBE(0))
+  }
 
-  const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(userActions.testUser({ asd: "aaa" }));
-  });
+    console.log(test)
+  })
 
-  return <React.Fragment>{test}</React.Fragment>;
+  return (
+  <React.Fragment>
+    {/* <Upload/>
+    <Image src={preview} /> */}
+    {/* <KakaoMap/> */}
+    <button onClick={handleAction}>test_button</button>
+  </React.Fragment>
+  );
 };
 
 export default TestPage;
