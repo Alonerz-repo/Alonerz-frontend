@@ -7,7 +7,9 @@ import User from "./modules/user";
 import Party from "./modules/party";
 import Image from "./modules/image";
 
-export const history = createBrowserHistory();
+export const history = createBrowserHistory({
+  forceRefresh: true,
+});
 
 const rootReducer = combineReducers({
   user: User,
