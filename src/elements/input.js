@@ -1,8 +1,8 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styled from "styled-components";
 import { Text, Grid } from "./index";
 
-const Input = (props) => {
+const Input = forwardRef((props, ref) => {
   const { placeholder, _onChange, label } = props;
 
   return (
@@ -10,10 +10,10 @@ const Input = (props) => {
       <Text size="15px" bold="bold" margin="0px 0px 16px 0px">
         {label}
       </Text>
-      <ELInput placeholder={placeholder} onChange={_onChange} />
+      <ELInput ref={ref} placeholder={placeholder} onChange={_onChange} />
     </Grid>
   );
-};
+});
 
 Input.defaultProps = {
   label: "라벨은 비어있습니다.",

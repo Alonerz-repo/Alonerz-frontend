@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { actionCreators as partyAction } from "../redux/modules/party";
 
-const main = () => {
+const Main = (props) => {
+  const dispatch = useDispatch();
+  const { history } = props;
+  const room = useSelector((state) => state.party.groups);
+  useEffect(() => {
+    dispatch(partyAction.getGroupsAxios());
+  }, []);
+
   return (
     <>
       <GRID style={{ flexDirection: "column" }}>
         {/* 상단 헤드 */}
 
         <GRID style={{ justifyContent: "end" }}>
-          <BTN style={{ position: "absolute", left: "0px" }}>햄버거</BTN>
-          <BTN>검색</BTN>
+          <BTN
+            onClick={() => history.push("/view/2")}
+            style={{ position: "absolute", left: "0px" }}
+          >
+            햄버거
+          </BTN>
+          <BTN onClick={() => history.push("/create")}>검색</BTN>
           <BTN>내정보</BTN>
         </GRID>
 
@@ -199,7 +213,7 @@ const main = () => {
                 }}
               >
                 {" "}
-                3 / 4
+                {room[0].memberLimit}
               </DIV>
               <IMAGEPRIVIEW
                 style={{
@@ -225,195 +239,11 @@ const main = () => {
                   left: "10px",
                 }}
               >
-                <TEXT>모임 제목</TEXT>
-                <TEXT>모임 장소</TEXT>
-                <TEXT>12:00 ~ 13:00</TEXT>
-              </DIV>
-            </DIV>
-            <DIV
-              style={{
-                position: "relative",
-              }}
-            >
-              <DIV
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  background: "blanchedalmond",
-                  position: "absolute",
-                  top: "-9px",
-                  left: "-10px",
-                  borderRadius: "40px",
-                }}
-              ></DIV>
-              <DIV
-                style={{
-                  position: "absolute",
-                  width: "50px",
-                  height: "28px",
-                  borderRadius: "10px",
-                  padding: "3px 4px",
-
-                  background: "aliceblue",
-                  right: "10px",
-                  top: "10px",
-                  textAlign: "center",
-                }}
-              >
-                {" "}
-                3 / 4
-              </DIV>
-              <IMAGEPRIVIEW
-                style={{
-                  position: "absolute",
-                  width: "166px",
-                  height: "222px",
-                  margin: "5px",
-                  background:
-                    "linear-gradient(180deg, rgba(0, 0, 0, 0) 48.96%, rgba(0, 0, 0, 0.35) 100%)",
-                }}
-              ></IMAGEPRIVIEW>
-              <IMAGEPRIVIEW
-                style={{
-                  width: "166px",
-                  height: "222px",
-                  margin: "5px",
-                }}
-              ></IMAGEPRIVIEW>
-              <DIV
-                style={{
-                  position: "absolute",
-                  top: "152px",
-                  left: "10px",
-                }}
-              >
-                <TEXT>모임 제목</TEXT>
-                <TEXT>모임 장소</TEXT>
-                <TEXT>12:00 ~ 13:00</TEXT>
-              </DIV>
-            </DIV>
-            <DIV
-              style={{
-                position: "relative",
-              }}
-            >
-              <DIV
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  background: "blanchedalmond",
-                  position: "absolute",
-                  top: "-9px",
-                  left: "-10px",
-                  borderRadius: "40px",
-                }}
-              ></DIV>
-              <DIV
-                style={{
-                  position: "absolute",
-                  width: "50px",
-                  height: "28px",
-                  borderRadius: "10px",
-                  padding: "3px 4px",
-
-                  background: "aliceblue",
-                  right: "10px",
-                  top: "10px",
-                  textAlign: "center",
-                }}
-              >
-                {" "}
-                3 / 4
-              </DIV>
-              <IMAGEPRIVIEW
-                style={{
-                  position: "absolute",
-                  width: "166px",
-                  height: "222px",
-                  margin: "5px",
-                  background:
-                    "linear-gradient(180deg, rgba(0, 0, 0, 0) 48.96%, rgba(0, 0, 0, 0.35) 100%)",
-                }}
-              ></IMAGEPRIVIEW>
-              <IMAGEPRIVIEW
-                style={{
-                  width: "166px",
-                  height: "222px",
-                  margin: "5px",
-                }}
-              ></IMAGEPRIVIEW>
-              <DIV
-                style={{
-                  position: "absolute",
-                  top: "152px",
-                  left: "10px",
-                }}
-              >
-                <TEXT>모임 제목</TEXT>
-                <TEXT>모임 장소</TEXT>
-                <TEXT>12:00 ~ 13:00</TEXT>
-              </DIV>
-            </DIV>
-            <DIV
-              style={{
-                position: "relative",
-              }}
-            >
-              <DIV
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  background: "blanchedalmond",
-                  position: "absolute",
-                  top: "-9px",
-                  left: "-10px",
-                  borderRadius: "40px",
-                }}
-              ></DIV>
-              <DIV
-                style={{
-                  position: "absolute",
-                  width: "50px",
-                  height: "28px",
-                  borderRadius: "10px",
-                  padding: "3px 4px",
-
-                  background: "aliceblue",
-                  right: "10px",
-                  top: "10px",
-                  textAlign: "center",
-                }}
-              >
-                {" "}
-                3 / 4
-              </DIV>
-              <IMAGEPRIVIEW
-                style={{
-                  position: "absolute",
-                  width: "166px",
-                  height: "222px",
-                  margin: "5px",
-                  background:
-                    "linear-gradient(180deg, rgba(0, 0, 0, 0) 48.96%, rgba(0, 0, 0, 0.35) 100%)",
-                }}
-              ></IMAGEPRIVIEW>
-              <IMAGEPRIVIEW
-                style={{
-                  width: "166px",
-                  height: "222px",
-                  margin: "5px",
-                }}
-              ></IMAGEPRIVIEW>
-              <DIV
-                style={{
-                  position: "absolute",
-                  top: "152px",
-                  left: "10px",
-                }}
-              >
-                <TEXT>모임 제목</TEXT>
-                <TEXT>모임 장소</TEXT>
-                <TEXT>12:00 ~ 13:00</TEXT>
+                <TEXT>{room[0].title}</TEXT>
+                <TEXT>{room[0].location}</TEXT>
+                <TEXT>
+                  {room[0].startAt} ~ {room[0].endAt}
+                </TEXT>
               </DIV>
             </DIV>
           </DIV>
@@ -449,4 +279,4 @@ const DIV = styled.div`
   box-sizing: border-box;
 `;
 const TEXT = styled.div``;
-export default main;
+export default Main;

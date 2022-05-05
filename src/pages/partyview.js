@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { actionCreators as partyAction } from "../redux/modules/party";
 
-const PartiView = () => {
+const PartiView = (props) => {
+  const dispatch = useDispatch();
+  const id = props.match.params.id;
+
+  useEffect(() => {
+    dispatch(partyAction.getOneGroupAxios(id));
+  });
+
   return (
     <>
       <GRID style={{ flexDirection: "column" }}>
