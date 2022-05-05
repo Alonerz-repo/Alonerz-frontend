@@ -1,6 +1,8 @@
 # 타입스크립트 프로젝트 생성
 
 [CRA 공식 문서](https://create-react-app.dev/docs/adding-typescript/)
+[리덕스 공식 문서](https://redux.js.org/introduction/installation)
+[리덕스툴킷 공식 문서](https://redux-toolkit.js.org/introduction/getting-started)
 
 타입스크립트 프로젝트 생성 `yarn`
 
