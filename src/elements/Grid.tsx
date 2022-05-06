@@ -19,9 +19,11 @@ interface MyGridProps {
   isFlex?: boolean;
   padding?: string;
   width?: string;
+  style?: string;
 }
 
 const MyGrid = styled.div<MyGridProps>`
+  ${(props) => props.style ?? ""};
   ${(props) =>
     props.isFlex ? `display: flex; justify-content: space-between;` : ""};
   padding: ${(props) => props.padding ?? "0px"};

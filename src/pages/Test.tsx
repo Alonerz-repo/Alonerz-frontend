@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Input, Grid } from "../elements/index";
+import { Input, Grid } from "../elements";
 
 import { useRef } from "react";
 
