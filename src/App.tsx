@@ -1,9 +1,9 @@
 import React from "react";
-import "./App.css";
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Test from "./pages/Test";
+import User from './pages/User';
 
 function App() {
   return (
@@ -13,6 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/test" element={<Test />} />
+            <Route path='/user' element={<User />} />
           </Routes>
         </BrowserRouter>
       </Container>
