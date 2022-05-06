@@ -25,7 +25,7 @@ const MyGrid = styled.div<MyGridProps>`
   ${(props) =>
     props.isFlex ? `display: flex; justify-content: space-between;` : ""};
   padding: ${(props) => props.padding ?? "0px"};
-  width: ${(props) => props.width ?? "100%"};
+  width: ${(props) => props.width ?? ""};
   box-sizing: border-box;
   position: relative;
   flex-wrap: wrap;
