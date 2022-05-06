@@ -60,6 +60,10 @@ const Text = ({
   );
 };
 
+Text.defaultProps = {
+  titleText: "제목",
+};
+
 const Div = styled.div<Props>`
   ${(props) => (props.padding ? `padding: ${props.padding};` : "0px")};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "0px")};

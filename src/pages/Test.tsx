@@ -9,9 +9,7 @@ const Test = () => {
 
   return (
     <React.Fragment>
-      <Text type="line" titleText="나는 제목">
-        Lorem ipsum dolor
-      </Text>
+      <Text type="line">Lorem ipsum dolor</Text>
     </React.Fragment>
   );
 };
