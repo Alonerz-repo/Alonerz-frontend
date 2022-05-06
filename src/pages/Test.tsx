@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Input, Grid } from "../elements";
+import { Input, Grid, Text } from "../elements";
 
 import { useRef } from "react";
 
@@ -8,15 +8,11 @@ const Test = () => {
   let val = useRef("");
 
   return (
-    <>
-      <Input
-        width="100%"
-        ref={val}
-        bold
-        text="문자열"
-        placeholder="안녕하세요?"
-      ></Input>
-    </>
+    <React.Fragment>
+      <Text type="line" titleText="나는 제목">
+        Lorem ipsum dolor
+      </Text>
+    </React.Fragment>
   );
 };
 export default Test;
