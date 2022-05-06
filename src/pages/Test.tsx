@@ -9,7 +9,9 @@ const Test = () => {
 
   return (
     <React.Fragment>
-      <Text type="line">Lorem ipsum dolor</Text>
+      <Text type="area" titleText="asdasdas" padding="10px">
+        Lorem ipsum dolor
+      </Text>
     </React.Fragment>
   );
 };
