@@ -2,14 +2,14 @@ import React, { forwardRef } from "react";
 import styled from "styled-components";
 import { Grid, Text } from "./index";
 
-type Props = {
+interface Props {
   text?: string;
   placeholder?: string;
   width?: string;
   ref?: any;
   bold?: boolean;
   _onChange?: () => {};
-};
+}
 
 const Input = forwardRef(
   ({ text, placeholder, width, _onChange, ref, bold }: Props) => {
