@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Test from "./pages/Test";
-<<<<<<< HEAD
 import PartyInfo from "./pages/PartyInfo";
 
 declare global {
@@ -11,9 +10,6 @@ declare global {
     kakao: any;
   }
 }
-=======
-import User from './pages/User';
->>>>>>> 4ae2f26ac082dd192547780447fcca8adefb2b8c
 
 function App() {
   return (
@@ -23,7 +19,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/test" element={<Test />} />
-<<<<<<< HEAD
             <Route
               path="/participate"
               element={
@@ -38,9 +33,6 @@ function App() {
                 />
               }
             ></Route>
-=======
-            <Route path='/user' element={<User />} />
->>>>>>> 4ae2f26ac082dd192547780447fcca8adefb2b8c
           </Routes>
         </BrowserRouter>
       </Container>
