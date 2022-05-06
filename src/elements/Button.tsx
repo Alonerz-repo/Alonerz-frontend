@@ -40,10 +40,9 @@ const CommonButton = styled.button`
   background: yellow;
   padding: 20px;
   box-sizing: border-box;
-
   :hover {
     background: red;
   }
 `;
 
-export default Button;
+export default Button; 

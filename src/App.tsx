@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 import styled from 'styled-components'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
-import Main from './Main';
+import Main from './pages/Main';
+import Test from './pages/Test';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Main/>}/>
+            <Route path="/test" element={<Test />} />
           </Routes>
         </BrowserRouter>
       </Container>

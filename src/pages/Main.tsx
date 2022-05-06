@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid, Button } from "./elements";
-import Card from "./components/Card";
-import Image from "./elements/Image";
-import PartyMembers from "./components/PartyMembers";
+import { Grid, Button } from "../elements";
+import Card from "../components/Card";
+import Image from "../elements/Image";
+import PartyMembers from "../components/PartyMembers";
 
 const Main = () => {
   return (
