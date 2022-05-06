@@ -73,6 +73,7 @@ const Box = styled.div`
   border: 1px solid #eeeeee;
   padding: 18px 17px;
   margin: 18px 0px 0px 0px;
+  border-radius: 15px;
 `;
 
 const P = styled.p<Props>`
