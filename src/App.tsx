@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./App.css";
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
@@ -21,8 +21,8 @@ function App() {
 }
 
 const Container = styled.div<ContainerProps>`
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
+  width: ${(props) => props.width ?? "390px"};
+  height: ${(props) => props.height ?? "1010px"};
   box-sizing: border-box;
   justify-content: center;
   align-items: center;

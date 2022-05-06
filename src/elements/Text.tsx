@@ -21,5 +21,4 @@ const P = styled.p<MyPProps>`
   font-size: 15px;
   ${(props) => (props.bold ? `font-weight: bold;` : "")}
 `;
-
 export default Text;

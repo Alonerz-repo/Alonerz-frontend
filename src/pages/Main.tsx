@@ -2,13 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { Grid, Button } from "../elements";
 import Card from "../components/Card";
+import Image from "../elements/Image";
+import PartyMembers from "../components/PartyMembers";
 
 const Main = () => {
   return (
     <React.Fragment>
       <GRID style={{ flexDirection: "column" }}>
         {/* 상단 헤드 */}
-
+        <Image shape="rectangle"></Image>
+        <Image shape="circle" size="200px"></Image>
+        <PartyMembers></PartyMembers>
         <Grid isFlex>
           <Grid>
             <Button>햄버거</Button>
