@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import styled from "styled-components";
-import { Grid, Text } from "./index";
+import { Grid, Text } from ".";
 
 type Props = {
   text?: string;
