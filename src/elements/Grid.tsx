@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-type Props = {
-  children: JSX.Element[] | JSX.Element;
+interface Props {
+  children: any;
   isFlex?: boolean;
   padding?: string;
   width?: string;
-};
+}
 
 const Grid = ({ children, isFlex, padding, width }: Props) => {
   return (

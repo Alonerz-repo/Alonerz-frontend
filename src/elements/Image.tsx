@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-type ImageProps = {
+interface ImageProps {
   shape: string;
   src: string;
   size: string;
   profile?: boolean;
-};
+}
 
 const Image = ({ shape, src, size, profile }: ImageProps) => {
   const styles = {

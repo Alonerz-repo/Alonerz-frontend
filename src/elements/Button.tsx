@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-type Props = {
+interface Props {
   _onClick?: () => {};
   children?: string;
   isCategory?: boolean;
-};
+}
 
 const Button = ({ children, isCategory }: Props) => {
   if (isCategory) {

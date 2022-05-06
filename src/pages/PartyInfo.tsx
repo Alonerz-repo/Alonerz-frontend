@@ -35,10 +35,7 @@ const PartyInfo = ({
         <text style={{ fontWeight: "700" }}>장소 </text>
         <text>{address1} </text>
         <text>{address2} </text>
-        <KakaoMap
-          latitude={37.56851724054563}
-          longitude={126.9744523105797}
-        ></KakaoMap>
+        <KakaoMap latitude={37.483782} longitude={126.9744523105797}></KakaoMap>
         <p>{menu}</p>
         <Text bold>
           시간 {startAt}~{endAt}
