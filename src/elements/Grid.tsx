@@ -46,7 +46,7 @@ interface MyGridProps {
 const MyGrid = styled.div<MyGridProps>`
   justify-content: ${(props) => props.justifyContent ?? ""};
   align-items: ${(props) => props.alignItems ?? ""};
-  display: ${(props) => props.justifyContent ?? "flex"};
+  display: ${(props) => props.display ?? "flex"};
   ${(props) => props.style ?? ""};
   ${(props) =>
     props.isFlex ? `display: flex; justify-content: space-between;` : ""};
