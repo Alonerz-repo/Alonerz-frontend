@@ -13,7 +13,6 @@ interface Props {
 
 const Input = forwardRef(
   ({ text, placeholder, width, _onChange, ref, bold }: Props) => {
-    console.log(bold);
     return (
       <>
         <Grid width={width}>

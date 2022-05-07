@@ -6,37 +6,41 @@ const UserInfo = () => {
   return (
     <React.Fragment>
       <Div>
-        <Image></Image>
-        <Text>나는 닉네임입니다.</Text>
-        <Box>
-          <Text margin="0px 5px">직업</Text>|<Text margin="0px 5px">신입</Text>
-        </Box>
-        <Desc>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Consequuntur enim neque accusantium quasi magnam vitae ducimus sunt
-            sed eveniet delectus cumque quos culpa ad sapiente tempore, tenetur,
-            excepturi nostrum?
-          </Text>
-        </Desc>
+        <A></A>
+        <TextDiv>
+          <Mytxt style={{ fontSize: "13px" }}>UIUX디자인&개발</Mytxt>
+          <Mytxt style={{ fontSize: "20px", color: "#F24141" }}>
+            디자이너 5년차
+          </Mytxt>
+          <Mytxt>룰루랄라입니다.</Mytxt>
+        </TextDiv>
       </Div>
     </React.Fragment>
   );
 };
 
+const A = styled.div`
+  width: 183px;
+  height: 336px;
+  background: #ffd9d9;
+  border-radius: 20px 0px 0px 20px;
+  position: relative;
+  right: -27%;
+`;
+
 const Div = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
+  background: skyblue;
 `;
 
-const Box = styled.div`
+const Mytxt = styled.text``;
+const TextDiv = styled(Div)`
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
+  position: absolute;
+  left: 20px;
 `;
 
-const Desc = styled.div`
-  background: red;
-  text-align: center;
-`;
 export default UserInfo;

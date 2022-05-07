@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Test from "./pages/Test";
+import User from "./pages/User";
 import PartyInfo from "./pages/PartyInfo";
 
 declare global {
@@ -19,7 +20,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/test" element={<Test />} />
-            <Route
+            <Route path="/user" element={<User />} />
+            {/* <Route
               path="/participate"
               element={
                 <PartyInfo
@@ -32,7 +34,7 @@ function App() {
                   limit={4}
                 />
               }
-            ></Route>
+            ></Route> */}
           </Routes>
         </BrowserRouter>
       </Container>
