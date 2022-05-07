@@ -5,9 +5,10 @@ interface Props {
   _onClick?: () => {};
   children?: string;
   isCategory?: boolean;
+  width?: string;
 }
 
-const Button = ({ children, isCategory }: Props) => {
+const Button = ({ children, isCategory, width }: Props) => {
   if (isCategory) {
     return (
       <React.Fragment>
@@ -17,7 +18,7 @@ const Button = ({ children, isCategory }: Props) => {
   }
   return (
     <React.Fragment>
-      <CommonButton>{children}</CommonButton>
+      <CommonButton width={width}>{children}</CommonButton>
     </React.Fragment>
   );
 };
@@ -31,7 +32,12 @@ const CategoryButton = styled.button`
   margin: 0px 10px 0px 10px;
 `;
 
-const CommonButton = styled.button`
+interface CommonButtonProps {
+  width?: string;
+}
+
+const CommonButton = styled.button<CommonButtonProps>`
+  width: ${(props) => props.width ?? ""};
   outline: none;
   background: yellow;
   padding: 20px;
