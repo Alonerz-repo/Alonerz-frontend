@@ -5,10 +5,11 @@ interface Props {
   _onClick?: () => {};
   children?: string;
   isCategory?: boolean;
+  isLimit?: boolean;
   width?: string;
 }
 
-const Button = ({ children, isCategory, width }: Props) => {
+const Button = ({ children, isCategory, width, isLimit, _onClick }: Props) => {
   if (isCategory) {
     return (
       <React.Fragment>
@@ -16,6 +17,17 @@ const Button = ({ children, isCategory, width }: Props) => {
       </React.Fragment>
     );
   }
+
+  if (isLimit) {
+    return (
+      <React.Fragment>
+        <LimitButton width={width} onClick={_onClick}>
+          {children}
+        </LimitButton>
+      </React.Fragment>
+    );
+  }
+
   return (
     <React.Fragment>
       <CommonButton width={width}>{children}</CommonButton>
@@ -35,6 +47,14 @@ const CategoryButton = styled.button`
 interface CommonButtonProps {
   width?: string;
 }
+
+const LimitButton = styled.button<CommonButtonProps>`
+  width: ${(props) => props.width ?? "56px"};
+  height: 30px;
+  background-color: #eeeeee;
+  border-radius: 15px;
+  margin: 0px 10px 0px 10px;
+`;
 
 const CommonButton = styled.button<CommonButtonProps>`
   width: ${(props) => props.width ?? ""};
