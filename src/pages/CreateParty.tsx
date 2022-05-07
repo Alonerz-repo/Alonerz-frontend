@@ -33,7 +33,7 @@ const CreateParty = () => {
           <Grid> </Grid>
         </Text>
         <Grid isFlex>
-          <Button isLimit width="27%">
+          {/* <Button isLimit width="27%">
             2명
           </Button>
           <Button isLimit width="27%">
@@ -41,7 +41,7 @@ const CreateParty = () => {
           </Button>
           <Button isLimit width="27%">
             4명
-          </Button>
+          </Button> */}
         </Grid>
         <Text bold titleText="장소" type="line">
           <Grid> </Grid>

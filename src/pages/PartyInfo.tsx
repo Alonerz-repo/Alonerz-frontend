@@ -52,7 +52,7 @@ const PartyInfo = ({
         <PartyMembers></PartyMembers>
       </Grid>
       <Grid isFlex>
-        <Button width="100%">참가....해야겠지?</Button>
+        {/* <Button width="100%">참가....해야겠지?</Button> */}
       </Grid>
     </React.Fragment>
   );

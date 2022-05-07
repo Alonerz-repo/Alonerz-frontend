@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Test from "./pages/Test";
+import User from "./pages/User";
+import Login from "./pages/Login";
 import CreateParty from "./pages/CreateParty";
 import PartyInfo from "./pages/PartyInfo";
 
@@ -20,7 +22,9 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/test" element={<Test />} />
-            <Route
+            <Route path="/user" element={<User />} />
+            <Route path="/login" element={<Login />} />
+            {/* <Route
               path="/participate"
               element={
                 <PartyInfo
@@ -33,7 +37,8 @@ function App() {
                   limit={4}
                 />
               }
-            ></Route>
+            ></Route> */}
+
             <Route path="/create" element={<CreateParty />} />
           </Routes>
         </BrowserRouter>

@@ -14,13 +14,13 @@ const Main = () => {
         <Image shape="circle" size="200px"></Image>
         <PartyMembers></PartyMembers>
         <Grid isFlex>
-          <Grid>
+          {/* <Grid>
             <Button>햄버거</Button>
           </Grid>
           <Grid>
             <Button>검색</Button>
             <Button>내정보</Button>
-          </Grid>
+          </Grid> */}
         </Grid>
 
         {/* 오늘 참여중인 파티  */}
@@ -35,9 +35,9 @@ const Main = () => {
         {/* 전체, 점심, 저녁 버튼 */}
 
         <Grid>
-          <Button isCategory>전체</Button>
+          {/* <Button isCategory>전체</Button>
           <Button isCategory>점심</Button>
-          <Button isCategory>저녁</Button>
+          <Button isCategory>저녁</Button> */}
         </Grid>
 
         {/* 주변에서 진행중인 파티 */}

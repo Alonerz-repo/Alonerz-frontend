@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import Login from "./Login";
 import { Input, Grid, Text } from "../elements";
 
 import { useRef } from "react";
@@ -9,9 +10,7 @@ const Test = () => {
 
   return (
     <React.Fragment>
-      <Text type="area" titleText="asdasdas" padding="10px">
-        Lorem ipsum dolor
-      </Text>
+      <Login></Login>
     </React.Fragment>
   );
 };

@@ -1,42 +1,69 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid, Text, Image } from "../elements";
+import { Grid, Text, Image, Button } from "../elements";
+import Card from "../components/Card";
 
 const UserInfo = () => {
   return (
     <React.Fragment>
-      <Div>
-        <Image></Image>
-        <Text>나는 닉네임입니다.</Text>
-        <Box>
-          <Text margin="0px 5px">직업</Text>|<Text margin="0px 5px">신입</Text>
-        </Box>
-        <Desc>
-          <Text>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Consequuntur enim neque accusantium quasi magnam vitae ducimus sunt
-            sed eveniet delectus cumque quos culpa ad sapiente tempore, tenetur,
-            excepturi nostrum?
-          </Text>
-        </Desc>
-      </Div>
+      <Grid>
+        <A></A>
+        <GridPosi>
+          <Grid flow="column wrap">
+            <Mytxt style={{ fontSize: "13px", fontWeight: "bold" }}>
+              UIUX디자인&개발
+            </Mytxt>
+            <Mytxt style={{ fontSize: "20px", color: "#F24141" }}>
+              디자이너 5년차
+            </Mytxt>
+            <Mytxt style={{ margin: "0px 30px" }}>룰루랄라입니다.</Mytxt>
+          </Grid>
+        </GridPosi>
+      </Grid>
+      <Grid>
+        <Div>
+          <Mytxt>참사횟수</Mytxt>
+          <Mytxt style={{ padding: "10px" }}>10</Mytxt>
+        </Div>
+        <Div>
+          <Mytxt>참사횟수</Mytxt>
+          <Mytxt style={{ padding: "10px" }}>10</Mytxt>
+        </Div>
+        <Div>
+          <Mytxt>참사횟수</Mytxt>
+          <Mytxt style={{ padding: "10px" }}>10</Mytxt>
+        </Div>
+        {/* <Button> 팔로우 </Button> */}
+      </Grid>
+      <Div></Div>
+      <Grid>
+        <Card title="s" address1="asd" limit={4} headcount={4} isFlex></Card>
+        <Card title="s" address1="asd" limit={4} headcount={4} isFlex></Card>
+        <Card title="s" address1="asd" limit={4} headcount={4} isFlex></Card>
+      </Grid>
     </React.Fragment>
   );
 };
 
+const A = styled.div`
+  width: 183px;
+  height: 336px;
+  background: #ffd9d9;
+  border-radius: 20px 0px 0px 20px;
+  position: relative;
+  right: -53%;
+`;
+
 const Div = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
+  background: skyblue;
 `;
 
-const Box = styled.div`
-  display: flex;
-  justify-content: space-evenly;
+const Mytxt = styled.text``;
+const GridPosi = styled.div`
+  position: absolute;
 `;
 
-const Desc = styled.div`
-  background: red;
-  text-align: center;
-`;
 export default UserInfo;

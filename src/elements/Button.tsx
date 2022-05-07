@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 interface Props {
-  _onClick?: () => {};
+  _onClick(): void;
   children?: string;
   isCategory?: boolean;
   isLimit?: boolean;
@@ -13,7 +13,7 @@ const Button = ({ children, isCategory, width, isLimit, _onClick }: Props) => {
   if (isCategory) {
     return (
       <React.Fragment>
-        <CategoryButton>{children}</CategoryButton>
+        <CategoryButton onClick={_onClick}>{children}</CategoryButton>
       </React.Fragment>
     );
   }
@@ -30,7 +30,9 @@ const Button = ({ children, isCategory, width, isLimit, _onClick }: Props) => {
 
   return (
     <React.Fragment>
-      <CommonButton width={width}>{children}</CommonButton>
+      <CommonButton onClick={_onClick} width={width}>
+        {children}
+      </CommonButton>
     </React.Fragment>
   );
 };
