@@ -23,9 +23,15 @@ jobs:
       - name: Install Dependencies
         run: yarn
 
+      - name: Setting .env
+        run: |
+          echo "REACT_APP_KAKAO_MAP_KEY=${{secrets.REACT_APP_KAKAO_MAP_KEY}}" >> .env
+          echo "FIREBASE_API_KEY=${{secrets.FIREBASE_API_KEY}}" >> .env
+          cat .env
+
       - name: Build
         env:
-            CI: ""
+          CI: ""
         run: yarn build
 
       - name: Deploy to S3
