@@ -5,11 +5,29 @@ interface Props {
   isFlex?: boolean;
   padding?: string;
   width?: string;
+  display?: string;
+  justifyContent?: string;
+  alignItems?: string;
 }
 
-const Grid = ({ children, isFlex, padding, width }: Props) => {
+const Grid = ({
+  children,
+  isFlex,
+  padding,
+  width,
+  display,
+  justifyContent,
+  alignItems,
+}: Props) => {
   return (
-    <MyGrid isFlex={isFlex} padding={padding} width={width}>
+    <MyGrid
+      isFlex={isFlex}
+      padding={padding}
+      width={width}
+      display={display}
+      justifyContent={justifyContent}
+      alignItems={alignItems}
+    >
       {children}
     </MyGrid>
   );
@@ -20,9 +38,15 @@ interface MyGridProps {
   padding?: string;
   width?: string;
   style?: string;
+  display?: string;
+  justifyContent?: string;
+  alignItems?: string;
 }
 
 const MyGrid = styled.div<MyGridProps>`
+  justify-content: ${(props) => props.justifyContent ?? ""};
+  align-items: ${(props) => props.alignItems ?? ""};
+  display: ${(props) => props.justifyContent ?? "flex"};
   ${(props) => props.style ?? ""};
   ${(props) =>
     props.isFlex ? `display: flex; justify-content: space-between;` : ""};

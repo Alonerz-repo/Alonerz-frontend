@@ -1,14 +1,13 @@
 import React from "react";
-import { Image, Grid, Text } from "../elements";
-import styled from "styled-components";
+import { Image, Grid, Text, Button } from "../elements";
 import PartyMembers from "../components/PartyMembers";
 import KakaoMap from "../components/KakaoMap";
 
 interface PartyInfoProps {
   title: string;
   menu: string;
-  address1: string;
-  address2: string;
+  address1?: string;
+  address2?: string;
   startAt?: Date;
   endAt?: Date;
   locationX: Number;
@@ -31,28 +30,32 @@ const PartyInfo = ({
     <React.Fragment>
       <Image shape="rectangle"></Image>
       <Grid padding="20px">
-        <h2>{title}</h2>
-        <text style={{ fontWeight: "700" }}>장소 </text>
-        <text>{address1} </text>
-        <text>{address2} </text>
-        <KakaoMap latitude={37.483782} longitude={126.9744523105797}></KakaoMap>
-        <p>{menu}</p>
-        <Text bold>
-          시간 {startAt}~{endAt}
+        <Text bold type="title" titleText={title}>
+          asd
         </Text>
-        <Text bold>상세내용</Text>
+        <Text type="line" titleText="장소" margin="5px 0 5px 0">
+          {address1 ?? address2}
+        </Text>
+
+        {/* 카카오 맵 */}
+        <KakaoMap latitude={37.483782} longitude={126.9003409}></KakaoMap>
+
+        <Text type="line" titleText="메뉴" margin="5px 0 5px 0">
+          {menu}
+        </Text>
+        <Text bold type="line" titleText="시간" margin="5px 0 5px 0">
+          {startAt}~{endAt}
+        </Text>
+        <Text bold type="area" titleText="상세내용" margin="5px 0 5px 0">
+          ???
+        </Text>
         <PartyMembers></PartyMembers>
+      </Grid>
+      <Grid isFlex>
+        <Button width="100%">참가....해야겠지?</Button>
       </Grid>
     </React.Fragment>
   );
 };
-
-interface Map {
-  children: any;
-}
-
-const MapDiv = styled.div<Map>`
-  border: 1px solid black;
-`;
 
 export default PartyInfo;
