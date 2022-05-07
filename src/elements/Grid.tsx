@@ -8,6 +8,7 @@ interface Props {
   display?: string;
   justifyContent?: string;
   alignItems?: string;
+  flow?: string;
 }
 
 const Grid = ({
@@ -18,6 +19,7 @@ const Grid = ({
   display,
   justifyContent,
   alignItems,
+  flow,
 }: Props) => {
   return (
     <MyGrid
@@ -27,6 +29,7 @@ const Grid = ({
       display={display}
       justifyContent={justifyContent}
       alignItems={alignItems}
+      flow={flow}
     >
       {children}
     </MyGrid>
@@ -41,12 +44,13 @@ interface MyGridProps {
   display?: string;
   justifyContent?: string;
   alignItems?: string;
+  flow?: string;
 }
 
 const MyGrid = styled.div<MyGridProps>`
   justify-content: ${(props) => props.justifyContent ?? ""};
   align-items: ${(props) => props.alignItems ?? ""};
-  display: ${(props) => props.justifyContent ?? "flex"};
+  display: ${(props) => props.display ?? "flex"};
   ${(props) => props.style ?? ""};
   ${(props) =>
     props.isFlex ? `display: flex; justify-content: space-between;` : ""};
@@ -54,7 +58,7 @@ const MyGrid = styled.div<MyGridProps>`
   width: ${(props) => props.width ?? ""};
   box-sizing: border-box;
   position: relative;
-  flex-wrap: wrap;
+  flex-flow: ${(props) => (props.flow ? `${props.flow}` : "row wrap")};
 `;
 
 export default Grid;

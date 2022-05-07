@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Test from "./pages/Test";
 import User from "./pages/User";
+import Login from "./pages/Login";
 import CreateParty from "./pages/CreateParty";
 import PartyInfo from "./pages/PartyInfo";
 
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/test" element={<Test />} />
             <Route path="/user" element={<User />} />
+            <Route path="/login" element={<Login />} />
             {/* <Route
               path="/participate"
               element={
