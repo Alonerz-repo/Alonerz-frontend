@@ -24,7 +24,7 @@ function App() {
             <Route path="/test" element={<Test />} />
             <Route path="/user" element={<User />} />
             <Route path="/login" element={<Login />} />
-            {/* <Route
+            <Route
               path="/participate"
               element={
                 <PartyInfo
@@ -37,7 +37,7 @@ function App() {
                   limit={4}
                 />
               }
-            ></Route> */}
+            ></Route>
 
             <Route path="/create" element={<CreateParty />} />
           </Routes>

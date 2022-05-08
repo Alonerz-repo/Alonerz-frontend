@@ -2,6 +2,8 @@ import React from "react";
 import { Image, Grid, Text, Button } from "../elements";
 import PartyMembers from "../components/PartyMembers";
 import KakaoMap from "../components/KakaoMap";
+import { getGroupInfo } from "../store/slices/groupDetailPage";
+import { useAppSelector, useAppDispatch } from "../store/config";
 
 interface PartyInfoProps {
   title: string;
@@ -26,8 +28,13 @@ const PartyInfo = ({
   endAt,
   limit,
 }: PartyInfoProps) => {
+  const dispatch = useAppDispatch();
+  const test = () => {
+    dispatch(getGroupInfo());
+  };
   return (
     <React.Fragment>
+      <button onClick={test}>test</button>
       <Image shape="rectangle"></Image>
       <Grid padding="20px">
         <Text bold type="title" titleText={title}>
