@@ -24,21 +24,7 @@ function App() {
             <Route path="/test" element={<Test />} />
             <Route path="/user" element={<User />} />
             <Route path="/login" element={<Login />} />
-            {/* <Route
-              path="/participate"
-              element={
-                <PartyInfo
-                  title="모임장소"
-                  menu="맛있는 거"
-                  address1="우리집"
-                  address2="너희집"
-                  locationX={0}
-                  locationY={1}
-                  limit={4}
-                />
-              }
-            ></Route> */}
-
+            <Route path="/participate" element={<PartyInfo />}></Route>
             <Route path="/create" element={<CreateParty />} />
           </Routes>
         </BrowserRouter>
