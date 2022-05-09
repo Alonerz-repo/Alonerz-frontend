@@ -25,7 +25,11 @@ function App() {
             <Route path="/user" element={<User />} />
             <Route path="/login" element={<Login />} />
             <Route path="/participate" element={<PartyInfo />}></Route>
-            <Route path="/create" element={<CreateParty />} />
+            <Route path="/edit/partyInfo" element={<CreateParty />}></Route>
+            <Route
+              path="/edit/partyInfo/:groupId"
+              element={<CreateParty />}
+            ></Route>
           </Routes>
         </BrowserRouter>
       </Container>

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface Props {
-  children: any;
+  children?: any;
   isFlex?: boolean;
   padding?: string;
   width?: string;
