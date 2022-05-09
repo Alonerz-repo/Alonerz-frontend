@@ -48,7 +48,11 @@ const CreateParty = () => {
         </Text>
 
         {/* 카카오 맵 */}
-        <KakaoMap latitude={37.483782} longitude={126.9003409}></KakaoMap>
+        <KakaoMap
+          latitude={37.483782}
+          longitude={126.9003409}
+          placeName="a"
+        ></KakaoMap>
 
         <Input
           width="87%"

@@ -1,9 +1,10 @@
 import React from "react";
 import { Image, Grid, Text, Button } from "../elements";
-import PartyMembers from "../components/PartyMembers";
+import PartyMember from "../components/PartyMember";
 import KakaoMap from "../components/KakaoMap";
 import { getPartyInfo } from "../store/slices/partyInfoSlice";
 import { useAppSelector, useAppDispatch } from "../store/config";
+import Header from "../components/Header";
 
 const PartyInfo = () => {
   const { group } = useAppSelector((state) => state.party);
@@ -11,14 +12,15 @@ const PartyInfo = () => {
   const test = () => {
     dispatch(getPartyInfo());
   };
-  console.log(group);
+  const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
   return (
     <React.Fragment>
-      <button onClick={test}>test</button>
+      <Header></Header>
+
       <Image shape="rectangle" src={group.imageUrl}></Image>
       <Grid padding="20px">
-        <Text bold type="title" titleText={group.title}>
-          asd
+        <Text bold type="title" titleText={group.title} margin="0 0 5px 0">
+          {}
         </Text>
         <Text type="line" titleText="장소" margin="5px 0 5px 0">
           {group.address1 ?? group.address2}
@@ -28,17 +30,42 @@ const PartyInfo = () => {
         <KakaoMap
           latitude={group.locationX}
           longitude={group.locationY}
+          placeName={group.placeName}
         ></KakaoMap>
 
         <Text type="line" titleText="메뉴" margin="5px 0 5px 0">
           {group.menu}
         </Text>
+
         <Text bold type="line" titleText="시간" margin="5px 0 5px 0">
-          {group.startAt}~{group.endAt}
+          {group.startAt} ~ {group.endAt}
         </Text>
+
         <Text bold type="area" titleText="상세내용" margin="5px 0 5px 0">
           {group.description}
         </Text>
+
+        <Text bold type="line" titleText={headCount} margin="10px 0 5px 0">
+          {}
+        </Text>
+
+        <PartyMember
+          captain
+          nickname={group.host.nickname}
+          src={group.host.profileImageUrl}
+        ></PartyMember>
+
+        {group.guests.map((guest, i) => {
+          return (
+            <PartyMember
+              key={i}
+              nickname={guest.nickname}
+              src={guest.profileImageUrl}
+            ></PartyMember>
+          );
+        })}
+
+        <button onClick={test}>test</button>
       </Grid>
       <Grid isFlex>
         {/* <Button width="100%">참가....해야겠지?</Button> */}

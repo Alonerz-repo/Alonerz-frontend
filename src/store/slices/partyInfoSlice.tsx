@@ -14,8 +14,8 @@ interface GroupInfo {
   title: string;
   menu: string;
   description: string;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
   limit: number;
   imageUrl: string;
   locationX: number;
@@ -23,8 +23,8 @@ interface GroupInfo {
   address1: string;
   address2: string;
   placeName: string;
-  createdAt: Date;
-  updateAt: Date;
+  createdAt: string;
+  updateAt: string;
   host: userInfo;
   guests: userInfo[];
 }
@@ -39,8 +39,8 @@ const initialState: CommonState = {
     title: "",
     menu: "",
     description: "",
-    startAt: new Date(),
-    endAt: new Date(),
+    startAt: "",
+    endAt: "",
     limit: 4,
     imageUrl: "",
     locationX: 0,
@@ -48,8 +48,8 @@ const initialState: CommonState = {
     address1: "",
     address2: "",
     placeName: "",
-    createdAt: new Date(),
-    updateAt: new Date(),
+    createdAt: "",
+    updateAt: "",
     host: {
       userId: 0,
       nickname: "",
@@ -66,7 +66,7 @@ const initialState: CommonState = {
 };
 
 export const getPartyInfo = createAsyncThunk(
-  "getDetailGroup/getGroupInfo",
+  "partyInfo/getPartyInfo",
   async () => {
     const response = await axios({
       method: "get",
@@ -77,7 +77,7 @@ export const getPartyInfo = createAsyncThunk(
 );
 
 export const partyInfoSlice = createSlice({
-  name: "getDetailGroup",
+  name: "partyInfo",
   initialState,
   reducers: {
     setGroupDetail(state, action: PayloadAction<GroupInfo>) {
