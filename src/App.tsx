@@ -9,6 +9,7 @@ import CreateParty from "./pages/CreateParty";
 import PartyInfo from "./pages/PartyInfo";
 import Redirect from "./pages/KakaoRedirectPage";
 import Signup from "./pages/Singup";
+import PartyList from "./pages/PartyList";
 
 declare global {
   interface Window {
@@ -23,6 +24,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="/list" element={<PartyList />} />
             <Route path="/test" element={<Test />} />
             <Route path="/user" element={<User />} />
             <Route path="/login" element={<Login />} />

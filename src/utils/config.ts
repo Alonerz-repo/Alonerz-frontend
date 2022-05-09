@@ -16,3 +16,15 @@ export const kakaoRedirectUrl = (() => {
 
   return `${host}?${params}`;
 })();
+
+// 카카오 토큰 발급 URL
+export const kakaoTokenUrl = (code: any) => {
+  const host = "https://kauth.kakao.com/oauth/token";
+  const params = [
+    `grant_type=authorization_code`,
+    `client_id=${config.KAKAO_REST_API_KEY}`,
+    `redirect_uri=${config.KAKAO_REDIRECT_URL}`,
+    `code=${code}`,
+  ].join("&");
+  return `${host}?${params}`;
+};

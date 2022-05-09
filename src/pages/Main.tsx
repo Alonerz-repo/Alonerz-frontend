@@ -4,10 +4,13 @@ import { Grid, Button, Text } from "../elements";
 import Card from "../components/Card";
 import Image from "../elements/Image";
 import PartyMembers from "../components/PartyMembers";
+import { useNavigate } from "react-router-dom";
 
 const Main = () => {
+  const navigate = useNavigate();
   const click = () => {
     console.log("hello main AM/PM button!");
+    navigate("/list");
   };
   return (
     <React.Fragment>
