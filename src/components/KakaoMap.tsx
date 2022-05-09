@@ -4,9 +4,10 @@ import styled from "styled-components";
 interface MapProps {
   latitude: Number;
   longitude: Number;
+  placeName: string;
 }
 
-const KakaoMap = ({ latitude, longitude }: MapProps) => {
+const KakaoMap = ({ latitude, longitude, placeName }: MapProps) => {
   React.useEffect(() => {
     const container = document.getElementById("map");
     const options = {
@@ -16,7 +17,7 @@ const KakaoMap = ({ latitude, longitude }: MapProps) => {
     const map = new window.kakao.maps.Map(container, options);
 
     const locPosition = new window.kakao.maps.LatLng(latitude, longitude), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-      message = '<div style="padding:5px;">현재위치</div>'; // 인포윈도우에 표시될 내용입니다
+      message = `<div style="padding:5px;">${placeName}</div>`; // 인포윈도우에 표시될 내용입니다
 
     // 마커와 인포윈도우를 표시합니다
     displayMarker(locPosition, message);
