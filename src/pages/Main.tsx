@@ -1,13 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Grid, Button, Text } from "../elements";
 import Card from "../components/Card";
 import Image from "../elements/Image";
 import PartyMembers from "../components/PartyMembers";
 import { useNavigate } from "react-router-dom";
+import { useAppSelect } from "../store/config.hook";
+import { getCookie } from "../utils/cookie";
 
 const Main = () => {
   const navigate = useNavigate();
+  const user = useAppSelect((state) => state.user);
+  useEffect(() => {
+    const cookie = getCookie("accessToken");
+    console.log(user);
+    if (cookie) {
+      console.log("getCookie");
+    } else {
+      console.log("not getCookie");
+      navigate("/login");
+    }
+  }, []);
   const click = () => {
     console.log("hello main AM/PM button!");
     navigate("/list");
@@ -26,6 +39,9 @@ const Main = () => {
         </BoxAM>
         <BoxPM>
           <Text type="title"> 안녕하세요? </Text>
+          <Text>time</Text>
+          <Button _onClick={click}>1</Button>
+          <Button _onClick={click}>2</Button>
         </BoxPM>
       </Grid>
     </React.Fragment>

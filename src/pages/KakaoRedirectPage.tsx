@@ -1,24 +1,17 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { useAppDispatch } from "../store/config";
-import { kakaoLogin, kakaoGetToken } from "../store/slices/userSlice";
-import axios from "axios";
+import { kakaoLogin } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
-import { setCookie, getCookie, removeCookie } from "../utils/cookie";
 
 const Redirect = () => {
-  const kakaoId = new URL(window.location.href).searchParams.get("kakaoId");
-  // const kakaoId = "thisiskakaoid";
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(kakaoId);
-    console.log(process.env.REACT_APP_API_URL);
+    const kakaoId = new URL(window.location.href).searchParams.get("kakaoId");
     try {
-      dispatch(kakaoGetToken(kakaoId)).then((res) => {
-        console.log(res.payload);
+      dispatch(kakaoLogin(kakaoId)).then((res) => {
         const isSignup = res.payload.isSignup;
         switch (isSignup) {
           case true:
