@@ -1,26 +1,31 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { setCookie, getCookie, removeCookie } from "../../utils/cookie";
-
 import axios from "axios";
 
+const url = process.env.REACT_APP_API_URL;
+
 interface userInfo {
-  isSignup: boolean;
-  accessToken: string;
-  refreshToken: string;
+  kakaoId: string;
+  userId?: number;
+  nickname?: string;
+  isSignup?: boolean;
+  profileImageUrl?: string;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 const initialState: userInfo = {
+  kakaoId: "",
+  userId: 0,
+  nickname: "",
+  profileImageUrl: "",
   isSignup: false,
   accessToken: "",
   refreshToken: "",
 };
-const url = process.env.REACT_APP_API_URL;
-export const kakaoGetToken = createAsyncThunk(
-  "userSlice/kakaoGetToken",
+export const kakaoLogin = createAsyncThunk(
+  "userSlice/kakaoLogin",
   async (id: any, thunkAPI) => {
-    console.log("hello getToken thunk");
-    console.log(id);
-
     try {
       const response = await axios({
         method: "post",
@@ -29,7 +34,6 @@ export const kakaoGetToken = createAsyncThunk(
           kakaoId: id,
         },
       }).then((res) => {
-        console.log(res.data);
         const { accessToken, refreshToken, isSignup } = res.data;
         setCookie("accessToken", accessToken);
         setCookie("refreshToken", refreshToken);
@@ -45,32 +49,42 @@ export const kakaoGetToken = createAsyncThunk(
     }
   }
 );
-export const kakaoLogin = createAsyncThunk(
-  "userSlice/kakaoLogin",
-  async (_, thunkAPI) => {
-    console.log("hello kakaoLogin Slice!!");
 
+export const signUp = createAsyncThunk(
+  "userSlice/signUp",
+  async (_, thunkAPI) => {
     try {
       const response = await axios({
-        method: "get",
-        url: "https://796760ed-2bcd-46dd-a78d-93a1aa5eee60.mock.pstmn.io/api/auth/login",
+        method: "post",
+        url: `${url}/api/auth/login`,
         data: {
-          kakaoId: "kakao",
+          kakaoId: "",
         },
       }).then((res) => {
-        const info = {
-          token: res.data.alonerz_access,
-          refresh: res.data.alonerz_refresh,
-          isSignup: res.data.isSignup,
-        };
-        return res.data;
+        console.log(res);
       });
       return response;
     } catch (err) {
       console.log(err);
+      debugger;
+      return thunkAPI.rejectWithValue(err);
     }
   }
 );
+
+export const getUser = createAsyncThunk("user/getUser", async (_, thunkAPI) => {
+  try {
+    console.log("hello getUser");
+    const response = await axios({}).then((res) => {
+      console.log("sucess");
+      return 0;
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+    return thunkAPI.rejectWithValue(err);
+  }
+});
 
 export const userSlice = createSlice({
   name: "user",
@@ -79,6 +93,9 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(kakaoLogin.fulfilled, (state, action) => {
       console.log("hello extraReducer!");
+      console.log(action.payload);
+
+      state.isSignup = action.payload.isSignup;
     });
   },
 });
