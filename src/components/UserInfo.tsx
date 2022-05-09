@@ -9,7 +9,7 @@ const UserInfo = () => {
       <Grid>
         <A></A>
         <GridPosi>
-          <Grid flow="column wrap">
+          <Grid flexFlow="column wrap">
             <Mytxt style={{ fontSize: "13px", fontWeight: "bold" }}>
               UIUX디자인&개발
             </Mytxt>

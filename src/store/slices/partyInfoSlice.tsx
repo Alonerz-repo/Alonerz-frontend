@@ -3,7 +3,14 @@ import axios from "axios";
 
 const url = `https://a55b727a-083a-473d-8134-4a44980eb41f.mock.pstmn.io`;
 
+interface userInfo {
+  userId: number;
+  nickname: string;
+  profileImageUrl: string;
+}
+
 interface GroupInfo {
+  groupId: number;
   title: string;
   menu: string;
   description: string;
@@ -15,14 +22,20 @@ interface GroupInfo {
   locationY: number;
   address1: string;
   address2: string;
+  placeName: string;
+  createdAt: Date;
+  updateAt: Date;
+  host: userInfo;
+  guests: userInfo[];
 }
 
 interface CommonState {
-  groupInfo: GroupInfo;
+  group: GroupInfo;
 }
 
 const initialState: CommonState = {
-  groupInfo: {
+  group: {
+    groupId: 0,
     title: "",
     menu: "",
     description: "",
@@ -34,27 +47,48 @@ const initialState: CommonState = {
     locationY: 0,
     address1: "",
     address2: "",
+    placeName: "",
+    createdAt: new Date(),
+    updateAt: new Date(),
+    host: {
+      userId: 0,
+      nickname: "",
+      profileImageUrl: "",
+    },
+    guests: [
+      {
+        userId: 0,
+        nickname: "",
+        profileImageUrl: "",
+      },
+    ],
   },
 };
 
-export const getGroupInfo = createAsyncThunk(
+export const getPartyInfo = createAsyncThunk(
   "getDetailGroup/getGroupInfo",
   async () => {
     const response = await axios({
       method: "get",
       url: `${url}/get/test`,
     });
-    console.log(response.data);
-    return response.data;
+    return response.data.group;
   }
 );
 
-const getDetailGroup = createSlice({
+export const partyInfoSlice = createSlice({
   name: "getDetailGroup",
   initialState,
   reducers: {
     setGroupDetail(state, action: PayloadAction<GroupInfo>) {
-      state.groupInfo = action.payload;
+      state.group = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(getPartyInfo.fulfilled, (state, { payload }) => {
+      state.group = payload;
+    });
+  },
 });
+
+export default partyInfoSlice;
