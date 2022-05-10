@@ -33,9 +33,9 @@ interface CommonState {
   group: GroupInfo;
 }
 
-const initialState: CommonState = {
+export const initialState: CommonState = {
   group: {
-    groupId: 0,
+    groupId: -1,
     title: "",
     menu: "",
     description: "",
@@ -97,5 +97,7 @@ export const partyInfoSlice = createSlice({
     });
   },
 });
+
+export const setGroup = partyInfoSlice.actions.setGroupDetail;
 
 export default partyInfoSlice;

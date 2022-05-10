@@ -18,7 +18,11 @@ const Select = ({ onChange, value, width, categories }: Props) => {
     <React.Fragment>
       <MySelected width={width} onChange={onChange} value={value}>
         {categories.map((c, i) => {
-          return <option value={c.value}>{c.name}</option>;
+          return (
+            <option value={c.value} key={i}>
+              {c.name}
+            </option>
+          );
         })}
       </MySelected>
     </React.Fragment>
