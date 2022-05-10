@@ -2,14 +2,22 @@ import React from "react";
 import styled from "styled-components";
 
 interface Props {
-  _onClick(): void;
+  _onClick?(): void;
   children?: string;
   isCategory?: boolean;
   isLimit?: boolean;
   width?: string;
+  selected?: boolean;
 }
 
-const Button = ({ children, isCategory, width, isLimit, _onClick }: Props) => {
+const Button = ({
+  children,
+  isCategory,
+  width,
+  isLimit,
+  _onClick,
+  selected,
+}: Props) => {
   if (isCategory) {
     return (
       <React.Fragment>

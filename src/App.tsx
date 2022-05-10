@@ -33,7 +33,11 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate" element={<PartyInfo />}></Route>
-            <Route path="/create" element={<CreateParty />} />
+            <Route path="/edit/partyInfo" element={<CreateParty />}></Route>
+            <Route
+              path="/edit/partyInfo/:groupId"
+              element={<CreateParty />}
+            ></Route>
           </Routes>
         </BrowserRouter>
       </Container>
@@ -43,11 +47,13 @@ function App() {
 
 const Container = styled.div<ContainerProps>`
   width: ${(props) => props.width ?? "390px"};
-  height: ${(props) => props.height ?? "1010px"};
+  height: ${(props) => props.height ?? "100vh"};
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
   border: 1px solid black;
+  position: relative;
+  overflow: scroll;
 `;
 
 interface ContainerProps {
