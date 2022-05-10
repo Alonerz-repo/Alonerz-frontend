@@ -45,9 +45,9 @@ const Text = ({
       return (
         <Div margin={margin} padding={padding}>
           <P bold fontSize="20px">
-            {titleText}
+            {children}
           </P>
-          <P margin="16spx 0px 0px 0px">{children}</P>
+          {/* <P margin="16spx 0px 0px 0px">{children}</P> */}
         </Div>
       );
   }
