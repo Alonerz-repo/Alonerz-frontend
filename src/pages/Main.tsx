@@ -12,13 +12,12 @@ const Main = () => {
   const navigate = useNavigate();
   const user = useAppSelect((state) => state.user);
   useEffect(() => {
-    const cookie = getCookie("accessToken");
-    console.log(user);
-    if (cookie) {
-      console.log("getCookie");
+    const isUserInfo = user.needProfile;
+    console.log(isUserInfo);
+    if (isUserInfo) {
+      navigate("/signup");
     } else {
-      console.log("not getCookie");
-      navigate("/login");
+      navigate("/");
     }
   }, []);
   const click = () => {

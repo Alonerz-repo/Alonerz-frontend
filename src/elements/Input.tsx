@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Grid, Text } from "./index";
 
 interface Props {
+  value?: string;
   text?: string;
   placeholder?: string;
   width?: string;
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const Input = forwardRef(
-  ({ text, placeholder, width, _onChange, ref, bold }: Props) => {
+  ({ text, placeholder, width, _onChange, ref, bold, value }: Props) => {
     return (
       <>
         <Grid width={width}>
@@ -21,6 +22,7 @@ const Input = forwardRef(
             ref={ref}
             placeholder={placeholder}
             onChange={_onChange}
+            value={value}
           />
         </Grid>
       </>

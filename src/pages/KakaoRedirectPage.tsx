@@ -12,7 +12,8 @@ const Redirect = () => {
     const kakaoId = new URL(window.location.href).searchParams.get("kakaoId");
     try {
       dispatch(kakaoLogin(kakaoId)).then((res) => {
-        const isSignup = res.payload.isSignup;
+        const isSignup = res.payload.needProfile;
+        console.log(isSignup);
         switch (isSignup) {
           case true:
             return navigate("/");

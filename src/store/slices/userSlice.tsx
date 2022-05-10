@@ -1,27 +1,35 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import { setCookie, getCookie, removeCookie } from "../../utils/cookie";
 import axios from "axios";
 
 const url = process.env.REACT_APP_API_URL;
 
 interface userInfo {
-  kakaoId: string;
   userId?: number;
+  point?: number;
+  following?: number;
+  follower?: number;
+  needProfile?: boolean;
   nickname?: string;
-  isSignup?: boolean;
   profileImageUrl?: string;
-  accessToken?: string;
-  refreshToken?: string;
+  year: string;
+  career: string;
+  description: string;
 }
 
+type userKey = keyof userInfo;
+
 const initialState: userInfo = {
-  kakaoId: "",
   userId: 0,
+  point: 0,
+  following: 0,
+  follower: 0,
+  needProfile: false,
   nickname: "",
   profileImageUrl: "",
-  isSignup: false,
-  accessToken: "",
-  refreshToken: "",
+  career: "",
+  description: "",
+  year: "",
 };
 export const kakaoLogin = createAsyncThunk(
   "userSlice/kakaoLogin",
@@ -45,6 +53,22 @@ export const kakaoLogin = createAsyncThunk(
       console.log(err);
       debugger;
 
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
+export const kakaoLogout = createAsyncThunk(
+  "userSlice/kakaoLogout",
+  async (_, thunkAPI) => {
+    try {
+      console.log("hello kakaoLogout!");
+      const response = await axios({}).then((res) => {
+        console.log(res);
+      });
+      return response;
+    } catch (err) {
+      console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
   }
@@ -75,10 +99,20 @@ export const signUp = createAsyncThunk(
 export const getUser = createAsyncThunk("user/getUser", async (_, thunkAPI) => {
   try {
     console.log("hello getUser");
-    const response = await axios({}).then((res) => {
-      console.log("sucess");
-      return 0;
+    const token = getCookie("accessToken");
+    // console.log(token);
+    const response = await axios({
+      method: "get",
+      url: `${url}/api/users/me`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      console.log("GETUSER!!!! ", res.data);
+
+      return res.data;
     });
+
     return response;
   } catch (err) {
     console.log(err);
@@ -89,15 +123,21 @@ export const getUser = createAsyncThunk("user/getUser", async (_, thunkAPI) => {
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(kakaoLogin.fulfilled, (state, action) => {
-      console.log("hello extraReducer!");
+  reducers: {
+    setUser: (state, action) => {
+      console.log("hello reducer setUser!");
       console.log(action.payload);
-
-      state.isSignup = action.payload.isSignup;
-    });
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(kakaoLogin.fulfilled, (state, action) => {
+        console.log("hello extraReducer!");
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        return (state = action.payload.user);
+      });
   },
 });
-
+export const { setUser } = userSlice.actions;
 export default userSlice;
