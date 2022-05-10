@@ -39,11 +39,13 @@ function App() {
 
 const Container = styled.div<ContainerProps>`
   width: ${(props) => props.width ?? "390px"};
-  height: ${(props) => props.height ?? "1010px"};
+  height: ${(props) => props.height ?? "100vh"};
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
   border: 1px solid black;
+  position: relative;
+  overflow: scroll;
 `;
 
 interface ContainerProps {

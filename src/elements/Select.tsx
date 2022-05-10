@@ -2,27 +2,38 @@ import React from "react";
 import styled from "styled-components";
 
 interface Props {
-  category?: number;
+  value?: number;
   onChange(e: any): void;
+  width?: string;
+  categories: categoryShape[];
 }
 
-const Select = ({ onChange, category }: Props) => {
+interface categoryShape {
+  value: number;
+  name: string;
+}
+
+const Select = ({ onChange, value, width, categories }: Props) => {
   return (
     <React.Fragment>
-      <MySelected onChange={onChange} value={category}>
-        <option value={1}>a</option>
-        <option value={2}>b</option>
-        <option value={3}>c</option>
+      <MySelected width={width} onChange={onChange} value={value}>
+        {categories.map((c, i) => {
+          return <option value={c.value}>{c.name}</option>;
+        })}
       </MySelected>
     </React.Fragment>
   );
 };
 
-const MySelected = styled.select`
+interface MySelectedProps {
+  width?: string;
+}
+
+const MySelected = styled.select<MySelectedProps>`
   background: #eeeeee;
   border-radius: 15px;
   border: none;
-  width: 100%;
+  width: ${(props) => props.width ?? "100%"};
   height: 44px;
   padding: 0px 20px;
 `;

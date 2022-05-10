@@ -57,9 +57,12 @@ const PartyInfo = () => {
           {group.description}
         </Text>
 
-        <Text bold type="line" titleText={headCount} margin="10px 0 5px 0">
-          {}
-        </Text>
+        <Text
+          bold
+          type="line"
+          titleText={headCount}
+          margin="10px 0 5px 0"
+        ></Text>
 
         <PartyMember
           captain
