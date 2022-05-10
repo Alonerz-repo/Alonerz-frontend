@@ -10,7 +10,7 @@ interface Props {
   ref?: any;
   bold?: boolean;
   children?: any;
-  _onChange?: () => {};
+  _onChange?(event: any): void;
 }
 
 const Input = forwardRef(
