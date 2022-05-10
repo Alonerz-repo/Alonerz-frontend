@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Grid } from "../elements";
 
 interface Props {
-  children: any;
+  children?: any;
   bold?: boolean;
   margin?: string;
   padding?: string;

@@ -2,13 +2,17 @@ import React from "react";
 import { Image, Text } from "../elements";
 import styled from "styled-components";
 
-const Header = () => {
+interface Props {
+  text: string;
+}
+
+const Header = ({ text }: Props) => {
   return (
     <React.Fragment>
       <Wrap>
         <GoBack>대충 아이콘</GoBack>
         <Text bold fontSize="20px" padding="10px">
-          파티참가
+          {text}
         </Text>
       </Wrap>
     </React.Fragment>

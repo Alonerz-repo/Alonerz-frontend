@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Image, Grid, Text, Button } from "../elements";
 import PartyMember from "../components/PartyMember";
 import KakaoMap from "../components/KakaoMap";
@@ -9,19 +10,30 @@ import Header from "../components/Header";
 const PartyInfo = () => {
   const { group } = useAppSelector((state) => state.party);
   const dispatch = useAppDispatch();
-  const test = () => {
-    dispatch(getPartyInfo());
+  const navigate = useNavigate();
+
+  const test = async () => {
+    try {
+      await dispatch(getPartyInfo(1));
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
   return (
     <React.Fragment>
-      <Header></Header>
+      <Header text="파티참가"></Header>
 
       <Image shape="rectangle" src={group.imageUrl}></Image>
       <Grid padding="20px">
-        <Text bold type="title" titleText={group.title} margin="0 0 5px 0">
-          {}
-        </Text>
+        <Text
+          bold
+          type="title"
+          titleText={group.title}
+          margin="0 0 5px 0"
+        ></Text>
         <Text type="line" titleText="장소" margin="5px 0 5px 0">
           {group.address1 ?? group.address2}
         </Text>
@@ -45,9 +57,12 @@ const PartyInfo = () => {
           {group.description}
         </Text>
 
-        <Text bold type="line" titleText={headCount} margin="10px 0 5px 0">
-          {}
-        </Text>
+        <Text
+          bold
+          type="line"
+          titleText={headCount}
+          margin="10px 0 5px 0"
+        ></Text>
 
         <PartyMember
           captain

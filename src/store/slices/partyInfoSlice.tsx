@@ -67,12 +67,19 @@ const initialState: CommonState = {
 
 export const getPartyInfo = createAsyncThunk(
   "partyInfo/getPartyInfo",
-  async () => {
-    const response = await axios({
-      method: "get",
-      url: `${url}/get/test`,
-    });
-    return response.data.group;
+  async (groupId: number, { rejectWithValue }: any) => {
+    try {
+      const response = await axios({
+        method: "get",
+        url: `${url}/get/test`,
+        data: {
+          groupId,
+        },
+      });
+      return response.data.group;
+    } catch (err: any) {
+      return rejectWithValue(err.response.data);
+    }
   }
 );
 

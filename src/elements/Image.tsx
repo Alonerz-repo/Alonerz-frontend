@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface ImageProps {
   shape: string;
-  src: string;
+  src?: string;
   size: string;
   profile?: boolean;
 }
@@ -40,7 +40,7 @@ Image.defaultProps = {
 };
 
 interface styleType {
-  src: string;
+  src?: string;
   size: string;
   profile?: boolean;
 }
