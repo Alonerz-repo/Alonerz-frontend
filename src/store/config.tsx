@@ -4,14 +4,12 @@ import { createLogger } from "redux-logger";
 import partyInfoSlice from "./slices/partyInfoSlice";
 import userSlice from "./slices/userSlice";
 import getUserSlice from "./slices/getUserSlice";
-import imageSlice from "./slices/imageSlice";
 
 const logger = createLogger();
 const rootReducer = combineReducers({
   party: partyInfoSlice.reducer,
   user: userSlice.reducer,
   getUser: getUserSlice.reducer,
-  image: imageSlice.reducer,
 });
 
 const initialState = {};
