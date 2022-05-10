@@ -15,18 +15,19 @@ const PartyInfo = () => {
   const test = async () => {
     try {
       await dispatch(getPartyInfo(1));
-      navigate("/");
     } catch (err) {
       console.log(err);
     }
   };
 
   const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
+
   return (
     <React.Fragment>
       <Header text="파티참가"></Header>
 
       <Image shape="rectangle" src={group.imageUrl}></Image>
+
       <Grid padding="20px">
         <Text
           bold
@@ -34,6 +35,7 @@ const PartyInfo = () => {
           titleText={group.title}
           margin="0 0 5px 0"
         ></Text>
+
         <Text type="line" titleText="장소" margin="5px 0 5px 0">
           {group.address1 ?? group.address2}
         </Text>
