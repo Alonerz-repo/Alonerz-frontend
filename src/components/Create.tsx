@@ -61,9 +61,7 @@ const Create = () => {
 
   return (
     <React.Fragment>
-      <Grid absolute="position:sticky;">
-        <Header text="파티개설"></Header>
-      </Grid>
+      <Header text="파티개설"></Header>
       <Grid padding="20px">
         <Input
           width="87%"

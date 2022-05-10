@@ -22,19 +22,6 @@ const KakaoMap = ({ latitude, longitude, placeName }: MapProps) => {
     // 마커와 인포윈도우를 표시합니다
     displayMarker(locPosition, message);
 
-    // const ps = new window.kakao.maps.services.Places();
-    // let geocoder = new window.kakao.maps.services.Geocoder();
-
-    // let coord = new window.kakao.maps.LatLng(latitude, longitude);
-
-    // let placeInfo = function (result: any, status: any) {
-    //   if (status === window.kakao.maps.services.Status.OK) {
-    //     console.log(result);
-    //   }
-    // };
-
-    // geocoder.coord2Address(coord.getLat(), coord.getLng(), placeInfo);
-
     function displayMarker(locPosition: MapProps, message: any) {
       // 마커를 생성합니다
       const marker = new window.kakao.maps.Marker({

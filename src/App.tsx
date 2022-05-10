@@ -32,12 +32,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/redirect" element={<Redirect />} />
-            <Route path="/participate" element={<PartyInfo />}></Route>
-            <Route path="/edit/partyInfo" element={<CreateParty />}></Route>
-            <Route
-              path="/edit/partyInfo/:groupId"
-              element={<CreateParty />}
-            ></Route>
+            <Route path="/participate" element={<PartyInfo />} />
+            <Route path="/edit/partyInfo" element={<CreateParty />} />
+            <Route path="/edit/partyInfo/:groupId" element={<CreateParty />} />
           </Routes>
         </BrowserRouter>
       </Container>

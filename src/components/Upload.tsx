@@ -2,6 +2,7 @@ import React from "react";
 import { Image } from "../elements";
 import { setImage } from "../store/slices/imageSlice";
 import { useAppDispatch, useAppSelector } from "../store/config";
+import baseFile from "../assets/fileUpload.png";
 
 const Upload = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +19,11 @@ const Upload = () => {
   return (
     <React.Fragment>
       <input type="file" onChange={selectFile} style={{ marginTop: "20px" }} />
-      <Image shape="rectangle" src={image}></Image>
+      {image ? (
+        <Image shape="rectangle" src={image}></Image>
+      ) : (
+        <Image shape="rectangle" src={baseFile} size="64px" tmpFile></Image>
+      )}
     </React.Fragment>
   );
 };

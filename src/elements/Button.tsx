@@ -72,6 +72,7 @@ const CommonButton = styled.button<CommonButtonProps>`
   background: yellow;
   padding: 20px;
   box-sizing: border-box;
+  z-index: 2;
   :hover {
     background: red;
   }
