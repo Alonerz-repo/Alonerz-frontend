@@ -2,10 +2,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
 import partyInfoSlice from "./slices/partyInfoSlice";
+import userSlice from "./slices/userSlice";
+import getUserSlice from "./slices/getUserSlice";
 
 const logger = createLogger();
 const rootReducer = combineReducers({
   party: partyInfoSlice.reducer,
+  user: userSlice.reducer,
+  getUser: getUserSlice.reducer,
 });
 
 const initialState = {};
