@@ -11,23 +11,26 @@ import { getCookie } from "../utils/cookie";
 const Main = () => {
   const navigate = useNavigate();
   const user = useAppSelect((state) => state.user);
-  useEffect(() => {
-    const cookie = getCookie("accessToken");
-    console.log(user);
-    if (cookie) {
-      console.log("getCookie");
-    } else {
-      console.log("not getCookie");
-      navigate("/login");
-    }
-  }, []);
   const click = () => {
     console.log("hello main AM/PM button!");
     navigate("/list");
   };
+
+  const goLogin = (num: number) => {
+    switch (num) {
+      case 1:
+        return navigate("/login");
+      case 2:
+        return navigate("/user");
+      default:
+        return navigate("/");
+    }
+  };
   return (
     <React.Fragment>
       <Grid>
+        <Button _onClick={() => goLogin(1)}>로그인</Button>
+        <Button _onClick={() => goLogin(2)}>프로필</Button>
         <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
         <Card title="asd" limit={4} headcount={2} address1="asdf"></Card>
         <Text> 오늘 파티가 열렸어요! </Text>
