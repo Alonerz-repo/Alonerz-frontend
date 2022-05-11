@@ -13,7 +13,7 @@ const Redirect = () => {
     try {
       dispatch(kakaoLogin(kakaoId)).then((res) => {
         const isSignup = res.payload.needProfile;
-        console.log(isSignup);
+
         switch (isSignup) {
           case true:
             return navigate("/");

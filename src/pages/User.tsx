@@ -20,7 +20,7 @@ const User = () => {
     console.log("hello UserInfo");
   };
   const goToModify = () => {
-    navigate("/user/edit");
+    navigate("/edit/user");
   };
   return (
     <React.Fragment>
