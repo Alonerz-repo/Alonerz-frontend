@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-import { useAppSelector, useAppDispatch } from "../store/config";
+import { useAppSelector } from "../store/config";
 import { Input, Grid, Text, Button, Select } from "../elements";
-import KakaoMap from "./KakaoMap";
 import Upload from "./Upload";
 import Header from "./Header";
-
-const categories = [
-  { value: 1, name: "developer" },
-  { value: 2, name: "designer" },
-  { value: 3, name: "??" },
-];
+import SearchKakaoMap from "./SearchKakaoMap";
 
 const times = [
   { value: 1, name: "11:00" },
@@ -26,9 +19,18 @@ const Create = () => {
   const [title, setTitle] = useState<string>();
   const [menu, setMenu] = useState<string>();
   const [description, setDescription] = useState<string>();
-  const [category, setCategory] = useState<number>(1);
   const [opentime, setOpentime] = useState<number>(1);
   const [closetime, setClosetime] = useState<number>(1);
+  const [placename, setPlacename] = useState<string>("");
+  const [address, setAddress] = useState<string>("");
+  const [locationX, setLocationX] = useState<number>(33.450701);
+  const [locationY, setLocationY] = useState<number>(126.570667);
+
+  useEffect(() => {
+    console.log(address);
+    console.log(locationX);
+    console.log(locationY);
+  }, [address]);
 
   useEffect(() => {
     setTitle(group.title);
@@ -46,10 +48,6 @@ const Create = () => {
 
   const handleDescription = (e: any) => {
     setDescription(e.target.value);
-  };
-
-  const handleCategory = (e: any) => {
-    setCategory(e.target.value);
   };
 
   const handleOpentime = (e: any) => {
@@ -71,13 +69,6 @@ const Create = () => {
           value={title}
           _onChange={handleTitle}
         ></Input>
-        <Text bold titleText="카테고리" type="line"></Text>
-
-        <Select
-          categories={categories}
-          onChange={handleCategory}
-          value={category}
-        ></Select>
 
         <Input
           width="87%"
@@ -132,14 +123,16 @@ const Create = () => {
           </Button>
         </Grid>
 
-        <Text bold titleText="장소" type="line"></Text>
-
         {/* 카카오 맵 */}
-        <KakaoMap
-          latitude={37.483782}
-          longitude={126.9003409}
-          placeName="a"
-        ></KakaoMap>
+        <Text bold titleText="장소" type="line">
+          {address}
+        </Text>
+        <SearchKakaoMap
+          handleAddress={setAddress}
+          handleLocationX={setLocationX}
+          handleLocationY={setLocationY}
+          handlePlacename={setPlacename}
+        ></SearchKakaoMap>
 
         <Input
           width="87%"
