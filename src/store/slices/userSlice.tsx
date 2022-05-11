@@ -127,6 +127,28 @@ export const getUserAxios = createAsyncThunk(
   }
 );
 
+export const setFollow = createAsyncThunk(
+  "user/setFollow",
+  async (paramsId: any, thunkAPI) => {
+    try {
+      const token = getCookie("accessToken");
+      const response = await axios({
+        method: "put",
+        url: `${url}/api/users/follow/${paramsId}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((res) => {
+        console.log(res);
+      });
+      return response;
+    } catch (err) {
+      console.log(err);
+      return thunkAPI.rejectWithValue(err);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
