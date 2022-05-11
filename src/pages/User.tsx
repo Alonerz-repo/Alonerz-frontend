@@ -12,9 +12,7 @@ const User = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUserAxios()).then((res) => {
-      console.log("userinfopage is ", res);
-    });
+    dispatch(getUserAxios());
   }, []);
   const click = () => {
     console.log("hello UserInfo");
@@ -39,27 +37,29 @@ const User = () => {
         <Position style={{ position: "absolute", top: "1px" }}>
           <Grid display="flex" flexFlow="column wrap">
             <Mytxt style={{ fontSize: "13px", fontWeight: "bold" }}>
-              UIUX디자인&개발
+              {userInfo.careerGroupName}&{userInfo.careerItemName}
             </Mytxt>
             <Mytxt style={{ fontSize: "20px", color: "#F24141" }}>
-              디자이너 5년차
+              {userInfo.careerItemName} {userInfo.year}
             </Mytxt>
-            <Mytxt style={{ margin: "0px 30px" }}>룰루랄라입니다.</Mytxt>
+            <Mytxt style={{ margin: "0px 30px" }}>
+              {userInfo.nickname}입니다.
+            </Mytxt>
           </Grid>
         </Position>
       </Grid>
       <Grid isFlex>
         <Div>
-          <Mytxt>참사횟수</Mytxt>
+          <Mytxt>참가횟수</Mytxt>
           <Mytxt style={{ padding: "10px" }}>10</Mytxt>
         </Div>
         <Div>
-          <Mytxt>참사횟수</Mytxt>
-          <Mytxt style={{ padding: "10px" }}>10</Mytxt>
+          <Mytxt>팔로우</Mytxt>
+          <Mytxt style={{ padding: "10px" }}>{userInfo.following}</Mytxt>
         </Div>
         <Div>
-          <Mytxt>참사횟수</Mytxt>
-          <Mytxt style={{ padding: "10px" }}>10</Mytxt>
+          <Mytxt>팔로워</Mytxt>
+          <Mytxt style={{ padding: "10px" }}>{userInfo.follower}</Mytxt>
         </Div>
         <Button _onClick={click}> 팔로우 </Button>
       </Grid>

@@ -11,15 +11,6 @@ import { getCookie } from "../utils/cookie";
 const Main = () => {
   const navigate = useNavigate();
   const user = useAppSelect((state) => state.user);
-  useEffect(() => {
-    const isUserInfo = user.needProfile;
-    console.log(isUserInfo);
-    if (isUserInfo) {
-      navigate("/signup");
-    } else {
-      navigate("/");
-    }
-  }, []);
   const click = () => {
     console.log("hello main AM/PM button!");
     navigate("/list");

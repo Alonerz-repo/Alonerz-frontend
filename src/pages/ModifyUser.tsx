@@ -7,7 +7,6 @@ import Modify from "../components/InModifyUser";
 
 const ModifyUser = () => {
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelector((state) => state.user);
   useEffect(() => {
     dispatch(getUserAxios);
   }, []);

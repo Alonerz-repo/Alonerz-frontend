@@ -5,19 +5,19 @@ import axios from "axios";
 const url = process.env.REACT_APP_API_URL;
 
 export interface userInfo {
-  userId?: number | null;
+  userId: number | null;
   point?: number;
   following?: number;
   follower?: number;
   needProfile?: boolean;
   nickname?: string;
   profileImageUrl?: string;
-  year: string;
-  career: string;
-  description: string;
-  careerGroupName: string;
-  careerId: string;
-  careerItemName: string;
+  year?: string;
+  career?: string;
+  description?: string;
+  careerGroupName?: string;
+  careerId?: string;
+  careerItemName?: string;
 }
 
 const initialState: userInfo = {

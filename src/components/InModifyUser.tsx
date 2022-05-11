@@ -3,17 +3,13 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Grid, Input, Button } from "../elements";
 import { useAppDispatch, useAppSelector } from "../store/config";
-import {
-  getUserAxios,
-  setUserAxios,
-  userInfo,
-} from "../store/slices/userSlice";
+import { setUserAxios } from "../store/slices/userSlice";
 
 const ModifyUser = () => {
+  const userInfo = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const userInfo = useAppSelector((state) => state.user);
-  const [name, setNickname] = useState<any>();
+  const [nickname, setNickname] = useState<any>();
   const [year, setYear] = useState<any>();
   const [desc, setDesc] = useState<any>();
   const [careerGroupName, setCareerGroupName] = useState<any>();
@@ -23,18 +19,18 @@ const ModifyUser = () => {
     if (userInfo.userId === null) {
       window.alert("유저정보를 확인할수 없습니다.");
       navigate("/user");
-    } else {
-      setNickname(userInfo.nickname);
-      setYear(userInfo.year);
-      setDesc(userInfo.description);
-      setCareerGroupName(userInfo.careerGroupName);
-      setCareerItemName(userInfo.careerItemName);
     }
+    setNickname(userInfo.nickname);
+    setYear(userInfo.year);
+    setDesc(userInfo.description);
+    setCareerGroupName(userInfo.careerGroupName);
+    setCareerItemName(userInfo.careerItemName);
   }, []);
+
   const clickToSetuser = async () => {
     try {
       const setUserInfo = {
-        nickname: name,
+        nickname: nickname,
         profileImageUrl: "",
         description: desc,
         year: year,
@@ -42,7 +38,7 @@ const ModifyUser = () => {
         careerItemName: careerItemName,
       };
 
-      dispatch(setUserAxios(setUserInfo)).then((res) => {
+      await dispatch(setUserAxios(setUserInfo)).then((res) => {
         navigate("/user");
       });
     } catch (err) {
@@ -51,11 +47,12 @@ const ModifyUser = () => {
       navigate("/");
     }
   };
+
   return (
     <React.Fragment>
       <Grid>
         <Input
-          children={name}
+          value={nickname}
           text="닉네임"
           placeholder="닉네임입력"
           _onChange={(e) => {
@@ -69,7 +66,7 @@ const ModifyUser = () => {
               _onChange={(e) => {
                 setCareerGroupName(e.target.value);
               }}
-              children={careerGroupName}
+              value={careerGroupName}
               width="80%"
               text="직군"
               placeholder=""
@@ -80,7 +77,7 @@ const ModifyUser = () => {
               _onChange={(e) => {
                 setCareerItemName(e.target.value);
               }}
-              children={careerItemName}
+              value={careerItemName}
               width="80%"
               text="직업"
               placeholder=""
@@ -92,7 +89,7 @@ const ModifyUser = () => {
           _onChange={(e) => {
             setYear(e.target.value);
           }}
-          children={year}
+          value={year}
           text="연차"
           placeholder=""
         ></Input>
@@ -100,7 +97,7 @@ const ModifyUser = () => {
           _onChange={(e) => {
             setDesc(e.target.value);
           }}
-          children={desc}
+          value={desc}
           text="나를 표현하는 한마디"
           placeholder=""
         ></Input>
