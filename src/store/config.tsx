@@ -10,7 +10,7 @@ const logger = createLogger();
 const rootReducer = combineReducers({
   party: partyInfoSlice.reducer,
   user: userSlice.reducer,
-  getUser: getUserSlice.reducer,
+  otherUser: getUserSlice.reducer,
   image: imageSlice.reducer,
 });
 

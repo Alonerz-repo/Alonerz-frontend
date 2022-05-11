@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { Grid, Text } from "./index";
 
 interface Props {
+  value?: string;
   text?: string;
   placeholder?: string;
   width?: string;
   ref?: any;
   bold?: boolean;
-  value?: string;
-  _onChange?: any;
+  children?: any;
+  _onChange?(event: any): void;
 }
 
 const Input = forwardRef(

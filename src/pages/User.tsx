@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
-import { Grid } from "../elements";
-import UserInfo from "../components/UserInfo";
+import { Grid, Text, Image, Button } from "../elements";
+import Card from "../components/Card";
+import { useAppSelect, useAppDispatch } from "../store/config.hook";
+import { getUserAxios } from "../store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
+import MyInfo from "../components/MyInfo";
 
 const User = () => {
   return (
     <React.Fragment>
-      <UserInfo></UserInfo>
+      <MyInfo></MyInfo>
     </React.Fragment>
   );
 };
-
 export default User;
