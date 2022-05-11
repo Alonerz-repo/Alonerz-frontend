@@ -40,8 +40,6 @@ export const getOUserAxios = createAsyncThunk(
   "user/getOUserAxios",
   async (userId: any, thunkAPI) => {
     try {
-      console.log("hello getOUserAxios");
-      console.log(typeof userId);
       const token = getCookie("accessToken");
       const response = await axios({
         method: "get",
@@ -50,8 +48,6 @@ export const getOUserAxios = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       }).then((res) => {
-        console.log("sucess");
-        console.log(res.data);
         return res.data;
       });
       return response;
@@ -68,8 +64,6 @@ export const getUserSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getOUserAxios.fulfilled, (state, action) => {
-      console.log("hello get extraReducer!");
-      console.log("getUser action", action.payload);
       return (state = action.payload.user);
     });
   },
