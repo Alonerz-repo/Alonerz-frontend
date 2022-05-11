@@ -6,17 +6,27 @@ interface ImageProps {
   src?: string;
   size: string;
   profile?: boolean;
+  tmpFile?: boolean;
 }
 
-const Image = ({ shape, src, size, profile }: ImageProps) => {
+const Image = ({ shape, src, size, profile, tmpFile }: ImageProps) => {
   const styles = {
-    src: src,
-    size: size,
-    profile: profile,
+    src,
+    size,
+    profile,
+    tmpFile,
   };
 
   if (shape === "circle") {
     return <ImageCircle {...styles}></ImageCircle>;
+  }
+
+  if (tmpFile) {
+    return (
+      <AspectOutter tmpFile>
+        <AspectInner {...styles} />
+      </AspectOutter>
+    );
   }
 
   if (shape === "rectangle") {
@@ -41,8 +51,9 @@ Image.defaultProps = {
 
 interface styleType {
   src?: string;
-  size: string;
+  size?: string;
   profile?: boolean;
+  tmpFile?: boolean;
 }
 
 const ImageDefault = styled.div<styleType>`
@@ -53,9 +64,10 @@ const ImageDefault = styled.div<styleType>`
   background-size: cover;
 `;
 
-const AspectOutter = styled.div`
+const AspectOutter = styled.div<styleType>`
   width: 100%;
   min-width: 250px;
+  ${(props) => (props.tmpFile ? "display: flex; justify-content: center;" : "")}
 `;
 
 const AspectInner = styled.div<styleType>`
@@ -66,10 +78,11 @@ const AspectInner = styled.div<styleType>`
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  ${(props) => (props.tmpFile ? "width:64px; height:64px" : null)}
 `;
 
 const ImageCircle = styled.div<styleType>`
-  ${(props) => (props.profile ? "display: inline-block;" : "")}
+  ${(props) => (props.profile ? "display: inline-block;" : null)}
   --size: ${(props) => props.size};
   width: var(--size);
   height: var(--size);

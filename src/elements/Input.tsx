@@ -14,7 +14,7 @@ interface Props {
 }
 
 const Input = forwardRef(
-  ({ text, placeholder, width, _onChange, ref, bold, children }: Props) => {
+  ({ text, placeholder, width, _onChange, ref, bold, value }: Props) => {
     return (
       <>
         <Grid width={width}>
@@ -23,7 +23,7 @@ const Input = forwardRef(
             ref={ref}
             placeholder={placeholder}
             onChange={_onChange}
-            value={children}
+            value={value}
           />
         </Grid>
       </>
