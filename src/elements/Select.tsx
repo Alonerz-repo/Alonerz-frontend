@@ -9,7 +9,7 @@ interface Props {
 }
 
 interface categoryShape {
-  value: number;
+  value: number | string;
   name: string;
 }
 
