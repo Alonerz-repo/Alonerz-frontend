@@ -36,6 +36,10 @@ const SearchKakaoMap = ({
 
     const markers: any[] = [];
     let tmpInfowindow: any = null;
+    const markerImage = new window.kakao.maps.MarkerImage(
+      "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
+      new window.kakao.maps.Size(28, 38)
+    );
 
     const map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
@@ -51,6 +55,9 @@ const SearchKakaoMap = ({
 
         // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
+        if (keyword === "") {
+          return;
+        }
 
         const ps = new window.kakao.maps.services.Places();
         let location = new window.kakao.maps.LatLng(lat, lon);
@@ -112,8 +119,6 @@ const SearchKakaoMap = ({
           markers[0].setVisible(false);
           markers.pop();
           handleAddress("");
-          handleLocationX(0);
-          handleLocationY(0);
           handlePlacename("");
         }
 
@@ -129,11 +134,6 @@ const SearchKakaoMap = ({
 
     // 지도에 마커를 표시하는 함수입니다
     function searchDisplayMarker(place: any) {
-      // 마커를 생성하고 지도에 표시합니다
-      var markerImage = new window.kakao.maps.MarkerImage(
-        "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
-        new window.kakao.maps.Size(28, 38)
-      );
       const marker = new window.kakao.maps.Marker({
         map: map,
         position: new window.kakao.maps.LatLng(place.y, place.x),
@@ -167,8 +167,8 @@ const SearchKakaoMap = ({
         infowindow.open(map, marker);
         tmpInfowindow = infowindow;
         handlePlacename(place.place_name);
-        handleLocationX(place.x);
-        handleLocationY(place.y);
+        handleLocationX(place.y);
+        handleLocationY(place.x);
         handleAddress(place.address_name);
       });
     }
@@ -202,6 +202,7 @@ const SearchKakaoMap = ({
 
               // 마커를 클릭한 위치에 표시합니다
               marker.setPosition(mouseEvent.latLng);
+              marker.setImage(markerImage);
               marker.setMap(map);
               markers.push(marker);
               const infowindow = new window.kakao.maps.InfoWindow({

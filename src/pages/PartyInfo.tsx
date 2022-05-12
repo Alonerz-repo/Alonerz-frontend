@@ -1,24 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Image, Grid, Text, Button } from "../elements";
 import PartyMember from "../components/PartyMember";
 import KakaoMap from "../components/KakaoMap";
-import { getPartyInfo } from "../store/slices/partyInfoSlice";
-import { useAppSelector, useAppDispatch } from "../store/config";
 import Header from "../components/Header";
+import { partyAxios, GroupInfo } from "../axios/partyAxios";
 
 const PartyInfo = () => {
-  const { group } = useAppSelector((state) => state.party);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const [group, setGroup] = useState<GroupInfo>(partyAxios.initialState.group);
 
-  const test = async () => {
-    try {
-      await dispatch(getPartyInfo(1));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  useEffect(() => {
+    const t = async () => {
+      try {
+        const result = await partyAxios.getPartyInfo(1);
+        setGroup(result);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    t();
+  }, []);
 
   const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
@@ -52,7 +53,7 @@ const PartyInfo = () => {
         </Text>
 
         <Text bold type="line" titleText="시간" margin="5px 0 5px 0">
-          {group.startAt} ~ {group.endAt}
+          {`${group.startAt} ~ ${group.endAt}`}
         </Text>
 
         <Text bold type="area" titleText="상세내용" margin="5px 0 5px 0">
@@ -82,7 +83,7 @@ const PartyInfo = () => {
           );
         })}
 
-        <button onClick={test}>test</button>
+        {/* <button onClick={test}>test</button> */}
       </Grid>
       <Grid isFlex>
         {/* <Button width="100%">참가....해야겠지?</Button> */}

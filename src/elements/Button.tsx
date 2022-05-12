@@ -7,7 +7,7 @@ interface Props {
   isCategory?: boolean;
   isLimit?: boolean;
   width?: string;
-  selected?: boolean;
+  bg?: string;
 }
 
 const Button = ({
@@ -16,7 +16,7 @@ const Button = ({
   width,
   isLimit,
   _onClick,
-  selected,
+  bg,
 }: Props) => {
   if (isCategory) {
     return (
@@ -29,7 +29,7 @@ const Button = ({
   if (isLimit) {
     return (
       <React.Fragment>
-        <LimitButton width={width} onClick={_onClick}>
+        <LimitButton width={width} onClick={_onClick} bg={bg}>
           {children}
         </LimitButton>
       </React.Fragment>
@@ -56,12 +56,13 @@ const CategoryButton = styled.button`
 
 interface CommonButtonProps {
   width?: string;
+  bg?: string;
 }
 
 const LimitButton = styled.button<CommonButtonProps>`
   width: ${(props) => props.width ?? "56px"};
   height: 30px;
-  background-color: #eeeeee;
+  background-color: ${(props) => props.bg ?? "#eeeeee"};
   border-radius: 15px;
   margin: 0px 10px 0px 10px;
 `;

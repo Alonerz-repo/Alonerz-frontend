@@ -1,31 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../store/config";
-import {
-  getPartyInfo,
-  initialState,
-  setGroup,
-} from "../store/slices/partyInfoSlice";
+import { partyAxios, GroupInfo } from "../axios/partyAxios";
 import Create from "../components/Create";
 
 const CreateParty = () => {
-  const dispatch = useAppDispatch();
   const groupId = useParams().groupId;
-  React.useLayoutEffect(() => {
-    if (groupId !== undefined) {
-      const getParty = async () => {
-        dispatch(getPartyInfo(parseInt(groupId)));
-      };
-      getParty();
-    } else {
-      const setParty = async () => {
-        dispatch(setGroup(initialState.group));
-      };
-      setParty();
-    }
-  });
+  const [group, setGroup] = React.useState<GroupInfo>(
+    partyAxios.initialState.group
+  );
 
-  return <Create></Create>;
+  useEffect(() => {
+    if (groupId !== undefined) {
+      const getGroup = async () => {
+        setGroup(await partyAxios.getPartyInfo(parseInt(groupId)));
+      };
+      getGroup();
+    }
+  }, []);
+
+  if (groupId !== undefined && group.groupId !== -1) {
+    return <Create group={group}></Create>;
+  } else {
+    return <Create group={partyAxios.initialState.group}></Create>;
+  }
 };
 
 export default CreateParty;
