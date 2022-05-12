@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Grid, Text, Image, Button } from "../elements";
 import Card from "../components/Card";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { getUserAxios } from "../store/slices/userSlice";
+import { getUserAxios, setFollow } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 
 const MyInfo = () => {
@@ -14,8 +14,13 @@ const MyInfo = () => {
   useEffect(() => {
     dispatch(getUserAxios());
   }, []);
-  const click = () => {
-    console.log("hello UserInfo");
+  const follow = () => {
+    try {
+      dispatch(setFollow(userInfo.userId));
+    } catch (err) {
+      console.log(err);
+      debugger;
+    }
   };
   const goToModify = () => {
     navigate("/edit/user");
@@ -61,7 +66,7 @@ const MyInfo = () => {
           <Mytxt>팔로워</Mytxt>
           <Mytxt style={{ padding: "10px" }}>{userInfo.follower}</Mytxt>
         </Div>
-        <Button _onClick={click}> 팔로우 </Button>
+        <Button _onClick={follow}> 팔로우 </Button>
       </Grid>
       <Button _onClick={goToModify}>내정보 수정</Button>
 
