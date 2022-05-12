@@ -35,6 +35,26 @@ const initialState: userInfo = {
   careerId: "",
   careerItemName: "",
 };
+
+export const auth = createAsyncThunk("userSlice/auth", async (_, thunkAPI) => {
+  try {
+    const token = getCookie("accessToken");
+    const response = await axios({
+      method: "get",
+      url: `${url}/api/auth`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      console.log(res);
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+    return thunkAPI.rejectWithValue(err);
+  }
+});
+
 export const kakaoLogin = createAsyncThunk(
   "userSlice/kakaoLogin",
   async (id: any, thunkAPI) => {

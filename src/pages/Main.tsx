@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { getCookie } from "../utils/cookie";
 import { getTodayList } from "../store/slices/PartyListSlice";
+import { authAxios } from "../axios/authAxios";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Main = () => {
   };
 
   useEffect(() => {
+    authAxios.auth();
     dispatch(getTodayList());
   }, []);
   const goToLink = (num: number) => {
@@ -41,7 +43,6 @@ const Main = () => {
         <Button _onClick={() => goToLink(2)}>프로필</Button>
         <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
         {gruops.groups.map((value: any, index) => {
-          console.log(value.imageUrl);
           return (
             <React.Fragment>
               <Card

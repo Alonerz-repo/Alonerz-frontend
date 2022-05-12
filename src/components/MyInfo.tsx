@@ -5,6 +5,7 @@ import Card from "../components/Card";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { getUserAxios, setFollow } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { authAxios } from "../axios/authAxios";
 
 const MyInfo = () => {
   const userInfo = useAppSelect((state) => state.user);
@@ -12,14 +13,30 @@ const MyInfo = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUserAxios());
+    const action = async () => {
+      await authAxios.auth().then((res) => {
+        const stateCode = res.statusCode;
+        if (stateCode) {
+          switch (stateCode) {
+            case 400:
+              return navigate("/login");
+            case 401:
+              return navigate("/login");
+            default:
+              return null;
+          }
+        } else {
+          dispatch(getUserAxios());
+        }
+      });
+    };
+    action();
   }, []);
   const follow = () => {
     try {
       dispatch(setFollow(userInfo.userId));
     } catch (err) {
       console.log(err);
-      debugger;
     }
   };
   const goToModify = () => {
