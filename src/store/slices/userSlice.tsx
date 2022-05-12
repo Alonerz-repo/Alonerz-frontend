@@ -132,19 +132,27 @@ export const setFollow = createAsyncThunk(
   async (paramsId: any, thunkAPI) => {
     try {
       const token = getCookie("accessToken");
-      const response = await axios({
+      await axios({
         method: "put",
         url: `${url}/api/users/follow/${paramsId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }).then((res) => {
-        console.log(res);
       });
-      return response;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue(err);
+    } catch (err: any) {
+      const code = err.response.data.statusCode;
+      switch (code) {
+        case 418:
+          const message = err.response.data.message;
+          const msg = message.reduce((prev: any, cur: any) => {
+            return prev + `\n` + cur;
+          });
+          return window.alert(msg);
+        default:
+          console.log("팔로우 에러", err);
+          window.alert("error!");
+          return thunkAPI.rejectWithValue(err);
+      }
     }
   }
 );
