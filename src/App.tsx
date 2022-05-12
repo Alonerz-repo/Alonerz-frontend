@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <BrowserRouter>
+        <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/list" element={<PartyList />} />
@@ -37,6 +37,7 @@ function App() {
             <Route path="/participate" element={<PartyInfo />} />
             <Route path="/edit/partyInfo" element={<CreateParty />} />
             <Route path="/edit/partyInfo/:groupId" element={<CreateParty />} />
+            <Route path="*" element={<Main />} />
           </Routes>
         </BrowserRouter>
       </Container>

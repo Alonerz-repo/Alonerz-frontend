@@ -4,6 +4,7 @@ import { Grid, Text, Image, Button } from "../elements";
 import Card from "../components/Card";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { getOUserAxios } from "../store/slices/getUserSlice";
+import { setFollow } from "../store/slices/userSlice";
 import { useNavigate, useParams } from "react-router-dom";
 
 const OtherInfo = () => {
@@ -18,11 +19,13 @@ const OtherInfo = () => {
   useEffect(() => {
     dispatch(getOUserAxios(userId));
   }, []);
-  const click = () => {
-    console.log("hello UserInfo");
-  };
-  const goToModify = () => {
-    navigate("/edit/user");
+  useEffect(() => {
+    console.log("change OuserInfo");
+  }, [userInfo]);
+  const follow = () => {
+    console.log("hello follow btn");
+    dispatch(setFollow(params.userId));
+    window.location.reload();
   };
   return (
     <React.Fragment>
@@ -65,9 +68,15 @@ const OtherInfo = () => {
           <Mytxt>팔로워</Mytxt>
           <Mytxt style={{ padding: "10px" }}>{userInfo.follower}</Mytxt>
         </Div>
-        <Button _onClick={click}> 팔로우 </Button>
+        <Button _onClick={follow}> 팔로우 </Button>
       </Grid>
-      <Button _onClick={goToModify}>채팅</Button>
+      <Button
+        _onClick={() => {
+          window.alert("개발중~");
+        }}
+      >
+        채팅
+      </Button>
 
       <Div></Div>
       <Text>이유저가 참가한 파티...</Text>
