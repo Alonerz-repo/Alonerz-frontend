@@ -1,36 +1,31 @@
 import React, { useEffect, useState } from "react";
 
-import { useAppSelector } from "../store/config";
 import { Input, Grid, Text, Button, Select } from "../elements";
 import Upload from "./Upload";
 import Header from "./Header";
 import SearchKakaoMap from "./SearchKakaoMap";
+import { partyAxios } from "../axios/partyAxios";
 
 const times = [
-  { value: 1, name: "11:00" },
-  { value: 2, name: "12:00" },
-  { value: 3, name: "13:00" },
-  { value: 4, name: "14:00" },
-  { value: 5, name: "15:00" },
+  { value: "11:00", name: "11:00" },
+  { value: "12:00", name: "12:00" },
+  { value: "13:00", name: "13:00" },
+  { value: "14:00", name: "14:00" },
+  { value: "15:00", name: "15:00" },
 ];
 
-const Create = () => {
-  const { group } = useAppSelector((state) => state.party);
+const Create = ({ group }: any) => {
+  // console.log(group);
   const [title, setTitle] = useState<string>();
   const [menu, setMenu] = useState<string>();
   const [description, setDescription] = useState<string>();
   const [opentime, setOpentime] = useState<number>(1);
   const [closetime, setClosetime] = useState<number>(1);
-  const [placename, setPlacename] = useState<string>("");
+  const [placeName, setPlacename] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [locationX, setLocationX] = useState<number>(33.450701);
   const [locationY, setLocationY] = useState<number>(126.570667);
-
-  useEffect(() => {
-    console.log(address);
-    console.log(locationX);
-    console.log(locationY);
-  }, [address]);
+  const [limit, setLimit] = useState<number>(4);
 
   useEffect(() => {
     setTitle(group.title);
@@ -55,6 +50,33 @@ const Create = () => {
   };
   const handleClosetime = (e: any) => {
     setClosetime(e.target.value);
+  };
+
+  const handleCreateParty = () => {
+    const d = new Date();
+    const groupInfo = {
+      title,
+      menu,
+      description,
+      placeName,
+      startAt: new Date(
+        Date.parse(
+          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} 11:00`
+        )
+      ),
+      endAt: new Date(
+        Date.parse(
+          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} 12:00`
+        )
+      ),
+      limit,
+      imageUrl:
+        "https://github.com/choewy/react-place-app/blob/master/src/images/0.png?raw=true",
+      locationX,
+      locationY,
+    };
+    partyAxios.createParty(groupInfo);
+    console.log(groupInfo);
   };
 
   return (
@@ -112,15 +134,51 @@ const Create = () => {
         <Text bold titleText="인원수" type="line"></Text>
 
         <Grid isFlex>
-          <Button isLimit width="27%">
-            2명
-          </Button>
-          <Button isLimit width="27%">
-            3명
-          </Button>
-          <Button isLimit width="27%">
-            4명
-          </Button>
+          {limit === 2 ? (
+            <Button isLimit width="27%" bg="#c4c4c4">
+              2명
+            </Button>
+          ) : (
+            <Button
+              isLimit
+              width="27%"
+              _onClick={() => {
+                setLimit(2);
+              }}
+            >
+              2명
+            </Button>
+          )}
+          {limit === 3 ? (
+            <Button isLimit width="27%" bg="#c4c4c4">
+              3명
+            </Button>
+          ) : (
+            <Button
+              isLimit
+              width="27%"
+              _onClick={() => {
+                setLimit(3);
+              }}
+            >
+              3명
+            </Button>
+          )}
+          {limit === 4 ? (
+            <Button isLimit width="27%" bg="#c4c4c4">
+              4명
+            </Button>
+          ) : (
+            <Button
+              isLimit
+              width="27%"
+              _onClick={() => {
+                setLimit(4);
+              }}
+            >
+              4명
+            </Button>
+          )}
         </Grid>
 
         {/* 카카오 맵 */}
@@ -148,7 +206,9 @@ const Create = () => {
         {group.groupId !== -1 ? (
           <Button width="100%">대충 수정</Button>
         ) : (
-          <Button width="100%">대충 생성</Button>
+          <Button width="100%" _onClick={handleCreateParty}>
+            대충 생성
+          </Button>
         )}
       </Grid>
     </React.Fragment>
