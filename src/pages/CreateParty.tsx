@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useAppSelector, useAppDispatch } from "../store/config";
 import { partyAxios, GroupInfo } from "../axios/partyAxios";
 import Create from "../components/Create";
 

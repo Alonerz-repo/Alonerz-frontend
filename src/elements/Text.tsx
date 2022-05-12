@@ -10,6 +10,7 @@ interface Props {
   fontSize?: string;
   type?: string;
   titleText?: string;
+  customize?: string;
 }
 const Text = ({
   children,
@@ -19,12 +20,18 @@ const Text = ({
   fontSize,
   type,
   titleText,
+  customize,
 }: Props) => {
   switch (type) {
     case "line":
       return (
         <React.Fragment>
-          <Div style={{ display: "flex" }} padding={padding} margin={margin}>
+          <Div
+            style={{ display: "flex" }}
+            padding={padding}
+            margin={margin}
+            customize={customize}
+          >
             <P bold={true} margin="0px 14px 0px 0px">
               {titleText}
             </P>
@@ -34,7 +41,7 @@ const Text = ({
       );
     case "area":
       return (
-        <Div margin={margin} padding={padding}>
+        <Div margin={margin} padding={padding} customize={customize}>
           <P bold>상세 내용</P>
           <Box>
             <P>{children}</P>
@@ -43,7 +50,7 @@ const Text = ({
       );
     case "title":
       return (
-        <Div margin={margin} padding={padding}>
+        <Div margin={margin} padding={padding} customize={customize}>
           <P bold fontSize="20px">
             {children}
           </P>
@@ -53,9 +60,11 @@ const Text = ({
   }
   return (
     <React.Fragment>
-      <P bold={bold} margin={margin} padding={padding} fontSize={fontSize}>
-        {children}
-      </P>
+      <Div customize={customize}>
+        <P bold={bold} margin={margin} padding={padding} fontSize={fontSize}>
+          {children}
+        </P>
+      </Div>
     </React.Fragment>
   );
 };
@@ -67,6 +76,7 @@ Text.defaultProps = {
 const Div = styled.div<Props>`
   ${(props) => (props.padding ? `padding: ${props.padding};` : "0px")};
   ${(props) => (props.margin ? `margin: ${props.margin};` : "0px")};
+  ${(props) => props.customize ?? ""}
 `;
 
 const Box = styled.div`
