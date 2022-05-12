@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 type Props = {
   title: string;
-  address1: string;
+  address: string;
   startAt?: Date;
   endAt?: Date;
   isFlex?: boolean;
@@ -15,7 +15,7 @@ type Props = {
 
 const Card = ({
   title,
-  address1,
+  address,
   startAt,
   endAt,
   isFlex,
@@ -32,8 +32,7 @@ const Card = ({
           <Abled able={able} />
           <PartyInfo isFlex>
             <div>{title}</div>
-            <div>{address1}</div>
-            {startAt} ~ {endAt}
+            <div>{address}</div>
           </PartyInfo>
           <PartyHeadcount>
             {headcount} / {limit}
@@ -48,8 +47,7 @@ const Card = ({
       <BackgroundImage onClick={_onClick} src={src}>
         <PartyInfo>
           <div>{title}</div>
-          <div>{address1}</div>
-          {startAt} ~ {endAt}
+          <div>{`${address} | ${startAt?.getHours()} ~ ${endAt?.getHours()}`}</div>
         </PartyInfo>
       </BackgroundImage>
     </React.Fragment>
@@ -99,12 +97,15 @@ const BackgroundImage = styled.div<BackgroundImageProps>`
       ? "linear-gradient(180deg, rgba(0, 0, 0, 0) 48.96%, rgba(0, 0, 0, 0.35) 100%)"
       : "linear-gradient(0deg, rgba(110,110,110,1) 0%, rgba(255,255,255,0) 60%)"}; */
   color: white;
+  background-position: center;
+  background-size: cover;
   margin-bottom: 10px;
 `;
 
 const PartyInfo = styled.div<PartyInfoProps>`
   position: inherit;
-  top: ${(props) => (props.isFlex ? "100px" : "50px")};
+  top: ${(props) => (props.isFlex ? "100px" : "75px")};
+  left: ${(props) => (props.isFlex ? "" : "10px")};
 `;
 const PartyHeadcount = styled.div<PartyHeadcountProps>`
   position: absolute;

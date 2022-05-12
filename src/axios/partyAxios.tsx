@@ -31,12 +31,12 @@ const url = `http://localhost:5000`;
 export const partyAxios = {
   createParty: async (group: Partial<GroupInfo>) => {
     try {
-      const cookie = getCookie("accessToken");
+      const token = getCookie("accessToken");
       await axios({
         method: "post",
         url: `${url}/api/groups`,
         headers: {
-          Athorization: `Bearer ${cookie}`,
+          Athorization: `Bearer ${token}`,
         },
         data: {
           ...group,

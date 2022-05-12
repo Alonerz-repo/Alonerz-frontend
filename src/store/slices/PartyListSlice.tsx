@@ -106,8 +106,6 @@ export const partyListSilce = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTodayList.fulfilled, (state, action) => {
-        console.log("getTodayList action", action.payload);
-        console.log("getTodayList state", current(state));
         state = action.payload;
         return state;
       })

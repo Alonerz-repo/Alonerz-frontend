@@ -81,9 +81,9 @@ const OtherInfo = () => {
       <Div></Div>
       <Text>이유저가 참가한 파티...</Text>
       <Grid isFlex>
-        <Card title="s" address1="asd" limit={4} headcount={4} isFlex></Card>
-        <Card title="s" address1="asd" limit={4} headcount={4} isFlex></Card>
-        <Card title="s" address1="asd" limit={4} headcount={4} isFlex></Card>
+        <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
+        <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
+        <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
       </Grid>
     </React.Fragment>
   );
