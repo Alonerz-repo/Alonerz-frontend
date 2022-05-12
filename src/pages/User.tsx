@@ -1,15 +1,11 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import { Grid, Text, Image, Button } from "../elements";
-import Card from "../components/Card";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { getUserAxios } from "../store/slices/userSlice";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import MyInfo from "../components/MyInfo";
+import Header from "../components/Header";
 
 const User = () => {
   return (
     <React.Fragment>
+      <Header text="프로필"></Header>
       <MyInfo></MyInfo>
     </React.Fragment>
   );

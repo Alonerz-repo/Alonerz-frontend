@@ -19,9 +19,13 @@ const OtherInfo = () => {
   useEffect(() => {
     dispatch(getOUserAxios(userId));
   }, []);
+  useEffect(() => {
+    console.log("change OuserInfo");
+  }, [userInfo]);
   const follow = () => {
     console.log("hello follow btn");
     dispatch(setFollow(params.userId));
+    window.location.reload();
   };
   return (
     <React.Fragment>
