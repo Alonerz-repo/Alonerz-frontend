@@ -45,7 +45,7 @@ const Card = ({
 
   return (
     <React.Fragment>
-      <BackgroundImage onClick={_onClick}>
+      <BackgroundImage onClick={_onClick} src={src}>
         <PartyInfo>
           <div>{title}</div>
           <div>{address1}</div>
