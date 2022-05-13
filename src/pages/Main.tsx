@@ -1,20 +1,51 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
-import { Grid, Button, Text } from "../elements";
-import Card from "../components/Card";
-import { useNavigate } from "react-router-dom";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { getCookie } from "../utils/cookie";
-import { getTodayList } from "../store/slices/PartyListSlice";
-import { authAxios } from "../axios/authAxios";
-import partyList from "../axios/partyList";
-import { initialState } from "../axios/partyList";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Grid, Button, Text } from '../elements';
+import Card from '../components/Card';
+import { useNavigate } from 'react-router-dom';
+import { useAppSelect, useAppDispatch } from '../store/config.hook';
+import cookie from '../utils/cookie';
+import partyList from '../axios/partyList';
+import { initialState } from '../axios/partyList';
+import axios from 'axios';
+import { errorHandler, getHeaders, getUrl } from '../utils/api';
+import { authAxios } from '../axios/authAxios';
+import { getTodayList } from '../store/slices/PartyListSlice';
+
+interface Payload {
+  userId: number;
+  kakaoId: string;
+  nickname: string;
+}
+
+const initPayload = {
+  userId: -1,
+  kakaoId: '',
+  nickname: '',
+};
 
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [auth, setAuth] = useState<Payload>(initPayload);
   const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
+
+  // 최원영
+  useEffect(() => {
+    const userAuthCheck = async () => {
+      const url = getUrl('/api/auth');
+      const headers = getHeaders();
+      const data = await axios
+        .get(url, { headers })
+        .then((response) => response.data)
+        .catch((error) => error.response.data);
+
+      return data.error ? errorHandler(data) : setAuth(data.auth);
+    };
+    userAuthCheck();
+    return () => {};
+  }, []);
 
   // useEffect(() => {
   //   const getParty = async () => {
@@ -32,23 +63,46 @@ const Main = () => {
   const goToLink = (num: number) => {
     switch (num) {
       case 1:
-        return navigate("/login");
+        return navigate('/login');
       case 2:
-        return navigate("/user");
+        return navigate('/user');
       case 3:
-        return navigate("/edit/partyInfo");
+        return navigate('/edit/partyInfo');
       case 4:
-        return navigate("/list");
+        return navigate('/list');
       default:
-        return navigate("/");
+        return navigate('/');
     }
+  };
+
+  // 최원영
+  const onLogout = async () => {
+    const url = getUrl('/api/auth/logout');
+    const headers = getHeaders();
+    const data = await axios
+      .delete(url, { headers })
+      .then((response) => response.data)
+      .catch((error) => error.response.data);
+
+    const removeCookies = () => {
+      cookie.remove('accessToken');
+      cookie.remove('refreshToken');
+      setAuth(initPayload);
+    };
+
+    return data.error ? errorHandler(data) : removeCookies();
   };
 
   return (
     <React.Fragment>
       <Grid padding="20px">
-        <Button _onClick={() => goToLink(1)}>로그인</Button>
-        <Button _onClick={() => goToLink(2)}>프로필</Button>
+        {auth.userId < 1 && (
+          <Button _onClick={() => goToLink(1)}>로그인</Button>
+        )}
+        {auth.userId > 0 && (
+          <Button _onClick={() => goToLink(2)}>프로필</Button>
+        )}
+        {auth.userId > 0 && <Button _onClick={onLogout}>로그아웃</Button>}
         <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
         {groups.map((value: any, index: number) => {
           return (
@@ -65,7 +119,6 @@ const Main = () => {
             </React.Fragment>
           );
         })}
-
         <h2>🎉 오늘 파티가 열렸어요! </h2>
         <BoxAM>
           <Grid padding="20px">
@@ -84,7 +137,7 @@ const Main = () => {
         <BoxPM>
           <Grid padding="20px">
             <Text type="title" customize="color: antiquewhite;">
-              🍻 저녁&야식 파티{" "}
+              🍻 저녁&야식 파티{' '}
             </Text>
             <Text customize="color: antiquewhite;">17:00 ~ 00:00</Text>
             <Grid isFlex absolute="margin-top:25px">
