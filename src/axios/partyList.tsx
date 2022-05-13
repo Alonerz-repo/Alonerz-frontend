@@ -1,7 +1,5 @@
-import axios from "axios";
-import { getCookie } from "../utils/cookie";
-
-const url = process.env.REACT_APP_API_URL;
+import axios from 'axios';
+import { errorHandler, getHeaders, getUrl } from '../utils/api';
 
 interface GroupInfo {
   title: string;
@@ -15,33 +13,28 @@ interface GroupInfo {
 
 export const initialState: GroupInfo[] = [
   {
-    title: "aa",
+    title: 'aa',
     limit: 3,
     headcount: 2,
-    address: "my home",
+    address: 'my home',
     startAt: new Date(),
     endAt: new Date(),
     imageUrl:
-      "https://github.com/choewy/react-place-app/blob/master/src/images/0.png?raw=true",
+      'https://github.com/choewy/react-place-app/blob/master/src/images/0.png?raw=true',
   },
 ];
 
 const partyList = {
+  // 최원영
   getPartyList: async () => {
-    try {
-      const token = getCookie("accessToken");
-      const response = await axios({
-        method: "get",
-        url: `${url}/api/groups/today`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(response.data.groups);
-      return response.data.groups;
-    } catch (err) {
-      console.log(err);
-    }
+    const url = getUrl('/api/groups/today');
+    const headers = getHeaders();
+    const data = await axios
+      .get(url, { headers })
+      .then((response) => response.data)
+      .catch((error) => error.response.data);
+
+    return data.error ? errorHandler(data) : data.groups;
   },
 };
 
