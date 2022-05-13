@@ -1,14 +1,14 @@
-import axios from "axios";
-import { getCookie } from "../utils/cookie";
+import axios from 'axios';
+import cookie from '../utils/cookie';
 
 const url = process.env.REACT_APP_API_URL;
 export const authAxios = {
   auth: async () => {
-    console.log("~~~~~ auth Axios Action ~~~~~");
-    const token = getCookie("accessToken");
+    console.log('~~~~~ auth Axios Action ~~~~~');
+    const token = cookie.get('accessToken');
     try {
       const response = await axios({
-        method: "get",
+        method: 'get',
         url: `${url}/api/auth`,
         headers: {
           Authorization: `Bearer ${token}`,
