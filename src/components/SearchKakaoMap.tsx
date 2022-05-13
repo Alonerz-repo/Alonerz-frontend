@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 interface MapProps {
+  locationX?: number;
+  locationY?: number;
   handlePlacename?: any;
   handleLocationX?: any;
   handleLocationY?: any;
@@ -9,6 +11,8 @@ interface MapProps {
 }
 
 const SearchKakaoMap = ({
+  locationX,
+  locationY,
   handlePlacename,
   handleLocationX,
   handleLocationY,
@@ -55,6 +59,21 @@ const SearchKakaoMap = ({
 
         // 마커와 인포윈도우를 표시합니다
         displayMarker(locPosition, message);
+
+        if (locationX && locationY) {
+          const placeLoc = new window.kakao.maps.LatLng(locationX, locationY);
+          const marker = new window.kakao.maps.Marker({
+            map: map,
+            position: placeLoc,
+            image: markerImage,
+          });
+          // const bounds = new window.kakao.maps.LatLngBounds(
+          //   locPosition,
+          //   placeLoc
+          // );
+          // map.setBounds(bounds);
+        }
+
         if (keyword === "") {
           return;
         }
@@ -110,8 +129,6 @@ const SearchKakaoMap = ({
 
     function placesSearchCB(data: any, status: any) {
       if (status === window.kakao.maps.services.Status.OK) {
-        console.log(data[0].place_url);
-
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         const bounds = new window.kakao.maps.LatLngBounds();

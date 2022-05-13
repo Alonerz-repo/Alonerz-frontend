@@ -17,8 +17,7 @@ export interface GroupInfo {
   imageUrl: string;
   locationX: number;
   locationY: number;
-  address1: string;
-  address2: string;
+  address: string;
   placeName: string;
   createdAt: string;
   updateAt: string;
@@ -26,17 +25,37 @@ export interface GroupInfo {
   guests: userInfo[];
 }
 
+const token = getCookie("accessToken");
 const url = `http://localhost:5000`;
 
 export const partyAxios = {
   createParty: async (group: Partial<GroupInfo>) => {
     try {
-      const token = getCookie("accessToken");
       await axios({
         method: "post",
         url: `${url}/api/groups`,
         headers: {
-          Athorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
+        },
+        data: {
+          ...group,
+        },
+      }).then((res) => {
+        console.log(res.status);
+        console.log(res.data);
+      });
+    } catch (err: any) {
+      console.log(err);
+    }
+  },
+
+  editParty: async (group: Partial<GroupInfo>, groupId: number) => {
+    try {
+      await axios({
+        method: "patch",
+        url: `${url}/api/groups${groupId}`,
+        headers: {
+          authorization: `Bearer ${token}`,
         },
         data: {
           ...group,
@@ -53,12 +72,15 @@ export const partyAxios = {
   getPartyInfo: async (groupId: number) => {
     try {
       const result = await axios({
-        method: "post",
-        url: `${url}/api/groups`,
+        method: "get",
+        url: `${url}/api/groups/${groupId}`,
         data: {
+          userId: 1,
           groupId,
         },
       });
+      console.log(result.data.group);
+      console.log(new Date(Date.parse(result.data.group.endAt)));
       return result.data.group;
     } catch (err: any) {
       console.log(err.message);
@@ -77,8 +99,7 @@ export const partyAxios = {
       imageUrl: "",
       locationX: 33.450701,
       locationY: 126.570667,
-      address1: "",
-      address2: "",
+      address: "",
       placeName: "",
       createdAt: "",
       updateAt: "",

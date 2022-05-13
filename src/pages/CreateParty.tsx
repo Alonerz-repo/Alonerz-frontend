@@ -10,7 +10,7 @@ const CreateParty = () => {
   );
 
   useEffect(() => {
-    if (groupId !== undefined) {
+    if (groupId) {
       const getGroup = async () => {
         setGroup(await partyAxios.getPartyInfo(parseInt(groupId)));
       };
