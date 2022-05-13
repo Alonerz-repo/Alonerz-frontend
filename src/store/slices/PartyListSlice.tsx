@@ -57,8 +57,8 @@ const initialState: group = {
       },
       join: 0,
     },
-  ];
-}
+  ],
+};
 
 export const getAllGroup = createAsyncThunk(
   "partyList/getAllGroup",

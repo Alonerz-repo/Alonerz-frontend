@@ -18,28 +18,8 @@ const PartyList = () => {
     dispatch(getAllGroup()).then(() => {
       console.log("party list gruops state is ", GruopList);
     });
-    GruopList.map((value: any) => {
-      console.log("asdasd => ", value);
-    });
   }, []);
 
-  const list: any = GruopList.map((value: any) => {
-    console.log(value);
-    return (
-      <React.Fragment>
-        <Card
-          isFlex
-          title={value.title}
-          limit={value.limit}
-          headcount={value.join}
-          address1={value.placeName}
-          startAt={value.startAt}
-          endAt={value.endAt}
-          src={value.imageUrl}
-        ></Card>
-      </React.Fragment>
-    );
-  });
   const reclick = () => {
     navigate("/");
   };
@@ -53,25 +33,23 @@ const PartyList = () => {
       </Grid>
 
       <Grid isFlex>
-        {val}
-        {list}
-        {/* {GruopList.groups.map((value: any) => {
+        {GruopList.groups.map((value: any) => {
           console.log(value);
-          // return (
-          //   <React.Fragment>
-          //     <Card
-          //       isFlex
-          //       title={value.title}
-          //       limit={value.limit}
-          //       headcount={value.join}
-          //       address1={value.placeName}
-          //       startAt={value.startAt}
-          //       endAt={value.endAt}
-          //       src={value.imageUrl}
-          //     ></Card>
-          //   </React.Fragment>
-          // );
-        })} */}
+          return (
+            <React.Fragment>
+              <Card
+                isFlex
+                title={value.title}
+                limit={value.limit}
+                headcount={value.join}
+                address1={value.placeName}
+                startAt={value.startAt}
+                endAt={value.endAt}
+                src={value.imageUrl}
+              ></Card>
+            </React.Fragment>
+          );
+        })}
       </Grid>
     </React.Fragment>
   );
