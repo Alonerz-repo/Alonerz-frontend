@@ -2,10 +2,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface CommonState {
   image: string;
+  isUploading: boolean;
 }
 
 const initialState: CommonState = {
   image: "",
+  isUploading: false,
 };
 
 export const partyInfoSlice = createSlice({

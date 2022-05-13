@@ -8,18 +8,23 @@ import { partyAxios, GroupInfo } from "../axios/partyAxios";
 
 const PartyInfo = () => {
   const [group, setGroup] = useState<GroupInfo>(partyAxios.initialState.group);
+  const { groupId } = useParams();
 
   useEffect(() => {
     const t = async () => {
       try {
-        const result = await partyAxios.getPartyInfo(1);
-        setGroup(result);
+        if (groupId) {
+          const result = await partyAxios.getPartyInfo(parseInt(groupId));
+          setGroup(result);
+        }
       } catch (err) {
         console.log(err);
       }
     };
     t();
   }, []);
+
+  console.log(group);
 
   const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
@@ -38,7 +43,7 @@ const PartyInfo = () => {
         ></Text>
 
         <Text type="line" titleText="장소" margin="5px 0 5px 0">
-          {group.address1 ?? group.address2}
+          {group.address}
         </Text>
 
         {/* 카카오 맵 */}
