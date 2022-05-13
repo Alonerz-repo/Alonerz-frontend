@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import { Grid, Button, Text } from '../elements';
 import Card from '../components/Card';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelect } from '../store/config.hook';
+import { useAppSelect, useAppDispatch } from '../store/config.hook';
 import cookie from '../utils/cookie';
 import partyList from '../axios/partyList';
 import { initialState } from '../axios/partyList';
 import axios from 'axios';
 import { errorHandler, getHeaders, getUrl } from '../utils/api';
+import { authAxios } from '../axios/authAxios';
+import { getTodayList } from '../store/slices/PartyListSlice';
 
 interface Payload {
   userId: number;
@@ -24,8 +26,9 @@ const initPayload = {
 
 const Main = () => {
   const navigate = useNavigate();
-  // const user = useAppSelect((state) => state.user);
+  const dispatch = useAppDispatch();
   const [auth, setAuth] = useState<Payload>(initPayload);
+  const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
 
   // 최원영
@@ -52,6 +55,11 @@ const Main = () => {
   //   console.log(groups);
   // }, []);
 
+  useEffect(() => {
+    authAxios.auth();
+    dispatch(getTodayList());
+    console.log();
+  }, []);
   const goToLink = (num: number) => {
     switch (num) {
       case 1:

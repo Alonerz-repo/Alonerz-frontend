@@ -5,6 +5,10 @@ import Card from "../components/Card";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { getUserAxios, setFollow } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import { authAxios } from "../axios/authAxios";
+
+import { getCookie } from "../utils/cookie";
+import axios from "axios";
 
 const MyInfo = () => {
   const userInfo = useAppSelect((state) => state.user);
@@ -12,18 +16,53 @@ const MyInfo = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(getUserAxios());
+    const action = async () => {
+      await authAxios.auth().then((res) => {
+        const stateCode = res.statusCode;
+        if (stateCode) {
+          switch (stateCode) {
+            case 401:
+              return navigate("/login");
+            case 403:
+              const token = getCookie("accessToken");
+              const token2 = getCookie("refreshToken");
+              const url = process.env.REACT_APP_API_URL;
+              axios({
+                method: "",
+                url: `${url}/api/auth/reissue`,
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                data: {
+                  refreshToken: token2,
+                },
+              }).then((res) => {
+                console.log("error 403 is ", res);
+                return res;
+              });
+              return 0;
+            default:
+              return null;
+          }
+        } else {
+          dispatch(getUserAxios(userInfo.userId));
+        }
+      });
+    };
+    action();
   }, []);
   const follow = () => {
     try {
       dispatch(setFollow(userInfo.userId));
     } catch (err) {
       console.log(err);
-      debugger;
     }
   };
   const goToModify = () => {
-    navigate("/edit/user");
+    navigate("/user/edit");
+  };
+  const goToConfig = () => {
+    navigate("/user/config");
   };
   return (
     <React.Fragment>
@@ -69,6 +108,7 @@ const MyInfo = () => {
         <Button _onClick={follow}> 팔로우 </Button>
       </Grid>
       <Button _onClick={goToModify}>내정보 수정</Button>
+      <Button _onClick={goToConfig}>설정창</Button>
 
       <Div></Div>
       <Text>내가 참가한 파티...</Text>
