@@ -18,10 +18,10 @@ export const authAxios = {
     } catch (err: any) {
       const stateCode = err.response.data.statusCode;
       switch (stateCode) {
-        case 401:
+        case 403:
           window.alert(err.response.data.message);
           return err.response.data;
-        case 400:
+        case 401:
           window.alert(err.response.data.message);
           return err.response.data;
         default:

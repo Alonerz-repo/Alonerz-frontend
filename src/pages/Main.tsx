@@ -21,6 +21,7 @@ const Main = () => {
   useEffect(() => {
     authAxios.auth();
     dispatch(getTodayList());
+    console.log();
   }, []);
   const goToLink = (num: number) => {
     switch (num) {
@@ -36,6 +37,7 @@ const Main = () => {
         return navigate("/");
     }
   };
+
   return (
     <React.Fragment>
       <Grid>

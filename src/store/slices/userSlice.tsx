@@ -105,7 +105,7 @@ export const setUserAxios = createAsyncThunk(
       const token = getCookie("accessToken");
       const response = await axios({
         method: "patch",
-        url: `${url}/api/users/me`,
+        url: `${url}/api/users`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -125,13 +125,14 @@ export const setUserAxios = createAsyncThunk(
 );
 export const getUserAxios = createAsyncThunk(
   "user/getUserAxios",
-  async (_, thunkAPI) => {
+  async (userId: any, thunkAPI) => {
     try {
       console.log("hello getUser");
+      console.log("slice user Id");
       const token = getCookie("accessToken");
       const response = await axios({
         method: "get",
-        url: `${url}/api/users/me`,
+        url: `${url}/api/users`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -154,7 +155,7 @@ export const setFollow = createAsyncThunk(
       const token = getCookie("accessToken");
       await axios({
         method: "put",
-        url: `${url}/api/users/follow/${paramsId}`,
+        url: `${url}/api/follows/${paramsId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
