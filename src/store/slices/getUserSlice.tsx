@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { setCookie, getCookie, removeCookie } from "../../utils/cookie";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import cookie from '../../utils/cookie';
+import axios from 'axios';
 
 const url = process.env.REACT_APP_API_URL;
 
@@ -26,23 +26,23 @@ const initialState: userInfo = {
   following: 0,
   follower: 0,
   needProfile: false,
-  nickname: "",
-  profileImageUrl: "",
-  career: "",
-  description: "",
-  year: "",
-  careerGroupName: "",
-  careerId: "",
-  careerItemName: "",
+  nickname: '',
+  profileImageUrl: '',
+  career: '',
+  description: '',
+  year: '',
+  careerGroupName: '',
+  careerId: '',
+  careerItemName: '',
 };
 
 export const getOUserAxios = createAsyncThunk(
-  "user/getOUserAxios",
+  'user/getOUserAxios',
   async (userId: any, thunkAPI) => {
     try {
-      const token = getCookie("accessToken");
+      const token = cookie.get('accessToken');
       const response = await axios({
-        method: "get",
+        method: 'get',
         url: `${url}/api/users/${userId}`,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -55,11 +55,11 @@ export const getOUserAxios = createAsyncThunk(
       console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
-  }
+  },
 );
 
 export const getUserSlice = createSlice({
-  name: "getUser",
+  name: 'getUser',
   initialState,
   reducers: {},
   extraReducers: (builder) => {

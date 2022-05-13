@@ -1,6 +1,6 @@
-import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
-import { setCookie, getCookie, removeCookie } from "../../utils/cookie";
-import axios from "axios";
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
+import cookie from '../../utils/cookie';
+import axios from 'axios';
 
 const url = process.env.REACT_APP_API_URL;
 
@@ -26,29 +26,29 @@ const initialState: userInfo = {
   following: 0,
   follower: 0,
   needProfile: false,
-  nickname: "",
-  profileImageUrl: "",
-  career: "",
-  description: "",
-  year: "",
-  careerGroupName: "",
-  careerId: "",
-  careerItemName: "",
+  nickname: '',
+  profileImageUrl: '',
+  career: '',
+  description: '',
+  year: '',
+  careerGroupName: '',
+  careerId: '',
+  careerItemName: '',
 };
 export const kakaoLogin = createAsyncThunk(
-  "userSlice/kakaoLogin",
+  'userSlice/kakaoLogin',
   async (id: any, thunkAPI) => {
     try {
       const response = await axios({
-        method: "post",
+        method: 'post',
         url: `${url}/api/auth/login`,
         data: {
           kakaoId: id,
         },
       }).then((res) => {
         const { accessToken, refreshToken, isSignup } = res.data;
-        setCookie("accessToken", accessToken);
-        setCookie("refreshToken", refreshToken);
+        cookie.set('accessToken', accessToken);
+        cookie.set('refreshToken', refreshToken);
 
         return res.data;
       });
@@ -59,14 +59,14 @@ export const kakaoLogin = createAsyncThunk(
 
       return thunkAPI.rejectWithValue(err);
     }
-  }
+  },
 );
 
 export const kakaoLogout = createAsyncThunk(
-  "userSlice/kakaoLogout",
+  'userSlice/kakaoLogout',
   async (_, thunkAPI) => {
     try {
-      console.log("hello kakaoLogout!");
+      console.log('hello kakaoLogout!');
       const response = await axios({}).then((res) => {
         console.log(res);
       });
@@ -75,23 +75,23 @@ export const kakaoLogout = createAsyncThunk(
       console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
-  }
+  },
 );
 
 export const setUserAxios = createAsyncThunk(
-  "user/setUser",
+  'user/setUser',
   async (user: any, thunkAPI) => {
     try {
-      const token = getCookie("accessToken");
+      const token = cookie.get('accessToken');
       const response = await axios({
-        method: "patch",
+        method: 'patch',
         url: `${url}/api/users/me`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         data: {
           nickname: user.nickname,
-          profileImageUrl: "",
+          profileImageUrl: '',
           description: user.description,
           year: user.year,
         },
@@ -101,16 +101,16 @@ export const setUserAxios = createAsyncThunk(
       console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
-  }
+  },
 );
 export const getUserAxios = createAsyncThunk(
-  "user/getUserAxios",
+  'user/getUserAxios',
   async (_, thunkAPI) => {
     try {
-      console.log("hello getUser");
-      const token = getCookie("accessToken");
+      console.log('hello getUser');
+      const token = cookie.get('accessToken');
       const response = await axios({
-        method: "get",
+        method: 'get',
         url: `${url}/api/users/me`,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -124,16 +124,16 @@ export const getUserAxios = createAsyncThunk(
       console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
-  }
+  },
 );
 
 export const setFollow = createAsyncThunk(
-  "user/setFollow",
+  'user/setFollow',
   async (paramsId: any, thunkAPI) => {
     try {
-      const token = getCookie("accessToken");
+      const token = cookie.get('accessToken');
       await axios({
-        method: "put",
+        method: 'put',
         url: `${url}/api/users/follow/${paramsId}`,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -149,22 +149,22 @@ export const setFollow = createAsyncThunk(
           });
           return window.alert(msg);
         default:
-          console.log("팔로우 에러", err);
-          window.alert("error!");
+          console.log('팔로우 에러', err);
+          window.alert('error!');
           return thunkAPI.rejectWithValue(err);
       }
     }
-  }
+  },
 );
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(kakaoLogin.fulfilled, (state, action) => {
-        console.log("hello extraReducer!");
+        console.log('hello extraReducer!');
       })
       .addCase(getUserAxios.fulfilled, (state, action) => {
         return (state = action.payload.user);

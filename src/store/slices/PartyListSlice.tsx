@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
-import axios from "axios";
-import { getCookie } from "../../utils/cookie";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import cookie from '../../utils/cookie';
 
 const url = process.env.REACT_APP_API_URL;
 
@@ -18,7 +18,7 @@ interface group {
       host?: {
         userId?: number;
         nickname?: string;
-        profileImageUrl?: "";
+        profileImageUrl?: '';
         year?: string;
         description?: string;
         career?: {
@@ -28,7 +28,7 @@ interface group {
         };
       };
       join?: number;
-    }
+    },
   ];
 }
 
@@ -36,23 +36,23 @@ const initialState: group = {
   groups: [
     {
       groupId: 0,
-      title: "",
-      menu: "",
-      placeName: "",
-      imageUrl: "",
-      startAt: "",
-      endAt: "",
+      title: '',
+      menu: '',
+      placeName: '',
+      imageUrl: '',
+      startAt: '',
+      endAt: '',
       limit: 0,
       host: {
         userId: 0,
-        nickname: "",
-        profileImageUrl: "",
-        year: "",
-        description: "",
+        nickname: '',
+        profileImageUrl: '',
+        year: '',
+        description: '',
         career: {
           careerId: 0,
-          careerGroupName: "",
-          careerItemName: "",
+          careerGroupName: '',
+          careerItemName: '',
         },
       },
       join: 0,
@@ -61,11 +61,11 @@ const initialState: group = {
 };
 
 export const getAllGroup = createAsyncThunk(
-  "partyList/getAllGroup",
+  'partyList/getAllGroup',
   async (_, thunkAPI) => {
     try {
       const response = await axios({
-        method: "get",
+        method: 'get',
         url: `${url}/api/groups?x=36.358361084097034&y=127.34540366949406`,
       }).then((res) => {
         return res.data;
@@ -75,16 +75,16 @@ export const getAllGroup = createAsyncThunk(
       console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
-  }
+  },
 );
 
 export const getTodayList = createAsyncThunk(
-  "partyList/getTodayList",
+  'partyList/getTodayList',
   async (_, thunkAPI) => {
     try {
-      const token = getCookie("accessToken");
+      const token = cookie.get('accessToken');
       const reponse = await axios({
-        method: "get",
+        method: 'get',
         url: `${url}/api/groups/today`,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -96,11 +96,11 @@ export const getTodayList = createAsyncThunk(
     } catch (err) {
       console.log(err);
     }
-  }
+  },
 );
 
 export const partyListSilce = createSlice({
-  name: "partyList",
+  name: 'partyList',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
