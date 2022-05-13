@@ -9,7 +9,7 @@ const ConfigList = () => {
   const click = (id: number) => {
     switch (id) {
       case 1:
-        return navigate("/user");
+        return navigate("/user/config/edit");
       default:
         return navigate("/");
     }
@@ -18,7 +18,7 @@ const ConfigList = () => {
     <React.Fragment>
       <Grid>
         <Position onClick={() => click(1)}>
-          <Text margin={margin}>내정보</Text>
+          <Text margin={margin}>내정보 수정</Text>
           <Line></Line>
         </Position>
         <Position onClick={() => click(2)}>

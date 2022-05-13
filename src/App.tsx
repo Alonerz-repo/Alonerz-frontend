@@ -13,6 +13,7 @@ import ModifyUser from "./pages/ModifyUser";
 import PartyList from "./pages/PartyList";
 import UserConfig from "./pages/ConfigList";
 import ProfileEdit from "./pages/ProflieEdit";
+import ConsentForm from "./pages/ConsentForm";
 
 declare global {
   interface Window {
@@ -27,14 +28,15 @@ function App() {
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="/coution" element={<ConsentForm />} />
             <Route path="/list" element={<PartyList />} />
             <Route path="/test" element={<Test />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/user" element={<User />} />
             <Route path="/user/:userId" element={<OUser />} />
-            <Route path="/config" element={<UserConfig />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/edit/user" element={<ModifyUser />} />
-            <Route path="/edit/proflie" element={<ProfileEdit />} />
+            <Route path="/user/config" element={<UserConfig />} />
+            <Route path="/user/config/edit" element={<ModifyUser />} />
+            <Route path="/user/edit" element={<ProfileEdit />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate/:groupId" element={<PartyInfo />} />
             <Route path="/edit/partyInfo" element={<CreateParty />} />

@@ -18,7 +18,7 @@ const Header = ({ text }: Props) => {
           size="20px"
           src={goback}
           onClick={() => {
-            navigate(-1);
+            navigate("/");
           }}
         ></GoBack>
         <Text bold fontSize="20px" padding="10px">
