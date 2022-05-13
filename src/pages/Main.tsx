@@ -7,16 +7,22 @@ import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { getCookie } from "../utils/cookie";
 import { getTodayList } from "../store/slices/PartyListSlice";
 import { authAxios } from "../axios/authAxios";
+import partyList from "../axios/partyList";
+import { initialState } from "../axios/partyList";
 
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const user = useAppSelect((state) => state.user);
-  const gruops = useAppSelect((state) => state.tempList);
-  const click = () => {
-    console.log("hello main AM/PM button!");
-    navigate("/list");
-  };
+  const [groups, setGroups] = React.useState<any>(initialState);
+
+  // useEffect(() => {
+  //   const getParty = async () => {
+  //     setGroups(await partyList.getPartyList());
+  //   };
+  //   getParty();
+  //   console.log(groups);
+  // }, []);
 
   useEffect(() => {
     authAxios.auth();
@@ -40,18 +46,18 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      <Grid>
+      <Grid padding="20px">
         <Button _onClick={() => goToLink(1)}>로그인</Button>
         <Button _onClick={() => goToLink(2)}>프로필</Button>
         <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
-        {gruops.groups.map((value: any, index) => {
+        {groups.map((value: any, index: number) => {
           return (
-            <React.Fragment>
+            <React.Fragment key={index}>
               <Card
                 title={value.title}
                 limit={value.limit}
                 headcount={value.join}
-                address1={value.placeName}
+                address={value.address}
                 startAt={value.startAt}
                 endAt={value.endAt}
                 src={value.imageUrl}
@@ -60,27 +66,57 @@ const Main = () => {
           );
         })}
 
-        <Text> 오늘 파티가 열렸어요! </Text>
+        <h2>🎉 오늘 파티가 열렸어요! </h2>
         <BoxAM>
-          <Text type="title"> 아침 점심 입니다! </Text>
-          <Text>time</Text>
-          <Button _onClick={() => goToLink(3)}>1</Button>
-          <Button _onClick={() => goToLink(4)}>2</Button>
+          <Grid padding="20px">
+            <Text type="title">🍖 아침&점심 파티 </Text>
+            <Text>10:00 ~ 16:00</Text>
+            <Grid isFlex absolute="margin-top:25px">
+              <PartyButton bg="#46a6fe" onClick={() => goToLink(3)}>
+                개설하기
+              </PartyButton>
+              <PartyButton bg="#46a6fe" onClick={() => goToLink(4)}>
+                참가하기
+              </PartyButton>
+            </Grid>
+          </Grid>
         </BoxAM>
         <BoxPM>
-          <Text type="title"> 저녁입니다! </Text>
-          <Text>time</Text>
-          <Button _onClick={() => goToLink(3)}>1</Button>
-          <Button _onClick={() => goToLink(4)}>2</Button>
+          <Grid padding="20px">
+            <Text type="title" customize="color: antiquewhite;">
+              🍻 저녁&야식 파티{" "}
+            </Text>
+            <Text customize="color: antiquewhite;">17:00 ~ 00:00</Text>
+            <Grid isFlex absolute="margin-top:25px">
+              <PartyButton bg="#7F31FF" onClick={() => goToLink(3)}>
+                개설하기
+              </PartyButton>
+              <PartyButton bg="#7F31FF" onClick={() => goToLink(4)}>
+                참가하기
+              </PartyButton>
+            </Grid>
+          </Grid>
         </BoxPM>
       </Grid>
     </React.Fragment>
   );
 };
+// #7F31FF  #46a6fe
+interface buttonProps {
+  bg: string;
+}
+const PartyButton = styled.button<buttonProps>`
+  margin: auto;
+  width: 40%;
+  height: 40px;
+  border-radius: 15px;
+  border: 0px;
+  background-color: ${(props) => props.bg};
+  color: white;
+`;
 
 const BoxAM = styled.div`
-  width: 350px;
-  height: 200px;
+  height: 170px;
   background: linear-gradient(
       291.4deg,
       rgba(255, 255, 255, 0.7) 0.62%,
@@ -88,8 +124,11 @@ const BoxAM = styled.div`
     ),
     #beefff;
   border-radius: 15px;
+  margin-bottom: 20px;
 `;
+
 const BoxPM = styled(BoxAM)`
+  height: 170px;
   background: linear-gradient(
       111.03deg,
       rgba(28, 3, 98, 0.7) 2.61%,

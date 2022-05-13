@@ -36,7 +36,7 @@ function App() {
             <Route path="/edit/user" element={<ModifyUser />} />
             <Route path="/edit/proflie" element={<ProfileEdit />} />
             <Route path="/redirect" element={<Redirect />} />
-            <Route path="/participate" element={<PartyInfo />} />
+            <Route path="/participate/:groupId" element={<PartyInfo />} />
             <Route path="/edit/partyInfo" element={<CreateParty />} />
             <Route path="/edit/partyInfo/:groupId" element={<CreateParty />} />
             <Route path="*" element={<Main />} />

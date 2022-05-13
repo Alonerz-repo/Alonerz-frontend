@@ -42,7 +42,7 @@ const PartyList = () => {
                 title={value.title}
                 limit={value.limit}
                 headcount={value.join}
-                address1={value.placeName}
+                address={value.address}
                 startAt={value.startAt}
                 endAt={value.endAt}
                 src={value.imageUrl}
