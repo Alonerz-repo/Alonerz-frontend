@@ -36,6 +36,14 @@ const Image = ({ shape, src, size, profile, tmpFile }: ImageProps) => {
       </AspectOutter>
     );
   }
+
+  if (shape === "test") {
+    return (
+      <React.Fragment>
+        <ImageDefault {...styles}></ImageDefault>
+      </React.Fragment>
+    );
+  }
   return (
     <React.Fragment>
       <ImageDefault {...styles}></ImageDefault>
@@ -61,7 +69,8 @@ const ImageDefault = styled.div<styleType>`
   width: var(--size);
   height: var(--size);
   background-image: url("${(props) => props.src}");
-  background-size: cover;
+  background-size: 100%;
+  background-repeat: no-repeat;
 `;
 
 const AspectOutter = styled.div<styleType>`

@@ -110,7 +110,7 @@ export const partyListSilce = createSlice({
         return state;
       })
       .addCase(getAllGroup.fulfilled, (state, action) => {
-        state.groups = action.payload;
+        state = action.payload;
         return state;
       });
   },

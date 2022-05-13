@@ -11,6 +11,7 @@ const PartyList = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const GruopList = useAppSelector((state) => state.tempList);
+  const val = "asdadas";
 
   useEffect(() => {
     console.log("hello party list");
@@ -19,9 +20,6 @@ const PartyList = () => {
     });
   }, []);
 
-  const click = () => {
-    console.log("hello partylist !");
-  };
   const reclick = () => {
     navigate("/");
   };
@@ -33,8 +31,10 @@ const PartyList = () => {
         <Button _onClick={reclick}> lunch</Button>
         <Button _onClick={reclick}> 9:00 ~ 16:00</Button>
       </Grid>
+
       <Grid isFlex>
-        {GruopList.groups.map((value: any, index) => {
+        {GruopList.groups.map((value: any) => {
+          console.log(value);
           return (
             <React.Fragment>
               <Card

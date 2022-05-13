@@ -3,13 +3,16 @@ import styled from "styled-components";
 import { Grid, Button, Text } from "../elements";
 import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
-import { useAppSelect } from "../store/config.hook";
+import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { getCookie } from "../utils/cookie";
+import { getTodayList } from "../store/slices/PartyListSlice";
+import { authAxios } from "../axios/authAxios";
 import partyList from "../axios/partyList";
 import { initialState } from "../axios/partyList";
 
 const Main = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
 
@@ -21,6 +24,11 @@ const Main = () => {
   //   console.log(groups);
   // }, []);
 
+  useEffect(() => {
+    authAxios.auth();
+    dispatch(getTodayList());
+    console.log();
+  }, []);
   const goToLink = (num: number) => {
     switch (num) {
       case 1:

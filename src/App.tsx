@@ -12,6 +12,7 @@ import Redirect from "./pages/KakaoRedirectPage";
 import ModifyUser from "./pages/ModifyUser";
 import PartyList from "./pages/PartyList";
 import UserConfig from "./pages/ConfigList";
+import ProfileEdit from "./pages/ProflieEdit";
 
 declare global {
   interface Window {
@@ -33,6 +34,7 @@ function App() {
             <Route path="/config" element={<UserConfig />} />
             <Route path="/login" element={<Login />} />
             <Route path="/edit/user" element={<ModifyUser />} />
+            <Route path="/edit/proflie" element={<ProfileEdit />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate/:groupId" element={<PartyInfo />} />
             <Route path="/edit/partyInfo" element={<CreateParty />} />
