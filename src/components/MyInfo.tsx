@@ -59,7 +59,10 @@ const MyInfo = () => {
     }
   };
   const goToModify = () => {
-    navigate("/edit/user");
+    navigate("/user/edit");
+  };
+  const goToConfig = () => {
+    navigate("/user/config");
   };
   return (
     <React.Fragment>
@@ -105,6 +108,7 @@ const MyInfo = () => {
         <Button _onClick={follow}> 팔로우 </Button>
       </Grid>
       <Button _onClick={goToModify}>내정보 수정</Button>
+      <Button _onClick={goToConfig}>설정창</Button>
 
       <Div></Div>
       <Text>내가 참가한 파티...</Text>

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import { Grid, Text, Button } from "../elements";
 
-const ConsentFrom = () => {
+const ConsentForm = (porps: any) => {
   return (
     <React.Fragment>
       <Header text="파티개설"></Header>
@@ -24,4 +24,4 @@ const Box = styled.div`
   border-radius: 10px;
 `;
 
-export default ConsentFrom;
+export default ConsentForm;

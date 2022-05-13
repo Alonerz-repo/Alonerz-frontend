@@ -11,13 +11,9 @@ const PartyList = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const GruopList = useAppSelector((state) => state.tempList);
-  const val = "asdadas";
 
   useEffect(() => {
-    console.log("hello party list");
-    dispatch(getAllGroup()).then(() => {
-      console.log("party list gruops state is ", GruopList);
-    });
+    dispatch(getAllGroup());
   }, []);
 
   const reclick = () => {
@@ -34,7 +30,6 @@ const PartyList = () => {
 
       <Grid isFlex>
         {GruopList.groups.map((value: any) => {
-          console.log(value);
           return (
             <React.Fragment>
               <Card
