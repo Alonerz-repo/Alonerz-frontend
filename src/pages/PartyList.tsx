@@ -1,24 +1,24 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
 import { Grid, Text, Button } from "../elements";
 import Card from "../components/Card";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
-import { getAllGroup } from "../store/slices/PartyListSlice";
-import { useAppDispatch, useAppSelector } from "../store/config";
+import partyList, { initialState } from "../axios/partyList";
 
 const PartyList = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const GruopList = useAppSelector((state) => state.tempList);
-
-  useEffect(() => {
-    dispatch(getAllGroup());
-  }, []);
-
+  const [groups, setGroups] = React.useState<any>(initialState);
   const reclick = () => {
     navigate("/");
   };
+
+  useEffect(() => {
+    const getParty = async () => {
+      setGroups(await partyList.getLunchList());
+    };
+    getParty();
+  }, []);
+
   return (
     <React.Fragment>
       <Header text="파티리스트"></Header>
@@ -29,22 +29,26 @@ const PartyList = () => {
       </Grid>
 
       <Grid isFlex>
-        {GruopList.groups.map((value: any) => {
-          return (
-            <React.Fragment>
+        <React.Fragment>
+          {groups.map((value: any, i: number) => {
+            return (
               <Card
+                key={i}
                 isFlex
                 title={value.title}
                 limit={value.limit}
-                headcount={value.join}
+                headcount={1}
                 address={value.address}
-                startAt={value.startAt}
-                endAt={value.endAt}
+                startAt={new Date(value.startAt)}
+                endAt={new Date(value.endAt)}
                 src={value.imageUrl}
+                _onClick={() => {
+                  navigate(`/participate/${value.groupId}`);
+                }}
               ></Card>
-            </React.Fragment>
-          );
-        })}
+            );
+          })}
+        </React.Fragment>
       </Grid>
     </React.Fragment>
   );

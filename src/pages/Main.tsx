@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Grid, Button, Text } from '../elements';
-import Card from '../components/Card';
-import { useNavigate } from 'react-router-dom';
-import { useAppSelect, useAppDispatch } from '../store/config.hook';
-import cookie from '../utils/cookie';
-import partyList from '../axios/partyList';
-import { initialState } from '../axios/partyList';
-import axios from 'axios';
-import { errorHandler, getHeaders, getUrl } from '../utils/api';
-import { authAxios } from '../axios/authAxios';
-import { getTodayList } from '../store/slices/PartyListSlice';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Grid, Button, Text } from "../elements";
+import Card from "../components/Card";
+import { useNavigate } from "react-router-dom";
+import { useAppSelect } from "../store/config.hook";
+import cookie from "../utils/cookie";
+import { initialState } from "../axios/partyList";
+import axios from "axios";
+import { errorHandler, getHeaders, getUrl } from "../utils/api";
+import { authAxios } from "../axios/authAxios";
+import partyList from "../axios/partyList";
 
 interface Payload {
   userId: number;
@@ -20,21 +19,19 @@ interface Payload {
 
 const initPayload = {
   userId: -1,
-  kakaoId: '',
-  nickname: '',
+  kakaoId: "",
+  nickname: "",
 };
 
 const Main = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const [auth, setAuth] = useState<Payload>(initPayload);
   const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
 
-  // 최원영
   useEffect(() => {
     const userAuthCheck = async () => {
-      const url = getUrl('/api/auth');
+      const url = getUrl("/api/auth");
       const headers = getHeaders();
       const data = await axios
         .get(url, { headers })
@@ -47,37 +44,31 @@ const Main = () => {
     return () => {};
   }, []);
 
-  // useEffect(() => {
-  //   const getParty = async () => {
-  //     setGroups(await partyList.getPartyList());
-  //   };
-  //   getParty();
-  //   console.log(groups);
-  // }, []);
-
   useEffect(() => {
     authAxios.auth();
-    dispatch(getTodayList());
-    console.log();
+    const getParty = async () => {
+      setGroups(await partyList.getPartyList());
+    };
+    getParty();
   }, []);
+
   const goToLink = (num: number) => {
     switch (num) {
       case 1:
-        return navigate('/login');
+        return navigate("/login");
       case 2:
-        return navigate('/user');
+        return navigate("/user");
       case 3:
-        return navigate('/edit/partyInfo');
+        return navigate("/edit/partyInfo");
       case 4:
-        return navigate('/list');
+        return navigate("/list");
       default:
-        return navigate('/');
+        return navigate("/");
     }
   };
 
-  // 최원영
   const onLogout = async () => {
-    const url = getUrl('/api/auth/logout');
+    const url = getUrl("/api/auth/logout");
     const headers = getHeaders();
     const data = await axios
       .delete(url, { headers })
@@ -85,8 +76,8 @@ const Main = () => {
       .catch((error) => error.response.data);
 
     const removeCookies = () => {
-      cookie.remove('accessToken');
-      cookie.remove('refreshToken');
+      cookie.remove("accessToken");
+      cookie.remove("refreshToken");
       setAuth(initPayload);
     };
 
@@ -112,9 +103,12 @@ const Main = () => {
                 limit={value.limit}
                 headcount={value.join}
                 address={value.address}
-                startAt={value.startAt}
-                endAt={value.endAt}
+                startAt={new Date(value.startAt)}
+                endAt={new Date(value.endAt)}
                 src={value.imageUrl}
+                _onClick={() => {
+                  navigate(`/participate/${value.groupId}`);
+                }}
               ></Card>
             </React.Fragment>
           );
@@ -137,7 +131,7 @@ const Main = () => {
         <BoxPM>
           <Grid padding="20px">
             <Text type="title" customize="color: antiquewhite;">
-              🍻 저녁&야식 파티{' '}
+              🍻 저녁&야식 파티{" "}
             </Text>
             <Text customize="color: antiquewhite;">17:00 ~ 00:00</Text>
             <Grid isFlex absolute="margin-top:25px">

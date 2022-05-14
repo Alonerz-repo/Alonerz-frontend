@@ -7,7 +7,7 @@ import { getUserAxios, setFollow } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { authAxios } from "../axios/authAxios";
 
-import { getCookie } from "../utils/cookie";
+import cookie from "../utils/cookie";
 import axios from "axios";
 
 const MyInfo = () => {
@@ -24,8 +24,8 @@ const MyInfo = () => {
             case 401:
               return navigate("/login");
             case 403:
-              const token = getCookie("accessToken");
-              const token2 = getCookie("refreshToken");
+              const token = cookie.get("accessToken");
+              const token2 = cookie.get("refreshToken");
               const url = process.env.REACT_APP_API_URL;
               axios({
                 method: "",
