@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Image, Grid, Text, Button } from "../elements";
+import { Image, Grid, Text } from "../elements";
 import PartyMember from "../components/PartyMember";
 import KakaoMap from "../components/KakaoMap";
 import Header from "../components/Header";
@@ -23,8 +23,6 @@ const PartyInfo = () => {
     };
     t();
   }, []);
-
-  console.log(group);
 
   const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
@@ -58,7 +56,9 @@ const PartyInfo = () => {
         </Text>
 
         <Text bold type="line" titleText="시간" margin="5px 0 5px 0">
-          {`${group.startAt} ~ ${group.endAt}`}
+          {`${new Date(group.startAt).getHours()}:00 ~ ${new Date(
+            group.endAt
+          ).getHours()}:00`}
         </Text>
 
         <Text bold type="area" titleText="상세내용" margin="5px 0 5px 0">

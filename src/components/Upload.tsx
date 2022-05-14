@@ -1,18 +1,18 @@
 import React from "react";
 import { Image } from "../elements";
-import { setImage } from "../store/slices/imageSlice";
 import { useAppDispatch, useAppSelector } from "../store/config";
 import baseFile from "../assets/fileUpload.png";
 
 const Upload = () => {
+  type fileType = string | ArrayBuffer | null;
   const dispatch = useAppDispatch();
-  const image = useAppSelector((state) => state.image.image);
+  const [image, setImage] = React.useState<fileType>("");
   const selectFile = (e: any) => {
     const reader = new FileReader();
     const file: File = e.target.files[0];
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      dispatch(setImage(reader.result));
+      setImage(reader.result);
     };
   };
 
@@ -20,7 +20,7 @@ const Upload = () => {
     <React.Fragment>
       <input type="file" onChange={selectFile} style={{ marginTop: "20px" }} />
       {image ? (
-        <Image shape="rectangle" src={image}></Image>
+        <Image shape="rectangle" src={image.toString()}></Image>
       ) : (
         <Image shape="rectangle" src={baseFile} size="64px" tmpFile></Image>
       )}

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { errorHandler, getHeaders, getUrl } from '../utils/api';
+import axios from "axios";
+import { errorHandler, getHeaders, getUrl } from "../utils/api";
 
 interface userInfo {
   userId: number;
@@ -26,11 +26,9 @@ export interface GroupInfo {
   guests: userInfo[];
 }
 
-// 최원영
 export type Group = Partial<GroupInfo>;
 
 export const partyAxios = {
-  // 최원영
   createParty: async (group: Group) => {
     const url = getUrl(`/api/groups`);
     const headers = getHeaders();
@@ -43,7 +41,6 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data;
   },
 
-  // 최원영
   editParty: async (group: Group, groupId: number) => {
     const url = getUrl(`/api/groups/${groupId}`);
     const headers = getHeaders();
@@ -56,7 +53,17 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data;
   },
 
-  // 최원영
+  deleteParty: async (groupId: number) => {
+    const url = getUrl(`/api/groups/${groupId}`);
+    const headers = getHeaders();
+    const data = await axios
+      .delete(url, { headers, data: { groupId } })
+      .then((response) => response.data)
+      .catch((error) => error.response.data);
+    console.log(data);
+    return data.error ? errorHandler(data) : data;
+  },
+
   getPartyInfo: async (groupId: number) => {
     const url = getUrl(`/api/groups/${groupId}`);
     const headers = getHeaders();
@@ -71,29 +78,29 @@ export const partyAxios = {
   initialState: {
     group: {
       groupId: -1,
-      title: '',
-      menu: '',
-      description: '',
+      title: "",
+      menu: "",
+      description: "",
       startAt: new Date(),
       endAt: new Date(),
       limit: 4,
-      imageUrl: '',
+      imageUrl: "",
       locationX: 33.450701,
       locationY: 126.570667,
-      address: '',
-      placeName: '',
-      createdAt: '',
-      updateAt: '',
+      address: "",
+      placeName: "",
+      createdAt: "",
+      updateAt: "",
       host: {
         userId: 0,
-        nickname: '',
-        profileImageUrl: '',
+        nickname: "",
+        profileImageUrl: "",
       },
       guests: [
         {
           userId: 0,
-          nickname: '',
-          profileImageUrl: '',
+          nickname: "",
+          profileImageUrl: "",
         },
       ],
     },
