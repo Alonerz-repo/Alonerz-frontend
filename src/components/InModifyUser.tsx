@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Grid, Input, Button } from "../elements";
+import { Grid, Input, Button, Select, Text } from "../elements";
 import { useAppDispatch, useAppSelector } from "../store/config";
 import { setUserAxios } from "../store/slices/userSlice";
+import Career from "../utils/career";
 
 const ModifyUser = () => {
   const userInfo = useAppSelector((state) => state.user);
@@ -14,8 +15,26 @@ const ModifyUser = () => {
   const [desc, setDesc] = useState<any>();
   const [careerGroupName, setCareerGroupName] = useState<any>();
   const [careerItemName, setCareerItemName] = useState<any>();
+
+  const joblist = [
+    { value: "무직", name: "무직" },
+    { value: "개발직군", name: "개발직군" },
+  ];
+  const moo = [
+    { value: "무직", name: "대학생" },
+    { value: "무직", name: "취준생" },
+  ];
+
+  const gea = [
+    { value: "개발직군", name: "웹개발" },
+    { value: "개발직군", name: "응용프로그램" },
+    { value: "개발직군", name: "서버" },
+    { value: "개발직군", name: "인프라" },
+    { value: "개발직군", name: "안드로이드" },
+    { value: "개발직군", name: "IOS" },
+  ];
+
   useEffect(() => {
-    console.log(userInfo);
     if (userInfo.userId === null) {
       window.alert("유저정보를 확인할수 없습니다.");
       navigate("/user");
@@ -23,8 +42,6 @@ const ModifyUser = () => {
     setNickname(userInfo.nickname);
     setYear(userInfo.year);
     setDesc(userInfo.description);
-    setCareerGroupName(userInfo.careerGroupName);
-    setCareerItemName(userInfo.careerItemName);
   }, []);
 
   const clickToSetuser = async () => {
@@ -34,8 +51,6 @@ const ModifyUser = () => {
         profileImageUrl: "",
         description: desc,
         year: year,
-        careerGroupName: careerGroupName,
-        careerItemName: careerItemName,
       };
 
       await dispatch(setUserAxios(setUserInfo)).then((res) => {
@@ -46,6 +61,16 @@ const ModifyUser = () => {
       window.alert(err);
       navigate("/");
     }
+  };
+
+  const handleJob = (e: any) => {
+    console.log(e.target.value);
+    setCareerGroupName(e.target.value);
+  };
+
+  const handlejjob = (e: any) => {
+    console.log(e.target.value);
+    setCareerItemName(e.target.value);
   };
 
   return (
@@ -61,28 +86,14 @@ const ModifyUser = () => {
         ></Input>
 
         <Grid display="flex" flexFlow="columns wrap">
-          <Div>
-            <Input
-              _onChange={(e) => {
-                setCareerGroupName(e.target.value);
-              }}
-              value={careerGroupName}
-              width="80%"
-              text="직군"
-              placeholder=""
-            ></Input>
-          </Div>
-          <Div>
-            <Input
-              _onChange={(e) => {
-                setCareerItemName(e.target.value);
-              }}
-              value={careerItemName}
-              width="80%"
-              text="직업"
-              placeholder=""
-            ></Input>
-          </Div>
+          <Grid>
+            <Text>직군</Text>
+            <Select onChange={handleJob} categories={joblist}></Select>
+          </Grid>
+          <Grid>
+            <Text>직업</Text>
+            <Select onChange={handlejjob} categories={gea}></Select>
+          </Grid>
         </Grid>
 
         <Input
@@ -106,10 +117,5 @@ const ModifyUser = () => {
     </React.Fragment>
   );
 };
-
-const Div = styled.div`
-  display: flex;
-  margin: 10px 10px 10px 10px;
-`;
 
 export default ModifyUser;

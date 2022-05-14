@@ -32,8 +32,7 @@ function App() {
             <Route path="/list" element={<PartyList />} />
             <Route path="/test" element={<Test />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/user" element={<User />} />
-            <Route path="/user/:userId" element={<OUser />} />
+            <Route path="/user/:userId" element={<User />} />
             <Route path="/user/config" element={<UserConfig />} />
             <Route path="/user/config/edit" element={<ModifyUser />} />
             <Route path="/user/edit" element={<ProfileEdit />} />

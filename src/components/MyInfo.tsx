@@ -2,67 +2,65 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Grid, Text, Image, Button } from "../elements";
 import Card from "../components/Card";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { getUserAxios, setFollow } from "../store/slices/userSlice";
+// import { getUserAxios, setFollow } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
 import { authAxios } from "../axios/authAxios";
 
-import { getCookie } from "../utils/cookie";
+import cookie from "../utils/cookie";
 import axios from "axios";
 
-const MyInfo = () => {
-  const userInfo = useAppSelect((state) => state.user);
-  const dispatch = useAppDispatch();
+const MyInfo = ({ user, uid }: any) => {
+  const userInfo = user;
   const navigate = useNavigate();
-
   useEffect(() => {
-    const action = async () => {
-      await authAxios.auth().then((res) => {
-        const stateCode = res.statusCode;
-        if (stateCode) {
-          switch (stateCode) {
-            case 401:
-              return navigate("/login");
-            case 403:
-              const token = getCookie("accessToken");
-              const token2 = getCookie("refreshToken");
-              const url = process.env.REACT_APP_API_URL;
-              axios({
-                method: "",
-                url: `${url}/api/auth/reissue`,
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-                data: {
-                  refreshToken: token2,
-                },
-              }).then((res) => {
-                console.log("error 403 is ", res);
-                return res;
-              });
-              return 0;
-            default:
-              return null;
-          }
-        } else {
-          dispatch(getUserAxios(userInfo.userId));
-        }
-      });
-    };
-    action();
-  }, []);
-  const follow = () => {
-    try {
-      dispatch(setFollow(userInfo.userId));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    console.log(uid);
+  });
+
+  // useEffect(() => {
+  //   const action = async () => {
+  //     await authAxios.auth().then((res) => {
+  //       const stateCode = res.statusCode;
+  //       if (stateCode) {
+  //         switch (stateCode) {
+  //           case 401:
+  //             return navigate("/login");
+  //           case 403:
+  //             const token = cookie.get("accessToken");
+  //             const token2 = cookie.get("refreshToken");
+  //             const url = process.env.REACT_APP_API_URL;
+  //             axios({
+  //               method: "",
+  //               url: `${url}/api/auth/reissue`,
+  //               headers: {
+  //                 Authorization: `Bearer ${token}`,
+  //               },
+  //               data: {
+  //                 refreshToken: token2,
+  //               },
+  //             }).then((res) => {
+  //               console.log("error 403 is ", res);
+  //               return res;
+  //             });
+  //             return 0;
+  //           default:
+  //             return null;
+  //         }
+  //       } else {
+  //         dispatch(getUserAxios());
+  //       }
+  //     });
+  //   };
+  //   action();
+  // }, []);
+  // const follow = () => {
+  //   try {
+  //     dispatch(setFollow(userInfo.userId));
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   const goToModify = () => {
     navigate("/user/edit");
-  };
-  const goToConfig = () => {
-    navigate("/user/config");
   };
   return (
     <React.Fragment>
@@ -93,26 +91,32 @@ const MyInfo = () => {
         </Position>
       </Grid>
       <Grid isFlex>
-        <Div>
-          <Mytxt>참가횟수</Mytxt>
-          <Mytxt style={{ padding: "10px" }}>10</Mytxt>
-        </Div>
-        <Div>
-          <Mytxt>팔로우</Mytxt>
-          <Mytxt style={{ padding: "10px" }}>{userInfo.following}</Mytxt>
-        </Div>
-        <Div>
-          <Mytxt>팔로워</Mytxt>
-          <Mytxt style={{ padding: "10px" }}>{userInfo.follower}</Mytxt>
-        </Div>
-        <Button _onClick={follow}> 팔로우 </Button>
-      </Grid>
-      <Button _onClick={goToModify}>내정보 수정</Button>
-      <Button _onClick={goToConfig}>설정창</Button>
+        <Grid display="flex" flexFlow="column wrap">
+          <Text>참가회수</Text>
+          <Text>{userInfo.point}</Text>
+        </Grid>
+        <Grid>
+          <Text>follow</Text>
+          <Text>{userInfo.following}</Text>
+        </Grid>
+        <Grid display="flex" flexFlow="column wrap">
+          <Text>follower</Text>
+          <Text>{userInfo.following}</Text>
+        </Grid>
 
-      <Div></Div>
-      <Text>내가 참가한 파티...</Text>
-      <Grid isFlex>
+        <Button
+          _onClick={goToModify}
+          customize="border: 2px solid #F5F5F5; background: none; border-radius: 30px; padding: 15px 30px;"
+        >
+          내정보 수정
+        </Button>
+      </Grid>
+
+      <Div style={{ border: "2px solid #F5F5F5", margin: "38px 0px" }}></Div>
+      <Text customize="margin: 0px 0px 23px 20px; font-weight: bold;">
+        내가 참가한 파티...
+      </Text>
+      <Grid isFlex padding="20px">
         <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
         <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
         <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
@@ -130,12 +134,7 @@ const A = styled.div`
   right: -53%;
 `;
 
-const Div = styled.div`
-  display: flex;
-  /* flex-direction: column; */
-  align-items: center;
-  background: skyblue;
-`;
+const Div = styled.div``;
 
 const Mytxt = styled.text``;
 const Position = styled.div``;

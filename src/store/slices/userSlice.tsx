@@ -1,6 +1,7 @@
-import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
-import cookie from '../../utils/cookie';
-import axios from 'axios';
+import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
+import cookie from "../../utils/cookie";
+import axios from "axios";
+import userAxios from "../../axios/userAxios";
 
 const url = process.env.REACT_APP_API_URL;
 
@@ -26,28 +27,19 @@ const initialState: userInfo = {
   following: 0,
   follower: 0,
   needProfile: false,
-  nickname: '',
-  profileImageUrl: '',
-  career: '',
-  description: '',
-  year: '',
-  careerGroupName: '',
-  careerId: '',
-  careerItemName: '',
+  nickname: "",
+  profileImageUrl: "",
+  career: "",
+  description: "",
+  year: "",
+  careerGroupName: "",
+  careerId: "",
+  careerItemName: "",
 };
 
-export const auth = createAsyncThunk('userSlice/auth', async (_, thunkAPI) => {
+export const auth = createAsyncThunk("userSlice/auth", async (_, thunkAPI) => {
   try {
-    const token = cookie.get('accessToken');
-    const response = await axios({
-      method: 'get',
-      url: `${url}/api/auth`,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((res) => {
-      console.log(res);
-    });
+    const response = userAxios.authUser().then((res) => res);
     return response;
   } catch (err) {
     console.log(err);
@@ -56,19 +48,19 @@ export const auth = createAsyncThunk('userSlice/auth', async (_, thunkAPI) => {
 });
 
 export const kakaoLogin = createAsyncThunk(
-  'userSlice/kakaoLogin',
+  "userSlice/kakaoLogin",
   async (id: any, thunkAPI) => {
     try {
       const response = await axios({
-        method: 'post',
+        method: "post",
         url: `${url}/api/auth/login`,
         data: {
           kakaoId: id,
         },
       }).then((res) => {
         const { accessToken, refreshToken, isSignup } = res.data;
-        cookie.set('accessToken', accessToken);
-        cookie.set('refreshToken', refreshToken);
+        cookie.set("accessToken", accessToken);
+        cookie.set("refreshToken", refreshToken);
 
         return res.data;
       });
@@ -79,14 +71,14 @@ export const kakaoLogin = createAsyncThunk(
 
       return thunkAPI.rejectWithValue(err);
     }
-  },
+  }
 );
 
 export const kakaoLogout = createAsyncThunk(
-  'userSlice/kakaoLogout',
+  "userSlice/kakaoLogout",
   async (_, thunkAPI) => {
     try {
-      console.log('hello kakaoLogout!');
+      console.log("hello kakaoLogout!");
       const response = await axios({}).then((res) => {
         console.log(res);
       });
@@ -95,23 +87,23 @@ export const kakaoLogout = createAsyncThunk(
       console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
-  },
+  }
 );
 
 export const setUserAxios = createAsyncThunk(
-  'user/setUser',
+  "user/setUser",
   async (user: any, thunkAPI) => {
     try {
-      const token = cookie.get('accessToken');
+      const token = cookie.get("accessToken");
       const response = await axios({
-        method: 'patch',
+        method: "patch",
         url: `${url}/api/users`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         data: {
           nickname: user.nickname,
-          profileImageUrl: '',
+          profileImageUrl: "",
           description: user.description,
           year: user.year,
         },
@@ -121,40 +113,28 @@ export const setUserAxios = createAsyncThunk(
       console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
-  },
+  }
 );
 export const getUserAxios = createAsyncThunk(
-  'user/getUserAxios',
-  async (userId: any, thunkAPI) => {
+  "user/getUserAxios",
+  async (_, thunkAPI) => {
     try {
-      console.log('hello getUser');
-      console.log('slice user Id');
-      const token = cookie.get('accessToken');
-      const response = await axios({
-        method: 'get',
-        url: `${url}/api/users`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((res) => {
-        return res.data;
-      });
-
+      const response = await userAxios.getUser().then((res) => res);
       return response;
     } catch (err) {
       console.log(err);
       return thunkAPI.rejectWithValue(err);
     }
-  },
+  }
 );
 
 export const setFollow = createAsyncThunk(
-  'user/setFollow',
+  "user/setFollow",
   async (paramsId: any, thunkAPI) => {
     try {
-      const token = cookie.get('accessToken');
+      const token = cookie.get("accessToken");
       await axios({
-        method: 'put',
+        method: "put",
         url: `${url}/api/follows/${paramsId}`,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -170,25 +150,31 @@ export const setFollow = createAsyncThunk(
           });
           return window.alert(msg);
         default:
-          console.log('팔로우 에러', err);
-          window.alert('error!');
+          console.log("팔로우 에러", err);
+          window.alert("error!");
           return thunkAPI.rejectWithValue(err);
       }
     }
-  },
+  }
 );
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(kakaoLogin.fulfilled, (state, action) => {
-        console.log('hello extraReducer!');
+        console.log("hello extraReducer!");
       })
       .addCase(getUserAxios.fulfilled, (state, action) => {
-        return (state = action.payload.user);
+        state = action.payload.user;
+        return state;
+      })
+      .addCase(auth.fulfilled, (state, action) => {
+        state.userId = action.payload.userId;
+        state.nickname = action.payload.nickname;
+        return state;
       });
   },
 });
