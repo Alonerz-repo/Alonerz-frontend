@@ -6,8 +6,8 @@ import { useAppDispatch, useAppSelector } from "../store/config";
 import { setUserAxios } from "../store/slices/userSlice";
 import Career from "../utils/career";
 
-const ModifyUser = () => {
-  const userInfo = useAppSelector((state) => state.user);
+const ModifyUser = (props: any) => {
+  const userInfo = props.user;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [nickname, setNickname] = useState<any>();
@@ -35,14 +35,14 @@ const ModifyUser = () => {
   ];
 
   useEffect(() => {
-    if (userInfo.userId === null) {
-      window.alert("유저정보를 확인할수 없습니다.");
-      navigate("/user");
-    }
+    // if (userInfo.userId === null) {
+    //   window.alert("유저정보를 확인할수 없습니다.");
+    //   navigate("/user");
+    // }
     setNickname(userInfo.nickname);
     setYear(userInfo.year);
     setDesc(userInfo.description);
-  }, []);
+  }, [userInfo]);
 
   const clickToSetuser = async () => {
     try {

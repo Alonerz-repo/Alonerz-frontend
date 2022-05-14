@@ -1,7 +1,6 @@
 import React, { forwardRef, useRef } from "react";
 import styled from "styled-components";
 import { Image } from "../elements";
-import stickerList from "../assets/Icon";
 
 interface ProflieBoxProps {
   index?: any;
@@ -25,7 +24,7 @@ const MyProfileBox = forwardRef(
       return (
         <React.Fragment>
           <div ref={ref}>
-            {stickerList.map((value, index) => {
+            {/* {stickerList.map((value, index) => {
               return (
                 // -> div
                 <StickerBox
@@ -36,7 +35,7 @@ const MyProfileBox = forwardRef(
                   <Image shape="test" size="110px" src={value}></Image>
                 </StickerBox>
               );
-            })}
+            })} */}
           </div>
         </React.Fragment>
       );

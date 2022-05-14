@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
 import Test from "./pages/Test";
 import User from "./pages/User";
-import OUser from "./pages/OtherInfo";
 import Login from "./pages/Login";
 import CreateParty from "./pages/CreateParty";
 import PartyInfo from "./pages/PartyInfo";

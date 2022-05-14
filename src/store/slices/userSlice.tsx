@@ -37,15 +37,15 @@ const initialState: userInfo = {
   careerItemName: "",
 };
 
-export const auth = createAsyncThunk("userSlice/auth", async (_, thunkAPI) => {
-  try {
-    const response = userAxios.authUser().then((res) => res);
-    return response;
-  } catch (err) {
-    console.log(err);
-    return thunkAPI.rejectWithValue(err);
-  }
-});
+// export const auth = createAsyncThunk("userSlice/auth", async (_, thunkAPI) => {
+//   try {
+//     const response = userAxios.authUser().then((res) => res);
+//     return response;
+//   } catch (err) {
+//     console.log(err);
+//     return thunkAPI.rejectWithValue(err);
+//   }
+// });
 
 export const kakaoLogin = createAsyncThunk(
   "userSlice/kakaoLogin",
@@ -170,12 +170,12 @@ export const userSlice = createSlice({
       .addCase(getUserAxios.fulfilled, (state, action) => {
         state = action.payload.user;
         return state;
-      })
-      .addCase(auth.fulfilled, (state, action) => {
-        state.userId = action.payload.userId;
-        state.nickname = action.payload.nickname;
-        return state;
       });
+    // .addCase(auth.fulfilled, (state, action) => {
+    //   state.userId = action.payload.userId;
+    //   state.nickname = action.payload.nickname;
+    //   return state;
+    // });
   },
 });
 
