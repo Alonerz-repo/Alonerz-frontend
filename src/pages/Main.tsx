@@ -10,8 +10,6 @@ import { initialState } from "../axios/partyList";
 import axios from "axios";
 import { errorHandler, getHeaders, getUrl } from "../utils/api";
 import { authAxios } from "../axios/authAxios";
-import { getTodayList } from "../store/slices/PartyListSlice";
-import { getUserAxios } from "../store/slices/userSlice";
 
 interface Payload {
   userId: number;
@@ -27,12 +25,10 @@ const initPayload = {
 
 const Main = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const [auth, setAuth] = useState<Payload>(initPayload);
   const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
 
-  // 최원영
   useEffect(() => {
     const userAuthCheck = async () => {
       const url = getUrl("/api/auth");
@@ -51,8 +47,12 @@ const Main = () => {
   useEffect(() => {
     // authAxios.auth();
     // dispatch(getTodayList());
-    dispatch(getUserAxios());
+    const getParty = async () => {
+      setGroups(await partyList.getPartyList());
+    };
+    getParty();
   }, []);
+
   const goToLink = (num: number) => {
     switch (num) {
       case 1:
@@ -68,7 +68,6 @@ const Main = () => {
     }
   };
 
-  // 최원영
   const onLogout = async () => {
     const url = getUrl("/api/auth/logout");
     const headers = getHeaders();
@@ -105,9 +104,12 @@ const Main = () => {
                 limit={value.limit}
                 headcount={value.join}
                 address={value.address}
-                startAt={value.startAt}
-                endAt={value.endAt}
+                startAt={new Date(value.startAt)}
+                endAt={new Date(value.endAt)}
                 src={value.imageUrl}
+                _onClick={() => {
+                  navigate(`/participate/${value.groupId}`);
+                }}
               ></Card>
             </React.Fragment>
           );
