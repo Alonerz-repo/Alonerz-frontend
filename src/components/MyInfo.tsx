@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid, Text, Image, Button } from "../elements";
 import Card from "../components/Card";
@@ -8,9 +8,12 @@ import userAxios from "../axios/userAxios";
 
 const MyInfo = ({ auth, user, uid, group }: any) => {
   const userInfo = user;
+  const [myauth, setMyauth] = useState(auth);
 
   const navigate = useNavigate();
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setMyauth(auth);
+  }, [auth]);
   const goToModify = () => {
     navigate("/user/edit");
   };
@@ -22,7 +25,19 @@ const MyInfo = ({ auth, user, uid, group }: any) => {
       window.alert("follow!");
     });
   };
-
+  const setBlock = async () => {
+    console.log("hello block!");
+    await userAxios.blockUser(uid).then((res) => {
+      window.alert("block!!");
+    });
+  };
+  const viewfollow = (isfollow: string) => {
+    console.log(isfollow);
+    userAxios.getFollowUser(uid, isfollow).then((res) => {
+      console.log("sucess viewfollow");
+      console.log(res.data);
+    });
+  };
   return (
     <React.Fragment>
       <Grid>
@@ -57,14 +72,18 @@ const MyInfo = ({ auth, user, uid, group }: any) => {
           <Text>{userInfo.point}</Text>
         </Grid>
         <Grid>
-          <Text>follow</Text>
-          <Text>{userInfo.follower}</Text>
+          <div onClick={() => viewfollow("follower")}>
+            <Text>follow</Text>
+            <Text>{userInfo.follower}</Text>
+          </div>
         </Grid>
         <Grid display="flex" flexFlow="column wrap">
-          <Text>follower</Text>
-          <Text>{userInfo.following}</Text>
+          <div onClick={() => viewfollow("following")}>
+            <Text>follower</Text>
+            <Text>{userInfo.following}</Text>
+          </div>
         </Grid>
-        {auth.user === uid && (
+        {myauth.userId.toString() === uid && (
           <Button
             _onClick={goToModify}
             customize="border: 2px solid #F5F5F5; background: none; border-radius: 30px; padding: 15px 30px;"
@@ -72,17 +91,26 @@ const MyInfo = ({ auth, user, uid, group }: any) => {
             내정보 수정
           </Button>
         )}
-        {auth.user !== uid && (
+
+        {myauth.userId.toString() !== uid && (
           <div onClick={goTochat}>
             <Image size="44px" src={chatIcon}></Image>
           </div>
         )}
-        {auth.user !== uid && (
+        {myauth.userId.toString() !== uid && (
           <Button
             _onClick={setFollow}
             customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
           >
             팔로우
+          </Button>
+        )}
+        {myauth.userId.toString() !== uid && (
+          <Button
+            _onClick={setBlock}
+            customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
+          >
+            차단
           </Button>
         )}
       </Grid>
@@ -92,10 +120,10 @@ const MyInfo = ({ auth, user, uid, group }: any) => {
         내가 참가한 파티...
       </Text>
       <Grid isFlex padding="20px">
-        {group.map((value: any) => {
-          console.log(value);
+        {group.map((value: any, index: number) => {
           return (
             <Card
+              key={index}
               src={value.imageUrl}
               title={value.title}
               address={value.placeName}

@@ -77,6 +77,27 @@ const userAxios = {
       .catch((err) => err.response.data);
     return data.err ? errorHandler(data) : data;
   },
+
+  blockUser: async (userId: any) => {
+    const url = getUrl(`/api/blocks/${userId}`);
+    const headers = getHeaders();
+    const body = {};
+    const data = await axios
+      .put(url, body, { headers })
+      .then((res) => res)
+      .catch((err) => err.response.data);
+    return data.err ? errorHandler(data) : data;
+  },
+
+  getFollowUser: async (userId: any, follow: string) => {
+    const url = getUrl(`/api/follows/${userId}?type=${follow}`);
+    const headers = getHeaders();
+    const data = await axios
+      .get(url, { headers })
+      .then((res) => res)
+      .catch((err) => err.response.data);
+    return data.err ? errorHandler(data) : data;
+  },
 };
 
 export default userAxios;
