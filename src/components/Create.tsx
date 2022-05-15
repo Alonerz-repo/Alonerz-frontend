@@ -16,6 +16,7 @@ const times = [
 ];
 
 const Create = ({ group }: any) => {
+  // 쥐쉐끼 같은 1일 1커밋
   const [title, setTitle] = useState<string>();
   const [menu, setMenu] = useState<string>();
   const [description, setDescription] = useState<string>();
