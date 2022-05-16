@@ -1,34 +1,50 @@
 import React, { useEffect } from "react";
-import { Grid, Text, Button } from "../elements";
+import { Grid, Text, Select } from "../elements";
 import Card from "../components/Card";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import partyList, { initialState } from "../axios/partyList";
+import { useParams } from "react-router-dom";
+import partyTimes from "../utils/partyTimes";
 
 const PartyList = () => {
   const navigate = useNavigate();
   const [groups, setGroups] = React.useState<any>(initialState);
-  const reclick = () => {
-    navigate("/");
-  };
+  const time = useParams().time;
+  const [partyTime, setPartyTime] = React.useState<string>();
+
+  useEffect(() => {
+    setPartyTime(time);
+  }, []);
 
   useEffect(() => {
     const getParty = async () => {
-      setGroups(await partyList.getLunchList());
+      setGroups(await partyList.getTimeList(partyTime));
     };
-    getParty();
-  }, []);
+    if (partyTime) {
+      getParty();
+    }
+  }, [partyTime]);
+
+  const handleSelect = (e: any) => {
+    setPartyTime(e.target.value);
+  };
 
   return (
     <React.Fragment>
       <Header text="파티리스트"></Header>
-      <Grid>
+      <Grid padding="20px">
         <Text type="title"> party</Text>
-        <Button _onClick={reclick}> lunch</Button>
-        <Button _onClick={reclick}> 9:00 ~ 16:00</Button>
+        <Select
+          width="90px"
+          onChange={handleSelect}
+          categories={partyTimes.listTimes}
+          value={partyTime}
+          time={partyTime}
+        ></Select>
       </Grid>
 
-      <Grid isFlex>
+      <Grid isFlex padding="20px">
         <React.Fragment>
           {groups.map((value: any, i: number) => {
             return (

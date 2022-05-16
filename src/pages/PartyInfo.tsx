@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Image, Grid, Text } from "../elements";
+import { Image, Grid, Text, Button } from "../elements";
 import PartyMember from "../components/PartyMember";
 import KakaoMap from "../components/KakaoMap";
 import Header from "../components/Header";
 import { partyAxios, GroupInfo } from "../axios/partyAxios";
+import { useAppSelector } from "../store/config";
 
 const PartyInfo = () => {
   const [group, setGroup] = useState<GroupInfo>(partyAxios.initialState.group);
   const { groupId } = useParams();
+  const navigate = useNavigate();
+  const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
     const t = async () => {
       try {
         if (groupId) {
-          const result = await partyAxios.getPartyInfo(parseInt(groupId));
-          setGroup(result);
+          setGroup(await partyAxios.getPartyInfo(parseInt(groupId)));
         }
       } catch (err) {
         console.log(err);
@@ -23,6 +25,22 @@ const PartyInfo = () => {
     };
     t();
   }, []);
+
+  const handleJoin = (action: string) => {
+    const join = async () => {
+      if (groupId) {
+        const result = await partyAxios
+          .joinParty(parseInt(groupId), action)
+          .then((response) => {
+            navigate("/");
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }
+      join();
+    };
+  };
 
   const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
@@ -87,11 +105,49 @@ const PartyInfo = () => {
             ></PartyMember>
           );
         })}
-
-        {/* <button onClick={test}>test</button> */}
       </Grid>
-      <Grid isFlex>
-        {/* <Button width="100%">참가....해야겠지?</Button> */}
+      <Grid absolute="position:sticky; bottom:0; z-index:2;">
+        {user.userId === group.host.userId ? (
+          <Grid isFlex>
+            <Button
+              width="50%"
+              _onClick={() => {
+                navigate(`/edit/partyInfo/${group.groupId}`);
+              }}
+            >
+              수정하기
+            </Button>
+            <Button
+              width="50%"
+              _onClick={() => {
+                if (group.groupId) {
+                  partyAxios.deleteParty(group.groupId);
+                  navigate("/");
+                }
+              }}
+            >
+              대충 삭제
+            </Button>
+          </Grid>
+        ) : group.guests.findIndex((v) => v.userId === user.userId) ? (
+          <Button
+            _onClick={() => {
+              handleJoin("join");
+            }}
+            width="100%"
+          >
+            파티 나가기
+          </Button>
+        ) : (
+          <Button
+            width="100%"
+            _onClick={() => {
+              handleJoin("exit");
+            }}
+          >
+            참가하기
+          </Button>
+        )}
       </Grid>
     </React.Fragment>
   );

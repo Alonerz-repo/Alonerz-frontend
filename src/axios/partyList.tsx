@@ -11,6 +11,8 @@ interface GroupInfo {
   imageUrl: string;
 }
 
+type time = string | undefined;
+
 export const initialState: GroupInfo[] = [
   {
     title: "aa",
@@ -36,13 +38,13 @@ const partyList = {
     return data.error ? errorHandler(data) : data.groups;
   },
 
-  getLunchList: async () => {
+  getTimeList: async (time: time) => {
     const url = getUrl("/api/groups");
     const headers = getHeaders();
     const body = {
       x: 1,
       y: 1,
-      time: "lunch",
+      time,
     };
     const data = await axios
       .get(url, { headers, data: body })

@@ -1,68 +1,100 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Grid, Button, Text } from "../elements";
 import Card from "../components/Card";
 import partyList, { initialState } from "../axios/partyList";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { authUser, kakaoLogout } from "../store/slices/userSlice";
+import userAxios from "../axios/userAxios";
+
+interface Payload {
+  userId: number;
+  kakaoId: string;
+  nickname: string;
+}
+
+const initPayload = {
+  userId: -1,
+  kakaoId: "",
+  nickname: "",
+};
 
 const Main = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const userInfo = useAppSelect((state) => state.user);
+  const [auth, setAuth] = useState<Payload>(initPayload);
   const [groups, setGroups] = React.useState<any>(initialState);
 
   useEffect(() => {
-    if (userInfo.statusCode === 401) {
-      console.log("로그인 필요!");
-    }
-  }, [userInfo]);
+    //get user auth
+    const injeong = async () => {
+      const auth = await userAxios.authUser().then((res) => {
+        const data = res;
+        switch (data.statusCode) {
+          case 401:
+            return userAxios.login();
+          case 403:
+            return userAxios.refreshUser();
 
-  useEffect(() => {
-    //get user auth and login maintain
-    if (userInfo.userId === -1) {
-      dispatch(authUser());
-    }
+          default:
+            return res;
+        }
+      });
+      setAuth(auth.auth);
+    };
+    injeong();
+
     //get user groups list
     const getParty = async () => {
-      setGroups(await partyList.getPartyList());
+      const data = await partyList.getPartyList();
+      switch (data.statusCode) {
+        case 401:
+          return alert();
+      }
+      setGroups(data);
     };
     getParty();
   }, []);
 
-  // navigate
   const goToLink = (num: number) => {
     switch (num) {
       case 1:
         return navigate("/login");
       case 2:
-        return navigate(`/user/${userInfo.userId}`);
-      case 3:
-        return navigate("/edit/partyInfo");
+        return navigate(`/user/${auth.userId}`);
+      case 10:
+        return navigate(`/create/partyInfo/${num}`);
       case 4:
-        return navigate("/list");
+        return navigate("/list/lunch");
+      case 5:
+        return navigate("/list/dinner");
+      case 17:
+        return navigate(`/create/partyInfo/${num}`);
       default:
         return navigate("/");
     }
   };
 
+  const onLogout = async () => {
+    //put logout
+    await userAxios.logout().then((res) => {
+      const data: any = res;
+      setAuth(data);
+    });
+  };
+
   return (
     <React.Fragment>
       <Grid padding="20px">
-        {userInfo.userId < 1 && (
+        {auth.userId < 1 && (
           <Button _onClick={() => goToLink(1)}>로그인</Button>
         )}
-        {userInfo.userId > 0 && (
+        {auth.userId > 0 && (
           <Button _onClick={() => goToLink(2)}>프로필</Button>
         )}
-        {userInfo.userId > 0 && (
-          <Button _onClick={() => dispatch(kakaoLogout())}>로그아웃</Button>
-        )}
-        {userInfo.userId > 0 && (
+        {auth.userId > 0 && <Button _onClick={onLogout}>로그아웃</Button>}
+        {auth.userId > 0 && (
           <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
         )}
-        {userInfo.userId > 0 &&
+        {auth.userId > 0 &&
           groups.map((value: any, index: number) => {
             return (
               <React.Fragment key={index}>
@@ -87,7 +119,7 @@ const Main = () => {
             <Text type="title">🍖 아침&점심 파티 </Text>
             <Text>10:00 ~ 16:00</Text>
             <Grid isFlex absolute="margin-top:25px">
-              <PartyButton bg="#46a6fe" onClick={() => goToLink(3)}>
+              <PartyButton bg="#46a6fe" onClick={() => goToLink(10)}>
                 개설하기
               </PartyButton>
               <PartyButton bg="#46a6fe" onClick={() => goToLink(4)}>
@@ -103,10 +135,10 @@ const Main = () => {
             </Text>
             <Text customize="color: antiquewhite;">17:00 ~ 00:00</Text>
             <Grid isFlex absolute="margin-top:25px">
-              <PartyButton bg="#7F31FF" onClick={() => goToLink(3)}>
+              <PartyButton bg="#7F31FF" onClick={() => goToLink(17)}>
                 개설하기
               </PartyButton>
-              <PartyButton bg="#7F31FF" onClick={() => goToLink(4)}>
+              <PartyButton bg="#7F31FF" onClick={() => goToLink(5)}>
                 참가하기
               </PartyButton>
             </Grid>
