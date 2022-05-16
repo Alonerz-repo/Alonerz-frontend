@@ -21,7 +21,7 @@ const initPayload = {
 const Main = () => {
   const navigate = useNavigate();
   const [auth, setAuth] = useState<Payload>(initPayload);
-  const [groups, setGroups] = React.useState<any>(initialState);
+  const [groups, setGroups] = React.useState<any>([]);
 
   useEffect(() => {
     //get user auth
@@ -44,7 +44,8 @@ const Main = () => {
 
     //get user groups list
     const getParty = async () => {
-      setGroups(await partyList.getPartyList());
+      const data = await partyList.getPartyList();
+      setGroups(data);
     };
     getParty();
   }, []);
@@ -55,10 +56,14 @@ const Main = () => {
         return navigate("/login");
       case 2:
         return navigate(`/user/${auth.userId}`);
-      case 3:
-        return navigate("/edit/partyInfo");
+      case 10:
+        return navigate(`/create/partyInfo/${num}`);
       case 4:
-        return navigate("/list");
+        return navigate("/list/lunch");
+      case 5:
+        return navigate("/list/dinner");
+      case 17:
+        return navigate(`/create/partyInfo/${num}`);
       default:
         return navigate("/");
     }
@@ -110,7 +115,7 @@ const Main = () => {
             <Text type="title">🍖 아침&점심 파티 </Text>
             <Text>10:00 ~ 16:00</Text>
             <Grid isFlex absolute="margin-top:25px">
-              <PartyButton bg="#46a6fe" onClick={() => goToLink(3)}>
+              <PartyButton bg="#46a6fe" onClick={() => goToLink(10)}>
                 개설하기
               </PartyButton>
               <PartyButton bg="#46a6fe" onClick={() => goToLink(4)}>
@@ -126,10 +131,10 @@ const Main = () => {
             </Text>
             <Text customize="color: antiquewhite;">17:00 ~ 00:00</Text>
             <Grid isFlex absolute="margin-top:25px">
-              <PartyButton bg="#7F31FF" onClick={() => goToLink(3)}>
+              <PartyButton bg="#7F31FF" onClick={() => goToLink(17)}>
                 개설하기
               </PartyButton>
-              <PartyButton bg="#7F31FF" onClick={() => goToLink(4)}>
+              <PartyButton bg="#7F31FF" onClick={() => goToLink(5)}>
                 참가하기
               </PartyButton>
             </Grid>

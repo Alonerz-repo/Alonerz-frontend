@@ -15,6 +15,7 @@ import ProfileEdit from "./pages/ProflieEdit";
 import ConsentForm from "./pages/ConsentForm";
 import BlockList from "./pages/BlockList";
 import FollowLIst from "./pages/FollowList";
+import EditParty from "./pages/EditParty";
 
 import { loginAuth } from "./store/slices/userSlice";
 import { useAppDispatch } from "./store/config";
@@ -30,6 +31,7 @@ function App() {
   useEffect(() => {
     dispatch(loginAuth());
   }, []);
+
   return (
     <div className="App">
       <Container>
@@ -37,7 +39,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/coution" element={<ConsentForm />} />
-            <Route path="/list" element={<PartyList />} />
+            <Route path="/list/:time" element={<PartyList />} />
             <Route path="/test" element={<Test />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user/:userId" element={<User />} />
@@ -48,8 +50,8 @@ function App() {
             <Route path="/user/edit" element={<ProfileEdit />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate/:groupId" element={<PartyInfo />} />
-            <Route path="/edit/partyInfo" element={<CreateParty />} />
-            <Route path="/edit/partyInfo/:groupId" element={<CreateParty />} />
+            <Route path="/create/partyInfo/:time" element={<CreateParty />} />
+            <Route path="/edit/partyInfo/:groupId" element={<EditParty />} />
             <Route path="*" element={<Main />} />
           </Routes>
         </BrowserRouter>

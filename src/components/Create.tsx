@@ -6,24 +6,21 @@ import Upload from "./Upload";
 import Header from "./Header";
 import SearchKakaoMap from "./SearchKakaoMap";
 import { partyAxios } from "../axios/partyAxios";
+import times from "../utils/partyTimes";
 
-const times = [
-  { value: "11:00", name: "11:00" },
-  { value: "12:00", name: "12:00" },
-  { value: "13:00", name: "13:00" },
-  { value: "14:00", name: "14:00" },
-  { value: "15:00", name: "15:00" },
-];
+interface CreateProps {
+  group: any;
+  time?: number | undefined;
+}
 
-const Create = ({ group }: any) => {
-  // 쥐쉐끼 같은 1일 1커밋
+const Create = ({ group, time }: CreateProps) => {
   const [title, setTitle] = useState<string>();
   const [menu, setMenu] = useState<string>();
   const [description, setDescription] = useState<string>();
-  const [opentime, setOpentime] = useState<number>(1);
-  const [closetime, setClosetime] = useState<number>(1);
+  const [opentime, setOpentime] = useState<number>();
+  const [closetime, setClosetime] = useState<number>();
   const [placeName, setPlacename] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
+  const [address, setAddress] = useState<string>();
   const [locationX, setLocationX] = useState<number>(33.450701);
   const [locationY, setLocationY] = useState<number>(126.570667);
   const [limit, setLimit] = useState<number>(4);
@@ -39,6 +36,12 @@ const Create = ({ group }: any) => {
     setLocationX(group.locationX);
     setLocationY(group.locationY);
     setLimit(group.limit);
+    setOpentime(new Date(group.startAt).getHours());
+    setClosetime(new Date(group.endAt).getHours());
+    if (time === 10 || time === 17) {
+      setOpentime(time);
+      setClosetime(time + 1);
+    }
   }, [group]);
 
   const handleTitle = (e: any) => {
@@ -56,11 +59,27 @@ const Create = ({ group }: any) => {
   const handleOpentime = (e: any) => {
     setOpentime(e.target.value);
   };
+
   const handleClosetime = (e: any) => {
     setClosetime(e.target.value);
   };
 
   const handleCreateParty = () => {
+    console.log(address);
+    if (title === "") {
+      alert("제목을 입력해주세요.");
+      return;
+    } else if (menu === "") {
+      alert("메뉴를 입력해주세요.");
+      return;
+    } else if (
+      opentime !== undefined &&
+      closetime !== undefined &&
+      opentime >= closetime
+    ) {
+      alert("오픈 시간은 마감 시간보다 빨라야합니다.");
+      return;
+    }
     const d = new Date();
     const groupInfo = {
       title,
@@ -69,12 +88,14 @@ const Create = ({ group }: any) => {
       placeName,
       startAt: new Date(
         Date.parse(
-          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${opentime}`
+          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${opentime}:00`
         )
       ),
       endAt: new Date(
         Date.parse(
-          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${closetime}`
+          `${d.getFullYear()}-${
+            d.getMonth() + 1
+          }-${d.getDate()} ${closetime}:00`
         )
       ),
       limit,
@@ -84,35 +105,11 @@ const Create = ({ group }: any) => {
       locationY,
       address,
     };
-    partyAxios.createParty(groupInfo);
-    navigate("/");
-  };
-
-  const handleEditParty = () => {
-    const d = new Date();
-    const groupInfo = {
-      title,
-      menu,
-      description,
-      placeName,
-      startAt: new Date(
-        Date.parse(
-          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} 11:00`
-        )
-      ),
-      endAt: new Date(
-        Date.parse(
-          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} 12:00`
-        )
-      ),
-      limit,
-      imageUrl:
-        "https://github.com/choewy/react-place-app/blob/master/src/images/0.png?raw=true",
-      locationX,
-      locationY,
-      address,
-    };
-    partyAxios.editParty(groupInfo, group.groupId);
+    if (group.groupId === -1) {
+      partyAxios.createParty(groupInfo);
+    } else {
+      partyAxios.editParty(groupInfo, group.groupId);
+    }
     navigate("/");
   };
 
@@ -147,7 +144,7 @@ const Create = ({ group }: any) => {
               margin="5px 0 5px 0"
             ></Text>
             <Select
-              categories={times}
+              categories={times.openTimes}
               width="100%"
               value={opentime}
               onChange={handleOpentime}
@@ -161,7 +158,7 @@ const Create = ({ group }: any) => {
               margin="5px 0 5px 0"
             ></Text>
             <Select
-              categories={times}
+              categories={times.closeTimes}
               width="100%"
               value={closetime}
               onChange={handleClosetime}
@@ -241,18 +238,9 @@ const Create = ({ group }: any) => {
         ></Input>
         <Upload></Upload>
       </Grid>
-      <Button
-        width="100%"
-        _onClick={() => {
-          partyAxios.deleteParty(group.groupId);
-          navigate("/");
-        }}
-      >
-        대충 삭제
-      </Button>
       <Grid absolute="position:sticky; bottom:0px; width:inherit;">
         {group.groupId !== -1 ? (
-          <Button width="100%" _onClick={handleEditParty}>
+          <Button width="100%" _onClick={handleCreateParty}>
             대충 수정
           </Button>
         ) : (

@@ -1,11 +1,9 @@
 import React from "react";
 import { Image } from "../elements";
-import { useAppDispatch, useAppSelector } from "../store/config";
 import baseFile from "../assets/fileUpload.png";
 
 const Upload = () => {
   type fileType = string | ArrayBuffer | null;
-  const dispatch = useAppDispatch();
   const [image, setImage] = React.useState<fileType>("");
   const selectFile = (e: any) => {
     const reader = new FileReader();
