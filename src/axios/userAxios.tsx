@@ -61,8 +61,8 @@ const userAxios = {
         return res.data;
       })
       .catch((err) => err.response.data);
-
-    return data.err ? errorHandler(data) : data;
+    console.log("authUser data", data);
+    return data;
   },
 
   refreshUser: async () => {

@@ -5,7 +5,7 @@ import { Grid, Button, Text } from "../elements";
 import Card from "../components/Card";
 import partyList, { initialState } from "../axios/partyList";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { auth, kakaoLogout } from "../store/slices/userSlice";
+import { authUser, kakaoLogout } from "../store/slices/userSlice";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -14,11 +14,16 @@ const Main = () => {
   const [groups, setGroups] = React.useState<any>(initialState);
 
   useEffect(() => {
+    if (userInfo.statusCode === 401) {
+      console.log("로그인 필요!");
+    }
+  }, [userInfo]);
+
+  useEffect(() => {
     //get user auth and login maintain
     if (userInfo.userId === -1) {
-      dispatch(auth());
+      dispatch(authUser());
     }
-
     //get user groups list
     const getParty = async () => {
       setGroups(await partyList.getPartyList());
