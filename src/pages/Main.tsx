@@ -21,7 +21,7 @@ const initPayload = {
 const Main = () => {
   const navigate = useNavigate();
   const [auth, setAuth] = useState<Payload>(initPayload);
-  const [groups, setGroups] = React.useState<any>([]);
+  const [groups, setGroups] = React.useState<any>(initialState);
 
   useEffect(() => {
     //get user auth
@@ -45,6 +45,10 @@ const Main = () => {
     //get user groups list
     const getParty = async () => {
       const data = await partyList.getPartyList();
+      switch (data.statusCode) {
+        case 401:
+          return alert();
+      }
       setGroups(data);
     };
     getParty();

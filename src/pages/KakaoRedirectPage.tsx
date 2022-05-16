@@ -18,7 +18,7 @@ const Redirect = () => {
           case true:
             return navigate("/");
           case false:
-            return navigate("/signup");
+            return navigate("/");
           default:
             window.alert("ERROR!");
             return navigate("/login");
