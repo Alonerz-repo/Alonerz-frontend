@@ -75,6 +75,18 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data.group;
   },
 
+  getJoinedParty: async (userId: any) => {
+    const url = getUrl(`/api/groups/joined/${userId}`);
+    const headers = getHeaders();
+    const data = await axios
+      .get(url, { headers })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => err.response.data);
+    return data.err ? errorHandler(data) : data;
+  },
+
   initialState: {
     group: {
       groupId: -1,

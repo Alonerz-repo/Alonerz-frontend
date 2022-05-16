@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Grid, Button, Text } from "../elements";
 import Card from "../components/Card";
-import { useNavigate } from "react-router-dom";
-import { useAppSelect } from "../store/config.hook";
-import cookie from "../utils/cookie";
-import { initialState } from "../axios/partyList";
-import axios from "axios";
-import { errorHandler, getHeaders, getUrl } from "../utils/api";
-import { authAxios } from "../axios/authAxios";
-import partyList from "../axios/partyList";
+import partyList, { initialState } from "../axios/partyList";
+import userAxios from "../axios/userAxios";
 
 interface Payload {
   userId: number;
@@ -26,26 +21,28 @@ const initPayload = {
 const Main = () => {
   const navigate = useNavigate();
   const [auth, setAuth] = useState<Payload>(initPayload);
-  const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
 
   useEffect(() => {
-    const userAuthCheck = async () => {
-      const url = getUrl("/api/auth");
-      const headers = getHeaders();
-      const data = await axios
-        .get(url, { headers })
-        .then((response) => response.data)
-        .catch((error) => error.response.data);
+    //get user auth
+    const injeong = async () => {
+      const auth = await userAxios.authUser().then((res) => {
+        const data = res;
+        switch (data.statusCode) {
+          case 401:
+            return userAxios.login();
+          case 403:
+            return userAxios.refreshUser();
 
-      return data.error ? errorHandler(data) : setAuth(data.auth);
+          default:
+            return res;
+        }
+      });
+      setAuth(auth.auth);
     };
-    userAuthCheck();
-    return () => {};
-  }, []);
+    injeong();
 
-  useEffect(() => {
-    authAxios.auth();
+    //get user groups list
     const getParty = async () => {
       setGroups(await partyList.getPartyList());
     };
@@ -57,7 +54,7 @@ const Main = () => {
       case 1:
         return navigate("/login");
       case 2:
-        return navigate("/user");
+        return navigate(`/user/${auth.userId}`);
       case 3:
         return navigate("/edit/partyInfo");
       case 4:
@@ -68,20 +65,11 @@ const Main = () => {
   };
 
   const onLogout = async () => {
-    const url = getUrl("/api/auth/logout");
-    const headers = getHeaders();
-    const data = await axios
-      .delete(url, { headers })
-      .then((response) => response.data)
-      .catch((error) => error.response.data);
-
-    const removeCookies = () => {
-      cookie.remove("accessToken");
-      cookie.remove("refreshToken");
-      setAuth(initPayload);
-    };
-
-    return data.error ? errorHandler(data) : removeCookies();
+    //put logout
+    await userAxios.logout().then((res) => {
+      const data: any = res;
+      setAuth(data);
+    });
   };
 
   return (
@@ -94,25 +82,28 @@ const Main = () => {
           <Button _onClick={() => goToLink(2)}>프로필</Button>
         )}
         {auth.userId > 0 && <Button _onClick={onLogout}>로그아웃</Button>}
-        <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
-        {groups.map((value: any, index: number) => {
-          return (
-            <React.Fragment key={index}>
-              <Card
-                title={value.title}
-                limit={value.limit}
-                headcount={value.join}
-                address={value.address}
-                startAt={new Date(value.startAt)}
-                endAt={new Date(value.endAt)}
-                src={value.imageUrl}
-                _onClick={() => {
-                  navigate(`/participate/${value.groupId}`);
-                }}
-              ></Card>
-            </React.Fragment>
-          );
-        })}
+        {auth.userId > 0 && (
+          <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
+        )}
+        {auth.userId > 0 &&
+          groups.map((value: any, index: number) => {
+            return (
+              <React.Fragment key={index}>
+                <Card
+                  title={value.title}
+                  limit={value.limit}
+                  headcount={value.join}
+                  address={value.address}
+                  startAt={new Date(value.startAt)}
+                  endAt={new Date(value.endAt)}
+                  src={value.imageUrl}
+                  _onClick={() => {
+                    navigate(`/participate/${value.groupId}`);
+                  }}
+                ></Card>
+              </React.Fragment>
+            );
+          })}
         <h2>🎉 오늘 파티가 열렸어요! </h2>
         <BoxAM>
           <Grid padding="20px">

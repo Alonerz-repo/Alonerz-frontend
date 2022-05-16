@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid } from "../elements";
 
 interface Props {
   children?: any;
@@ -54,7 +53,6 @@ const Text = ({
           <P bold fontSize="20px">
             {children}
           </P>
-          {/* <P margin="16spx 0px 0px 0px">{children}</P> */}
         </Div>
       );
   }

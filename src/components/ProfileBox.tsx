@@ -1,11 +1,10 @@
 import React, { forwardRef, useRef } from "react";
 import styled from "styled-components";
 import { Image } from "../elements";
-import stickerList from "../assets/Icon";
 
 interface ProflieBoxProps {
   index?: any;
-  _onClick?: () => void;
+  _onClick?: (e: any) => void;
   ref?: any;
 }
 
@@ -24,19 +23,20 @@ const MyProfileBox = forwardRef(
     } else if (index === 2) {
       return (
         <React.Fragment>
-          {stickerList.map((value, index) => {
-            return (
-              <StickerBox
-                id={index.toString()}
-                ref={ref}
-                key={index}
-                onClick={_onClick}
-              >
-                <Image shape="test" size="110px" src={value}></Image>
-                <input value={index} />
-              </StickerBox>
-            );
-          })}
+          <div ref={ref}>
+            {/* {stickerList.map((value, index) => {
+              return (
+                // -> div
+                <StickerBox
+                  id={index.toString()}
+                  key={index}
+                  onClick={_onClick}
+                >
+                  <Image shape="test" size="110px" src={value}></Image>
+                </StickerBox>
+              );
+            })} */}
+          </div>
         </React.Fragment>
       );
     } else if (index === 3) {
