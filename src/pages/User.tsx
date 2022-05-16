@@ -65,6 +65,8 @@ const User = () => {
   const [auth, setAuth] = useState<Payload>(initPayload);
   const [state, setState] = useState(userState.user);
   const [group, setGroup] = useState<Array<groupid>>(initGroups);
+  const [following, setFollowing] = useState();
+  const [follower, setFollower] = useState();
 
   useEffect(() => {
     //get user auth
@@ -104,6 +106,14 @@ const User = () => {
     partyAxios.getJoinedParty(param.userId).then((res) => {
       setGroup(res.data.groups);
     });
+
+    //set FollowList
+    userAxios.getFollowUser(param.userId, "follower").then((res) => {
+      setFollower(res.data);
+    });
+    userAxios.getFollowUser(param.userId, "following").then((res) => {
+      setFollowing(res.data);
+    });
   }, []);
 
   // paint user proflie or otherUser Profile
@@ -121,6 +131,8 @@ const User = () => {
           auth={auth}
           user={state}
           uid={param.userId}
+          follower={follower}
+          following={following}
         ></MyInfo>
       </React.Fragment>
     );

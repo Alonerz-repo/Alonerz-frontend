@@ -6,38 +6,44 @@ import { useNavigate } from "react-router-dom";
 import chatIcon from "../assets/header/1.svg";
 import userAxios from "../axios/userAxios";
 
-const MyInfo = ({ auth, user, uid, group }: any) => {
+const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
   const userInfo = user;
   const [myauth, setMyauth] = useState(auth);
-
   const navigate = useNavigate();
+
   useEffect(() => {
     setMyauth(auth);
   }, [auth]);
+
+  useEffect(() => {
+    console.log("hello follow");
+  }, []);
+
   const goToModify = () => {
     navigate("/user/edit");
   };
+
   const goTochat = () => {
     console.log("hello chat");
   };
+
   const setFollow = () => {
-    userAxios.followUser(uid).then((res) => {
+    userAxios.setFollowUser(uid).then((res) => {
       window.alert("follow!");
     });
   };
+
   const setBlock = async () => {
     console.log("hello block!");
     await userAxios.blockUser(uid).then((res) => {
       window.alert("block!!");
     });
   };
+
   const viewfollow = (isfollow: string) => {
-    console.log(isfollow);
-    userAxios.getFollowUser(uid, isfollow).then((res) => {
-      console.log("sucess viewfollow");
-      console.log(res.data);
-    });
+    navigate("follow", { state: { following, isfollow, follower } });
   };
+
   return (
     <React.Fragment>
       <Grid>
@@ -72,13 +78,13 @@ const MyInfo = ({ auth, user, uid, group }: any) => {
           <Text>{userInfo.point}</Text>
         </Grid>
         <Grid>
-          <div onClick={() => viewfollow("follower")}>
+          <div onClick={() => viewfollow("following")}>
             <Text>follow</Text>
             <Text>{userInfo.follower}</Text>
           </div>
         </Grid>
         <Grid display="flex" flexFlow="column wrap">
-          <div onClick={() => viewfollow("following")}>
+          <div onClick={() => viewfollow("follower")}>
             <Text>follower</Text>
             <Text>{userInfo.following}</Text>
           </div>

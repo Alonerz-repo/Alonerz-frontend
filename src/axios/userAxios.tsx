@@ -2,6 +2,7 @@ import { api, instanse } from "../utils/api";
 import { errorHandler, getHeaders, getUrl } from "../utils/api";
 import axios from "axios";
 import cookie from "../utils/cookie";
+import { kakaoRedirectUrl } from "../utils/config";
 
 export const userState = {
   user: {
@@ -65,7 +66,7 @@ const userAxios = {
     return data.err ? errorHandler(data) : data;
   },
 
-  followUser: async (userId: any) => {
+  setFollowUser: async (userId: any) => {
     const url = getUrl(`/api/follows/${userId}`);
     const headers = getHeaders();
     const body = {};
@@ -97,6 +98,41 @@ const userAxios = {
       .then((res) => res)
       .catch((err) => err.response.data);
     return data.err ? errorHandler(data) : data;
+  },
+
+  getBlockList: async () => {
+    const url = getUrl("/api/blocks");
+    const headers = getHeaders();
+    const data = await axios
+      .get(url, { headers })
+      .then((res) => res)
+      .catch((err) => err.response.data);
+    return data.err ? errorHandler(data) : data;
+  },
+
+  logout: async () => {
+    const url = getUrl("/api/");
+    const headers = getHeaders();
+    const data = await axios
+      .delete(url, { headers })
+      .then((res) => res)
+      .catch((err) => err.response.data);
+
+    const removeCookies = () => {
+      cookie.remove("accessToken");
+      cookie.remove("refreshToken");
+      const user = {
+        userId: -1,
+        kakaoId: "",
+        nickname: "",
+      };
+      return user;
+    };
+    return data.err ? errorHandler(data) : removeCookies();
+  },
+
+  login: () => {
+    return (window.location.href = kakaoRedirectUrl);
   },
 };
 

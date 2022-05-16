@@ -1,20 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid, Input, Button } from "../elements";
-import { kakaoRedirectUrl } from "../utils/config";
-import { useAppDispatch, useAppSelect } from "../store/config.hook";
+import { Grid, Button } from "../elements";
+import userAxios from "../axios/userAxios";
 
 const Login = () => {
-  const user = useAppSelect((state) => state.user);
-
-  const heykakao = () => {
-    window.location.href = kakaoRedirectUrl;
-  };
   return (
     <React.Fragment>
       <Grid>
         <Position>
-          <Button _onClick={heykakao}>카카오 로그인</Button>
+          <Button _onClick={userAxios.login}>카카오 로그인</Button>
         </Position>
       </Grid>
     </React.Fragment>

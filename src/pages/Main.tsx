@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
-import cookie from "../utils/cookie";
-import { errorHandler, getHeaders, getUrl } from "../utils/api";
 import { Grid, Button, Text } from "../elements";
 import Card from "../components/Card";
 import partyList, { initialState } from "../axios/partyList";
@@ -27,12 +24,13 @@ const Main = () => {
   const [groups, setGroups] = React.useState<any>(initialState);
 
   useEffect(() => {
+    //get user auth
     const injeong = async () => {
       const auth = await userAxios.authUser().then((res) => {
         const data = res;
         switch (data.statusCode) {
           case 401:
-            return console.log("401 메인 페이지에선 로그인 안해도됨 ^^");
+            return userAxios.login();
           case 403:
             return userAxios.refreshUser();
 
@@ -43,6 +41,8 @@ const Main = () => {
       setAuth(auth.auth);
     };
     injeong();
+
+    //get user groups list
     const getParty = async () => {
       setGroups(await partyList.getPartyList());
     };
@@ -65,20 +65,11 @@ const Main = () => {
   };
 
   const onLogout = async () => {
-    const url = getUrl("/api/auth/logout");
-    const headers = getHeaders();
-    const data = await axios
-      .delete(url, { headers })
-      .then((response) => response.data)
-      .catch((error) => error.response.data);
-
-    const removeCookies = () => {
-      cookie.remove("accessToken");
-      cookie.remove("refreshToken");
-      setAuth(initPayload);
-    };
-
-    return data.error ? errorHandler(data) : removeCookies();
+    //put logout
+    await userAxios.logout().then((res) => {
+      const data: any = res;
+      setAuth(data);
+    });
   };
 
   return (

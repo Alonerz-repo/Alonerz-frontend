@@ -7,35 +7,28 @@ const url = process.env.REACT_APP_API_URL;
 
 export interface userInfo {
   userId: number | null;
-  point?: number;
-  following?: number;
-  follower?: number;
   needProfile?: boolean;
   nickname?: string;
-  profileImageUrl?: string;
-  year?: string;
-  career?: string;
-  description?: string;
-  careerGroupName?: string;
-  careerId?: string;
-  careerItemName?: string;
 }
 
 const initialState: userInfo = {
   userId: null,
-  point: 0,
-  following: 0,
-  follower: 0,
   needProfile: false,
   nickname: "",
-  profileImageUrl: "",
-  career: "",
-  description: "",
-  year: "",
-  careerGroupName: "",
-  careerId: "",
-  careerItemName: "",
 };
+
+export const loginAuth = createAsyncThunk(
+  "userSlice/loginAuth",
+  async (_, thunkAPI) => {
+    const response = await userAxios
+      .authUser()
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => err.response.data);
+    return response;
+  }
+);
 
 // export const auth = createAsyncThunk("userSlice/auth", async (_, thunkAPI) => {
 //   try {
@@ -169,6 +162,10 @@ export const userSlice = createSlice({
       })
       .addCase(getUserAxios.fulfilled, (state, action) => {
         state = action.payload.user;
+        return state;
+      })
+      .addCase(loginAuth.fulfilled, (state, action) => {
+        state = action.payload.auth;
         return state;
       });
     // .addCase(auth.fulfilled, (state, action) => {

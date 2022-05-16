@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
@@ -13,6 +13,11 @@ import PartyList from "./pages/PartyList";
 import UserConfig from "./pages/ConfigList";
 import ProfileEdit from "./pages/ProflieEdit";
 import ConsentForm from "./pages/ConsentForm";
+import BlockList from "./pages/BlockList";
+import FollowLIst from "./pages/FollowList";
+
+import { loginAuth } from "./store/slices/userSlice";
+import { useAppDispatch } from "./store/config";
 
 declare global {
   interface Window {
@@ -21,6 +26,10 @@ declare global {
 }
 
 function App() {
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(loginAuth());
+  }, []);
   return (
     <div className="App">
       <Container>
@@ -32,8 +41,10 @@ function App() {
             <Route path="/test" element={<Test />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user/:userId" element={<User />} />
+            <Route path="/user/:userId/follow" element={<FollowLIst />} />
             <Route path="/user/config" element={<UserConfig />} />
             <Route path="/user/config/edit" element={<ModifyUser />} />
+            <Route path="/user/config/blocklist" element={<BlockList />} />
             <Route path="/user/edit" element={<ProfileEdit />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate/:groupId" element={<PartyInfo />} />
