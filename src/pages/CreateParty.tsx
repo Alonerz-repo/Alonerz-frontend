@@ -1,28 +1,33 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { partyAxios, GroupInfo } from "../axios/partyAxios";
+import { useParams, useNavigate } from "react-router-dom";
+import { partyAxios } from "../axios/partyAxios";
 import Create from "../components/Create";
+import { useAppSelector } from "../store/config";
 
 const CreateParty = () => {
-  const groupId = useParams().groupId;
-  const [group, setGroup] = React.useState<GroupInfo>(
-    partyAxios.initialState.group
-  );
+  const time = useParams().time;
+  const user = useAppSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (groupId) {
-      const getGroup = async () => {
-        setGroup(await partyAxios.getPartyInfo(parseInt(groupId)));
-      };
-      getGroup();
+    if (!user.userId) {
+      if (window.confirm("로그인이 필요합니다.")) {
+        navigate("/login");
+      } else {
+        navigate("/");
+      }
     }
   }, []);
 
-  if (groupId !== undefined && group.groupId !== -1) {
-    return <Create group={group}></Create>;
-  } else {
-    return <Create group={partyAxios.initialState.group}></Create>;
+  if (time) {
+    return (
+      <Create
+        group={partyAxios.initialState.group}
+        time={parseInt(time)}
+      ></Create>
+    );
   }
+  return <Create group={partyAxios.initialState.group}></Create>;
 };
 
 export default CreateParty;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Grid, Button, Text } from "../elements";
@@ -16,39 +16,43 @@ const Main = () => {
   const auth = useAuth();
 
   useEffect(() => {
-    if (userInfo.statusCode === 401) {
-      console.log("로그인 필요!");
-    }
-  }, [userInfo]);
-
-  useEffect(() => {
-    //get user auth and login maintain
-    if (userInfo.userId === -1) {
-      dispatch(authUser());
-    }
     //get user groups list
+    dispatch(authUser());
     const getParty = async () => {
-      setGroups(await partyList.getPartyList());
+      const data = await partyList.getPartyList();
+      switch (data.statusCode) {
+        case 401:
+          return alert();
+      }
+      setGroups(data);
     };
     getParty();
   }, []);
 
-  // navigate
   const goToLink = (num: number) => {
     switch (num) {
       case 1:
         return navigate("/login");
       case 2:
         return navigate(`/user/${userInfo.userId}`);
-      case 3:
-        return navigate("/edit/partyInfo");
+      case 10:
+        return navigate(`/create/partyInfo/${num}`);
       case 4:
-        return navigate("/list");
+        return navigate("/list/lunch");
+      case 5:
+        return navigate("/list/dinner");
+      case 17:
+        return navigate(`/create/partyInfo/${num}`);
       default:
         return navigate("/");
     }
   };
   if (auth === null) return <></>;
+
+  const onLogout = async () => {
+    //put logout
+    dispatch(kakaoLogout());
+  };
 
   return (
     <React.Fragment>
@@ -59,9 +63,7 @@ const Main = () => {
         {userInfo.userId > 0 && (
           <Button _onClick={() => goToLink(2)}>프로필</Button>
         )}
-        {userInfo.userId > 0 && (
-          <Button _onClick={() => dispatch(kakaoLogout())}>로그아웃</Button>
-        )}
+        {userInfo.userId > 0 && <Button _onClick={onLogout}>로그아웃</Button>}
         {userInfo.userId > 0 && (
           <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
         )}
@@ -90,7 +92,7 @@ const Main = () => {
             <Text type="title">🍖 아침&점심 파티 </Text>
             <Text>10:00 ~ 16:00</Text>
             <Grid isFlex absolute="margin-top:25px">
-              <PartyButton bg="#46a6fe" onClick={() => goToLink(3)}>
+              <PartyButton bg="#46a6fe" onClick={() => goToLink(10)}>
                 개설하기
               </PartyButton>
               <PartyButton bg="#46a6fe" onClick={() => goToLink(4)}>
@@ -106,10 +108,10 @@ const Main = () => {
             </Text>
             <Text customize="color: antiquewhite;">17:00 ~ 00:00</Text>
             <Grid isFlex absolute="margin-top:25px">
-              <PartyButton bg="#7F31FF" onClick={() => goToLink(3)}>
+              <PartyButton bg="#7F31FF" onClick={() => goToLink(17)}>
                 개설하기
               </PartyButton>
-              <PartyButton bg="#7F31FF" onClick={() => goToLink(4)}>
+              <PartyButton bg="#7F31FF" onClick={() => goToLink(5)}>
                 참가하기
               </PartyButton>
             </Grid>

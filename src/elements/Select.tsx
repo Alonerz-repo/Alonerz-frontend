@@ -2,10 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 interface Props {
-  value?: number;
+  value?: number | string;
   onChange(e: any): void;
   width?: string;
   categories: categoryShape[];
+  time?: string | undefined;
 }
 
 interface categoryShape {
@@ -13,15 +14,15 @@ interface categoryShape {
   name: string;
 }
 
-const Select = ({ onChange, value, width, categories }: Props) => {
+const Select = ({ onChange, value, width, categories, time }: Props) => {
   return (
     <React.Fragment>
-      <MySelected width={width} onChange={onChange} value={value}>
+      <MySelected width={width} onChange={onChange} value={value} time={time}>
         {categories.map((c, i) => {
           return (
-            <option value={c.value} key={i}>
+            <MyOption value={c.value} key={i}>
               {c.name}
-            </option>
+            </MyOption>
           );
         })}
       </MySelected>
@@ -31,15 +32,35 @@ const Select = ({ onChange, value, width, categories }: Props) => {
 
 interface MySelectedProps {
   width?: string;
+  time?: string | undefined;
 }
 
-const MySelected = styled.select<MySelectedProps>`
+const MyOption = styled.option`
   background: #eeeeee;
-  border-radius: 15px;
+  text-align: unset;
+  color: black;
+`;
+
+const MySelected = styled.select<MySelectedProps>`
+  /* text-align: center; */
+  background: #eeeeee;
+  border-radius: 20px;
   border: none;
+  outline: 0px;
   width: ${(props) => props.width ?? "100%"};
   height: 44px;
   padding: 0px 20px;
+  background: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 14 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='7' cy='7' r='7' fill='white'/%3E%3C/svg%3E%0A")
+    no-repeat 95% 50%;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  ${(props) =>
+    props.time === "lunch"
+      ? "background-color:#F84C40; color:white;"
+      : props.time === "dinner"
+      ? "background-color:green; color:white;"
+      : ""}
 `;
 
 export default Select;

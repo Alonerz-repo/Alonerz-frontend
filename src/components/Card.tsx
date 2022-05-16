@@ -47,7 +47,7 @@ const Card = ({
       <BackgroundImage onClick={_onClick} src={src}>
         <PartyInfo>
           <div>{title}</div>
-          <div>{`${address} | ${startAt?.getHours()} ~ ${endAt?.getHours()}`}</div>
+          <div>{`${address} | ${startAt?.getHours()}:00 ~ ${endAt?.getHours()}:00`}</div>
         </PartyInfo>
       </BackgroundImage>
     </React.Fragment>
