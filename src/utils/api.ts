@@ -17,7 +17,7 @@ export const errorHandler = (err: ErrorData) => {
 };
 
 // 최원영
-export const baseUrl = `http://localhost:5000`;
+export const baseUrl = process.env.REACT_APP_API_URL;
 export const getUrl = (path: string) => `${baseUrl}${path}`;
 export const getHeaders = () => ({
   Authorization: `Bearer ${cookie.get("accessToken")}`,
