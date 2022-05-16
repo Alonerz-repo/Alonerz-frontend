@@ -9,7 +9,9 @@ const ConfigList = () => {
   const click = (id: number) => {
     switch (id) {
       case 1:
-        return navigate("/user/config/edit");
+        return navigate("edit");
+      case 5:
+        return navigate("blocklist");
       default:
         return navigate("/");
     }
@@ -25,23 +27,23 @@ const ConfigList = () => {
           <Text margin={margin}>내정보</Text>
           <Line></Line>
         </Position>
-        <Position onClick={() => click(2)}>
+        <Position onClick={() => click(3)}>
           <Text margin={margin}>푸시알림</Text>
           <Line></Line>
         </Position>
-        <Position onClick={() => click(2)}>
+        <Position onClick={() => click(4)}>
           <Text margin={margin}>리뷰관리</Text>
           <Line></Line>
         </Position>
-        <Position onClick={() => click(2)}>
+        <Position onClick={() => click(5)}>
           <Text margin={margin}>차단정보</Text>
           <Line></Line>
         </Position>
-        <Position onClick={() => click(2)}>
+        <Position onClick={() => click(6)}>
           <Text margin={margin}>공지사항</Text>
           <Line></Line>
         </Position>
-        <Position onClick={() => click(2)}>
+        <Position onClick={() => click(7)}>
           <Text margin={margin}>버전정보</Text>
           <Line></Line>
         </Position>

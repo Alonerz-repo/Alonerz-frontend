@@ -1,8 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import cookie from '../../utils/cookie';
-import axios from 'axios';
-
-const url = process.env.REACT_APP_API_URL;
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import cookie from "../../utils/cookie";
+import userAxios from "../../axios/userAxios";
 
 interface userInfo {
   userId: number | null;
@@ -26,47 +24,33 @@ const initialState: userInfo = {
   following: 0,
   follower: 0,
   needProfile: false,
-  nickname: '',
-  profileImageUrl: '',
-  career: '',
-  description: '',
-  year: '',
-  careerGroupName: '',
-  careerId: '',
-  careerItemName: '',
+  nickname: "",
+  profileImageUrl: "",
+  career: "",
+  description: "",
+  year: "",
+  careerGroupName: "",
+  careerId: "",
+  careerItemName: "",
 };
 
+export const getfollowlist = createAsyncThunk(
+  "getUser/getOUserAxios",
+  async (user: any, thunkAPI) => {
+    const { id, query } = user;
+    userAxios.getFollowUser(id, query);
+  }
+);
+
 export const getOUserAxios = createAsyncThunk(
-  'user/getOUserAxios',
-  async (userId: any, thunkAPI) => {
-    try {
-      const token = cookie.get('accessToken');
-      const response = await axios({
-        method: 'get',
-        url: `${url}/api/users/${userId}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((res) => {
-        return res.data;
-      });
-      return response;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue(err);
-    }
-  },
+  "user/getOUserAxios",
+  async (userId: any, thunkAPI) => {}
 );
 
 export const getUserSlice = createSlice({
-  name: 'getUser',
+  name: "getUser",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(getOUserAxios.fulfilled, (state, action) => {
-      return (state = action.payload.user);
-    });
-  },
 });
 
 export default getUserSlice;

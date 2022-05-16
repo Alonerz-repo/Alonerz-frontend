@@ -1,69 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid, Text, Image, Button } from "../elements";
 import Card from "../components/Card";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { getUserAxios, setFollow } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
-import { authAxios } from "../axios/authAxios";
+import chatIcon from "../assets/header/1.svg";
+import userAxios from "../axios/userAxios";
 
-import cookie from "../utils/cookie";
-import axios from "axios";
-
-const MyInfo = () => {
-  const userInfo = useAppSelect((state) => state.user);
-  const dispatch = useAppDispatch();
+const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
+  const userInfo = user;
+  const [myauth, setMyauth] = useState(auth);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const action = async () => {
-      await authAxios.auth().then((res) => {
-        const stateCode = res.statusCode;
-        if (stateCode) {
-          switch (stateCode) {
-            case 401:
-              return navigate("/login");
-            case 403:
-              const token = cookie.get("accessToken");
-              const token2 = cookie.get("refreshToken");
-              const url = process.env.REACT_APP_API_URL;
-              axios({
-                method: "",
-                url: `${url}/api/auth/reissue`,
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-                data: {
-                  refreshToken: token2,
-                },
-              }).then((res) => {
-                console.log("error 403 is ", res);
-                return res;
-              });
-              return 0;
-            default:
-              return null;
-          }
-        } else {
-          dispatch(getUserAxios(userInfo.userId));
-        }
-      });
-    };
-    action();
+    setMyauth(auth);
+  }, [auth]);
+
+  useEffect(() => {
+    console.log("hello follow");
   }, []);
-  const follow = () => {
-    try {
-      dispatch(setFollow(userInfo.userId));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
   const goToModify = () => {
     navigate("/user/edit");
   };
-  const goToConfig = () => {
-    navigate("/user/config");
+
+  const goTochat = () => {
+    console.log("hello chat");
   };
+
+  const setFollow = () => {
+    userAxios.setFollowUser(uid).then((res) => {
+      window.alert("follow!");
+    });
+  };
+
+  const setBlock = async () => {
+    console.log("hello block!");
+    await userAxios.blockUser(uid).then((res) => {
+      window.alert("block!!");
+    });
+  };
+
+  const viewfollow = (isfollow: string) => {
+    navigate("follow", { state: { following, isfollow, follower } });
+  };
+
   return (
     <React.Fragment>
       <Grid>
@@ -93,29 +73,72 @@ const MyInfo = () => {
         </Position>
       </Grid>
       <Grid isFlex>
-        <Div>
-          <Mytxt>참가횟수</Mytxt>
-          <Mytxt style={{ padding: "10px" }}>10</Mytxt>
-        </Div>
-        <Div>
-          <Mytxt>팔로우</Mytxt>
-          <Mytxt style={{ padding: "10px" }}>{userInfo.following}</Mytxt>
-        </Div>
-        <Div>
-          <Mytxt>팔로워</Mytxt>
-          <Mytxt style={{ padding: "10px" }}>{userInfo.follower}</Mytxt>
-        </Div>
-        <Button _onClick={follow}> 팔로우 </Button>
-      </Grid>
-      <Button _onClick={goToModify}>내정보 수정</Button>
-      <Button _onClick={goToConfig}>설정창</Button>
+        <Grid display="flex" flexFlow="column wrap">
+          <Text>참가회수</Text>
+          <Text>{userInfo.point}</Text>
+        </Grid>
+        <Grid>
+          <div onClick={() => viewfollow("following")}>
+            <Text>follow</Text>
+            <Text>{userInfo.follower}</Text>
+          </div>
+        </Grid>
+        <Grid display="flex" flexFlow="column wrap">
+          <div onClick={() => viewfollow("follower")}>
+            <Text>follower</Text>
+            <Text>{userInfo.following}</Text>
+          </div>
+        </Grid>
+        {myauth.userId.toString() === uid && (
+          <Button
+            _onClick={goToModify}
+            customize="border: 2px solid #F5F5F5; background: none; border-radius: 30px; padding: 15px 30px;"
+          >
+            내정보 수정
+          </Button>
+        )}
 
-      <Div></Div>
-      <Text>내가 참가한 파티...</Text>
-      <Grid isFlex>
-        <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
-        <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
-        <Card title="s" address="asd" limit={4} headcount={4} isFlex></Card>
+        {myauth.userId.toString() !== uid && (
+          <div onClick={goTochat}>
+            <Image size="44px" src={chatIcon}></Image>
+          </div>
+        )}
+        {myauth.userId.toString() !== uid && (
+          <Button
+            _onClick={setFollow}
+            customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
+          >
+            팔로우
+          </Button>
+        )}
+        {myauth.userId.toString() !== uid && (
+          <Button
+            _onClick={setBlock}
+            customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
+          >
+            차단
+          </Button>
+        )}
+      </Grid>
+
+      <Div style={{ border: "2px solid #F5F5F5", margin: "38px 0px" }}></Div>
+      <Text customize="margin: 0px 0px 23px 20px; font-weight: bold;">
+        내가 참가한 파티...
+      </Text>
+      <Grid isFlex padding="20px">
+        {group.map((value: any, index: number) => {
+          return (
+            <Card
+              key={index}
+              src={value.imageUrl}
+              title={value.title}
+              address={value.placeName}
+              limit={value.limit}
+              headcount={value.join}
+              isFlex
+            ></Card>
+          );
+        })}
       </Grid>
     </React.Fragment>
   );
@@ -130,14 +153,9 @@ const A = styled.div`
   right: -53%;
 `;
 
-const Div = styled.div`
-  display: flex;
-  /* flex-direction: column; */
-  align-items: center;
-  background: skyblue;
-`;
+const Div = styled.div``;
 
-const Mytxt = styled.text``;
+const Mytxt = styled.p``;
 const Position = styled.div``;
 
 export default MyInfo;
