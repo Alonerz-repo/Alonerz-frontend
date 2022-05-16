@@ -8,7 +8,7 @@ export const userState = {
   user: {
     userId: -1,
     nickname: "0",
-    profileImageUrl: null,
+    profileImageUrl: "",
     careerId: null,
     year: null,
     description: null,
@@ -17,6 +17,30 @@ export const userState = {
     point: 0,
   },
 };
+interface userInterface {
+  userId: number;
+  nickname: number;
+  profileImageUrl: string;
+  careerId: number;
+  year: number;
+  description: string;
+  following: number;
+  follower: number;
+  point: number;
+}
+const appclone: userInterface[] = [
+  {
+    userId: -1,
+    nickname: 0,
+    profileImageUrl: "",
+    careerId: 1,
+    year: 0,
+    description: "",
+    following: 0,
+    follower: 0,
+    point: 0,
+  },
+];
 
 const userAxios = {
   getUser: async (user?: any) => {
@@ -37,8 +61,8 @@ const userAxios = {
         return res.data;
       })
       .catch((err) => err.response.data);
-
-    return data.err ? errorHandler(data) : data;
+    console.log("authUser data", data);
+    return data;
   },
 
   refreshUser: async () => {
@@ -95,7 +119,11 @@ const userAxios = {
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
-      .then((res) => res)
+      .then((res) => {
+        console.log(res.data.users);
+
+        return res;
+      })
       .catch((err) => err.response.data);
     return data.err ? errorHandler(data) : data;
   },
@@ -111,7 +139,7 @@ const userAxios = {
   },
 
   logout: async () => {
-    const url = getUrl("/api/");
+    const url = getUrl("/api/auth/logout");
     const headers = getHeaders();
     const data = await axios
       .delete(url, { headers })

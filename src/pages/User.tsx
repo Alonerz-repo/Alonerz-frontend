@@ -65,8 +65,6 @@ const User = () => {
   const [auth, setAuth] = useState<Payload>(initPayload);
   const [state, setState] = useState(userState.user);
   const [group, setGroup] = useState<Array<groupid>>(initGroups);
-  const [following, setFollowing] = useState();
-  const [follower, setFollower] = useState();
 
   useEffect(() => {
     //get user auth
@@ -91,8 +89,11 @@ const User = () => {
       setAuth(auth.auth);
 
       // get user axios or otherUser axios
+
       if (auth.auth.userId === param.userId) {
-        userAxios.getUser().then((res) => setState(res.user));
+        userAxios.getUser().then((res) => {
+          setState(res.user);
+        });
       } else {
         userAxios.otherUser(param.userId).then((res) => {
           setState(res.user);
@@ -105,14 +106,6 @@ const User = () => {
     //get user infomation
     partyAxios.getJoinedParty(param.userId).then((res) => {
       setGroup(res.data.groups);
-    });
-
-    //set FollowList
-    userAxios.getFollowUser(param.userId, "follower").then((res) => {
-      setFollower(res.data);
-    });
-    userAxios.getFollowUser(param.userId, "following").then((res) => {
-      setFollowing(res.data);
     });
   }, []);
 
@@ -131,8 +124,6 @@ const User = () => {
           auth={auth}
           user={state}
           uid={param.userId}
-          follower={follower}
-          following={following}
         ></MyInfo>
       </React.Fragment>
     );
