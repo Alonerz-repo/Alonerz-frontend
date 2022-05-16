@@ -34,7 +34,7 @@ const partyList = {
       .get(url, { headers })
       .then((response) => response.data)
       .catch((error) => error.response.data);
-
+    console.log(data);
     return data.error ? errorHandler(data) : data.groups;
   },
 
