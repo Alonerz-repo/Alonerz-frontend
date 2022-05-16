@@ -51,7 +51,6 @@ const userAxios = {
     const data = await axios
       .post(url, body)
       .then((res) => {
-        console.log(res);
         const { accessToken, refreshToken, needProfile } = res.data;
 
         cookie.set("accessToken", accessToken);
