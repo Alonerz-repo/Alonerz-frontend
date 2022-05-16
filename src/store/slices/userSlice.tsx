@@ -43,33 +43,6 @@ export const authUser = createAsyncThunk(
   }
 );
 
-export const kakaoLogin = createAsyncThunk(
-  "userSlice/kakaoLogin",
-  async (id: any, thunkAPI) => {
-    try {
-      const response = await axios({
-        method: "post",
-        url: `${url}/api/auth/login`,
-        data: {
-          kakaoId: id,
-        },
-      }).then((res) => {
-        const { accessToken, refreshToken, isSignup } = res.data;
-        cookie.set("accessToken", accessToken);
-        cookie.set("refreshToken", refreshToken);
-
-        return res.data;
-      });
-      return response;
-    } catch (err) {
-      console.log(err);
-      debugger;
-
-      return thunkAPI.rejectWithValue(err);
-    }
-  }
-);
-
 export const kakaoLogout = createAsyncThunk(
   "userSlice/kakaoLogout",
   async (_, thunkAPI) => {
@@ -101,18 +74,6 @@ export const setUserAxios = createAsyncThunk(
           year: user.year,
         },
       });
-      return response;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue(err);
-    }
-  }
-);
-export const getUserAxios = createAsyncThunk(
-  "user/getUserAxios",
-  async (_, thunkAPI) => {
-    try {
-      const response = await userAxios.getUser().then((res) => res);
       return response;
     } catch (err) {
       console.log(err);
@@ -157,13 +118,6 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(kakaoLogin.fulfilled, (state, action) => {
-        console.log("hello extraReducer!");
-      })
-      .addCase(getUserAxios.fulfilled, (state, action) => {
-        state = action.payload.user;
-        return state;
-      })
       .addCase(authUser.fulfilled, (state, action) => {
         state = action.payload;
         return state;

@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Grid, Text, Image, Button } from "../elements";
 import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
 import chatIcon from "../assets/header/1.svg";
 import userAxios from "../axios/userAxios";
+import useUser from "../useCustom/useUser";
 
-const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
-  const userInfo = user;
-  const [myauth, setMyauth] = useState(auth);
+const MyInfo = ({ uid, group }: any) => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setMyauth(auth);
-  }, [auth]);
-
-  const goToModify = () => {
-    navigate("/user/edit");
-  };
+  const user = useUser(uid);
 
   const goTochat = () => {
     console.log("hello chat");
@@ -36,8 +28,8 @@ const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
     });
   };
 
-  const viewfollow = (isfollow: string) => {
-    navigate("follow", { state: { isfollow, uid } });
+  const goToFollow = (isfollow: string) => {
+    navigate(`follow`, { state: { isfollow, uid } });
   };
 
   return (
@@ -57,13 +49,13 @@ const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
         <Position style={{ position: "absolute", top: "1px" }}>
           <Grid display="flex" flexFlow="column wrap">
             <Mytxt style={{ fontSize: "13px", fontWeight: "bold" }}>
-              {userInfo.careerGroupName}&{userInfo.careerItemName}
+              직군&직업
             </Mytxt>
             <Mytxt style={{ fontSize: "20px", color: "#F24141" }}>
-              {userInfo.careerItemName} {userInfo.year}
+              직업 {user.year ? user.year : "연차"}
             </Mytxt>
             <Mytxt style={{ margin: "0px 30px" }}>
-              {userInfo.nickname}입니다.
+              {user.nickname} 입니다.
             </Mytxt>
           </Grid>
         </Position>
@@ -71,35 +63,35 @@ const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
       <Grid isFlex>
         <Grid display="flex" flexFlow="column wrap">
           <Text>참가회수</Text>
-          <Text>{userInfo.point}</Text>
+          <Text>{user.point}</Text>
         </Grid>
         <Grid>
-          <div onClick={() => viewfollow("follower")}>
+          <div onClick={() => goToFollow("following")}>
             <Text>follow</Text>
-            <Text>{userInfo.follower}</Text>
+            <Text>{user.following}</Text>
           </div>
         </Grid>
         <Grid display="flex" flexFlow="column wrap">
-          <div onClick={() => viewfollow("following")}>
+          <div onClick={() => goToFollow("follower")}>
             <Text>follower</Text>
-            <Text>{userInfo.following}</Text>
+            <Text>{user.follower}</Text>
           </div>
         </Grid>
-        {myauth.userId.toString() === uid && (
+        {user.userId.toString() === uid && (
           <Button
-            _onClick={goToModify}
+            _onClick={() => navigate("/user/edit")}
             customize="border: 2px solid #F5F5F5; background: none; border-radius: 30px; padding: 15px 30px;"
           >
             내정보 수정
           </Button>
         )}
 
-        {myauth.userId.toString() !== uid && (
+        {user.userId.toString() !== uid && (
           <div onClick={goTochat}>
             <Image size="44px" src={chatIcon}></Image>
           </div>
         )}
-        {myauth.userId.toString() !== uid && (
+        {user.userId.toString() !== uid && (
           <Button
             _onClick={setFollow}
             customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
@@ -107,7 +99,7 @@ const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
             팔로우
           </Button>
         )}
-        {myauth.userId.toString() !== uid && (
+        {user.userId.toString() !== uid && (
           <Button
             _onClick={setBlock}
             customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"

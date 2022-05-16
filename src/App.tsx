@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Main from "./pages/Main";
@@ -17,7 +17,7 @@ import BlockList from "./pages/BlockList";
 import FollowLIst from "./pages/FollowList";
 
 import { authUser } from "./store/slices/userSlice";
-import { useAppDispatch } from "./store/config";
+import { useAppDispatch, useAppSelect } from "./store/config.hook";
 
 declare global {
   interface Window {
@@ -30,6 +30,7 @@ function App() {
   useEffect(() => {
     dispatch(authUser());
   }, []);
+
   return (
     <div className="App">
       <Container>

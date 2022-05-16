@@ -6,12 +6,14 @@ import Card from "../components/Card";
 import partyList, { initialState } from "../axios/partyList";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { authUser, kakaoLogout } from "../store/slices/userSlice";
+import useAuth from "../useCustom/useAuth";
 
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const userInfo = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
+  const auth = useAuth();
 
   useEffect(() => {
     if (userInfo.statusCode === 401) {
@@ -46,6 +48,7 @@ const Main = () => {
         return navigate("/");
     }
   };
+  if (auth === null) return <></>;
 
   return (
     <React.Fragment>

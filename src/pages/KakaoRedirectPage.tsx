@@ -1,33 +1,17 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
-import { useAppDispatch } from "../store/config";
-import { kakaoLogin } from "../store/slices/userSlice";
 import { useNavigate } from "react-router-dom";
+import userAxios from "../axios/userAxios";
 
 const Redirect = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const kakaoId = new URL(window.location.href).searchParams.get("kakaoId");
-    try {
-      dispatch(kakaoLogin(kakaoId)).then((res) => {
-        const isSignup = res.payload.needProfile;
-
-        switch (isSignup) {
-          case true:
-            return navigate("/");
-          case false:
-            return navigate("/");
-          default:
-            window.alert("ERROR!");
-            return navigate("/login");
-        }
-      });
-    } catch (err) {
-      console.log(err);
-      debugger;
-    }
+    const login = async () => {
+      const kakaoId = new URL(window.location.href).searchParams.get("kakaoId");
+      const needProfile = await userAxios.kakaoLogin(kakaoId);
+      return needProfile ? navigate("/") : navigate("/");
+    };
+    login();
   }, []);
   return (
     <React.Fragment>

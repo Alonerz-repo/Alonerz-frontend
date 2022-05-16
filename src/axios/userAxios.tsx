@@ -43,13 +43,23 @@ const appclone: userInterface[] = [
 ];
 
 const userAxios = {
-  getUser: async (user?: any) => {
-    const response = await instanse
-      .get("/users")
-      .then((res) => res.data)
-      .catch((err) => err.response.data);
+  kakaoLogin: async (id: any) => {
+    const url = getUrl("/api/auth/login");
+    const body = {
+      kakaoId: id,
+    };
+    const data = await axios
+      .post(url, body)
+      .then((res) => {
+        console.log(res);
+        const { accessToken, refreshToken, needProfile } = res.data;
 
-    return response;
+        cookie.set("accessToken", accessToken);
+        cookie.set("refreshToken", refreshToken);
+        return needProfile;
+      })
+      .catch((err) => err.response.data);
+    return data;
   },
 
   authUser: async (user?: any) => {
@@ -61,7 +71,6 @@ const userAxios = {
         return res.data;
       })
       .catch((err) => err.response.data);
-    console.log("authUser data", data);
     return data;
   },
 
@@ -76,10 +85,20 @@ const userAxios = {
       .post(url, body, { headers })
       .then((res) => res.data)
       .catch((err) => err.response.data);
-    return data.err ? errorHandler(data) : data;
+    return data;
   },
 
-  otherUser: async (userId: any) => {
+  setUser: async (user: any) => {
+    const url = getUrl("/api/users");
+    const headers = getHeaders();
+    const data = await axios
+      .patch(url, user, { headers })
+      .then((res) => res)
+      .catch((err) => err.response.data);
+    return data;
+  },
+
+  getUser: async (userId: any) => {
     const url = getUrl(`/api/users/${userId}`);
     const headers = getHeaders();
     const data = await axios
@@ -87,7 +106,7 @@ const userAxios = {
       .then((res) => res.data)
       .catch((err) => err.response.data);
 
-    return data.err ? errorHandler(data) : data;
+    return data;
   },
 
   setFollowUser: async (userId: any) => {
@@ -100,7 +119,7 @@ const userAxios = {
         return res;
       })
       .catch((err) => err.response.data);
-    return data.err ? errorHandler(data) : data;
+    return data;
   },
 
   blockUser: async (userId: any) => {
@@ -111,7 +130,7 @@ const userAxios = {
       .put(url, body, { headers })
       .then((res) => res)
       .catch((err) => err.response.data);
-    return data.err ? errorHandler(data) : data;
+    return data;
   },
 
   getFollowUser: async (userId: any, follow: string) => {
@@ -119,13 +138,9 @@ const userAxios = {
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
-      .then((res) => {
-        console.log(res.data.users);
-
-        return res;
-      })
+      .then((res) => res)
       .catch((err) => err.response.data);
-    return data.err ? errorHandler(data) : data;
+    return data;
   },
 
   getBlockList: async () => {
@@ -135,7 +150,7 @@ const userAxios = {
       .get(url, { headers })
       .then((res) => res)
       .catch((err) => err.response.data);
-    return data.err ? errorHandler(data) : data;
+    return data;
   },
 
   logout: async () => {
@@ -156,7 +171,7 @@ const userAxios = {
       };
       return user;
     };
-    return data.err ? errorHandler(data) : removeCookies();
+    return data.err ? data : removeCookies();
   },
 
   login: () => {
