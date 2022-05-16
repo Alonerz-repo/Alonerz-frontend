@@ -6,15 +6,17 @@ import userAxios from "../../axios/userAxios";
 const url = process.env.REACT_APP_API_URL;
 
 export interface userInfo {
-  userId: number | null;
+  userId: number;
   needProfile?: boolean;
   nickname?: string;
+  kakaoId?: string;
 }
 
 const initialState: userInfo = {
-  userId: null,
+  userId: -1,
   needProfile: false,
   nickname: "",
+  kakaoId: "",
 };
 
 export const loginAuth = createAsyncThunk(
@@ -30,15 +32,15 @@ export const loginAuth = createAsyncThunk(
   }
 );
 
-// export const auth = createAsyncThunk("userSlice/auth", async (_, thunkAPI) => {
-//   try {
-//     const response = userAxios.authUser().then((res) => res);
-//     return response;
-//   } catch (err) {
-//     console.log(err);
-//     return thunkAPI.rejectWithValue(err);
-//   }
-// });
+export const auth = createAsyncThunk("userSlice/auth", async (_, thunkAPI) => {
+  try {
+    const response = userAxios.authUser().then((res) => res);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return thunkAPI.rejectWithValue(err);
+  }
+});
 
 export const kakaoLogin = createAsyncThunk(
   "userSlice/kakaoLogin",
@@ -70,16 +72,13 @@ export const kakaoLogin = createAsyncThunk(
 export const kakaoLogout = createAsyncThunk(
   "userSlice/kakaoLogout",
   async (_, thunkAPI) => {
-    try {
-      console.log("hello kakaoLogout!");
-      const response = await axios({}).then((res) => {
-        console.log(res);
-      });
-      return response;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue(err);
-    }
+    const response = await userAxios
+      .logout()
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => err.response.data);
+    return response;
   }
 );
 
@@ -167,12 +166,16 @@ export const userSlice = createSlice({
       .addCase(loginAuth.fulfilled, (state, action) => {
         state = action.payload.auth;
         return state;
+      })
+      .addCase(auth.fulfilled, (state, action) => {
+        console.log("action", action.payload);
+        state = action.payload.auth;
+        return state;
+      })
+      .addCase(kakaoLogout.fulfilled, (state, action) => {
+        state = action.payload;
+        return state;
       });
-    // .addCase(auth.fulfilled, (state, action) => {
-    //   state.userId = action.payload.userId;
-    //   state.nickname = action.payload.nickname;
-    //   return state;
-    // });
   },
 });
 

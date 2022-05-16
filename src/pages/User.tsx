@@ -91,8 +91,11 @@ const User = () => {
       setAuth(auth.auth);
 
       // get user axios or otherUser axios
+
       if (auth.auth.userId === param.userId) {
-        userAxios.getUser().then((res) => setState(res.user));
+        userAxios.getUser().then((res) => {
+          setState(res.user);
+        });
       } else {
         userAxios.otherUser(param.userId).then((res) => {
           setState(res.user);
@@ -109,9 +112,11 @@ const User = () => {
 
     //set FollowList
     userAxios.getFollowUser(param.userId, "follower").then((res) => {
+      console.log("팔로우", res.data);
       setFollower(res.data);
     });
     userAxios.getFollowUser(param.userId, "following").then((res) => {
+      console.log("팔로잉", res.data);
       setFollowing(res.data);
     });
   }, []);
