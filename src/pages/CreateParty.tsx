@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { partyAxios } from "../axios/partyAxios";
+import { partyAxios, initialState } from "../axios/partyAxios";
 import Create from "../components/Create";
 import { useAppSelector } from "../store/config";
 
@@ -20,14 +20,9 @@ const CreateParty = () => {
   }, []);
 
   if (time) {
-    return (
-      <Create
-        group={partyAxios.initialState.group}
-        time={parseInt(time)}
-      ></Create>
-    );
+    return <Create group={initialState} time={parseInt(time)}></Create>;
   }
-  return <Create group={partyAxios.initialState.group}></Create>;
+  return <Create group={initialState}></Create>;
 };
 
 export default CreateParty;

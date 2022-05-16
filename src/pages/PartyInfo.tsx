@@ -6,25 +6,13 @@ import KakaoMap from "../components/KakaoMap";
 import Header from "../components/Header";
 import { partyAxios, GroupInfo } from "../axios/partyAxios";
 import { useAppSelector } from "../store/config";
+import useGetparty from "../hooks/useGetparty";
 
 const PartyInfo = () => {
-  const [group, setGroup] = useState<GroupInfo>(partyAxios.initialState.group);
   const { groupId } = useParams();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
-
-  useEffect(() => {
-    const t = async () => {
-      try {
-        if (groupId) {
-          setGroup(await partyAxios.getPartyInfo(parseInt(groupId)));
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    t();
-  }, []);
+  const group = useGetparty(groupId);
 
   const handleJoin = (action: string) => {
     const join = async () => {
@@ -41,8 +29,8 @@ const PartyInfo = () => {
       join();
     };
   };
-
-  const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
+  let headCount = "";
+  headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
   return (
     <React.Fragment>
@@ -96,7 +84,7 @@ const PartyInfo = () => {
           src={group.host.profileImageUrl}
         ></PartyMember>
 
-        {group.guests.map((guest, i) => {
+        {group.guests.map((guest: any, i: number) => {
           return (
             <PartyMember
               key={i}
@@ -129,7 +117,7 @@ const PartyInfo = () => {
               대충 삭제
             </Button>
           </Grid>
-        ) : group.guests.findIndex((v) => v.userId === user.userId) ? (
+        ) : group.guests.findIndex((v: any) => v.userId === user.userId) ? (
           <Button
             _onClick={() => {
               handleJoin("join");

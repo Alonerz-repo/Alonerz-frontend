@@ -5,6 +5,8 @@ interface userInfo {
   userId: number;
   nickname: string;
   profileImageUrl: string;
+  year: string;
+  description: string;
 }
 
 export interface GroupInfo {
@@ -25,6 +27,39 @@ export interface GroupInfo {
   host: userInfo;
   guests: userInfo[];
 }
+
+export const initialState: GroupInfo = {
+  groupId: -1,
+  title: "",
+  menu: "",
+  description: "",
+  startAt: new Date(),
+  endAt: new Date(),
+  limit: 4,
+  imageUrl: "",
+  locationX: 33.450701,
+  locationY: 126.570667,
+  address: "",
+  placeName: "",
+  createdAt: "",
+  updateAt: "",
+  host: {
+    userId: 0,
+    nickname: "",
+    profileImageUrl: "",
+    year: "",
+    description: "",
+  },
+  guests: [
+    {
+      userId: 0,
+      nickname: "",
+      profileImageUrl: "",
+      year: "",
+      description: "",
+    },
+  ],
+};
 
 export type Group = Partial<GroupInfo>;
 
@@ -97,37 +132,6 @@ export const partyAxios = {
       })
       .catch((err) => err.response.data);
     return data.err ? errorHandler(data) : data;
-  },
-
-  initialState: {
-    group: {
-      groupId: -1,
-      title: "",
-      menu: "",
-      description: "",
-      startAt: new Date(),
-      endAt: new Date(),
-      limit: 4,
-      imageUrl: "",
-      locationX: 33.450701,
-      locationY: 126.570667,
-      address: "",
-      placeName: "",
-      createdAt: "",
-      updateAt: "",
-      host: {
-        userId: 0,
-        nickname: "",
-        profileImageUrl: "",
-      },
-      guests: [
-        {
-          userId: 0,
-          nickname: "",
-          profileImageUrl: "",
-        },
-      ],
-    },
   },
 };
 
