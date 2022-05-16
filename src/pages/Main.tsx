@@ -4,45 +4,20 @@ import styled from "styled-components";
 import { Grid, Button, Text } from "../elements";
 import Card from "../components/Card";
 import partyList, { initialState } from "../axios/partyList";
-import userAxios from "../axios/userAxios";
-
-interface Payload {
-  userId: number;
-  kakaoId: string;
-  nickname: string;
-}
-
-const initPayload = {
-  userId: -1,
-  kakaoId: "",
-  nickname: "",
-};
+import { useAppSelect, useAppDispatch } from "../store/config.hook";
+import { authUser, kakaoLogout } from "../store/slices/userSlice";
+import useAuth from "../useCustom/useAuth";
 
 const Main = () => {
   const navigate = useNavigate();
-  const [auth, setAuth] = useState<Payload>(initPayload);
+  const dispatch = useAppDispatch();
+  const userInfo = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
+  const auth = useAuth();
 
   useEffect(() => {
-    //get user auth
-    const injeong = async () => {
-      const auth = await userAxios.authUser().then((res) => {
-        const data = res;
-        switch (data.statusCode) {
-          case 401:
-            return userAxios.login();
-          case 403:
-            return userAxios.refreshUser();
-
-          default:
-            return res;
-        }
-      });
-      setAuth(auth.auth);
-    };
-    injeong();
-
     //get user groups list
+    dispatch(authUser());
     const getParty = async () => {
       const data = await partyList.getPartyList();
       switch (data.statusCode) {
@@ -59,7 +34,7 @@ const Main = () => {
       case 1:
         return navigate("/login");
       case 2:
-        return navigate(`/user/${auth.userId}`);
+        return navigate(`/user/${userInfo.userId}`);
       case 10:
         return navigate(`/create/partyInfo/${num}`);
       case 4:
@@ -72,29 +47,27 @@ const Main = () => {
         return navigate("/");
     }
   };
+  if (auth === null) return <></>;
 
   const onLogout = async () => {
     //put logout
-    await userAxios.logout().then((res) => {
-      const data: any = res;
-      setAuth(data);
-    });
+    dispatch(kakaoLogout());
   };
 
   return (
     <React.Fragment>
       <Grid padding="20px">
-        {auth.userId < 1 && (
+        {userInfo.userId < 1 && (
           <Button _onClick={() => goToLink(1)}>로그인</Button>
         )}
-        {auth.userId > 0 && (
+        {userInfo.userId > 0 && (
           <Button _onClick={() => goToLink(2)}>프로필</Button>
         )}
-        {auth.userId > 0 && <Button _onClick={onLogout}>로그아웃</Button>}
-        {auth.userId > 0 && (
+        {userInfo.userId > 0 && <Button _onClick={onLogout}>로그아웃</Button>}
+        {userInfo.userId > 0 && (
           <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
         )}
-        {auth.userId > 0 &&
+        {userInfo.userId > 0 &&
           groups.map((value: any, index: number) => {
             return (
               <React.Fragment key={index}>

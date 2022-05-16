@@ -2,18 +2,21 @@ import React, { useEffect, useState } from "react";
 import MyInfo from "../components/MyInfo";
 import Header from "../components/Header";
 import { useParams, useNavigate } from "react-router-dom";
-import userAxios, { userState } from "../axios/userAxios";
 import partyAxios from "../axios/partyAxios";
+import { useAppSelect } from "../store/config.hook";
 
 interface Payload {
-  userId: number;
-  kakaoId: string;
-  nickname: string;
+  userId?: number;
+  kakaoId?: string;
+  nickname?: string;
 }
 const initPayload = {
   userId: -1,
-  kakaoId: "",
+  needProfile: false,
   nickname: "",
+  kakaoId: "",
+  statusCode: 0,
+  message: "",
 };
 
 interface groupid {
@@ -62,47 +65,10 @@ const initGroups = [
 const User = () => {
   const param = useParams();
   const navigate = useNavigate();
-  const [auth, setAuth] = useState<Payload>(initPayload);
-  const [state, setState] = useState(userState.user);
   const [group, setGroup] = useState<Array<groupid>>(initGroups);
+  const userInfo = useAppSelect((state) => state.user);
 
   useEffect(() => {
-    //get user auth
-
-    const injeon = async () => {
-      const auth = await userAxios.authUser().then((res) => {
-        const data = res;
-        switch (data.statusCode) {
-          case 401:
-            //not login
-            window.alert("login 해주셈");
-            navigate("/login");
-            return console.log(401);
-          case 403:
-            //refresh token
-            return userAxios.refreshUser();
-          default:
-            return res;
-        }
-      });
-
-      setAuth(auth.auth);
-
-      // get user axios or otherUser axios
-
-      if (auth.auth.userId === param.userId) {
-        userAxios.getUser().then((res) => {
-          setState(res.user);
-        });
-      } else {
-        userAxios.otherUser(param.userId).then((res) => {
-          setState(res.user);
-        });
-      }
-    };
-
-    injeon();
-
     //get user infomation
     partyAxios.getJoinedParty(param.userId).then((res) => {
       setGroup(res.data.groups);
@@ -110,7 +76,7 @@ const User = () => {
   }, []);
 
   // paint user proflie or otherUser Profile
-  if (param.userId === auth.userId.toString()) {
+  if (param.userId === userInfo.userId.toString()) {
     return (
       <React.Fragment>
         <Header
@@ -119,24 +85,14 @@ const User = () => {
           home={() => navigate("/")}
           setting={() => navigate("/user/config")}
         ></Header>
-        <MyInfo
-          group={group}
-          auth={auth}
-          user={state}
-          uid={param.userId}
-        ></MyInfo>
+        <MyInfo group={group} uid={param.userId}></MyInfo>
       </React.Fragment>
     );
-  } else if (param.userId !== auth.userId.toString()) {
+  } else if (param.userId !== userInfo.userId.toString()) {
     return (
       <React.Fragment>
         <Header text="프로필"></Header>
-        <MyInfo
-          group={group}
-          auth={auth}
-          user={state}
-          uid={param.userId}
-        ></MyInfo>
+        <MyInfo group={group} uid={param.userId}></MyInfo>
       </React.Fragment>
     );
   } else {

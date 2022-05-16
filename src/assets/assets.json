@@ -1,0 +1,47 @@
+{
+  "characters": [
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character01.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character02.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character03.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character04.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character05.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character06.svg"
+  ],
+  "icons": [
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/icon01.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/icon02.svg"
+  ],
+  "frames": [
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame01.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame02.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame03.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame04.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame05.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame06.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame07.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame08.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame09.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame10.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame11.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame12.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame13.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame14.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame15.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame16.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame17.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame18.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame19.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame20.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame21.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame22.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame23.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame24.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame25.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame26.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame27.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame28.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame29.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame30.svg",
+    "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/frame31.svg"
+  ]
+}
