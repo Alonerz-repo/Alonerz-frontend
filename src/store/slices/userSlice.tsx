@@ -6,39 +6,42 @@ import userAxios from "../../axios/userAxios";
 const url = process.env.REACT_APP_API_URL;
 
 export interface userInfo {
-  userId: number | null;
+  userId: number;
   needProfile?: boolean;
   nickname?: string;
+  kakaoId?: string;
+  statusCode?: number;
+  message?: string;
 }
 
 const initialState: userInfo = {
-  userId: null,
+  userId: -1,
   needProfile: false,
   nickname: "",
+  kakaoId: "",
+  statusCode: 0,
+  message: "",
 };
 
-export const loginAuth = createAsyncThunk(
-  "userSlice/loginAuth",
+export const authUser = createAsyncThunk(
+  "userSlice/auth",
   async (_, thunkAPI) => {
-    const response = await userAxios
-      .authUser()
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => err.response.data);
+    const response = userAxios.authUser().then((res) => {
+      if (res.auth) {
+        return res.auth;
+      } else {
+        const state = {
+          userId: -1,
+          statusCode: res.statusCode,
+          message: res.message,
+        };
+        return state;
+      }
+    });
+
     return response;
   }
 );
-
-// export const auth = createAsyncThunk("userSlice/auth", async (_, thunkAPI) => {
-//   try {
-//     const response = userAxios.authUser().then((res) => res);
-//     return response;
-//   } catch (err) {
-//     console.log(err);
-//     return thunkAPI.rejectWithValue(err);
-//   }
-// });
 
 export const kakaoLogin = createAsyncThunk(
   "userSlice/kakaoLogin",
@@ -70,16 +73,13 @@ export const kakaoLogin = createAsyncThunk(
 export const kakaoLogout = createAsyncThunk(
   "userSlice/kakaoLogout",
   async (_, thunkAPI) => {
-    try {
-      console.log("hello kakaoLogout!");
-      const response = await axios({}).then((res) => {
-        console.log(res);
-      });
-      return response;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue(err);
-    }
+    const response = await userAxios
+      .logout()
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => err.response.data);
+    return response;
   }
 );
 
@@ -164,15 +164,14 @@ export const userSlice = createSlice({
         state = action.payload.user;
         return state;
       })
-      .addCase(loginAuth.fulfilled, (state, action) => {
-        state = action.payload.auth;
+      .addCase(authUser.fulfilled, (state, action) => {
+        state = action.payload;
+        return state;
+      })
+      .addCase(kakaoLogout.fulfilled, (state, action) => {
+        state = action.payload;
         return state;
       });
-    // .addCase(auth.fulfilled, (state, action) => {
-    //   state.userId = action.payload.userId;
-    //   state.nickname = action.payload.nickname;
-    //   return state;
-    // });
   },
 });
 

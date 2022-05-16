@@ -16,7 +16,7 @@ import ConsentForm from "./pages/ConsentForm";
 import BlockList from "./pages/BlockList";
 import FollowLIst from "./pages/FollowList";
 
-import { loginAuth } from "./store/slices/userSlice";
+import { authUser } from "./store/slices/userSlice";
 import { useAppDispatch } from "./store/config";
 
 declare global {
@@ -28,7 +28,7 @@ declare global {
 function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(loginAuth());
+    dispatch(authUser());
   }, []);
   return (
     <div className="App">

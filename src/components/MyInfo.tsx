@@ -15,10 +15,6 @@ const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
     setMyauth(auth);
   }, [auth]);
 
-  useEffect(() => {
-    console.log("hello follow");
-  }, []);
-
   const goToModify = () => {
     navigate("/user/edit");
   };
@@ -41,7 +37,7 @@ const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
   };
 
   const viewfollow = (isfollow: string) => {
-    navigate("follow", { state: { following, isfollow, follower } });
+    navigate("follow", { state: { isfollow, uid } });
   };
 
   return (
@@ -78,13 +74,13 @@ const MyInfo = ({ auth, user, uid, group, following, follower }: any) => {
           <Text>{userInfo.point}</Text>
         </Grid>
         <Grid>
-          <div onClick={() => viewfollow("following")}>
+          <div onClick={() => viewfollow("follower")}>
             <Text>follow</Text>
             <Text>{userInfo.follower}</Text>
           </div>
         </Grid>
         <Grid display="flex" flexFlow="column wrap">
-          <div onClick={() => viewfollow("follower")}>
+          <div onClick={() => viewfollow("following")}>
             <Text>follower</Text>
             <Text>{userInfo.following}</Text>
           </div>
