@@ -105,6 +105,7 @@ const Create = ({ group, time }: CreateProps) => {
       locationY,
       address,
     };
+
     if (group.groupId === -1) {
       partyAxios.createParty(groupInfo);
     } else {

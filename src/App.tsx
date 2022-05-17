@@ -17,6 +17,7 @@ import BlockList from "./pages/BlockList";
 import FollowLIst from "./pages/FollowList";
 import EditParty from "./pages/EditParty";
 import Chatting from "./pages/Chatting";
+import ChatList from "./pages/ChatList";
 
 import { authUser } from "./store/slices/userSlice";
 import { useAppDispatch, useAppSelect } from "./store/config.hook";
@@ -50,6 +51,7 @@ function App() {
             <Route path="/user/config/blocklist" element={<BlockList />} />
             <Route path="/user/edit" element={<ProfileEdit />} />
             <Route path="/chat" element={<Chatting />} />
+            <Route path="/chatlist" element={<ChatList />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate/:groupId" element={<PartyInfo />} />
             <Route path="/create/partyInfo/:time" element={<CreateParty />} />

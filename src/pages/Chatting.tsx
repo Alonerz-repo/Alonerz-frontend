@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import { Grid, Text, Image, Button, Input } from "../elements";
+import Header from "../components/Header";
 
 const ChatRoom = () => {
   return (
     <React.Fragment>
+      <Header text="chatting"></Header>
       <div style={{ background: "#eeeeee", height: "100%" }}>
         {/* 상대방 메시지 */}
         <Grid display="flex" padding="20px 20px">
@@ -49,22 +51,23 @@ const ChatRoom = () => {
           </Grid>
         </Grid>
         {/* 입력폼 */}
-        <Position>
-          <Grid>
-            <input></input>
-            <Button>입력</Button>
-          </Grid>
-        </Position>
       </div>
+      <Position>
+        <Grid>
+          <input></input>
+          <Button>입력</Button>
+        </Grid>
+      </Position>
     </React.Fragment>
   );
 };
 
 const Position = styled.div`
+  display: flex;
+  justify-content: center;
   background: red;
-  position: absolute;
+  position: sticky;
   bottom: 20px;
-  left: 20px;
 `;
 
 export default ChatRoom;
