@@ -25,3 +25,7 @@ export const Career2 = {
   7: ["개발직군", "안드로이드"],
   8: ["개발직군", "IOS"],
 };
+
+export const myCareer = (userId: any) => {
+  return;
+};

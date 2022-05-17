@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import cookie from "../../utils/cookie";
 import axios from "axios";
 import userAxios from "../../axios/userAxios";
+import loginAxios from "../../axios/loginAxios";
+import authAxsios from "../../axios/authAxios";
 
 const url = process.env.REACT_APP_API_URL;
 
@@ -26,7 +28,7 @@ const initialState: userInfo = {
 export const authUser = createAsyncThunk(
   "userSlice/auth",
   async (_, thunkAPI) => {
-    const response = userAxios.authUser().then((res) => {
+    const response = authAxsios.authUser().then((res) => {
       if (res.auth) {
         return res.auth;
       } else {
@@ -46,7 +48,7 @@ export const authUser = createAsyncThunk(
 export const kakaoLogout = createAsyncThunk(
   "userSlice/kakaoLogout",
   async (_, thunkAPI) => {
-    const response = await userAxios
+    const response = await loginAxios
       .logout()
       .then((res) => {
         return res;

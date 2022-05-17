@@ -11,7 +11,7 @@ const initState = {
   point: 0,
   profileImageUrl: "",
   userId: -1,
-  year: "2222",
+  year: "신입",
 };
 
 const useUser = (uid: any) => {
