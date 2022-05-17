@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   text: string;
-  //해더 타입
   type?: string;
   chat?: () => void;
   setting?: () => void;

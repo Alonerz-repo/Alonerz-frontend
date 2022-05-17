@@ -7,6 +7,7 @@ import Header from "./Header";
 import SearchKakaoMap from "./SearchKakaoMap";
 import { partyAxios } from "../axios/partyAxios";
 import times from "../utils/partyTimes";
+import useLoginCheck from "../useCustom/useLoginCheck";
 
 interface CreateProps {
   group: any;
@@ -14,6 +15,7 @@ interface CreateProps {
 }
 
 const Create = ({ group, time }: CreateProps) => {
+  useLoginCheck();
   const [title, setTitle] = useState<string>();
   const [menu, setMenu] = useState<string>();
   const [description, setDescription] = useState<string>();
@@ -105,6 +107,7 @@ const Create = ({ group, time }: CreateProps) => {
       locationY,
       address,
     };
+
     if (group.groupId === -1) {
       partyAxios.createParty(groupInfo);
     } else {

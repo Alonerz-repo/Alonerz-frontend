@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { partyAxios, initialState } from "../axios/partyAxios";
+import { initialState } from "../axios/partyAxios";
 import Create from "../components/Create";
 import { useAppSelector } from "../store/config";
 
@@ -11,11 +11,8 @@ const CreateParty = () => {
 
   useEffect(() => {
     if (!user.userId) {
-      if (window.confirm("로그인이 필요합니다.")) {
-        navigate("/login");
-      } else {
-        navigate("/");
-      }
+      alert("로그인이 필요한 서비스입니다.");
+      navigate("/login");
     }
   }, []);
 

@@ -6,7 +6,7 @@ import KakaoMap from "../components/KakaoMap";
 import Header from "../components/Header";
 import { partyAxios, GroupInfo } from "../axios/partyAxios";
 import { useAppSelector } from "../store/config";
-import useGetparty from "../hooks/useGetparty";
+import useGetparty from "../useCustom/useGetparty";
 
 const PartyInfo = () => {
   const { groupId } = useParams();
@@ -17,7 +17,7 @@ const PartyInfo = () => {
   const handleJoin = (action: string) => {
     const join = async () => {
       if (groupId) {
-        const result = await partyAxios
+        await partyAxios
           .joinParty(parseInt(groupId), action)
           .then((response) => {
             navigate("/");
@@ -29,8 +29,8 @@ const PartyInfo = () => {
       join();
     };
   };
-  let headCount = "";
-  headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
+
+  const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
   return (
     <React.Fragment>
