@@ -1,23 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Grid, Button, Text } from "../elements";
+import { Grid, Text } from "../elements";
 import Card from "../components/Card";
-import partyList, { initialState } from "../axios/partyList";
+import partyList from "../axios/partyList";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { authUser, kakaoLogout } from "../store/slices/userSlice";
+import { authUser } from "../store/slices/userSlice";
 import LoginHeader from "../components/LoginHeader";
-import useAuth from "../useCustom/useAuth";
 
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [groups, setGroups] = React.useState<any>([]);
   const user = useAppSelect((state) => state.user);
-  console.log(typeof user.userId);
   useEffect(() => {
-    dispatch(authUser());
-
     //get user groups list
     const getParty = async () => {
       const data = await partyList.getPartyList();
@@ -34,10 +30,6 @@ const Main = () => {
 
   const goToLink = (num: number) => {
     switch (num) {
-      case 1:
-        return navigate("/login");
-      case 2:
-        return navigate(`/user/${user.userId}`);
       case 10:
         return navigate(`/create/partyInfo/${num}`);
       case 4:
