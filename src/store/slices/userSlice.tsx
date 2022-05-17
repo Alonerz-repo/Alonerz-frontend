@@ -32,7 +32,7 @@ export const authUser = createAsyncThunk(
         return res.auth;
       } else {
         const state = {
-          userId: -1,
+          userId: "-1",
           statusCode: res.statusCode,
           message: res.message,
         };
