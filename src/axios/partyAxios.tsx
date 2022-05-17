@@ -53,7 +53,7 @@ export const initialState: GroupInfo = {
   createdAt: "",
   updateAt: "",
   host: {
-    userId: "",
+    userId: "-1",
     nickname: "",
     image: null,
     imageUrl: "",
@@ -62,7 +62,7 @@ export const initialState: GroupInfo = {
   },
   guests: [
     {
-      userId: "",
+      userId: "-1",
       nickname: "",
       image: null,
       imageUrl: "",
@@ -142,7 +142,7 @@ export const partyAxios = {
   },
 
   getJoinedParty: async (userId: any) => {
-    const url = getUrl(`/api/groups/joined/${userId}`);
+    const url = getUrl(`/api/groups/${userId}/joined`);
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })

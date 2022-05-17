@@ -3,7 +3,7 @@ import userAxios from "../axios/userAxios";
 import { Grid, Input, Button, Select, Text } from "../elements";
 import { useAppSelect } from "../store/config.hook";
 import useUser from "../useCustom/useUser";
-import Career from "../utils/career";
+import { Career } from "../utils/career";
 import { useNavigate } from "react-router-dom";
 
 const ModifyUser = () => {
@@ -17,7 +17,13 @@ const ModifyUser = () => {
     description: "",
   });
   const info = useUser(userInfo.userId);
-
+  const arr: any = [];
+  Career.map((value) => {
+    return arr.push({
+      value: value.careerId,
+      name: `${value.careerGroupName}/${value.careerItemName}`,
+    });
+  });
   useEffect(() => {
     const setting = () => {
       const user = {
@@ -37,14 +43,6 @@ const ModifyUser = () => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
   };
-
-  const times = [
-    { value: "11:00", name: "11:00" },
-    { value: "12:00", name: "12:00" },
-    { value: "13:00", name: "13:00" },
-    { value: "14:00", name: "14:00" },
-    { value: "15:00", name: "15:00" },
-  ];
 
   const clickToSetuser = async () => {
     userAxios.setUser(user).then((res) => {
@@ -69,11 +67,14 @@ const ModifyUser = () => {
         <Grid display="flex" flexFlow="columns wrap">
           <Grid>
             <Text>직군</Text>
-            <Select onChange={() => {}} categories={times}></Select>
-          </Grid>
-          <Grid>
-            <Text>직업</Text>
-            <Select onChange={() => {}} categories={times}></Select>
+            <Select
+              name="careerId"
+              value={user.careerId}
+              onChange={(e) => {
+                onChangeHandler(e);
+              }}
+              categories={arr}
+            ></Select>
           </Grid>
         </Grid>
 
