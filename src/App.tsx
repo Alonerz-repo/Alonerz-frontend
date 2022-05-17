@@ -16,6 +16,7 @@ import ConsentForm from "./pages/ConsentForm";
 import BlockList from "./pages/BlockList";
 import FollowLIst from "./pages/FollowList";
 import EditParty from "./pages/EditParty";
+import Chatting from "./pages/Chatting";
 
 import { authUser } from "./store/slices/userSlice";
 import { useAppDispatch, useAppSelect } from "./store/config.hook";
@@ -48,6 +49,7 @@ function App() {
             <Route path="/user/config/edit" element={<ModifyUser />} />
             <Route path="/user/config/blocklist" element={<BlockList />} />
             <Route path="/user/edit" element={<ProfileEdit />} />
+            <Route path="/chat" element={<Chatting />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate/:groupId" element={<PartyInfo />} />
             <Route path="/create/partyInfo/:time" element={<CreateParty />} />

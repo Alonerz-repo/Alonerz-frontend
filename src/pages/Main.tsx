@@ -16,8 +16,9 @@ const Main = () => {
   const auth = useAuth();
 
   useEffect(() => {
-    //get user groups list
     dispatch(authUser());
+
+    //get user groups list
     const getParty = async () => {
       const data = await partyList.getPartyList();
       switch (data.statusCode) {
@@ -57,17 +58,19 @@ const Main = () => {
   return (
     <React.Fragment>
       <Grid padding="20px">
-        {userInfo.userId < 1 && (
+        {userInfo.userId === -1 && (
           <Button _onClick={() => goToLink(1)}>로그인</Button>
         )}
-        {userInfo.userId > 0 && (
+        {userInfo.userId !== -1 && (
           <Button _onClick={() => goToLink(2)}>프로필</Button>
         )}
-        {userInfo.userId > 0 && <Button _onClick={onLogout}>로그아웃</Button>}
-        {userInfo.userId > 0 && (
+        {userInfo.userId !== -1 && (
+          <Button _onClick={onLogout}>로그아웃</Button>
+        )}
+        {userInfo.userId !== -1 && (
           <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
         )}
-        {userInfo.userId > 0 &&
+        {userInfo.userId !== -1 &&
           groups.map((value: any, index: number) => {
             return (
               <React.Fragment key={index}>

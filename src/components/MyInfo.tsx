@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid, Text, Image, Button } from "../elements";
 import Card from "../components/Card";
@@ -6,11 +6,22 @@ import { useNavigate } from "react-router-dom";
 import chatIcon from "../assets/header/1.svg";
 import userAxios from "../axios/userAxios";
 import useUser from "../useCustom/useUser";
+import { Career2, Career } from "../utils/career";
 
 const MyInfo = ({ uid, group }: any) => {
   const navigate = useNavigate();
   const user = useUser(uid);
+  const [carId, setCarId] = useState<number>(1);
+  const b = Career;
+  const v = b.map((value) => {
+    if (value.careerId === carId) {
+      return `${value.careerGroupName} / ${value.careerItemName}`;
+    }
+  });
 
+  useEffect(() => {
+    setCarId(user.careerId);
+  }, [user]);
   const goTochat = () => {
     console.log("hello chat");
   };
@@ -49,10 +60,14 @@ const MyInfo = ({ uid, group }: any) => {
         <Position style={{ position: "absolute", top: "1px" }}>
           <Grid display="flex" flexFlow="column wrap">
             <Mytxt style={{ fontSize: "13px", fontWeight: "bold" }}>
-              직군&직업
+              {b.map((value) => {
+                if (value.careerId === carId) {
+                  return `${value.careerGroupName} / ${value.careerItemName}`;
+                }
+              })}
             </Mytxt>
             <Mytxt style={{ fontSize: "20px", color: "#F24141" }}>
-              직업 {user.year ? user.year : "연차"}
+              {v} {user.year}
             </Mytxt>
             <Mytxt style={{ margin: "0px 30px" }}>
               {user.nickname} 입니다.
