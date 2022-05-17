@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import cookie from "../../utils/cookie";
 import axios from "axios";
-import userAxios from "../../axios/userAxios";
 import loginAxios from "../../axios/loginAxios";
 import authAxsios from "../../axios/authAxios";
 
 const url = process.env.REACT_APP_API_URL;
 
 export interface userInfo {
-  userId: number;
+  userId: string;
   needProfile?: boolean;
   nickname?: string;
   kakaoId?: string;
@@ -17,7 +16,7 @@ export interface userInfo {
 }
 
 const initialState: userInfo = {
-  userId: -1,
+  userId: "-1",
   needProfile: false,
   nickname: "",
   kakaoId: "",

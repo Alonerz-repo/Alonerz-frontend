@@ -2,7 +2,7 @@ import axios from "axios";
 import { errorHandler, getHeaders, getUrl } from "../utils/api";
 
 interface userInfo {
-  userId: number;
+  userId: string;
   nickname: string;
   profileImageUrl: string;
   year: string;
@@ -44,7 +44,7 @@ export const initialState: GroupInfo = {
   createdAt: "",
   updateAt: "",
   host: {
-    userId: 0,
+    userId: "-1",
     nickname: "",
     profileImageUrl: "",
     year: "",
@@ -52,7 +52,7 @@ export const initialState: GroupInfo = {
   },
   guests: [
     {
-      userId: 0,
+      userId: "-1",
       nickname: "",
       profileImageUrl: "",
       year: "",
@@ -111,7 +111,7 @@ export const partyAxios = {
   },
 
   getJoinedParty: async (userId: any) => {
-    const url = getUrl(`/api/groups/joined/${userId}`);
+    const url = getUrl(`/api/groups/${userId}/joined`);
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
