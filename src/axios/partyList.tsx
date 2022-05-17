@@ -15,7 +15,7 @@ type time = string | undefined;
 
 export const initialState: GroupInfo[] = [
   {
-    title: "aa",
+    title: "",
     limit: 3,
     headcount: 2,
     address: "my home",

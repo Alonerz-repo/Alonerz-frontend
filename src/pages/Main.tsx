@@ -6,11 +6,13 @@ import Card from "../components/Card";
 import partyList, { initialState } from "../axios/partyList";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { authUser, kakaoLogout } from "../store/slices/userSlice";
+import LoginHeader from "../components/LoginHeader";
+import useAuth from "../useCustom/useAuth";
 
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [groups, setGroups] = React.useState<any>(initialState);
+  const [groups, setGroups] = React.useState<any>([]);
   const user = useAppSelect((state) => state.user);
   console.log(typeof user.userId);
   useEffect(() => {
@@ -21,12 +23,14 @@ const Main = () => {
       const data = await partyList.getPartyList();
       switch (data.statusCode) {
         case 401:
-          return alert();
+          return alert(data);
       }
       setGroups(data);
     };
     getParty();
   }, []);
+
+  useEffect(() => {}, [groups]);
 
   const goToLink = (num: number) => {
     switch (num) {
@@ -47,27 +51,14 @@ const Main = () => {
     }
   };
 
-  const onLogout = async () => {
-    //put logout
-    dispatch(kakaoLogout());
-  };
-
   return (
     <React.Fragment>
+      <LoginHeader></LoginHeader>
       <Grid padding="20px">
-        {user.userId.toString() === "-1" && (
-          <Button _onClick={() => goToLink(1)}>로그인</Button>
+        {groups.length !== 0 && (
+          <Text type="title"> 오늘 파티 잊지 마세요! </Text>
         )}
-        {user.userId.toString() !== "-1" && (
-          <Button _onClick={() => goToLink(2)}>프로필</Button>
-        )}
-        {user.userId.toString() !== "-1" && (
-          <Button _onClick={onLogout}>로그아웃</Button>
-        )}
-        {user.userId.toString() !== "-1" && (
-          <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
-        )}
-        {user.userId !== "-1" &&
+        {user.userId &&
           groups.map((value: any, index: number) => {
             return (
               <React.Fragment key={index}>
