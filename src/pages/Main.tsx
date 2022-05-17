@@ -11,9 +11,8 @@ import useAuth from "../useCustom/useAuth";
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userInfo = useAppSelect((state) => state.user);
   const [groups, setGroups] = React.useState<any>(initialState);
-  const auth = useAuth();
+  const user = useAppSelect((state) => state.user);
 
   useEffect(() => {
     dispatch(authUser());
@@ -35,7 +34,7 @@ const Main = () => {
       case 1:
         return navigate("/login");
       case 2:
-        return navigate(`/user/${userInfo.userId}`);
+        return navigate(`/user/${user.userId}`);
       case 10:
         return navigate(`/create/partyInfo/${num}`);
       case 4:
@@ -48,7 +47,6 @@ const Main = () => {
         return navigate("/");
     }
   };
-  if (auth === null) return <></>;
 
   const onLogout = async () => {
     //put logout
@@ -58,19 +56,17 @@ const Main = () => {
   return (
     <React.Fragment>
       <Grid padding="20px">
-        {userInfo.userId === -1 && (
+        {user.userId === -1 && (
           <Button _onClick={() => goToLink(1)}>로그인</Button>
         )}
-        {userInfo.userId !== -1 && (
+        {user.userId !== -1 && (
           <Button _onClick={() => goToLink(2)}>프로필</Button>
         )}
-        {userInfo.userId !== -1 && (
-          <Button _onClick={onLogout}>로그아웃</Button>
-        )}
-        {userInfo.userId !== -1 && (
+        {user.userId !== -1 && <Button _onClick={onLogout}>로그아웃</Button>}
+        {user.userId !== -1 && (
           <Text type="title"> 오늘 점심 파티 잊지 마세요! </Text>
         )}
-        {userInfo.userId !== -1 &&
+        {user.userId !== -1 &&
           groups.map((value: any, index: number) => {
             return (
               <React.Fragment key={index}>
