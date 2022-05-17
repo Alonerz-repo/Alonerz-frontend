@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 interface Props {
   text: string;
-  //해더 타입
   type?: string;
   chat?: () => void;
   setting?: () => void;
@@ -26,6 +25,13 @@ const Header = ({ text, type, chat, setting, home }: Props) => {
             alignItems: "center",
           }}
         >
+          <GoBack
+            size="20px"
+            src={goback}
+            onClick={() => {
+              navigate(-1);
+            }}
+          ></GoBack>
           <Text bold fontSize="20px" padding="10px">
             {text}
           </Text>
