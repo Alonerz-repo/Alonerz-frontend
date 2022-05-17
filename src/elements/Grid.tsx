@@ -10,6 +10,7 @@ interface Props {
   alignItems?: string;
   flexFlow?: string;
   absolute?: string;
+  customize?: string;
 }
 
 const Grid = ({
@@ -22,6 +23,7 @@ const Grid = ({
   alignItems,
   flexFlow,
   absolute,
+  customize,
 }: Props) => {
   return (
     <MyGrid
@@ -33,6 +35,7 @@ const Grid = ({
       alignItems={alignItems}
       flexFlow={flexFlow}
       absolute={absolute}
+      customize={customize}
     >
       {children}
     </MyGrid>
@@ -49,9 +52,11 @@ interface MyGridProps {
   alignItems?: string;
   flexFlow?: string;
   absolute?: string;
+  customize?: string;
 }
 
 const MyGrid = styled.div<MyGridProps>`
+  ${(props) => (props.customize ? props.customize : "")}
   flex-flow: ${(props) => (props.flexFlow ? props.flexFlow : "row wrap")};
   justify-content: ${(props) => props.justifyContent ?? ""};
   align-items: ${(props) => props.alignItems ?? ""};
