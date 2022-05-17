@@ -4,27 +4,32 @@ import Card from "../components/Card";
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import partyList, { initialState } from "../axios/partyList";
+import { useAppSelector } from "../store/config";
 import { useParams } from "react-router-dom";
 import partyTimes from "../utils/partyTimes";
 
 const PartyList = () => {
   const navigate = useNavigate();
   const [groups, setGroups] = React.useState<any>(initialState);
-  const time = useParams().time;
+  const { time } = useParams();
   const [partyTime, setPartyTime] = React.useState<string>();
+  const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
     setPartyTime(time);
   }, []);
 
   useEffect(() => {
-    const getParty = async () => {
-      setGroups(await partyList.getTimeList(partyTime));
-    };
-    if (partyTime) {
-      getParty();
+    if (user.userId) {
+      const getParty = async () => {
+        setGroups(await partyList.getTimeList(partyTime));
+      };
+      if (partyTime) {
+        getParty();
+      }
     }
   }, [partyTime]);
+  useEffect(() => {}, [groups]);
 
   const handleSelect = (e: any) => {
     setPartyTime(e.target.value);

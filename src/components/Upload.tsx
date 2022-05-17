@@ -2,7 +2,12 @@ import React from "react";
 import { Image } from "../elements";
 import baseFile from "../assets/fileUpload.png";
 
-const Upload = () => {
+interface UploadProps {
+  handleImageUrl: any;
+  imageUrl?: any;
+}
+
+const Upload = ({ handleImageUrl, imageUrl }: UploadProps) => {
   type fileType = string | ArrayBuffer | null;
   const [image, setImage] = React.useState<fileType>("");
   const selectFile = (e: any) => {
@@ -12,7 +17,12 @@ const Upload = () => {
     reader.onloadend = () => {
       setImage(reader.result);
     };
+    handleImageUrl(file);
   };
+
+  React.useEffect(() => {
+    setImage(imageUrl);
+  }, [imageUrl]);
 
   return (
     <React.Fragment>

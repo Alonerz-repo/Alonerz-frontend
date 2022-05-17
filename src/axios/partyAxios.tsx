@@ -2,22 +2,23 @@ import axios from "axios";
 import { errorHandler, getHeaders, getUrl } from "../utils/api";
 
 interface userInfo {
-  userId: number;
+  userId: string;
   nickname: string;
-  profileImageUrl: string;
+  image?: any;
+  imageUrl?: string;
   year: string;
   description: string;
 }
 
-export interface GroupInfo {
-  groupId?: number;
+interface G {
+  groupId?: string;
   title: string;
   menu: string;
+  image?: any;
   description: string;
   startAt: Date;
   endAt: Date;
   limit: number;
-  imageUrl: string;
   locationX: number;
   locationY: number;
   address: string;
@@ -27,15 +28,23 @@ export interface GroupInfo {
   host: userInfo;
   guests: userInfo[];
 }
+export interface GroupInfo extends G {
+  imageUrl: string;
+}
+
+export interface CreateGroupInfo extends G {
+  imageUrl: any;
+}
 
 export const initialState: GroupInfo = {
-  groupId: -1,
+  groupId: "",
   title: "",
   menu: "",
   description: "",
   startAt: new Date(),
   endAt: new Date(),
   limit: 4,
+  image: null,
   imageUrl: "",
   locationX: 33.450701,
   locationY: 126.570667,
@@ -44,17 +53,19 @@ export const initialState: GroupInfo = {
   createdAt: "",
   updateAt: "",
   host: {
-    userId: 0,
+    userId: "",
     nickname: "",
-    profileImageUrl: "",
+    image: null,
+    imageUrl: "",
     year: "",
     description: "",
   },
   guests: [
     {
-      userId: 0,
+      userId: "",
       nickname: "",
-      profileImageUrl: "",
+      image: null,
+      imageUrl: "",
       year: "",
       description: "",
     },
@@ -64,9 +75,19 @@ export const initialState: GroupInfo = {
 export type Group = Partial<GroupInfo>;
 
 export const partyAxios = {
-  createParty: async (group: Group) => {
+  createParty: async (group: any) => {
+    const formData = new FormData();
+
+    Object.keys(group).forEach((key) => {
+      formData.append(key, group[key]);
+    });
+
     const url = getUrl(`/api/groups`);
-    const headers = getHeaders();
+    const auth = getHeaders();
+    const headers = {
+      ...auth,
+      "Content-Type": "multipart/form-data",
+    };
     const body = { ...group };
     const data = await axios
       .post(url, body, { headers })
@@ -76,9 +97,19 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data;
   },
 
-  editParty: async (group: Group, groupId: number) => {
+  editParty: async (group: any, groupId: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
-    const headers = getHeaders();
+
+    const formData = new FormData();
+
+    Object.keys(group).forEach((key) => {
+      formData.append(key, group[key]);
+    });
+    const auth = getHeaders();
+    const headers = {
+      ...auth,
+      "Content-Type": "multipart/form-data",
+    };
     const body = { ...group };
     const data = await axios
       .patch(url, body, { headers })
@@ -88,7 +119,7 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data;
   },
 
-  deleteParty: async (groupId: number) => {
+  deleteParty: async (groupId: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
     const headers = getHeaders();
     const data = await axios
@@ -99,7 +130,7 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data;
   },
 
-  getPartyInfo: async (groupId: number) => {
+  getPartyInfo: async (groupId: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
     const headers = getHeaders();
     const data = await axios
@@ -122,9 +153,10 @@ export const partyAxios = {
     return data.err ? errorHandler(data) : data;
   },
 
-  joinParty: async (groupId: number, action: string) => {
+  joinParty: async (groupId: string, action: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
     const headers = getHeaders();
+    console.log(groupId, action);
     const data = await axios
       .put(url, { headers, data: { groupId, action } })
       .then((res) => {

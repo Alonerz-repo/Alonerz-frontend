@@ -14,20 +14,17 @@ const PartyInfo = () => {
   const user = useAppSelector((state) => state.user);
   const group = useGetparty(groupId);
 
-  const handleJoin = (action: string) => {
-    const join = async () => {
-      if (groupId) {
-        await partyAxios
-          .joinParty(parseInt(groupId), action)
-          .then((response) => {
-            navigate("/");
-          })
-          .catch((err) => {
-            alert(err);
-          });
-      }
-      join();
-    };
+  const handleJoin = async (action: string) => {
+    if (groupId) {
+      await partyAxios
+        .joinParty(groupId, action)
+        .then((response) => {
+          navigate("/");
+        })
+        .catch((err) => {
+          alert(err);
+        });
+    }
   };
 
   const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
@@ -81,7 +78,7 @@ const PartyInfo = () => {
         <PartyMember
           captain
           nickname={group.host.nickname}
-          src={group.host.profileImageUrl}
+          src={group.host.imageUrl}
         ></PartyMember>
 
         {group.guests.map((guest: any, i: number) => {
@@ -89,13 +86,13 @@ const PartyInfo = () => {
             <PartyMember
               key={i}
               nickname={guest.nickname}
-              src={guest.profileImageUrl}
+              src={guest.imageUrl}
             ></PartyMember>
           );
         })}
       </Grid>
       <Grid absolute="position:sticky; bottom:0; z-index:2;">
-        {user.userId === group.host.userId ? (
+        {user.userId === group.host.userId && (
           <Grid isFlex>
             <Button
               width="50%"
@@ -117,25 +114,27 @@ const PartyInfo = () => {
               대충 삭제
             </Button>
           </Grid>
-        ) : group.guests.findIndex((v: any) => v.userId === user.userId) ? (
-          <Button
-            _onClick={() => {
-              handleJoin("join");
-            }}
-            width="100%"
-          >
-            파티 나가기
-          </Button>
-        ) : (
-          <Button
-            width="100%"
-            _onClick={() => {
-              handleJoin("exit");
-            }}
-          >
-            참가하기
-          </Button>
         )}
+        {/* {group.guests.findIndex((v) => v.userId === user.userId) &&
+          (group.guests.findIndex((v: any) => v.userId === user.userId) ? (
+            <Button
+              _onClick={() => {
+                handleJoin("join");
+              }}
+              width="100%"
+            >
+              파티 나가기
+            </Button>
+          ) : (
+          ))} */}
+        <Button
+          width="100%"
+          _onClick={() => {
+            handleJoin("join");
+          }}
+        >
+          참가하기
+        </Button>
       </Grid>
     </React.Fragment>
   );

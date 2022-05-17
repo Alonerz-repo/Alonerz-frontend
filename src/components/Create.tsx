@@ -16,16 +16,17 @@ interface CreateProps {
 
 const Create = ({ group, time }: CreateProps) => {
   useLoginCheck();
-  const [title, setTitle] = useState<string>();
-  const [menu, setMenu] = useState<string>();
-  const [description, setDescription] = useState<string>();
-  const [opentime, setOpentime] = useState<number>();
-  const [closetime, setClosetime] = useState<number>();
+  const [title, setTitle] = useState<string>("");
+  const [menu, setMenu] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [opentime, setOpentime] = useState<number>(0);
+  const [closetime, setClosetime] = useState<number>(0);
   const [placeName, setPlacename] = useState<string>("");
-  const [address, setAddress] = useState<string>();
+  const [address, setAddress] = useState<string>("");
   const [locationX, setLocationX] = useState<number>(33.450701);
   const [locationY, setLocationY] = useState<number>(126.570667);
   const [limit, setLimit] = useState<number>(4);
+  const [image, setImageUrl] = useState<File>();
 
   const navigate = useNavigate();
 
@@ -45,6 +46,10 @@ const Create = ({ group, time }: CreateProps) => {
       setClosetime(time + 1);
     }
   }, [group]);
+
+  const handleImageUrl = (file: any) => {
+    setImageUrl(file);
+  };
 
   const handleTitle = (e: any) => {
     setTitle(e.target.value);
@@ -67,7 +72,6 @@ const Create = ({ group, time }: CreateProps) => {
   };
 
   const handleCreateParty = () => {
-    console.log(address);
     if (title === "") {
       alert("제목을 입력해주세요.");
       return;
@@ -83,7 +87,7 @@ const Create = ({ group, time }: CreateProps) => {
       return;
     }
     const d = new Date();
-    const groupInfo = {
+    let groupInfo: any = {
       title,
       menu,
       description,
@@ -101,14 +105,15 @@ const Create = ({ group, time }: CreateProps) => {
         )
       ),
       limit,
-      imageUrl:
-        "https://github.com/choewy/react-place-app/blob/master/src/images/0.png?raw=true",
       locationX,
       locationY,
       address,
     };
+    if (image) {
+      groupInfo = { ...groupInfo, image };
+    }
 
-    if (group.groupId === -1) {
+    if (!group.groupId) {
       partyAxios.createParty(groupInfo);
     } else {
       partyAxios.editParty(groupInfo, group.groupId);
@@ -239,10 +244,13 @@ const Create = ({ group, time }: CreateProps) => {
           value={description}
           _onChange={handleDescription}
         ></Input>
-        <Upload></Upload>
+        <Upload
+          handleImageUrl={handleImageUrl}
+          imageUrl={group.imageUrl}
+        ></Upload>
       </Grid>
       <Grid absolute="position:sticky; bottom:0px; width:inherit;">
-        {group.groupId !== -1 ? (
+        {group.groupId ? (
           <Button width="100%" _onClick={handleCreateParty}>
             대충 수정
           </Button>
