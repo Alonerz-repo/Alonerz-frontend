@@ -14,7 +14,7 @@ const LoginHeader = () => {
       dispatch(kakaoLogout());
     }
   };
-  if (!user.userId) {
+  if (user.userId === "-1") {
     return (
       <React.Fragment>
         <Wrap>

@@ -40,7 +40,7 @@ const loginAxios = {
       cookie.remove("accessToken");
       cookie.remove("refreshToken");
       const user = {
-        userId: -1,
+        userId: "-1",
         kakaoId: "",
         nickname: "",
       };

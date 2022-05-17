@@ -6,7 +6,7 @@ const useLoginCheck = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
   useEffect(() => {
-    if (!user.userId) {
+    if (user.userId === "-1") {
       alert("로그인이 필요한 서비스입니다.");
       navigate("/login");
     }
