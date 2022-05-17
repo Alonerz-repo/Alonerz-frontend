@@ -10,7 +10,7 @@ const initState = {
   nickname: "",
   point: 0,
   profileImageUrl: "",
-  userId: -1,
+  userId: "-1",
   year: "신입",
 };
 

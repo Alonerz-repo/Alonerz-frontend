@@ -39,7 +39,6 @@ export const authUser = createAsyncThunk(
         return state;
       }
     });
-
     return response;
   }
 );
