@@ -1,34 +1,34 @@
+import { errorHandler, getHeaders, getUrl } from "../utils/api";
 import axios from "axios";
 import cookie from "../utils/cookie";
 
-const url = process.env.REACT_APP_API_URL;
-export const authAxios = {
-  auth: async () => {
-    const token = cookie.get("accessToken");
-    if (!token) {
-      return;
-    }
-    try {
-      const response = await axios({
-        method: "get",
-        url: `${url}/api/auth`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return response;
-    } catch (err: any) {
-      const stateCode = err.response.data.statusCode;
-      switch (stateCode) {
-        case 403:
-          window.alert(err.response.data.message);
-          return err.response.data;
-        case 401:
-          window.alert(err.response.data.message);
-          return err.response.data;
-        default:
-          return;
-      }
-    }
+const userAxios = {
+  //사용자 인증 api
+  authUser: async (user?: any) => {
+    const url = getUrl(`/api/auth`);
+    const headers = getHeaders();
+    const data = await axios
+      .get(url, { headers })
+      .then((res) => {
+        return res.data;
+      })
+      .catch((err) => err.response.data);
+    return data;
+  },
+  //사용자 리프레시토큰 api
+  refreshUser: async () => {
+    const url = getUrl("/api/reissue");
+    const token = cookie.get("refreshToken");
+    const body = {
+      refreshToken: token,
+    };
+    const headers = getHeaders();
+    const data = await axios
+      .post(url, body, { headers })
+      .then((res) => res.data)
+      .catch((err) => err.response.data);
+    return data;
   },
 };
+
+export default userAxios;

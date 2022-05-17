@@ -1,32 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Grid, Text, Image, Button } from "../elements";
+import { Grid, Text, Image } from "../elements";
 import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
-import chatIcon from "../assets/header/1.svg";
-import userAxios from "../axios/userAxios";
 import useUser from "../useCustom/useUser";
+import { Career } from "../utils/career";
+import { useAppSelect } from "../store/config.hook";
+import BtnAction from "./MyInfo.BtnAction";
+import GridTxt from "./MyInfo.GridTxt";
 
 const MyInfo = ({ uid, group }: any) => {
   const navigate = useNavigate();
   const user = useUser(uid);
+  const myid = useAppSelect((state) => state.user);
+  const [carId, setCarId] = useState<number>(1);
+  const b = Career;
+  const v = b.map((value) => {
+    if (value.careerId === carId) {
+      return `${value.careerGroupName} / ${value.careerItemName}`;
+    }
+  });
 
-  const goTochat = () => {
-    console.log("hello chat");
-  };
-
-  const setFollow = () => {
-    userAxios.setFollowUser(uid).then((res) => {
-      window.alert("follow!");
-    });
-  };
-
-  const setBlock = async () => {
-    console.log("hello block!");
-    await userAxios.blockUser(uid).then((res) => {
-      window.alert("block!!");
-    });
-  };
+  useEffect(() => {
+    setCarId(user.careerId);
+  }, [user]);
 
   const goToFollow = (isfollow: string) => {
     navigate(`follow`, { state: { isfollow, uid } });
@@ -35,24 +32,22 @@ const MyInfo = ({ uid, group }: any) => {
   return (
     <React.Fragment>
       <Grid>
-        <A></A>
-        <Position
-          style={{
-            position: "absolute",
-            width: "100%",
-            top: "50px",
-            left: "50px",
-          }}
-        >
+        <ProfileBG />
+        <ImgPosition>
           <Image shape="rectangle"></Image>
-        </Position>
+        </ImgPosition>
+
         <Position style={{ position: "absolute", top: "1px" }}>
           <Grid display="flex" flexFlow="column wrap">
             <Mytxt style={{ fontSize: "13px", fontWeight: "bold" }}>
-              직군&직업
+              {b.map((value) => {
+                if (value.careerId === carId) {
+                  return `${value.careerGroupName} / ${value.careerItemName}`;
+                }
+              })}
             </Mytxt>
             <Mytxt style={{ fontSize: "20px", color: "#F24141" }}>
-              직업 {user.year ? user.year : "연차"}
+              {v} {user.year}
             </Mytxt>
             <Mytxt style={{ margin: "0px 30px" }}>
               {user.nickname} 입니다.
@@ -60,59 +55,29 @@ const MyInfo = ({ uid, group }: any) => {
           </Grid>
         </Position>
       </Grid>
-      <Grid isFlex>
-        <Grid display="flex" flexFlow="column wrap">
-          <Text>참가회수</Text>
-          <Text>{user.point}</Text>
-        </Grid>
-        <Grid>
-          <div onClick={() => goToFollow("following")}>
-            <Text>follow</Text>
-            <Text>{user.following}</Text>
-          </div>
-        </Grid>
-        <Grid display="flex" flexFlow="column wrap">
-          <div onClick={() => goToFollow("follower")}>
-            <Text>follower</Text>
-            <Text>{user.follower}</Text>
-          </div>
-        </Grid>
-        {user.userId.toString() === uid && (
-          <Button
-            _onClick={() => navigate("/user/edit")}
-            customize="border: 2px solid #F5F5F5; background: none; border-radius: 30px; padding: 15px 30px;"
-          >
-            내정보 수정
-          </Button>
-        )}
 
-        {user.userId.toString() !== uid && (
-          <div onClick={goTochat}>
-            <Image size="44px" src={chatIcon}></Image>
-          </div>
-        )}
-        {user.userId.toString() !== uid && (
-          <Button
-            _onClick={setFollow}
-            customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
-          >
-            팔로우
-          </Button>
-        )}
-        {user.userId.toString() !== uid && (
-          <Button
-            _onClick={setBlock}
-            customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
-          >
-            차단
-          </Button>
-        )}
+      <Grid isFlex>
+        <GridTxt text="참가회수" point={user.point} />
+        <GridTxt
+          text="follow"
+          point={user.following}
+          _onClick={() => goToFollow("following")}
+        />
+        <GridTxt
+          _onClick={() => goToFollow("follower")}
+          text="follower"
+          point={user.follower}
+        />
+
+        <BtnAction myId={myid.userId} yourId={uid} />
       </Grid>
 
-      <Div style={{ border: "2px solid #F5F5F5", margin: "38px 0px" }}></Div>
+      <Line />
+
       <Text customize="margin: 0px 0px 23px 20px; font-weight: bold;">
         내가 참가한 파티...
       </Text>
+
       <Grid isFlex padding="20px">
         {group.map((value: any, index: number) => {
           return (
@@ -124,7 +89,7 @@ const MyInfo = ({ uid, group }: any) => {
               limit={value.limit}
               headcount={value.join}
               isFlex
-            ></Card>
+            />
           );
         })}
       </Grid>
@@ -132,7 +97,7 @@ const MyInfo = ({ uid, group }: any) => {
   );
 };
 
-const A = styled.div`
+const ProfileBG = styled.div`
   width: 183px;
   height: 336px;
   background: #ffd9d9;
@@ -141,9 +106,18 @@ const A = styled.div`
   right: -53%;
 `;
 
-const Div = styled.div``;
+const Line = styled.div`
+  border: 2px solid #f5f5f5;
+  margin: 38px 0px;
+`;
 
 const Mytxt = styled.p``;
 const Position = styled.div``;
+const ImgPosition = styled(Position)`
+  position: absolute;
+  width: 100%;
+  top: 50px;
+  left: 50px;
+`;
 
 export default MyInfo;

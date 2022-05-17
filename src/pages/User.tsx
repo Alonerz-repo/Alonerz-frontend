@@ -5,20 +5,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import partyAxios from "../axios/partyAxios";
 import { useAppSelect } from "../store/config.hook";
 
-interface Payload {
-  userId?: number;
-  kakaoId?: string;
-  nickname?: string;
-}
-const initPayload = {
-  userId: -1,
-  needProfile: false,
-  nickname: "",
-  kakaoId: "",
-  statusCode: 0,
-  message: "",
-};
-
 interface groupid {
   groupId: number;
   title: string;
@@ -76,7 +62,7 @@ const User = () => {
   }, []);
 
   // paint user proflie or otherUser Profile
-  if (param.userId === userInfo.userId.toString()) {
+  if (param.userId === userInfo.userId) {
     return (
       <React.Fragment>
         <Header
@@ -88,7 +74,7 @@ const User = () => {
         <MyInfo group={group} uid={param.userId}></MyInfo>
       </React.Fragment>
     );
-  } else if (param.userId !== userInfo.userId.toString()) {
+  } else if (param.userId !== userInfo.userId) {
     return (
       <React.Fragment>
         <Header text="프로필"></Header>

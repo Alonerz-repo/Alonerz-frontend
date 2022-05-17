@@ -7,6 +7,7 @@ interface Props {
   width?: string;
   categories: categoryShape[];
   time?: string | undefined;
+  name?: string;
 }
 
 interface categoryShape {
@@ -14,10 +15,16 @@ interface categoryShape {
   name: string;
 }
 
-const Select = ({ onChange, value, width, categories, time }: Props) => {
+const Select = ({ onChange, value, width, categories, time, name }: Props) => {
   return (
     <React.Fragment>
-      <MySelected width={width} onChange={onChange} value={value} time={time}>
+      <MySelected
+        name={name}
+        width={width}
+        onChange={onChange}
+        value={value}
+        time={time}
+      >
         {categories.map((c, i) => {
           return (
             <MyOption value={c.value} key={i}>
