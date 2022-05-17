@@ -14,6 +14,7 @@ const Main = () => {
   const [groups, setGroups] = React.useState<any>([]);
   const user = useAppSelect((state) => state.user);
   useEffect(() => {
+    dispatch(authUser());
     //get user groups list
     const getParty = async () => {
       const data = await partyList.getPartyList();
