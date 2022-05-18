@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid, Text, Input, Button, Image } from "../elements";
 import commnetAxios from "../axios/commentAxios";
+import { useAppSelect } from "../store/config.hook";
 
 //파티 상세 페이지의 댓글 컴포넌트 입니다.
 
@@ -9,21 +10,20 @@ import commnetAxios from "../axios/commentAxios";
 const initCmt: any = [
   {
     commentId: 0,
-    content: "hello world",
-    createdAt: "2022-05-18T10:17:36.646Z",
-    updatedAt: "2022-05-18T10:17:36.646Z",
+    content: "",
+    createdAt: "",
+    updatedAt: "",
     user: {
       imageUrl: null,
-      nickname: "???",
-      userId: "81d96f2e-99e9-4e85-b761-8c48e6a0ac5d",
+      nickname: "",
+      userId: "",
     },
   },
 ];
-console.log(typeof initCmt);
+
 const Comment = (props: any) => {
-  // const { roomId } = props;
-  const myRef = useRef();
-  const roomId = "81bc52ec-852a-4394-b99a-7b60c3bb012a";
+  const { groupId } = props;
+  const user = useAppSelect((state) => state.user);
   const [comment, setComment] = useState<Array<any>>(initCmt);
   const [subCmt, setSubCmt] = useState();
   const [insertCmt, setInsertCmt] = useState();
@@ -32,42 +32,44 @@ const Comment = (props: any) => {
   useEffect(() => {
     // 댓글 전체 목록 조회
     const myComment = async () => {
-      await commnetAxios
-        .getCommentList("81bc52ec-852a-4394-b99a-7b60c3bb012a")
-        .then((res) => {
-          setComment(res.comments);
-        });
+      await commnetAxios.getCommentList(groupId).then((res) => {
+        setComment(res.comments);
+      });
     };
     //선택한 하위 댓글 조회
-    const myChildCmt = async () => {
-      await commnetAxios
-        .getChildComment("81bc52ec-852a-4394-b99a-7b60c3bb012a", 1)
-        .then((res) => {
-          console.log(res);
-          setSubCmt(res.comments);
-        });
-    };
+    //미완성
+    // const myChildCmt = async () => {
+    //   await commnetAxios.getChildComment(groupId, 4).then((res) => {
+    //     setSubCmt(res.comments);
+    //   });
+    // };
     myComment();
-    myChildCmt();
+    // myChildCmt();
   }, []);
 
-  useEffect(() => {
-    console.log(comment);
-  }, [comment]);
-
-  const setCmt = async () => {
-    await commnetAxios.setComment(roomId, insertCmt).then((res) => {
-      console.log(res);
+  //댓글을 업로드 합니다.
+  const setCmt = () => {
+    commnetAxios.setComment(groupId, insertCmt).then((_) => {
+      window.location.reload();
     });
   };
+  //입력값을 변경합니다.
   const cmtHandler = (e: any) => {
     setInsertCmt(e.target.value);
   };
-  const editCmt = () => {
-    const msg = "댓글을 수정합니다.";
-    const mydata = window.prompt(msg);
 
-    console.log(mydata);
+  //클릭시 댓글을 수정하는 함수입니다.
+  const editCmt = (cmtId: any, content: any) => {
+    const msg = "댓글을 수정합니다.";
+    const mydata = window.prompt(msg, content);
+    commnetAxios
+      .editComment(cmtId, mydata)
+      .then((_) => window.location.reload());
+  };
+
+  //클릭시 댓글을 삭제합니다.
+  const removeCmt = (cmtId: any) => {
+    commnetAxios.removeComment(cmtId).then((_) => window.location.reload());
   };
   return (
     <React.Fragment>
@@ -79,6 +81,7 @@ const Comment = (props: any) => {
           <div
             style={{ display: "flex", position: "relative", padding: "20px" }}
             key={value.commentId}
+            id={value.commentId}
           >
             <div>
               <Image size="33px"></Image>
@@ -92,13 +95,19 @@ const Comment = (props: any) => {
               <Text>{value.content}</Text>
               <Grid display="flex">
                 <Text margin="0px 10px 0px 0px">답글달기</Text>
-                <Text
-                  _onClick={() => {
-                    editCmt();
-                  }}
-                >
-                  댓글수정
-                </Text>
+                {user.userId === value.user.userId && (
+                  <Text
+                    margin="0px 10px 0px 0px"
+                    _onClick={() => {
+                      editCmt(value.commentId, value.content);
+                    }}
+                  >
+                    댓글수정
+                  </Text>
+                )}
+                {user.userId === value.user.userId && (
+                  <Text _onClick={() => removeCmt(value.commentId)}>삭제</Text>
+                )}
               </Grid>
             </Grid>
 

@@ -35,12 +35,23 @@ const userAxios = {
   },
 
   //코멘트 수정요청 api
-  editComment: async (cmtId: any, comment: any) => {
+  editComment: async (cmtId: any, content: any) => {
     const url = getUrl(`/api/comments/${cmtId}`);
     const headers = getHeaders();
-    const body = { comment };
+    const body = { content };
     const data = await axios
       .patch(url, body, { headers })
+      .then((res) => res.data)
+      .catch((err) => err.response.data);
+    return data;
+  },
+
+  //코멘트 삭제 요청 api
+  removeComment: async (cmtId: any) => {
+    const url = getUrl(`/api/comments/${cmtId}`);
+    const headers = getHeaders();
+    const data = await axios
+      .delete(url, { headers })
       .then((res) => res.data)
       .catch((err) => err.response.data);
     return data;
