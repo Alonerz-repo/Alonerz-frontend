@@ -74,7 +74,7 @@ const Create = ({ group, time }: CreateProps) => {
   };
 
   // 버튼 클릭시 파티 생성, 수정 이벤트
-  const handleCreateParty = () => {
+  const handleCreateParty = async () => {
     if (title === "") {
       alert("제목을 입력해주세요.");
       return;
@@ -120,11 +120,26 @@ const Create = ({ group, time }: CreateProps) => {
 
     // 내가 받아온 그룹 정보가 없다면 create이고 있다면 edit
     if (!group.groupId) {
-      partyAxios.createParty(groupInfo);
+      const data = await partyAxios.createParty(groupInfo);
+      switch (data.statusCode) {
+        case 400:
+          return alert(data.message);
+        case 401:
+          return alert(data.message);
+        default:
+          navigate("/");
+      }
     } else {
-      partyAxios.editParty(groupInfo, group.groupId);
+      const data = await partyAxios.editParty(groupInfo, group.groupId);
+      switch (data.statusCode) {
+        case 400:
+          return alert(data.message);
+        case 401:
+          return alert(data.message);
+        default:
+          navigate("/");
+      }
     }
-    navigate("/");
   };
 
   return (

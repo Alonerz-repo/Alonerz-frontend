@@ -18,17 +18,23 @@ const Main = () => {
   // 해당 페이지 접속시 사용자의 오늘의 파티 목록을 받아옴
   // 데이터의 최신화를 위해 redux를 사용하지 않고 페이지 접속 시마다 받아옴
   useEffect(() => {
-    dispatch(authUser());
     //get user groups list
     const getParty = async () => {
       const data = await partyList.getPartyList();
       switch (data.statusCode) {
         case 401:
-          return alert(data);
+          setGroups([]);
+          return;
+        default:
+          setGroups(data);
       }
-      setGroups(data);
     };
     getParty();
+  }, [user]);
+
+  // 사용자 인증
+  useEffect(() => {
+    dispatch(authUser());
   }, []);
 
   // 받아온 정보가 바뀌었을시 rerendering
