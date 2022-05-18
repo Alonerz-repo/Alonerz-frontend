@@ -15,6 +15,7 @@ interface CreateProps {
 }
 
 const Create = ({ group, time }: CreateProps) => {
+  // 사용자가 로그인 상태인지 확인하고 아닐 시 로그인 페이지로 보내주는 훅
   useLoginCheck();
   const [title, setTitle] = useState<string>("");
   const [menu, setMenu] = useState<string>("");
@@ -30,6 +31,7 @@ const Create = ({ group, time }: CreateProps) => {
 
   const navigate = useNavigate();
 
+  // group 정보를 받아와서 초기 상태값을 세팅
   useEffect(() => {
     setTitle(group.title);
     setMenu(group.menu);
@@ -71,6 +73,7 @@ const Create = ({ group, time }: CreateProps) => {
     setClosetime(e.target.value);
   };
 
+  // 버튼 클릭시 파티 생성, 수정 이벤트
   const handleCreateParty = () => {
     if (title === "") {
       alert("제목을 입력해주세요.");
@@ -86,6 +89,7 @@ const Create = ({ group, time }: CreateProps) => {
       alert("오픈 시간은 마감 시간보다 빨라야합니다.");
       return;
     }
+    // number의 시간 정보를 Date 타입으로 바꾸기 위한 변수
     const d = new Date();
     let groupInfo: any = {
       title,
@@ -109,10 +113,12 @@ const Create = ({ group, time }: CreateProps) => {
       locationY,
       address,
     };
+    // 이미지 정보의 입력이 없는 경우 image를 제외한 정보만 서버와 통신
     if (image) {
       groupInfo = { ...groupInfo, image };
     }
 
+    // 내가 받아온 그룹 정보가 없다면 create이고 있다면 edit
     if (!group.groupId) {
       partyAxios.createParty(groupInfo);
     } else {

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { errorHandler, getHeaders, getUrl } from "../utils/api";
 
+// 받아오는 유저 데이터의 인터페이스
 interface userInfo {
   userId: string;
   nickname: string;
@@ -10,6 +11,7 @@ interface userInfo {
   description: string;
 }
 
+// group 데이터의 인터페이스
 interface G {
   groupId?: string;
   title: string;
@@ -28,6 +30,7 @@ interface G {
   host: userInfo;
   guests: userInfo[];
 }
+
 export interface GroupInfo extends G {
   imageUrl: string;
 }
@@ -36,6 +39,7 @@ export interface CreateGroupInfo extends G {
   imageUrl: any;
 }
 
+// 그룹의 초기 상태값, 데이터를 받아오기 전 화면을 미리 렌더링하기 위해 입력한 값
 export const initialState: GroupInfo = {
   groupId: "",
   title: "",
@@ -74,7 +78,10 @@ export const initialState: GroupInfo = {
 
 export type Group = Partial<GroupInfo>;
 
+// 데이터의 최신화를 위해 redux를 사용하지 않고 각 페이지별로 필요한 데이터를 받아옴
 export const partyAxios = {
+  // 파티 생성시 서버와 통신
+  // 파일 데이터 전송을 위해 FormData 사용
   createParty: async (group: any) => {
     const formData = new FormData();
 
@@ -97,6 +104,8 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data;
   },
 
+  // 파티 수정시 서버와 통신
+  // 파일 데이터 전송을 위해 FormData 사용
   editParty: async (group: any, groupId: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
 
@@ -119,6 +128,7 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data;
   },
 
+  // 파티 삭제 요청
   deleteParty: async (groupId: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
     const headers = getHeaders();
@@ -130,6 +140,7 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data;
   },
 
+  // 파티 리스트의 정보 요청
   getPartyInfo: async (groupId: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
     const headers = getHeaders();
@@ -141,6 +152,7 @@ export const partyAxios = {
     return data.error ? errorHandler(data) : data.group;
   },
 
+  // 사용자가 현재까지 참여했던 모든 파티 정보 요청
   getJoinedParty: async (userId: any) => {
     const url = getUrl(`/api/groups/${userId}/joined`);
     const headers = getHeaders();
@@ -153,6 +165,8 @@ export const partyAxios = {
     return data.err ? errorHandler(data) : data;
   },
 
+  // 사용자의 파티 참가,나가기 요청
+  // action : join 또는 exit 스트링
   joinParty: async (groupId: string, action: string) => {
     const url = getUrl(`/api/groups/${groupId}?action=${action}`);
     const headers = getHeaders();

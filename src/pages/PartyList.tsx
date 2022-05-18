@@ -8,20 +8,25 @@ import { useAppSelector } from "../store/config";
 import { useParams } from "react-router-dom";
 import partyTimes from "../utils/partyTimes";
 
+// 전체 파티목록 조회 페이지
 const PartyList = () => {
   const navigate = useNavigate();
   const [groups, setGroups] = React.useState<any>(initialState);
+  // time = lunch 또는 dinner 를 받아옴
   const { time } = useParams();
   const [partyTime, setPartyTime] = React.useState<string>();
+  // 사용자가 로그인했는지 확인하기 위한 상태값을 받아옴
   const user = useAppSelector((state) => state.user);
 
   useEffect(() => {
     setPartyTime(time);
   }, []);
 
+  // 파티타임 변화에 따라 파티 정보를 받아옴
   useEffect(() => {
     if (user.userId) {
       const getParty = async () => {
+        // 시간에 따른 파티 정보 조회
         setGroups(await partyList.getTimeList(partyTime));
       };
       if (partyTime) {
@@ -52,13 +57,14 @@ const PartyList = () => {
       <Grid isFlex padding="20px">
         <React.Fragment>
           {groups.map((value: any, i: number) => {
+            console.log(value.guests?.length);
             return (
               <Card
                 key={i}
                 isFlex
                 title={value.title}
                 limit={value.limit}
-                headcount={1}
+                headcount={value.join}
                 address={value.address}
                 startAt={new Date(value.startAt)}
                 endAt={new Date(value.endAt)}
