@@ -101,7 +101,7 @@ export const partyAxios = {
       .then((response) => response.data)
       .catch((error) => error.response.data);
 
-    return data.error ? errorHandler(data) : data;
+    return data;
   },
 
   // 파티 수정시 서버와 통신
@@ -125,7 +125,7 @@ export const partyAxios = {
       .then((response) => response.data)
       .catch((error) => error.response.data);
 
-    return data.error ? errorHandler(data) : data;
+    return data;
   },
 
   // 파티 삭제 요청
@@ -137,7 +137,7 @@ export const partyAxios = {
       .then((response) => response.data)
       .catch((error) => error.response.data);
     console.log(data);
-    return data.error ? errorHandler(data) : data;
+    return data;
   },
 
   // 파티 리스트의 정보 요청
@@ -149,7 +149,7 @@ export const partyAxios = {
       .then((response) => response.data)
       .catch((error) => error.response.data);
 
-    return data.error ? errorHandler(data) : data.group;
+    return data.error ? data : data.group;
   },
 
   // 사용자가 현재까지 참여했던 모든 파티 정보 요청
@@ -177,7 +177,7 @@ export const partyAxios = {
         return res;
       })
       .catch((err) => err.response.data);
-    return data.err ? errorHandler(data) : data;
+    return data;
   },
 };
 
