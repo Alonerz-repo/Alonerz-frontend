@@ -1,3 +1,6 @@
+//json 리팩토링 시 성능 개선
+// 유저 커리어 정보를 이곳에서 가져다 사용하면 됩니다.
+
 interface MyCareer {
   careerId: number;
   careerGroupName: string;
@@ -14,6 +17,17 @@ export const Career: Array<MyCareer> = [
   { careerId: 7, careerGroupName: "개발직군", careerItemName: "안드로이드" },
   { careerId: 8, careerGroupName: "개발직군", careerItemName: "IOS" },
 ];
+
+export const findCareer = (careerId: any) =>
+  Career.find((career) => career.careerId === careerId);
+export const careerGroups = () =>
+  Career.reduce(
+    (arr: any[], row: any) =>
+      arr.includes(row.careerGroupName) ? arr : [...arr, row.careerGroupName],
+    []
+  );
+export const careerItems = (groupName: any) =>
+  Career.filter((career) => career.careerGroupName === groupName);
 
 export const Career2 = {
   1: ["무직", "대학생"],

@@ -6,9 +6,13 @@ import useUser from "../useCustom/useUser";
 import { Career } from "../utils/career";
 import { useNavigate } from "react-router-dom";
 
+// 유저 프로필(이름, 직군, 연차 등) 변경할수 있는 페이지 입니다.
+
 const ModifyUser = () => {
   const navigate = useNavigate();
   const userInfo = useAppSelect((state) => state.user);
+
+  //훅을 통해 가져온 유저정보, 유저가 입력한 정보를 저장합니다.
   const [user, setUser] = useState<any>({
     nickname: "",
     profileImageUrl: "",
@@ -16,7 +20,10 @@ const ModifyUser = () => {
     year: "",
     description: "",
   });
+
+  //커스텀 훅 함수로 유저 정보를 가져옵니다.
   const info = useUser(userInfo.userId);
+
   const arr: any = [];
   Career.map((value) => {
     return arr.push({
@@ -24,6 +31,9 @@ const ModifyUser = () => {
       name: `${value.careerGroupName}/${value.careerItemName}`,
     });
   });
+
+  //커스텀훅의 정보가 변경될때마다, 현재 페이지의 스테이트에 저장합니다.
+  //페이지의 input 필드에 저장하기 위해 현재 스테이트에 저장합니다
   useEffect(() => {
     const setting = () => {
       const user = {
@@ -38,12 +48,14 @@ const ModifyUser = () => {
     setting();
   }, [info]);
 
+  //유저가 input필드를 변경할따마다 함수가 호출됩니다.
   const onChangeHandler = (e: any) => {
     setUser((prevState: any) => {
       return { ...prevState, [e.target.name]: e.target.value };
     });
   };
 
+  //유저가 버튼을 누르면 유저 정보 수정 요청을 보냅니다.
   const clickToSetuser = async () => {
     userAxios.setUser(user).then((res) => {
       window.alert("정보 변경 완료");

@@ -5,12 +5,12 @@ import cookie from "../utils/cookie";
 import { kakaoRedirectUrl } from "../utils/config";
 
 const loginAxios = {
-  //redirect axios
-  login: () => {
+  //카카오페이지로 리다이렉트
+  kakaoLogin: () => {
     return (window.location.href = kakaoRedirectUrl);
   },
-  //kakao login axsos
-  kakaoLogin: async (id: any) => {
+  //받은 카카오아이디로 백엔드로 로그인 요청
+  Login: async (id: any) => {
     const url = getUrl("/api/auth/login");
     const body = {
       kakaoId: id,
@@ -27,7 +27,7 @@ const loginAxios = {
       .catch((err) => err.response.data);
     return data;
   },
-  //로그아웃 통신
+  //백엔드에게 로그아웃 요청
   logout: async () => {
     const url = getUrl("/api/auth/logout");
     const headers = getHeaders();

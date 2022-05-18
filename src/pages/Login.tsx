@@ -8,7 +8,8 @@ const Login = () => {
     <React.Fragment>
       <Grid>
         <Position>
-          <Button _onClick={loginAxios.login}>카카오 로그인</Button>
+          {/* 카카오 로그인 페이지로 이동합니다 */}
+          <Button _onClick={loginAxios.kakaoLogin}>카카오 로그인</Button>
         </Position>
       </Grid>
     </React.Fragment>
