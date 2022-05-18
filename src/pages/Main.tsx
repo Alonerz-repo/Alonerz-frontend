@@ -21,7 +21,7 @@ const Main = () => {
   // 데이터의 최신화를 위해 redux를 사용하지 않고 페이지 접속 시마다 받아옴
   useEffect(() => {
     //로그인 검사 dispatch 쿠키에 엑세스코드를 찾아서 서버를 통해 인증을 확인한후 유저State에 데이터를 넣습니다.
-    dispatch(authUser());
+    // dispatch(authUser());
 
     //get user groups list
     const getParty = async () => {
