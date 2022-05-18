@@ -27,6 +27,8 @@ export const initialState: GroupInfo[] = [
   },
 ];
 
+type location = number | undefined;
+
 // 데이터의 최신화를 위해 redux를 사용하지 않고 각 페이지별로 필요한 데이터를 받아옴
 const partyList = {
   // 사용자가 오늘 참여중인 파티 목록 요청
@@ -42,14 +44,15 @@ const partyList = {
 
   // 아침&점심, 저녁&야식의 시간에 따른 파티 목록 요청
   // time : lunch 또는 dinner의 스트링
-  getTimeList: async (time: time) => {
+  getTimeList: async (time: time, x: location, y: location) => {
     const url = getUrl("/api/groups");
     const headers = getHeaders();
     const body = {
-      x: 1,
-      y: 1,
+      x,
+      y,
       time,
     };
+    console.log(body);
     const data = await axios
       .get(url, { headers, data: body })
       .then((response) => response.data)

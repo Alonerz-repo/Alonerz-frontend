@@ -75,7 +75,7 @@ const CommonButton = styled.button<CommonButtonProps>`
     props.customize ??
     "outline: none; background: yellow; padding: 20px; box-sizing: border-box;"}
   width: ${(props) => props.width ?? ""};
-  z-index: 2;
+  z-index: 998;
   :hover {
     background: red;
   }
