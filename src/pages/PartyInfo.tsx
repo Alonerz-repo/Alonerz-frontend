@@ -18,14 +18,45 @@ const PartyInfo = () => {
   // 사용자가 참여,나가기 버튼 클릭시 발생하는 event
   const handleJoin = async (action: string) => {
     if (groupId) {
-      await partyAxios
-        .joinParty(groupId, action)
-        .then((response) => {
+      const data = await partyAxios.joinParty(groupId, action);
+      switch (data.statusCode) {
+        case 400:
+          return alert(data.message);
+        case 401:
+          return alert(data.message);
+        case 404:
+          return alert(data.message);
+        default:
+          if (action === "exit") {
+            alert("파티에서 나가셨습니다.");
+          } else if (action === "join") {
+            alert("파티에 참가하셨습니다.");
+          }
           navigate("/");
-        })
-        .catch((err) => {
-          alert(err);
-        });
+      }
+    }
+  };
+
+  if (group.guests) {
+    console.log(group.guests);
+  }
+
+  const handleEdit = () => {
+    navigate(`/edit/partyInfo/${group.groupId}`);
+  };
+
+  const handleDelete = async () => {
+    if (group.groupId) {
+      const data = await partyAxios.deleteParty(group.groupId);
+      switch (data.statusCode) {
+        case 401:
+          return alert(data.message);
+        case 404:
+          return alert(data.message);
+        default:
+          alert("파티를 삭제하셨습니다.");
+          navigate("/");
+      }
     }
   };
 
@@ -97,23 +128,10 @@ const PartyInfo = () => {
       <Grid absolute="position:sticky; bottom:0; z-index:2;">
         {user.userId === group.host.userId ? (
           <Grid isFlex>
-            <Button
-              width="50%"
-              _onClick={() => {
-                navigate(`/edit/partyInfo/${group.groupId}`);
-              }}
-            >
+            <Button width="50%" _onClick={handleEdit}>
               수정하기
             </Button>
-            <Button
-              width="50%"
-              _onClick={() => {
-                if (group.groupId) {
-                  partyAxios.deleteParty(group.groupId);
-                  navigate("/");
-                }
-              }}
-            >
+            <Button width="50%" _onClick={handleDelete}>
               대충 삭제
             </Button>
           </Grid>

@@ -57,7 +57,6 @@ const PartyList = () => {
       <Grid isFlex padding="20px">
         <React.Fragment>
           {groups.map((value: any, i: number) => {
-            console.log(value.guests?.length);
             return (
               <Card
                 key={i}

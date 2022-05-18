@@ -37,7 +37,7 @@ const partyList = {
       .get(url, { headers })
       .then((response) => response.data)
       .catch((error) => error.response.data);
-    return data.error ? errorHandler(data) : data.groups;
+    return data.error ? data : data.groups;
   },
 
   // 아침&점심, 저녁&야식의 시간에 따른 파티 목록 요청
@@ -55,7 +55,7 @@ const partyList = {
       .then((response) => response.data)
       .catch((error) => error.response.data);
 
-    return data.error ? errorHandler(data) : data.groups;
+    return data.error ? data : data.groups;
   },
 };
 

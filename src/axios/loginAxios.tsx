@@ -29,7 +29,8 @@ const loginAxios = {
       .catch((err) => err.response.data);
     return data;
   },
-  //백엔드에게 로그아웃 요청
+
+  //로그아웃 통신
   logout: async () => {
     const url = getUrl("/api/auth/logout");
     const headers = getHeaders();
