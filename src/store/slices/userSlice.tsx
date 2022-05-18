@@ -1,10 +1,6 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
-import cookie from "../../utils/cookie";
-import axios from "axios";
 import loginAxios from "../../axios/loginAxios";
 import authAxsios from "../../axios/authAxios";
-
-const url = process.env.REACT_APP_API_URL;
 
 export interface userInfo {
   userId: string;
@@ -24,6 +20,9 @@ const initialState: userInfo = {
   message: "",
 };
 
+//사용자 정보 유효성 검사 액션입니다.
+//토큰을 보내 유요한 계정이면 사용자 정보를 갱신하고
+//유요하지 않으면 오류코드와 유저 아이디는 -1로 갱신합니다.
 export const authUser = createAsyncThunk(
   "userSlice/auth",
   async (_, thunkAPI) => {
@@ -43,6 +42,7 @@ export const authUser = createAsyncThunk(
   }
 );
 
+//로그아웃 버튼을 클릭하면 사용자 정보를 초기상태로 갱신합니다.
 export const kakaoLogout = createAsyncThunk(
   "userSlice/kakaoLogout",
   async (_, thunkAPI) => {
@@ -53,62 +53,6 @@ export const kakaoLogout = createAsyncThunk(
       })
       .catch((err) => err.response.data);
     return response;
-  }
-);
-
-export const setUserAxios = createAsyncThunk(
-  "user/setUser",
-  async (user: any, thunkAPI) => {
-    try {
-      const token = cookie.get("accessToken");
-      const response = await axios({
-        method: "patch",
-        url: `${url}/api/users`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        data: {
-          nickname: user.nickname,
-          profileImageUrl: "",
-          description: user.description,
-          year: user.year,
-        },
-      });
-      return response;
-    } catch (err) {
-      console.log(err);
-      return thunkAPI.rejectWithValue(err);
-    }
-  }
-);
-
-export const setFollow = createAsyncThunk(
-  "user/setFollow",
-  async (paramsId: any, thunkAPI) => {
-    try {
-      const token = cookie.get("accessToken");
-      await axios({
-        method: "put",
-        url: `${url}/api/follows/${paramsId}`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-    } catch (err: any) {
-      const code = err.response.data.statusCode;
-      switch (code) {
-        case 418:
-          const message = err.response.data.message;
-          const msg = message.reduce((prev: any, cur: any) => {
-            return prev + `\n` + cur;
-          });
-          return window.alert(msg);
-        default:
-          console.log("팔로우 에러", err);
-          window.alert("error!");
-          return thunkAPI.rejectWithValue(err);
-      }
-    }
   }
 );
 

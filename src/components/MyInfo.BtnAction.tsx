@@ -4,6 +4,8 @@ import { Button, Grid, Image } from "../elements";
 import userAxios from "../axios/userAxios";
 import chatIcon from "../assets/header/1.svg";
 
+//리덕스의 유저 정보와 url param의 유저 정보를 비교해서 두개가 일치하면 내정보 수정버튼
+//일치 하지 않으면 팔로우와 채팅 버튼이 보이게 분기 처리 했습니다.
 const BtnAction = (props: any) => {
   const navigate = useNavigate();
   const { myId, yourId } = props;

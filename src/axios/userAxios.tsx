@@ -3,6 +3,7 @@ import axios from "axios";
 
 const userAxios = {
   // 사용자 프로필 수정  api
+  // 파라미터 user => 객체
   setUser: async (user: any) => {
     const url = getUrl("/api/users");
     const headers = getHeaders();
@@ -13,6 +14,7 @@ const userAxios = {
     return data;
   },
   //사용자 정보 조회 api
+  // 파라미터 userId => string
   getUser: async (userId: any) => {
     const url = getUrl(`/api/users/${userId}`);
     const headers = getHeaders();
@@ -24,6 +26,7 @@ const userAxios = {
     return data;
   },
   // 사용자 팔로우 요청 api
+  // 파라미터 userId => string
   setFollowUser: async (userId: any) => {
     const url = getUrl(`/api/follows/${userId}`);
     const headers = getHeaders();
@@ -37,6 +40,7 @@ const userAxios = {
     return data;
   },
   // 사용자 차단 요청 api
+  // 파라미터 userId => string
   setblockUser: async (userId: any) => {
     const url = getUrl(`/api/blocks/${userId}`);
     const headers = getHeaders();
@@ -48,6 +52,7 @@ const userAxios = {
     return data;
   },
   //사용자 팔로우 정보 요청 api
+  // 파라미터 userId => string, follow => follow || following
   getFollowUser: async (userId: any, follow: string) => {
     const url = getUrl(`/api/follows/${userId}?type=${follow}`);
     const headers = getHeaders();

@@ -5,6 +5,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import partyAxios from "../axios/partyAxios";
 import { useAppSelect } from "../store/config.hook";
 
+//유저 프로필 페이지 뷰 입니다.
+
 interface groupid {
   groupId: number;
   title: string;
@@ -55,13 +57,13 @@ const User = () => {
   const userInfo = useAppSelect((state) => state.user);
 
   useEffect(() => {
-    //get user infomation
+    //유저가 참여했던 파티들의 리스트를 요청합니다.
     partyAxios.getJoinedParty(param.userId).then((res) => {
       setGroup(res.data.groups);
     });
   }, []);
 
-  // paint user proflie or otherUser Profile
+  // 유저 아이디와 url파람 아이디가 같으면 내 정보를 표시
   if (param.userId === userInfo.userId) {
     return (
       <React.Fragment>
@@ -74,7 +76,9 @@ const User = () => {
         <MyInfo group={group} uid={param.userId}></MyInfo>
       </React.Fragment>
     );
-  } else if (param.userId !== userInfo.userId) {
+  }
+  //다르면 상대방 정보를 표시
+  else if (param.userId !== userInfo.userId) {
     return (
       <React.Fragment>
         <Header text="프로필"></Header>

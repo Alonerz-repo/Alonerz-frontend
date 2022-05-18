@@ -4,7 +4,7 @@ import cookie from "../utils/cookie";
 
 const userAxios = {
   //사용자 인증 api
-  authUser: async (user?: any) => {
+  authUser: async () => {
     const url = getUrl(`/api/auth`);
     const headers = getHeaders();
     const data = await axios
