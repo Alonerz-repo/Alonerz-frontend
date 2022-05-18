@@ -154,11 +154,11 @@ export const partyAxios = {
   },
 
   joinParty: async (groupId: string, action: string) => {
-    const url = getUrl(`/api/groups/${groupId}`);
+    const url = getUrl(`/api/groups/${groupId}?action=${action}`);
     const headers = getHeaders();
     console.log(groupId, action);
     const data = await axios
-      .put(url, { headers, data: { groupId, action } })
+      .put(url, {}, { headers })
       .then((res) => {
         return res;
       })
