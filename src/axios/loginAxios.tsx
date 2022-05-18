@@ -10,6 +10,8 @@ const loginAxios = {
     return (window.location.href = kakaoRedirectUrl);
   },
   //받은 카카오아이디로 백엔드로 로그인 요청
+  //파라미터 id => string || number
+  //ex> kakaoId = 1234566
   Login: async (id: any) => {
     const url = getUrl("/api/auth/login");
     const body = {
