@@ -20,7 +20,7 @@ import Chatting from "./pages/Chatting";
 import ChatList from "./pages/ChatList";
 
 import { authUser } from "./store/slices/userSlice";
-import { useAppDispatch, useAppSelect } from "./store/config.hook";
+import { useAppDispatch } from "./store/config.hook";
 
 declare global {
   interface Window {

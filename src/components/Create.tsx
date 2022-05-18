@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import DatePickerComponent from "./DatePicker";
 import { Input, Grid, Text, Button, Select } from "../elements";
 import Upload from "./Upload";
 import Header from "./Header";
@@ -163,6 +164,9 @@ const Create = ({ group, time }: CreateProps) => {
           value={menu}
           _onChange={handleMenu}
         ></Input>
+
+        {/* 달력 컴포넌트 */}
+        <DatePickerComponent></DatePickerComponent>
 
         <Grid isFlex width="87%">
           <Grid width="40%">
