@@ -8,12 +8,14 @@ import { partyAxios, GroupInfo } from "../axios/partyAxios";
 import { useAppSelector } from "../store/config";
 import useGetparty from "../useCustom/useGetparty";
 
+// 파티 정보 상세 페이지
 const PartyInfo = () => {
   const { groupId } = useParams();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
   const group = useGetparty(groupId);
 
+  // 사용자가 참여,나가기 버튼 클릭시 발생하는 event
   const handleJoin = async (action: string) => {
     if (groupId) {
       await partyAxios
@@ -27,6 +29,7 @@ const PartyInfo = () => {
     }
   };
 
+  // 참여인원 정보 string
   const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
   return (

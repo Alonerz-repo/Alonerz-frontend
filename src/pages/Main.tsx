@@ -8,11 +8,15 @@ import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { authUser } from "../store/slices/userSlice";
 import LoginHeader from "../components/LoginHeader";
 
+// 메인 페이지로써 사용자의 오늘 파티목록을 받아와 보여주는 컴포넌트
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [groups, setGroups] = React.useState<any>([]);
   const user = useAppSelect((state) => state.user);
+
+  // 해당 페이지 접속시 사용자의 오늘의 파티 목록을 받아옴
+  // 데이터의 최신화를 위해 redux를 사용하지 않고 페이지 접속 시마다 받아옴
   useEffect(() => {
     dispatch(authUser());
     //get user groups list
@@ -27,6 +31,7 @@ const Main = () => {
     getParty();
   }, []);
 
+  // 받아온 정보가 바뀌었을시 rerendering
   useEffect(() => {}, [groups]);
 
   const goToLink = (num: number) => {
@@ -51,6 +56,7 @@ const Main = () => {
         {groups.length !== 0 && (
           <Text type="title"> 오늘 파티 잊지 마세요! </Text>
         )}
+        {/* 유저 정보가 있다면 리스트를 보여줌 */}
         {user.userId &&
           groups.map((value: any, index: number) => {
             return (
