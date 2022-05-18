@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Comment from "../components/Comment";
+import React from "react";
+import DatePickerComponent from "../components/DatePicker";
 
 const Test = () => {
   return (
     <React.Fragment>
-      <Comment></Comment>
+      <DatePickerComponent></DatePickerComponent>
     </React.Fragment>
   );
 };

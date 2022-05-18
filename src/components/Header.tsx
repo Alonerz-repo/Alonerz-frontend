@@ -81,7 +81,7 @@ const Wrap = styled.div`
   position: sticky;
   text-align: center;
   top: 0;
-  z-index: 2;
+  z-index: 999;
   background-color: white;
 `;
 

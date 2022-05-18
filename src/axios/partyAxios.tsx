@@ -12,7 +12,7 @@ interface userInfo {
 }
 
 // group 데이터의 인터페이스
-interface G {
+export interface GroupInfo {
   groupId?: string;
   title: string;
   menu: string;
@@ -24,19 +24,12 @@ interface G {
   locationX: number;
   locationY: number;
   address: string;
+  imageUrl?: string;
   placeName: string;
   createdAt: string;
   updateAt: string;
   host: userInfo;
   guests: userInfo[];
-}
-
-export interface GroupInfo extends G {
-  imageUrl: string;
-}
-
-export interface CreateGroupInfo extends G {
-  imageUrl: any;
 }
 
 // 그룹의 초기 상태값, 데이터를 받아오기 전 화면을 미리 렌더링하기 위해 입력한 값
@@ -83,12 +76,11 @@ export const partyAxios = {
   // 파티 생성시 서버와 통신
   // 파일 데이터 전송을 위해 FormData 사용
   createParty: async (group: any) => {
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    Object.keys(group).forEach((key) => {
-      formData.append(key, group[key]);
-    });
-
+    // Object.keys(group).forEach((key) => {
+    //   formData.append(key, group[key]);
+    // });
     const url = getUrl(`/api/groups`);
     const auth = getHeaders();
     const headers = {
@@ -109,11 +101,12 @@ export const partyAxios = {
   editParty: async (group: any, groupId: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
 
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    Object.keys(group).forEach((key) => {
-      formData.append(key, group[key]);
-    });
+    // Object.keys(group).forEach((key) => {
+    //   formData.append(key, group[key]);
+    // });
+    // console.log(formData);
     const auth = getHeaders();
     const headers = {
       ...auth,
