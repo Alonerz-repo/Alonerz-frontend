@@ -24,28 +24,28 @@ const MyInfo = ({ uid, group }: any) => {
     }
   });
 
-  // const findCareer = (careerId: any) =>
-  //   Career.find((career) => career.careerId === careerId);
-  // const careerGroups = () =>
-  //   Career.reduce(
-  //     (arr: any[], row: any) =>
-  //       arr.includes(row.careerGroupName) ? arr : [...arr, row.careerGroupName],
-  //     []
-  //   );
-  // const careerItems = (groupName: any) =>
-  //   Career.filter((career) => career.careerGroupName === groupName);
+  const findCareer = (careerId: any) =>
+    Career.find((career) => career.careerId === careerId);
+  const careerGroups = () =>
+    Career.reduce(
+      (arr: any[], row: any) =>
+        arr.includes(row.careerGroupName) ? arr : [...arr, row.careerGroupName],
+      []
+    );
+  const careerItems = (groupName: any) =>
+    Career.filter((career) => career.careerGroupName === groupName);
 
-  // const test = () => {
-  //   const result = findCareer(1);
-  //   const result2 = careerGroups();
-  //   const result3 = careerItems("개발직군");
-  //   console.log(result);
-  //   console.log(result2);
-  //   console.log(result3);
-  // };
-  // useEffect(() => {
-  //   test();
-  // }, []);
+  const test = () => {
+    const result = findCareer(1);
+    const result2 = careerGroups();
+    const result3 = careerItems("개발직군");
+    console.log(result);
+    console.log(result2);
+    console.log(result3);
+  };
+  useEffect(() => {
+    test();
+  }, []);
 
   //엑시오스로 받아온 유저정보를 스테이트에 저장합니다.
   useEffect(() => {
