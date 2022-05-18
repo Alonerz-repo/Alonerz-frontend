@@ -109,6 +109,7 @@ const MainCmt = (props: any) => {
               getCmtNum={getCmtNum}
               commentId={value.commentId}
               childCmt={childCmt}
+              uid={uid}
             ></SubCmt>
             {/* 대댓글 끝 */}
           </Grid>
