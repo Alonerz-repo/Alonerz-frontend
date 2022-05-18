@@ -12,13 +12,17 @@ import LoginHeader from "../components/LoginHeader";
 const Main = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const [groups, setGroups] = React.useState<any>([]);
+
   const user = useAppSelect((state) => state.user);
 
   // 해당 페이지 접속시 사용자의 오늘의 파티 목록을 받아옴
   // 데이터의 최신화를 위해 redux를 사용하지 않고 페이지 접속 시마다 받아옴
   useEffect(() => {
+    //로그인 검사 dispatch 쿠키에 엑세스코드를 찾아서 서버를 통해 인증을 확인한후 유저State에 데이터를 넣습니다.
     dispatch(authUser());
+
     //get user groups list
     const getParty = async () => {
       const data = await partyList.getPartyList();
@@ -35,6 +39,7 @@ const Main = () => {
   useEffect(() => {}, [groups]);
 
   const goToLink = (num: number) => {
+    // 페이지 이동 함수
     switch (num) {
       case 10:
         return navigate(`/create/partyInfo/${num}`);
@@ -77,6 +82,7 @@ const Main = () => {
             );
           })}
         <h2>🎉 오늘 파티가 열렸어요! </h2>
+        {/* 아침 파티 개설 / 조회 박스 */}
         <BoxAM>
           <Grid padding="20px">
             <Text type="title">🍖 아침&점심 파티 </Text>
@@ -91,6 +97,8 @@ const Main = () => {
             </Grid>
           </Grid>
         </BoxAM>
+
+        {/* 밤 파티 개설 / 조회 박스 */}
         <BoxPM>
           <Grid padding="20px">
             <Text type="title" customize="color: antiquewhite;">

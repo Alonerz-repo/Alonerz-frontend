@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import userAxios from "../axios/userAxios";
 
+//유저 정보를 불러오는 커스텀 훅입니다.
+
 const initState = {
   careerId: -1,
   description: "",

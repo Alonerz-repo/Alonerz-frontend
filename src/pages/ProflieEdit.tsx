@@ -4,6 +4,8 @@ import Header from "../components/Header";
 import { Grid, Text, Button } from "../elements";
 import MyProfileBox from "../components/ProfileBox";
 
+//유저 프로필(캐릭터, 배경색상, 스티커)를 변경하는 페이지 입니다.
+
 const ProfileEdit = ({ type }: any) => {
   const [state, setState] = useState(1);
   const test = useRef<any>();

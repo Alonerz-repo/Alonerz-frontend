@@ -2,6 +2,8 @@ import React, { forwardRef, useRef } from "react";
 import styled from "styled-components";
 import { Image } from "../elements";
 
+//프로필(캐릭터, 스티커, 색상)용으로 반복되는 카드들 모음입니다.
+
 interface ProflieBoxProps {
   index?: any;
   _onClick?: (e: any) => void;
@@ -10,6 +12,7 @@ interface ProflieBoxProps {
 
 const MyProfileBox = forwardRef(
   ({ index, _onClick }: ProflieBoxProps, ref: any) => {
+    //프로필 캐릭터 선택 카드들
     if (index === 1) {
       return (
         <React.Fragment>
@@ -21,6 +24,7 @@ const MyProfileBox = forwardRef(
         </React.Fragment>
       );
     } else if (index === 2) {
+      //프로필 스티커 카드들
       return (
         <React.Fragment>
           <div ref={ref}>
@@ -40,6 +44,7 @@ const MyProfileBox = forwardRef(
         </React.Fragment>
       );
     } else if (index === 3) {
+      //프로필 색상 선택 카드들
       return (
         <React.Fragment>
           <MyColorBox style={{ background: "white", border: "1px solid" }}>

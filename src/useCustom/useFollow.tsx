@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import userAxios from "../axios/userAxios";
 
+// 팔로우 요청 api 커스텀 훅입니다.
 const useFollow = (uid: string, isfollow: string) => {
   const [userList, setUserList] = useState<any>();
   useEffect(() => {
