@@ -18,6 +18,7 @@ interface Props {
   type?: string;
   titleText?: string;
   customize?: string;
+  _onClick?(): void;
 }
 const Text = ({
   children,
@@ -28,6 +29,7 @@ const Text = ({
   type,
   titleText,
   customize,
+  _onClick,
 }: Props) => {
   switch (type) {
     case "line":
@@ -66,7 +68,7 @@ const Text = ({
   }
   return (
     <React.Fragment>
-      <Div customize={customize}>
+      <Div customize={customize} onClick={_onClick}>
         <P bold={bold} margin={margin} padding={padding} fontSize={fontSize}>
           {children}
         </P>

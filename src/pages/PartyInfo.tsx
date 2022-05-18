@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import { partyAxios, GroupInfo } from "../axios/partyAxios";
 import { useAppSelector } from "../store/config";
 import useGetparty from "../useCustom/useGetparty";
+import Comment from "../components/Comment";
 
 // 파티 정보 상세 페이지
 const PartyInfo = () => {
@@ -125,6 +126,9 @@ const PartyInfo = () => {
           );
         })}
       </Grid>
+      {/* 코멘트 리스트 */}
+      <Comment groupId={groupId} />
+
       <Grid absolute="position:sticky; bottom:0; z-index:2;">
         {user.userId === group.host.userId ? (
           <Grid isFlex>
