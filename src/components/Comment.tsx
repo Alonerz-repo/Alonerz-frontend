@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { Grid, Text, Input, Button, Image } from "../elements";
 import commnetAxios from "../axios/commentAxios";
 import { useAppSelect } from "../store/config.hook";
 
 //파티 상세 페이지의 댓글 컴포넌트 입니다.
+//파티 CRUD완성 리팩토링 시급
 
 //코멘트 초기 설정 값입니다.
 const initCmt: any = [
