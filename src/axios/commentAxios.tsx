@@ -34,6 +34,17 @@ const userAxios = {
     return data;
   },
 
+  setChildComment: async (roomId: any, parentId: any, content: any) => {
+    const url = getUrl(`/api/comments/${roomId}/${parentId}`);
+    const headers = getHeaders();
+    const body = { content };
+    const data = await axios
+      .post(url, body, { headers })
+      .then((res) => res.data)
+      .catch((err) => err.response.data);
+    return data;
+  },
+
   //코멘트 수정요청 api
   editComment: async (cmtId: any, content: any) => {
     const url = getUrl(`/api/comments/${cmtId}`);
