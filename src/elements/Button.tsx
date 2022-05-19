@@ -9,6 +9,7 @@ interface Props {
   width?: string;
   bg?: string;
   customize?: string;
+  color?: string;
 }
 
 const Button = ({
@@ -18,6 +19,7 @@ const Button = ({
   isLimit,
   _onClick,
   bg,
+  color,
   customize,
 }: Props) => {
   if (isCategory) {
@@ -40,7 +42,13 @@ const Button = ({
 
   return (
     <React.Fragment>
-      <CommonButton onClick={_onClick} width={width} customize={customize}>
+      <CommonButton
+        onClick={_onClick}
+        width={width}
+        customize={customize}
+        bg={bg}
+        color={color}
+      >
         {children}
       </CommonButton>
     </React.Fragment>
@@ -60,6 +68,7 @@ interface CommonButtonProps {
   width?: string;
   bg?: string;
   customize?: string;
+  color?: string;
 }
 
 const LimitButton = styled.button<CommonButtonProps>`
@@ -76,8 +85,8 @@ const CommonButton = styled.button<CommonButtonProps>`
     "outline: none; background: yellow; padding: 20px; box-sizing: border-box;"}
   width: ${(props) => props.width ?? ""};
   z-index: 998;
-  :hover {
-    background: red;
-  }
+  border: none;
+  background-color: ${(props) => props.bg ?? "#BDBDBD"};
+  color: ${(props) => props.color ?? "black"};
 `;
 export default Button;

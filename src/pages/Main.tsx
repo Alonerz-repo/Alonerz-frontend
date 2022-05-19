@@ -6,7 +6,7 @@ import Card from "../components/Card";
 import partyList from "../axios/partyList";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { authUser } from "../store/slices/userSlice";
-import LoginHeader from "../components/LoginHeader";
+import Header from "../components/Header";
 
 // 메인 페이지로써 사용자의 오늘 파티목록을 받아와 보여주는 컴포넌트
 const Main = () => {
@@ -28,8 +28,10 @@ const Main = () => {
       const data = await partyList.getPartyList();
       switch (data.statusCode) {
         case 401:
-          setGroups([]);
+          navigate("/login");
           return;
+        case 500:
+          return alert("서버 에러");
         default:
           setGroups(data);
       }
@@ -63,7 +65,8 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      <LoginHeader></LoginHeader>
+      <Header text="Alonerz" type="user"></Header>
+
       <Grid padding="20px">
         {groups.length !== 0 && (
           <Text type="title"> 오늘 파티 잊지 마세요! </Text>
