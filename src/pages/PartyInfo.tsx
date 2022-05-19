@@ -38,10 +38,6 @@ const PartyInfo = () => {
     }
   };
 
-  if (group.guests) {
-    console.log(group.guests);
-  }
-
   const handleEdit = () => {
     navigate(`/edit/partyInfo/${group.groupId}`);
   };
@@ -94,7 +90,9 @@ const PartyInfo = () => {
         </Text>
 
         <Text bold type="line" titleText="시간" margin="5px 0 5px 0">
-          {`${new Date(group.startAt).getHours()}:00 ~ ${new Date(
+          {`${new Date(group.startAt).getMonth() + 1}월 ${new Date(
+            group.startAt
+          ).getDate()}일 ${new Date(group.startAt).getHours()}:00 ~ ${new Date(
             group.endAt
           ).getHours()}:00`}
         </Text>
@@ -132,7 +130,12 @@ const PartyInfo = () => {
       <Grid absolute="position:sticky; bottom:0; z-index:2;">
         {user.userId === group.host.userId ? (
           <Grid isFlex>
-            <Button width="50%" _onClick={handleEdit}>
+            <Button
+              width="50%"
+              bg="#F84C40"
+              color="white"
+              _onClick={handleEdit}
+            >
               수정하기
             </Button>
             <Button width="50%" _onClick={handleDelete}>

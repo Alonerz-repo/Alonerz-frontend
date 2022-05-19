@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import partyAxios, { GroupInfo, initialState } from "../axios/partyAxios";
 
-// 파티 상세정보를 받아와 return해주는 훅
+// 파티 상세정보를 받아와 return
 const useGetparty = (groupId: string | undefined) => {
   const navigate = useNavigate();
   const [group, setGroup] = useState<GroupInfo>(initialState);

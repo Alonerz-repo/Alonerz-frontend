@@ -15,7 +15,7 @@ const Redirect = () => {
       console.log(needProfile);
       //백엔드에서 카카오 아이디로 사용자 등록 여부를 파악하고 엑세스토큰, 리프레시토큰, needProfile정보를 바디로 보내줍니다.
       // needProfile은 boolean으로 최초 1회는 true 이후로 false를 내보냅니다.
-      return needProfile ? navigate("/") : navigate("/");
+      return needProfile ? navigate("/user/config/edit") : navigate("/");
     };
     login();
   }, []);

@@ -18,6 +18,10 @@ interface CreateProps {
 const Create = ({ group, time }: CreateProps) => {
   // 사용자가 로그인 상태인지 확인하고 아닐 시 로그인 페이지로 보내주는 훅
   useLoginCheck();
+  // title - 제목, menu - 메뉴, description - 설명, opentime - 시작시간, closetime - 마감 시간, date - 날짜
+  // placeName - 장소이름(맵에 표시), address - 주소, locationX Y - 좌표, limit - 인원 제한
+  // image - 이미지 파일
+  // 하나의 객체로 만들어 state를 관리한다면 하나의 값이 바뀌었을 때에도 전체에 영향을 주게 되는데 현재처럼 일일이 state 관리를 해야할까요?
   const [title, setTitle] = useState<string>("");
   const [menu, setMenu] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -29,6 +33,7 @@ const Create = ({ group, time }: CreateProps) => {
   const [locationY, setLocationY] = useState<number>(126.570667);
   const [limit, setLimit] = useState<number>(4);
   const [image, setImageUrl] = useState<File>();
+  const [date, setDate] = useState<Date>(new Date());
 
   const navigate = useNavigate();
 
@@ -90,8 +95,6 @@ const Create = ({ group, time }: CreateProps) => {
       alert("오픈 시간은 마감 시간보다 빨라야합니다.");
       return;
     }
-    // number의 시간 정보를 Date 타입으로 바꾸기 위한 변수
-    const d = new Date();
     let groupInfo: any = {
       title,
       menu,
@@ -99,14 +102,16 @@ const Create = ({ group, time }: CreateProps) => {
       placeName,
       startAt: new Date(
         Date.parse(
-          `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ${opentime}:00`
+          `${date.getFullYear()}-${
+            date.getMonth() + 1
+          }-${date.getDate()} ${opentime}:00`
         )
       ),
       endAt: new Date(
         Date.parse(
-          `${d.getFullYear()}-${
-            d.getMonth() + 1
-          }-${d.getDate()} ${closetime}:00`
+          `${date.getFullYear()}-${
+            date.getMonth() + 1
+          }-${date.getDate()} ${closetime}:00`
         )
       ),
       limit,
@@ -114,6 +119,8 @@ const Create = ({ group, time }: CreateProps) => {
       locationY,
       address,
     };
+    console.log(groupInfo.startAt);
+    console.log(groupInfo.endAt);
     // 이미지 정보의 입력이 없는 경우 image를 제외한 정보만 서버와 통신
     if (image) {
       groupInfo = { ...groupInfo, image };
@@ -166,7 +173,10 @@ const Create = ({ group, time }: CreateProps) => {
         ></Input>
 
         {/* 달력 컴포넌트 */}
-        <DatePickerComponent></DatePickerComponent>
+        <DatePickerComponent
+          date={date}
+          handleDate={setDate}
+        ></DatePickerComponent>
 
         <Grid isFlex width="87%">
           <Grid width="40%">
@@ -276,11 +286,21 @@ const Create = ({ group, time }: CreateProps) => {
       </Grid>
       <Grid absolute="position:sticky; bottom:0px; width:inherit;">
         {group.groupId ? (
-          <Button width="100%" _onClick={handleCreateParty}>
+          <Button
+            width="100%"
+            bg="#F84C40"
+            color="white"
+            _onClick={handleCreateParty}
+          >
             대충 수정
           </Button>
         ) : (
-          <Button width="100%" _onClick={handleCreateParty}>
+          <Button
+            width="100%"
+            bg="#F84C40"
+            color="white"
+            _onClick={handleCreateParty}
+          >
             대충 생성
           </Button>
         )}
