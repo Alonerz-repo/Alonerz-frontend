@@ -130,7 +130,12 @@ const PartyInfo = () => {
       <Grid absolute="position:sticky; bottom:0; z-index:2;">
         {user.userId === group.host.userId ? (
           <Grid isFlex>
-            <Button width="50%" _onClick={handleEdit}>
+            <Button
+              width="50%"
+              bg="#F84C40"
+              color="white"
+              _onClick={handleEdit}
+            >
               수정하기
             </Button>
             <Button width="50%" _onClick={handleDelete}>

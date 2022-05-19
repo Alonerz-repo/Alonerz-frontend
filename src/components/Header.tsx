@@ -3,6 +3,7 @@ import { Text, Grid } from "../elements";
 import styled from "styled-components";
 import goback from "../assets/goback.png";
 import icon from "../assets/header";
+import { useAppSelector } from "../store/config";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 
 const Header = ({ text, type, chat, setting, home }: Props) => {
   const navigate = useNavigate();
+  const user = useAppSelector((state) => state.user);
   if (type === "user") {
     return (
       <React.Fragment>
@@ -40,19 +42,25 @@ const Header = ({ text, type, chat, setting, home }: Props) => {
               style={{ margin: "0px 5px" }}
               size="20px"
               src={icon[2]}
-              onClick={chat}
+              onClick={() => {
+                navigate(`/user/${user.userId}`);
+              }}
             ></Icon>
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
               src={icon[1]}
-              onClick={setting}
+              onClick={() => {
+                navigate("/user/config");
+              }}
             ></Icon>
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
               src={icon[0]}
-              onClick={home}
+              onClick={() => {
+                navigate("/");
+              }}
             ></Icon>
           </div>
         </Wrap>

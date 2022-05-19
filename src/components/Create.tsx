@@ -286,11 +286,21 @@ const Create = ({ group, time }: CreateProps) => {
       </Grid>
       <Grid absolute="position:sticky; bottom:0px; width:inherit;">
         {group.groupId ? (
-          <Button width="100%" _onClick={handleCreateParty}>
+          <Button
+            width="100%"
+            bg="#F84C40"
+            color="white"
+            _onClick={handleCreateParty}
+          >
             대충 수정
           </Button>
         ) : (
-          <Button width="100%" _onClick={handleCreateParty}>
+          <Button
+            width="100%"
+            bg="#F84C40"
+            color="white"
+            _onClick={handleCreateParty}
+          >
             대충 생성
           </Button>
         )}
