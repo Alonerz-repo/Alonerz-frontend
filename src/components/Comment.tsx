@@ -24,6 +24,7 @@ const initCmt: any = [
 
 const Comment = (props: any) => {
   const { groupId } = props;
+  //유저정보를 리덕스에서 가져옵니다.
   const user = useAppSelect((state) => state.user);
   const [comment, setComment] = useState<Array<any>>(initCmt);
   const [insertCmt, setInsertCmt] = useState();

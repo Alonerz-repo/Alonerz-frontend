@@ -1,33 +1,45 @@
 import React from "react";
-import { Image, Grid, Text } from "../elements";
 import Header from "../components/Header";
-import { useLocation } from "react-router-dom";
 import useFollow from "../useCustom/useFollow";
+import { useLocation } from "react-router-dom";
+import { Image, Grid, Text } from "../elements";
+import assets from "../assets/assets.json";
+
+const defaultImage = assets.characters[0];
+
+interface User {
+  userId: string;
+  imageUrl: string | null;
+  nickname: string;
+  careerId: number | null;
+}
 
 const FollowList = () => {
   const { state }: any = useLocation();
   const { uid, isfollow } = state;
-  const list = useFollow(uid, isfollow);
+  const users = useFollow(uid, isfollow);
+
+  const renderUsers = () => {
+    return users.map((user: User, key: number) => {
+      const { imageUrl, nickname, careerId } = user;
+      return (
+        <Grid key={key}>
+          <Grid display="flex" padding="20px 20px">
+            <Image size="44px" src={imageUrl ? imageUrl : defaultImage}></Image>
+            <Grid padding="3px 14px">
+              <Text>{nickname}</Text>
+              <Text>{careerId}</Text>
+            </Grid>
+          </Grid>
+        </Grid>
+      );
+    });
+  };
+
   return (
     <React.Fragment>
-      <Header text={state.isfollow}></Header>
-      {list !== undefined &&
-        list.users.map((value: any, index: number) => {
-          return (
-            <Grid key={index}>
-              <Grid display="flex" padding="20px 20px">
-                <Image
-                  size="44px"
-                  src={value.profileImageUrl ? value.profileImageUrl : ""}
-                ></Image>
-                <Grid padding="3px 14px">
-                  <Text>{value.nickname}</Text>
-                  <Text>{value.careerId}</Text>
-                </Grid>
-              </Grid>
-            </Grid>
-          );
-        })}
+      <Header text={isfollow}></Header>
+      {renderUsers()}
     </React.Fragment>
   );
 };

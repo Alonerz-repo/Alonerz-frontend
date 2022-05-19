@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 interface Props {
   text: string;
   type?: string;
-  chat?: () => void;
-  setting?: () => void;
-  home?: () => void;
+  chat?: () => any;
+  setting?: () => any;
+  home?: () => any;
 }
 
 const Header = ({ text, type, chat, setting, home }: Props) => {
@@ -54,6 +54,36 @@ const Header = ({ text, type, chat, setting, home }: Props) => {
               src={icon[0]}
               onClick={home}
             ></Icon>
+          </div>
+        </Wrap>
+      </React.Fragment>
+    );
+  } else if (type === "userEdit") {
+    return (
+      <React.Fragment>
+        <Wrap>
+          <GoBack
+            size="20px"
+            src={goback}
+            onClick={() => {
+              navigate(-1);
+            }}
+          ></GoBack>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text bold fontSize="20px" padding="10px">
+              {text}
+            </Text>
+            <div
+              style={{ position: "absolute", right: "20px", color: "#F84C40" }}
+            >
+              <Text>수정</Text>
+            </div>
           </div>
         </Wrap>
       </React.Fragment>
