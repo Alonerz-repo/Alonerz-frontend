@@ -1,15 +1,29 @@
 import React from "react";
 import styled from "styled-components";
-import { Grid, Button } from "../elements";
+import { Grid } from "../elements";
 import loginAxios from "../axios/loginAxios";
+import { kakaoImg, noti, logo } from "../assets/header";
 
 const Login = () => {
   return (
     <React.Fragment>
       <Grid>
-        <Position>
+        <Position style={{ top: "20vh" }}>
+          <img src={logo} alt="Alonerz"></img>
+        </Position>
+        <Position
+          style={{
+            flexFlow: "column wrap",
+            top: "60vh",
+          }}
+        >
+          <img src={noti} alt="noti"></img>
           {/* 카카오 로그인 페이지로 이동합니다 */}
-          <Button _onClick={loginAxios.kakaoLogin}>카카오 로그인</Button>
+          <img
+            onClick={loginAxios.kakaoLogin}
+            src={kakaoImg}
+            alt="kakaologin"
+          ></img>
         </Position>
       </Grid>
     </React.Fragment>
@@ -18,9 +32,8 @@ const Login = () => {
 
 const Position = styled.div`
   display: flex;
-  position: relative;
   justify-content: center;
-  top: 60vh;
+  position: relative;
 `;
 
 export default Login;
