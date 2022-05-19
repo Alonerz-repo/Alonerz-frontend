@@ -29,17 +29,6 @@ export const careerGroups = () =>
 export const careerItems = (groupName: any) =>
   Career.filter((career) => career.careerGroupName === groupName);
 
-export const Career2 = {
-  1: ["무직", "대학생"],
-  2: ["무직", "취준생"],
-  3: ["개발직군", "웹개발"],
-  4: ["개발직군", "응용프로그램"],
-  5: ["개발직군", "서버"],
-  6: ["개발직군", "인프라"],
-  7: ["개발직군", "안드로이드"],
-  8: ["개발직군", "IOS"],
-};
-
 export const myCareer = (userId: any) => {
   return;
 };

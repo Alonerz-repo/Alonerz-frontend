@@ -8,7 +8,7 @@ import { useAppSelect } from "../store/config.hook";
 import BtnAction from "./MyInfo.BtnAction";
 import GridTxt from "./MyInfo.GridTxt";
 
-import { Career } from "../utils/career";
+import { Career, findCareer, careerGroups, careerItems } from "../utils/career";
 
 const MyInfo = ({ uid, group }: any) => {
   const navigate = useNavigate();
