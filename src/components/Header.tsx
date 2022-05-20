@@ -12,9 +12,10 @@ interface Props {
   chat?: () => any;
   setting?: () => any;
   home?: () => any;
+  btnName?: string;
 }
 
-const Header = ({ text, type, chat, setting, home }: Props) => {
+const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
   if (type === "user") {
@@ -43,7 +44,7 @@ const Header = ({ text, type, chat, setting, home }: Props) => {
               size="20px"
               src={icon[2]}
               onClick={() => {
-                navigate(`/user/${user.userId}`);
+                window.alert("준비중입니다.");
               }}
             ></Icon>
             <Icon
@@ -90,7 +91,7 @@ const Header = ({ text, type, chat, setting, home }: Props) => {
             <div
               style={{ position: "absolute", right: "20px", color: "#F84C40" }}
             >
-              <Text _onClick={setting}>수정</Text>
+              <Text _onClick={setting}>{btnName}</Text>
             </div>
           </div>
         </Wrap>
