@@ -1,7 +1,7 @@
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Assets from "../assets/assets.json";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
+import { useAppDispatch } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
 
 //프로필(캐릭터, 스티커, 색상)용으로 반복되는 카드들 모음입니다.
@@ -9,8 +9,26 @@ import { setCharacter } from "../store/slices/characterSlice";
 interface ProflieBoxProps {
   setCard?: any;
   _onClick?: (e: any) => void;
-  setSticker: string;
+  setSticker: any;
 }
+
+const BackgroundColor = [
+  "#FFD9D9",
+  "#FF5D5D",
+  "#9EE8FF",
+  "#C377FF",
+  "#B8E5A3",
+  "#8054FF",
+  "#FFC077",
+  "#FFE279",
+  "#FC54FF",
+  "#4D9866",
+  "#402C8C",
+  "#402C8C",
+  "#FF4BA2",
+  "#000000",
+  "#B6B6B6",
+];
 
 const MyProfileBox = ({ setCard, _onClick, setSticker }: ProflieBoxProps) => {
   const dispatch = useAppDispatch();
@@ -19,15 +37,10 @@ const MyProfileBox = ({ setCard, _onClick, setSticker }: ProflieBoxProps) => {
   //스테이트에 프로필 정보를 저장합니다.
   const [curChar, setCurChar] = useState({
     Character: 0,
-    sticker: {
-      a: null,
-      s: null,
-      d: null,
-      f: null,
-    },
+    sticker: [-1, -1, -1, -1],
     color: "",
   });
-  console.log(setSticker);
+
   //프로필 정보가 바뀔때마다 리덕스의 데이터를 갱신합니다.
   useEffect(() => {
     dispatch(setCharacter(curChar));
@@ -35,16 +48,19 @@ const MyProfileBox = ({ setCard, _onClick, setSticker }: ProflieBoxProps) => {
 
   //캐릭터 데이터를 스테이트에 갱신합니다.
   const setCharacterFn = (index: any) => {
-    console.log("hello characters", index);
     setCurChar({ ...curChar, Character: index });
   };
   //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
-    console.log("hello sticker!", index);
     setCurChar({
       ...curChar,
       sticker: { ...curChar.sticker, [setSticker]: index },
     });
+  };
+  //백그라운드 컬러를 스테이트에 갱신합니다.
+  const setBackgroundFn = (myColor: string) => {
+    console.log(myColor);
+    setCurChar({ ...curChar, color: myColor });
   };
   //프로필 캐릭터 선택 카드들
   if (setCard === 1) {
@@ -116,11 +132,13 @@ const MyProfileBox = ({ setCard, _onClick, setSticker }: ProflieBoxProps) => {
             }}
           ></div>
         </MyColorBox>
-        <MyColorBox style={{ background: "#FFD9D9" }}></MyColorBox>
-        <MyColorBox style={{ background: "#FF5D5D" }}></MyColorBox>
-        <MyColorBox style={{ background: "#9EE8FF" }}></MyColorBox>
-        <MyColorBox style={{ background: "#C377FF" }}></MyColorBox>
-        <MyColorBox style={{ background: "#B8E5A3" }}></MyColorBox>
+        {BackgroundColor.map((value: string, index: number) => {
+          return (
+            <div key={index} onClick={() => setBackgroundFn(value)}>
+              <MyColorBox style={{ background: `${value}` }} />
+            </div>
+          );
+        })}
       </React.Fragment>
     );
   } else {

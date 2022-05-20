@@ -6,12 +6,7 @@ interface Character {
 }
 const initialState: Character = {
   Character: 0,
-  sticker: {
-    a: null,
-    s: null,
-    d: null,
-    f: null,
-  },
+  sticker: [-1, -1, -1, -1],
   color: "",
 };
 
