@@ -6,6 +6,7 @@ import KakaoMap from "../components/KakaoMap";
 import Header from "../components/Header";
 import { partyAxios, GroupInfo } from "../axios/partyAxios";
 import { useAppSelector } from "../store/config";
+import { findCareer } from "../utils/career";
 import useGetparty from "../useCustom/useGetparty";
 import Comment from "../components/Comment";
 
@@ -55,6 +56,10 @@ const PartyInfo = () => {
           navigate("/");
       }
     }
+  };
+  const getCareer = (careerId: any) => {
+    const car = findCareer(careerId);
+    return `${car?.careerGroupName} / ${car?.careerItemName}`;
   };
 
   // 참여인원 정보 string
@@ -112,6 +117,8 @@ const PartyInfo = () => {
           captain
           nickname={group.host.nickname}
           src={group.host.imageUrl}
+          part={getCareer(group.host.careerId)}
+          year={group.host.year}
         ></PartyMember>
 
         {group.guests.map((guest: any, i: number) => {
@@ -120,6 +127,8 @@ const PartyInfo = () => {
               key={i}
               nickname={guest.nickname}
               src={guest.imageUrl}
+              part={getCareer(guest.careerId)}
+              year={guest.year}
             ></PartyMember>
           );
         })}
@@ -158,6 +167,8 @@ const PartyInfo = () => {
             _onClick={() => {
               handleJoin("join");
             }}
+            bg="#F84C40"
+            color="white"
           >
             참가하기
           </Button>

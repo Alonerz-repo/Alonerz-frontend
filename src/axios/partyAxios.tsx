@@ -9,6 +9,7 @@ interface userInfo {
   imageUrl?: string;
   year: string;
   description: string;
+  careerId: number;
 }
 
 // group 데이터의 인터페이스
@@ -51,6 +52,7 @@ export const initialState: GroupInfo = {
   updateAt: "",
   host: {
     userId: "-1",
+    careerId: 0,
     nickname: "",
     image: null,
     imageUrl: "",
@@ -60,6 +62,7 @@ export const initialState: GroupInfo = {
   guests: [
     {
       userId: "-1",
+      careerId: 0,
       nickname: "",
       image: null,
       imageUrl: "",
