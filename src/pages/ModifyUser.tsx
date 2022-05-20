@@ -5,7 +5,7 @@ import { Grid, Input, Button, Select, Text } from "../elements";
 import { useAppSelect } from "../store/config.hook";
 import useUser from "../useCustom/useUser";
 import { useNavigate } from "react-router-dom";
-import { careerGroups, careerItems } from "../utils/career";
+import { careerGroups, careerItems, findCareer } from "../utils/career";
 import Header from "../components/Header";
 
 // 유저 프로필(이름, 직군, 연차 등) 변경할수 있는 페이지 입니다.
@@ -71,26 +71,12 @@ const ModifyUser = () => {
       nickname: user.nickname,
       careerId: user.careerId,
       year: user.year,
-      imageUrl: null,
       description: user.description,
     };
     userAxios.setUser(data).then((res) => {
       window.alert("정보 변경 완료");
       // navigate("/");
     });
-  };
-
-  const formData = (e: any) => {
-    console.log(e.target.files);
-    const file = e.target.files[0];
-    const img = new FormData();
-    img.append("imageUrl", file);
-    img.append("nickname", user.nickname);
-    img.append("careerId", user.careerId);
-    img.append("year", user.year);
-    img.append("description", user.description);
-
-    userAxios.setUser(img).then((res) => console.log(res));
   };
 
   return (
@@ -131,7 +117,6 @@ const ModifyUser = () => {
               width="100%"
               name="careerId"
               onChange={(e) => {
-                const id = e.target.value;
                 onChangeHandler(e);
               }}
               categories={직업리스트}
@@ -159,7 +144,6 @@ const ModifyUser = () => {
           text="나를 표현하는 한마디"
           placeholder=""
         ></Input>
-        <input type="file" onChange={formData}></input>
       </Grid>
     </React.Fragment>
   );

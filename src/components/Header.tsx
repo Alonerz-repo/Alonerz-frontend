@@ -96,6 +96,47 @@ const Header = ({ text, type, chat, setting, home }: Props) => {
         </Wrap>
       </React.Fragment>
     );
+  } else if (type === "main") {
+    return (
+      <React.Fragment>
+        <Wrap
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <GoBack
+            size="20px"
+            src={goback}
+            onClick={() => {
+              navigate(-1);
+            }}
+          ></GoBack>
+          <Text bold fontSize="20px" padding="10px">
+            {text}
+          </Text>
+          <div style={{ display: "flex", position: "absolute", right: "1px" }}>
+            <Icon
+              style={{ margin: "0px 5px" }}
+              size="20px"
+              src={icon[4]}
+              onClick={() => {
+                navigate(`/user/${user.userId}`);
+              }}
+            ></Icon>
+            <Icon
+              style={{ margin: "0px 5px" }}
+              size="20px"
+              src={icon[1]}
+              onClick={() => {
+                navigate("/user/config");
+              }}
+            ></Icon>
+          </div>
+        </Wrap>
+      </React.Fragment>
+    );
   }
   return (
     <React.Fragment>

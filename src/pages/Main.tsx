@@ -65,7 +65,7 @@ const Main = () => {
 
   return (
     <React.Fragment>
-      <Header text="Alonerz" type="user"></Header>
+      <Header text="Alonerz" type="main"></Header>
 
       <Grid padding="20px">
         {groups.length !== 0 && (
