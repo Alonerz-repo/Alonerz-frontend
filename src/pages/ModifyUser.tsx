@@ -75,13 +75,18 @@ const ModifyUser = () => {
     };
     userAxios.setUser(data).then((res) => {
       window.alert("정보 변경 완료");
-      // navigate("/");
+      navigate("/");
     });
   };
 
   return (
     <React.Fragment>
-      <Header type="userEdit" text="내 정보" setting={clickToSetuser} />
+      <Header
+        type="userEdit"
+        text="내 정보"
+        setting={clickToSetuser}
+        btnName="수정"
+      />
       <Grid padding="20px" customize="margin: 10px;">
         <Position>
           <Input
