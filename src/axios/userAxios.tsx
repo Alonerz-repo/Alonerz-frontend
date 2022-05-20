@@ -1,12 +1,16 @@
 import { errorHandler, getHeaders, getUrl } from "../utils/api";
 import axios from "axios";
+import cookie from "../utils/cookie";
 
 const userAxios = {
   // 사용자 프로필 수정  api
   // 파라미터 user => 객체
   setUser: async (user: any) => {
     const url = getUrl("/api/users");
-    const headers = getHeaders();
+    const headers = {
+      "Content-type": "multipart/form-data",
+      Authorization: `Bearer ${cookie.get("accessToken")}`,
+    };
     const data = await axios
       .patch(url, user, { headers })
       .then((res) => res)

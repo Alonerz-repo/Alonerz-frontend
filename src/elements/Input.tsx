@@ -50,5 +50,6 @@ const ElementInput = styled.input`
   width: 100%;
   height: 44px;
   padding: 0px 20px;
+  box-sizing: border-box;
 `;
 export default Input;

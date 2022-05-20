@@ -32,25 +32,29 @@ const subCmt = (props: any) => {
                   style={{
                     display: "flex",
                     position: "relative",
-                    padding: "10px 0px 10px 8vw",
+                    padding: "10px 0px 10px 40px",
                   }}
                 >
                   <div>
                     <Image size="33px"></Image>
                   </div>
 
-                  <Grid>
+                  <Grid padding="0px 0px 0px 6px">
                     <Grid display="flex">
-                      <Text margin="0px 10px 0px 0px">
+                      <Text
+                        margin="0px 10px 0px 0px"
+                        customize="font-weight: bold;"
+                      >
                         {value.user.nickname}
                       </Text>
                       <Text>직군/직업</Text>
                     </Grid>
-                    <Text>{value.content}</Text>
+                    <Text margin="6px 0px 6px 0px">{value.content}</Text>
                     <Grid display="flex">
                       {uid === value.user.userId && (
                         <React.Fragment>
                           <Text
+                            customize="color: #BDBDBD; cursor: pointer;"
                             margin="0px 10px 0px 0px"
                             _onClick={() => {
                               editCmt(value.commentId, value.content);
@@ -59,6 +63,7 @@ const subCmt = (props: any) => {
                             댓글수정
                           </Text>
                           <Text
+                            customize="color: #BDBDBD; cursor: pointer;"
                             _onClick={() => removeCmt(value.commentId)}
                             margin="0px 10px 0px 0px"
                           >

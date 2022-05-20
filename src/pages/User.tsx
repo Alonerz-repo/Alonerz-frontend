@@ -4,94 +4,52 @@ import Header from "../components/Header";
 import { useParams, useNavigate } from "react-router-dom";
 import partyAxios from "../axios/partyAxios";
 import { useAppSelect } from "../store/config.hook";
+import { Group } from "../common/interface";
 
 //유저 프로필 페이지 뷰 입니다.
-
-interface groupid {
-  groupId: number;
-  title: string;
-  menu: string;
-  placeName: string;
-  imageUrl: string;
-  startAt: string;
-  endAt: string;
-  limit: number;
-  host: {
-    userId: number;
-    nickname: string;
-    profileImageUrl: string;
-    careerId: number;
-    year: string;
-    description: string;
-  };
-  join: number;
-}
-
-const initGroups = [
-  {
-    groupId: -1,
-    title: "그룹 제목",
-    menu: "메뉴",
-    placeName: "모임 장소",
-    imageUrl:
-      "https://github.com/choewy/react-place-app/blob/master/src/images/0.png?raw=true",
-    startAt: "2022-05-16T12:28:11.000Z",
-    endAt: "2022-05-16T12:28:11.000Z",
-    limit: 0,
-    host: {
-      userId: -1,
-      nickname: "asdasdsad",
-      profileImageUrl: "",
-      careerId: 1,
-      year: "",
-      description: "",
-    },
-    join: 1,
-  },
-];
-
 const User = () => {
   const param = useParams();
   const navigate = useNavigate();
-  const [group, setGroup] = useState<Array<groupid>>(initGroups);
   const userInfo = useAppSelect((state) => state.user);
+  const [groups, setGroups] = useState<Group[]>([]);
 
   useEffect(() => {
     //유저가 참여했던 파티들의 리스트를 요청합니다.
     partyAxios.getJoinedParty(param.userId).then((res) => {
-      setGroup(res.data.groups);
+      setGroups(res.data.groups);
     });
-  }, []);
+  }, [param]);
 
-  // 유저 아이디와 url파람 아이디가 같으면 내 정보를 표시
-  if (param.userId === userInfo.userId) {
+  // 프로필을 렌더링 합니다.
+  const renderUserInfo = () => {
+    const text = "프로필";
+    const headerProps =
+      param.userId === userInfo.userId
+        ? {
+            text,
+            type: "user",
+            home: () => {
+              navigate("/");
+            },
+            setting: () => {
+              navigate("/user/config");
+            },
+          }
+        : { text };
+
+    // 이것은 프롭스 입니다.
+    const infoProps = { groups, uid: param.userId };
+
+    // 여기에서 컴포넌트들을 리턴합니다.
     return (
       <React.Fragment>
-        <Header
-          type="user"
-          text="프로필"
-          home={() => navigate("/")}
-          setting={() => navigate("/user/config")}
-        ></Header>
-        <MyInfo group={group} uid={param.userId}></MyInfo>
+        <Header {...headerProps} />
+        <MyInfo {...infoProps} />
       </React.Fragment>
     );
-  }
-  //다르면 상대방 정보를 표시
-  else if (param.userId !== userInfo.userId) {
-    return (
-      <React.Fragment>
-        <Header text="프로필"></Header>
-        <MyInfo group={group} uid={param.userId}></MyInfo>
-      </React.Fragment>
-    );
-  } else {
-    return (
-      <React.Fragment>
-        <Header text="프로필"></Header>
-        <h1>no infomation</h1>
-      </React.Fragment>
-    );
-  }
+  };
+
+  // 그러면 여기에서 렌더링이 됩니다.
+  return renderUserInfo();
 };
 export default User;
