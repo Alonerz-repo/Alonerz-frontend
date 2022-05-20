@@ -29,13 +29,13 @@ const PartyList = () => {
         // 시간에 따른 파티 정보 조회
         // 현재위치 좌표를 받아옴
         if (navigator.geolocation) {
-          const location = navigator.geolocation.getCurrentPosition(
-            async function (position) {
-              const x = position.coords.latitude;
-              const y = position.coords.longitude;
-              setGroups(await partyList.getTimeList(partyTime, x, y));
-            }
-          );
+          navigator.geolocation.getCurrentPosition(async function (position) {
+            const x = position.coords.latitude;
+            const y = position.coords.longitude;
+            setGroups(await partyList.getTimeList(partyTime, x, y));
+          });
+        } else {
+          setGroups(await partyList.getTimeList(partyTime, 1, 1));
         }
       };
       if (partyTime) {
