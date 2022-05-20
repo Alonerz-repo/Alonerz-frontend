@@ -90,7 +90,7 @@ const Header = ({ text, type, chat, setting, home }: Props) => {
             <div
               style={{ position: "absolute", right: "20px", color: "#F84C40" }}
             >
-              <Text>수정</Text>
+              <Text _onClick={setting}>수정</Text>
             </div>
           </div>
         </Wrap>

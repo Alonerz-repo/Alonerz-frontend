@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Grid, Text, Image } from "../elements";
 import commnetAxios from "../axios/commentAxios";
 import SubCmt from "./Comment.subCmt";
+import { findCareer } from "../utils/career";
 
 const MainCmt = (props: any) => {
   const { comment, uid, groupId } = props;
@@ -45,11 +46,17 @@ const MainCmt = (props: any) => {
       .then((_) => window.location.reload());
   };
 
+  const getCareer = (careerId: any) => {
+    const car = findCareer(careerId);
+    return `${car?.careerGroupName} / ${car?.careerItemName}`;
+  };
+
   return (
     <React.Fragment>
-      {comment.map((value: any) => {
+      {comment.map((value: any, index: number) => {
+        const career = getCareer(value.user.careerId);
         return (
-          <Grid>
+          <Grid key={index}>
             <div
               style={{ display: "flex", position: "relative", padding: "20px" }}
               key={value.commentId}
@@ -58,14 +65,20 @@ const MainCmt = (props: any) => {
                 <Image size="33px"></Image>
               </div>
 
-              <Grid>
-                <Grid display="flex">
-                  <Text margin="0px 10px 0px 0px">{value.user.nickname}</Text>
-                  <Text>직군/직업</Text>
-                </Grid>
-                <Text>{value.content}</Text>
+              <Grid padding="0px 0px 0px 6px">
                 <Grid display="flex">
                   <Text
+                    margin="0px 10px 0px 0px"
+                    customize="font-weight: bold;"
+                  >
+                    {value.user.nickname}
+                  </Text>
+                  <Text>{career}</Text>
+                </Grid>
+                <Text margin="6px 0px 6px 0px">{value.content}</Text>
+                <Grid display="flex">
+                  <Text
+                    customize="color: #BDBDBD; cursor: pointer;"
                     _onClick={() => onChildCmt(value.commentId)}
                     margin="0px 10px 0px 0px"
                   >
@@ -75,6 +88,7 @@ const MainCmt = (props: any) => {
                   {uid === value.user.userId && (
                     <React.Fragment>
                       <Text
+                        customize="color: #BDBDBD; cursor: pointer;"
                         margin="0px 10px 0px 0px"
                         _onClick={() => {
                           editCmt(value.commentId, value.content);
@@ -83,6 +97,7 @@ const MainCmt = (props: any) => {
                         댓글수정
                       </Text>
                       <Text
+                        customize="color: #BDBDBD; cursor: pointer;"
                         _onClick={() => removeCmt(value.commentId)}
                         margin="0px 10px 0px 0px"
                       >
@@ -91,6 +106,7 @@ const MainCmt = (props: any) => {
                     </React.Fragment>
                   )}
                   <Text
+                    customize="color: #BDBDBD; cursor: pointer;"
                     margin="0px 10px 0px 0px"
                     _onClick={() => setCmtInCmt(groupId, value.commentId)}
                   >

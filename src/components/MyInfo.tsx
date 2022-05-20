@@ -75,8 +75,9 @@ const MyInfo = (props: Props) => {
   //팔로우 페이지에 넘어가기전 props로 팔로잉/팔로우, 유저아이디를 전달합니다.
 
   const goToFollowings = () =>
-    navigate("follow", { state: { following: uid } });
-  const goToFollowers = () => navigate("follow", { state: { follower: uid } });
+    navigate("follow", { state: { isfollow: "following", uid: uid } });
+  const goToFollowers = () =>
+    navigate("follow", { state: { isfollow: "follower", uid: uid } });
 
   // 내 커리어 정보
   const renderCareerAndNickname = () => {
@@ -104,10 +105,7 @@ const MyInfo = (props: Props) => {
   const renderFollows = () => {
     return (
       <>
-        <Text customize="margin: 0px 0px 23px 20px; font-weight: bold;">
-          내가 참가한 파티...
-        </Text>
-        <Grid isFlex>
+        <Grid isFlex customize="margin: 39px 20px 33px 20px;">
           <GridTxt text="참가회수" point={point} />
           <GridTxt text="follow" point={following} _onClick={goToFollowings} />
           <GridTxt text="follower" point={follower} _onClick={goToFollowers} />
@@ -118,11 +116,15 @@ const MyInfo = (props: Props) => {
   };
 
   // 내 참여 그룹 목록
+  const gridProps = { padding: "20px", isFlex: true };
+
+  const goToGroups = (groupId: string) => {
+    navigate(`/participate/${groupId}`);
+  };
   const renderGroups = () => {
     return groups.map((group: any, key: number) => {
       const isFlex = true;
-      const { imageUrl, title, placeName, limit, join } = group;
-      const gridProps = { padding: "20px", isFlex };
+      const { imageUrl, title, placeName, limit, join, groupId } = group;
       const cardProps = {
         key,
         title,
@@ -132,11 +134,7 @@ const MyInfo = (props: Props) => {
         headcount: join,
         isFlex,
       };
-      return (
-        <Grid {...gridProps}>
-          <Card {...cardProps} />
-        </Grid>
-      );
+      return <Card {...cardProps} _onClick={() => goToGroups(groupId)} />;
     });
   };
 
@@ -153,7 +151,10 @@ const MyInfo = (props: Props) => {
       </Grid>
       {renderFollows()}
       <Line />
-      {renderGroups()}
+      <Text customize="margin: 0px 0px 23px 20px; font-weight: bold;">
+        내가 참가한 파티...
+      </Text>
+      <Grid {...gridProps}>{renderGroups()}</Grid>
     </React.Fragment>
   );
 };

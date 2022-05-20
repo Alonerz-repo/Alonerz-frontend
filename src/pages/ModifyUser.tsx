@@ -17,7 +17,7 @@ const ModifyUser = () => {
   //훅을 통해 가져온 유저정보, 유저가 입력한 정보를 저장합니다.
   const [user, setUser] = useState<any>({
     nickname: "",
-    profileImageUrl: "",
+    imageUrl: null,
     careerId: 1,
     careerGroupName: "",
     careerItemName: "",
@@ -67,15 +67,35 @@ const ModifyUser = () => {
 
   //유저가 버튼을 누르면 유저 정보 수정 요청을 보냅니다.
   const clickToSetuser = async () => {
-    userAxios.setUser(user).then((res) => {
+    const data = {
+      nickname: user.nickname,
+      careerId: user.careerId,
+      year: user.year,
+      imageUrl: null,
+      description: user.description,
+    };
+    userAxios.setUser(data).then((res) => {
       window.alert("정보 변경 완료");
-      navigate("/");
+      // navigate("/");
     });
+  };
+
+  const formData = (e: any) => {
+    console.log(e.target.files);
+    const file = e.target.files[0];
+    const img = new FormData();
+    img.append("imageUrl", file);
+    img.append("nickname", user.nickname);
+    img.append("careerId", user.careerId);
+    img.append("year", user.year);
+    img.append("description", user.description);
+
+    userAxios.setUser(img).then((res) => console.log(res));
   };
 
   return (
     <React.Fragment>
-      <Header type="userEdit" text="내 정보" />
+      <Header type="userEdit" text="내 정보" setting={clickToSetuser} />
       <Grid padding="20px" customize="margin: 10px;">
         <Position>
           <Input
@@ -139,8 +159,8 @@ const ModifyUser = () => {
           text="나를 표현하는 한마디"
           placeholder=""
         ></Input>
+        <input type="file" onChange={formData}></input>
       </Grid>
-      <Button _onClick={clickToSetuser}> 내 정보 수정 </Button>
     </React.Fragment>
   );
 };

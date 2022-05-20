@@ -29,12 +29,18 @@ const BtnAction = (props: any) => {
   if (myId === yourId) {
     return (
       <React.Fragment>
-        <Button
-          _onClick={() => navigate("/user/edit")}
-          customize="border: 2px solid #F5F5F5; background: none; border-radius: 30px; padding: 15px 30px;"
+        <button
+          style={{
+            border: "2px solid #F5F5F5",
+            borderRadius: "30px",
+            padding: "15px 20px",
+            background: "#FFFFFF",
+            color: "#BDBDBD",
+          }}
+          onClick={() => navigate("/user/edit")}
         >
           내정보 수정
-        </Button>
+        </button>
       </React.Fragment>
     );
   } else if (myId !== yourId) {

@@ -20,6 +20,10 @@ const BlockList = () => {
     test();
   }, []);
 
+  const setBlock = (userId: any) => {
+    window.alert("차단이 해제됨");
+    userAxios.setblockUser(userId).then((res) => console.log(res));
+  };
   return (
     <React.Fragment>
       <Header text="차단목록"></Header>
@@ -34,7 +38,18 @@ const BlockList = () => {
                 <Text>{careerId}</Text>
               </Grid>
               <Position>
-                <Button _onClick={() => userId}>차단 해제</Button>
+                <button
+                  style={{
+                    border: "2px solid #F5F5F5",
+                    borderRadius: "30px",
+                    padding: "15px 20px",
+                    background: "#FFFFFF",
+                    color: "#BDBDBD",
+                  }}
+                  onClick={() => setBlock(userId)}
+                >
+                  차단해제
+                </button>
               </Position>
             </Grid>
           </Grid>

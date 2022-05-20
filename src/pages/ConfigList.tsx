@@ -17,30 +17,30 @@ const configItems = [
     label: "내정보 수정",
     onClick: (navigate: NavigateFunction) => () => navigate("edit"),
   },
-  {
-    label: "내정보",
-    onClick: (navigate: NavigateFunction) => () => navigate("/"),
-  },
-  {
-    label: "푸시알림",
-    onClick: (navigate: NavigateFunction) => () => navigate("/"),
-  },
-  {
-    label: "리뷰관리",
-    onClick: (navigate: NavigateFunction) => () => navigate("/"),
-  },
+  // {
+  //   label: "내정보",
+  //   onClick: (navigate: NavigateFunction) => () => navigate("/"),
+  // },
+  // {
+  //   label: "푸시알림",
+  //   onClick: (navigate: NavigateFunction) => () => navigate("/"),
+  // },
+  // {
+  //   label: "리뷰관리",
+  //   onClick: (navigate: NavigateFunction) => () => navigate("/"),
+  // },
   {
     label: "차단목록",
     onClick: (navigate: NavigateFunction) => () => navigate("blocklist"),
   },
-  {
-    label: "공지사항",
-    onClick: (navigate: NavigateFunction) => () => navigate("/"),
-  },
-  {
-    label: "버전정보",
-    onClick: (navigate: NavigateFunction) => () => navigate("/"),
-  },
+  // {
+  //   label: "공지사항",
+  //   onClick: (navigate: NavigateFunction) => () => navigate("/"),
+  // },
+  // {
+  //   label: "버전정보",
+  //   onClick: (navigate: NavigateFunction) => () => navigate("/"),
+  // },
 ];
 
 const Position = styled.div`
