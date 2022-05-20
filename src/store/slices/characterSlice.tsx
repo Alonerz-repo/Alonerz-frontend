@@ -1,8 +1,17 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
-
-const initialState = {
-  Character: "",
-  sticker: [],
+interface Character {
+  Character: number;
+  sticker: any;
+  color: string;
+}
+const initialState: Character = {
+  Character: 0,
+  sticker: {
+    a: null,
+    s: null,
+    d: null,
+    f: null,
+  },
   color: "",
 };
 
@@ -12,6 +21,8 @@ export const userCharacter = createSlice({
   reducers: {
     setCharacter: (state, action) => {
       console.log(action);
+      state = action.payload;
+      return state;
     },
   },
 });
