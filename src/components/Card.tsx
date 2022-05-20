@@ -11,6 +11,7 @@ type Props = {
   headcount: Number;
   _onClick?(): void;
   src?: string;
+  menu?: string;
 };
 
 const Card = ({
@@ -23,16 +24,24 @@ const Card = ({
   headcount,
   _onClick,
   src,
+  menu,
 }: Props) => {
   const able = limit === headcount;
   if (isFlex) {
+    const time = `${new Date(startAt ?? "").getHours()} ~ ${new Date(
+      endAt ?? ""
+    ).getHours()}`;
+    const adres = address.split(" ");
+    const place = `${adres[0] ?? ""} ${adres[1] ?? ""} ${adres[2] ?? ""}`;
     return (
       <React.Fragment>
         <BackgroundImage isFlex onClick={_onClick} src={src}>
           <Abled able={able} />
           <PartyInfo isFlex>
             <div>{title}</div>
-            <div>{address}</div>
+            <div>{menu}</div>
+            <div>{place}</div>
+            <div>{time}</div>
           </PartyInfo>
           <PartyHeadcount>
             {headcount} / {limit}
