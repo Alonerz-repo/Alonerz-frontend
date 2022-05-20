@@ -43,7 +43,9 @@ const PartyList = () => {
       }
     }
   }, [partyTime]);
-  useEffect(() => {}, [groups]);
+  useEffect(() => {
+    console.log(groups);
+  }, [groups]);
 
   const handleSelect = (e: any) => {
     setPartyTime(e.target.value);
