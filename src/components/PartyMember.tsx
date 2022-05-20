@@ -6,17 +6,27 @@ type PartyMemberProps = {
   captain?: boolean;
   src?: string;
   nickname: string;
+  part?: string;
+  year?: string;
+  _onClick?: any;
 };
 
-const PartyMember = ({ captain, src, nickname }: PartyMemberProps) => {
+const PartyMember = ({
+  captain,
+  src,
+  nickname,
+  part,
+  _onClick,
+  year,
+}: PartyMemberProps) => {
   return (
-    <Wrapper>
+    <Wrapper onClick={_onClick}>
       <Image shape="circle" size="30px" profile src={src}></Image>
       {captain ? <Captain>대장</Captain> : null}
       <text style={{ fontWeight: "700", marginLeft: "10px" }}> {nickname}</text>
-      {/* <text style={{ marginLeft: "10px" }}>
-        {part}/{year}
-      </text> */}
+      <text style={{ marginLeft: "10px" }}>
+        {part} {year}
+      </text>
     </Wrapper>
   );
 };

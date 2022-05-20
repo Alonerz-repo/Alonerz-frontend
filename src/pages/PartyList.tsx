@@ -71,6 +71,7 @@ const PartyList = () => {
                 key={i}
                 isFlex
                 title={value.title}
+                menu={value.menu}
                 limit={value.limit}
                 headcount={value.join}
                 address={value.address}
