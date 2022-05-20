@@ -52,6 +52,7 @@ const partyList = {
       y,
       time,
     };
+    console.log(body);
     const data = await axios
       .get(url, { headers, data: body })
       .then((response) => response.data)
