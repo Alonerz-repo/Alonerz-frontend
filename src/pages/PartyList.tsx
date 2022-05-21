@@ -17,7 +17,7 @@ const PartyList = () => {
   const [partyTime, setPartyTime] = React.useState<string>();
   // 사용자가 로그인했는지 확인하기 위한 상태값을 받아옴
   const user = useAppSelector((state) => state.user);
-
+  console.log(groups);
   useEffect(() => {
     setPartyTime(time);
   }, []);
