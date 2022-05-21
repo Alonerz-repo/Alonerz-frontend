@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import userAxios from "../axios/userAxios";
-import { Grid, Input, Button, Select, Text } from "../elements";
+import { Grid, Input, Select, Text } from "../elements";
 import { useAppSelect } from "../store/config.hook";
 import useUser from "../useCustom/useUser";
 import { useNavigate } from "react-router-dom";
-import { careerGroups, careerItems, findCareer } from "../utils/career";
+import { careerGroups, careerItems } from "../utils/career";
 import Header from "../components/Header";
 
 // 유저 프로필(이름, 직군, 연차 등) 변경할수 있는 페이지 입니다.
@@ -24,23 +24,23 @@ const ModifyUser = () => {
     year: "",
     description: "",
   });
-  const [my직군, setMy직군] = useState();
+  const [myCareerGroup, setMyCareerGroup] = useState();
 
   //커스텀 훅 함수로 유저 정보를 가져옵니다.
   const info = useUser(userInfo.userId);
-  const 직군 = careerGroups();
-  const 직군리스트: any = [];
-  직군.forEach((value) => {
-    직군리스트.push({
+  const group = careerGroups();
+  const groupList: any = [];
+  group.forEach((value) => {
+    groupList.push({
       value: value,
       name: value,
     });
   });
 
-  const 직업 = careerItems(my직군);
-  const 직업리스트: any = [];
-  직업.forEach((value: any) => {
-    직업리스트.push({ value: value.careerId, name: value.careerItemName });
+  const item = careerItems(myCareerGroup);
+  const items: any = [];
+  item.forEach((value: any) => {
+    items.push({ value: value.careerId, name: value.careerItemName });
   });
 
   //커스텀훅의 정보가 변경될때마다, 현재 페이지의 스테이트에 저장합니다.
@@ -54,14 +54,11 @@ const ModifyUser = () => {
     const {
       target: { name, value },
     } = e;
-    // setUser((prevState: any) => {
-    //   return { ...prevState, [name]: value };
-    // });
     setUser({ ...user, [name]: value });
   };
   const onChangeHandlerCareer = (e: any) => {
     if (e.target.name === "careerId") {
-      setMy직군(e.target.value);
+      setMyCareerGroup(e.target.value);
     }
   };
 

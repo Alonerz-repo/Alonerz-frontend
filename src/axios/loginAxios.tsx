@@ -27,6 +27,7 @@ const loginAxios = {
         return needProfile;
       })
       .catch((err) => err.response.data);
+    console.log(data);
     return data;
   },
 
@@ -50,6 +51,19 @@ const loginAxios = {
       return user;
     };
     return data.err ? data : removeCookies();
+  },
+
+  unlink: async () => {
+    const url = getUrl("/api/auth/unlink");
+    const headers = getHeaders();
+    const data = await axios
+      .delete(url, { headers })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .catch((err) => err.response.data);
+    return data;
   },
 };
 
