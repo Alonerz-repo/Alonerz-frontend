@@ -155,7 +155,7 @@ const Create = ({ group, time }: CreateProps) => {
       <Header text="파티개설"></Header>
       <Grid padding="20px">
         <Input
-          width="87%"
+          width="100%"
           text="모임제목"
           bold
           placeholder="모임 제목을 입력해주세요 :)"
@@ -164,7 +164,7 @@ const Create = ({ group, time }: CreateProps) => {
         ></Input>
 
         <Input
-          width="87%"
+          width="100%"
           text="메뉴"
           bold
           placeholder="원하시는 음식 메뉴를 적어주세요."
@@ -178,7 +178,7 @@ const Create = ({ group, time }: CreateProps) => {
           handleDate={setDate}
         ></DatePickerComponent>
 
-        <Grid isFlex width="87%">
+        <Grid isFlex width="100%">
           <Grid width="40%">
             <Text
               bold
@@ -272,7 +272,7 @@ const Create = ({ group, time }: CreateProps) => {
         ></SearchKakaoMap>
 
         <Input
-          width="87%"
+          width="100%"
           text="목적"
           bold
           placeholder="파티를 통해 이루고자하는 목적을 간략히 적어주세요."

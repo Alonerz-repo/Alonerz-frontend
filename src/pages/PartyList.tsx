@@ -43,6 +43,7 @@ const PartyList = () => {
       }
     }
   }, [partyTime]);
+  
   useEffect(() => {
     console.log(groups);
   }, [groups]);
