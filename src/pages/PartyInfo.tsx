@@ -148,7 +148,7 @@ const PartyInfo = () => {
               수정하기
             </Button>
             <Button width="50%" _onClick={handleDelete}>
-              대충 삭제
+              삭제하기
             </Button>
           </Grid>
         ) : group.guests.findIndex((v: any) => v.userId === user.userId) !==
