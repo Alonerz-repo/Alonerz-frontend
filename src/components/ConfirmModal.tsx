@@ -3,13 +3,15 @@ import styled from 'styled-components';
 
 interface Props {
   message: string;
-  onClose: React.MouseEventHandler<HTMLDivElement>;
+  yesCallback: Function;
+  noCallback: Function;
   yesLabel: string;
   noLabel: string;
 }
 
 const Background = styled.div`
   position: fixed;
+  width: 390px;
   top: 0;
   left: 0;
   bottom: 0;
@@ -24,7 +26,7 @@ const ModalContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  left: 50%;
+  left: 20%;
   top: 50%;
   transform: translate(-50%, -50%);
   height: 185px;
@@ -59,10 +61,10 @@ const NoButton = styled.div`
   cursor: pointer;
   height: 70px;
   width: 100%;
-  background: #f84c40;
-  border-radius: 0 0 25px 25px;
+  background: #bdbdbd;
+  border-radius: 0 0 0 25px;
   line-height: 70px;
-  color: #fff;
+  color: #616161;
 `;
 
 const YesButton = styled.div`
@@ -71,13 +73,16 @@ const YesButton = styled.div`
   height: 70px;
   width: 100%;
   background: #f84c40;
-  border-radius: 0 0 25px 25px;
+  border-radius: 0 0 25px 0;
   line-height: 70px;
   color: #fff;
 `;
 
 const ConfirmModal = (props: Props) => {
-  const { message, onClose, yesLabel, noLabel } = props;
+  const { message, yesLabel, noLabel, yesCallback, noCallback } = props;
+
+  const onNoClick = () => noCallback();
+  const onYesClick = () => yesCallback();
 
   return (
     <React.Fragment>
@@ -85,7 +90,14 @@ const ConfirmModal = (props: Props) => {
         <Background>
           <ModalContainer>
             <MessageBox>{message}</MessageBox>
-            <YesButton onClick={onClose}>돌아가기</YesButton>
+            <ButtonBox>
+              <NoButton onClick={onNoClick}>
+                {noLabel ? noLabel : '아니오'}
+              </NoButton>
+              <YesButton onClick={onYesClick}>
+                {yesLabel ? yesLabel : '예'}
+              </YesButton>
+            </ButtonBox>
           </ModalContainer>
         </Background>
       ) : null}

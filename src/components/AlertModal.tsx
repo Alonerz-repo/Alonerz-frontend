@@ -4,6 +4,7 @@ import styled from 'styled-components';
 interface Props {
   message: string;
   onClose: React.MouseEventHandler<HTMLDivElement>;
+  closeLabel: string;
 }
 
 const Background = styled.div`
@@ -22,7 +23,7 @@ const ModalContainer = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  left: 50%;
+  left: 20%;
   top: 50%;
   transform: translate(-50%, -50%);
   height: 185px;
@@ -55,7 +56,7 @@ const CloseButton = styled.div`
 `;
 
 const AlertModal = (props: Props) => {
-  const { message, onClose } = props;
+  const { message, onClose, closeLabel } = props;
 
   return (
     <React.Fragment>
@@ -63,7 +64,9 @@ const AlertModal = (props: Props) => {
         <Background>
           <ModalContainer>
             <MessageBox>{message}</MessageBox>
-            <CloseButton onClick={onClose}>돌아가기</CloseButton>
+            <CloseButton onClick={onClose}>
+              {closeLabel ? closeLabel : '닫기'}
+            </CloseButton>
           </ModalContainer>
         </Background>
       ) : null}

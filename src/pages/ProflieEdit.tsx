@@ -8,6 +8,7 @@ import { useAppSelect, useAppDispatch } from '../store/config.hook';
 import { setCharacter } from '../store/slices/characterSlice';
 import { useNavigate } from 'react-router-dom';
 import AlertModal from '../components/AlertModal';
+import ConfirmModal from '../components/ConfirmModal';
 
 //유저 프로필(캐릭터, 배경색상, 스티커)를 변경하는 페이지 입니다.
 interface Character {
@@ -49,10 +50,16 @@ const ProfileEdit = ({ type }: any) => {
     // navigate('/');
   };
 
-  const modalProps = { message, onClose };
+  const modalProps = {
+    message,
+    yesLabel: '저장',
+    noLabel: '아니오',
+    yesCallback: () => setMessage(''),
+    noCallback: () => setMessage(''),
+  };
   return (
     <React.Fragment>
-      <AlertModal {...modalProps} />
+      <ConfirmModal {...modalProps} />
       <Header
         text="프로필 편집"
         type="userEdit"
