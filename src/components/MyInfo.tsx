@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Grid, Text, Image } from "../elements";
 import Card from "../components/Card";
@@ -66,10 +66,13 @@ interface Props {
 
 const MyInfo = (props: Props) => {
   const { uid, groups } = props;
+  const userId = useAppSelect((state) => state.user).userId;
   const navigate = useNavigate();
+
   //엑시오스로 유저정보를 받아옵니다.
-  const { careerId, nickname, year, point, following, follower } = useUser(uid);
-  const { userId } = useAppSelect((state) => state.user);
+  const { careerId, yearId, nickname, point, following, follower } =
+    useUser(uid);
+
   //커리어 정보를 불러옵니다.
   const career = findCareer(careerId);
   //팔로우 페이지에 넘어가기전 props로 팔로잉/팔로우, 유저아이디를 전달합니다.
@@ -90,7 +93,7 @@ const MyInfo = (props: Props) => {
             {careerGroupName} / {careerItemName}
           </CareerGroupDiv>
           <CareerItemDiv>
-            {careerItemName} {year}
+            {careerItemName} {yearId}
           </CareerItemDiv>
           <NicknameDiv>
             <Nickname>{nickname}</Nickname>
