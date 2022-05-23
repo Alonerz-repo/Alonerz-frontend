@@ -1,44 +1,30 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Assets from "../assets/assets.json";
-import { useAppDispatch } from "../store/config.hook";
+import { useAppDispatch, useAppSelect } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
+import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
 
 //프로필(캐릭터, 스티커, 색상)용으로 반복되는 카드들 모음입니다.
 
 interface ProflieBoxProps {
   setCard?: any;
-  _onClick?: (e: any) => void;
-  setSticker: any;
 }
 
-const BackgroundColor = [
-  "#FFD9D9",
-  "#FF5D5D",
-  "#9EE8FF",
-  "#C377FF",
-  "#B8E5A3",
-  "#8054FF",
-  "#FFC077",
-  "#FFE279",
-  "#FC54FF",
-  "#4D9866",
-  "#402C8C",
-  "#402C8C",
-  "#FF4BA2",
-  "#000000",
-  "#B6B6B6",
-];
-
-const MyProfileBox = ({ setCard, _onClick, setSticker }: ProflieBoxProps) => {
+const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
   const dispatch = useAppDispatch();
+  const Board = useAppSelect((state) => state.char);
+  const colorList = backgroundColorUtils.getAll();
+  const stickerList = stickerImageUtils.getAll();
+
   //에셋 정보를 가져옵니다.
   const myasset = Assets;
   //스테이트에 프로필 정보를 저장합니다.
   const [curChar, setCurChar] = useState({
     Character: 0,
-    sticker: [-1, -1, -1, -1],
     color: "",
+    stickerOrder: 0,
+    stickerImageId: 0,
   });
 
   //프로필 정보가 바뀔때마다 리덕스의 데이터를 갱신합니다.
@@ -46,61 +32,25 @@ const MyProfileBox = ({ setCard, _onClick, setSticker }: ProflieBoxProps) => {
     dispatch(setCharacter(curChar));
   }, [curChar]);
 
-  //캐릭터 데이터를 스테이트에 갱신합니다.
-  const setCharacterFn = (index: any) => {
-    setCurChar({ ...curChar, Character: index });
-  };
   //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
-    setCurChar({
-      ...curChar,
-      sticker: { ...curChar.sticker, [setSticker]: index },
-    });
+    dispatch(setCharacter({ ...Board, stickerImageId: index }));
   };
   //백그라운드 컬러를 스테이트에 갱신합니다.
-  const setBackgroundFn = (myColor: string) => {
-    console.log(myColor);
-    setCurChar({ ...curChar, color: myColor });
+  const setBackgroundFn = (myColor: any) => {
+    dispatch(setCharacter({ ...Board, color: myColor.id }));
   };
   //프로필 캐릭터 선택 카드들
-  if (setCard === 1) {
-    return (
-      <React.Fragment>
-        {myasset.characters.map((value, index) => {
-          return (
-            <div
-              onClick={() => {
-                setCharacterFn(index);
-              }}
-              key={index}
-            >
-              <CharBox style={{ textAlign: "center" }}>
-                <img
-                  src={value}
-                  alt=""
-                  style={{
-                    width: "80px",
-                    height: "120px",
-                    position: "relative",
-                    top: "38px",
-                  }}
-                />
-              </CharBox>
-            </div>
-          );
-        })}
-      </React.Fragment>
-    );
-  } else if (setCard === 2) {
+  if (setCard) {
     //프로필 스티커 카드들
     return (
       <React.Fragment>
-        {myasset.frames.map((value, index) => {
+        {stickerList.map((value) => {
           return (
-            <div onClick={() => setStickersFn(index)} key={index}>
+            <div onClick={() => setStickersFn(value.id)} key={value.id}>
               <StickerBox style={{ textAlign: "center" }}>
                 <img
-                  src={value}
+                  src={value.url}
                   object-fit="cover"
                   alt=""
                   style={{
@@ -116,7 +66,7 @@ const MyProfileBox = ({ setCard, _onClick, setSticker }: ProflieBoxProps) => {
         })}
       </React.Fragment>
     );
-  } else if (setCard === 3) {
+  } else if (!setCard) {
     //프로필 색상 선택 카드들
     return (
       <React.Fragment>
@@ -132,10 +82,10 @@ const MyProfileBox = ({ setCard, _onClick, setSticker }: ProflieBoxProps) => {
             }}
           ></div>
         </MyColorBox>
-        {BackgroundColor.map((value: string, index: number) => {
+        {colorList.map((value: any, index: number) => {
           return (
-            <div key={index} onClick={() => setBackgroundFn(value)}>
-              <MyColorBox style={{ background: `${value}` }} />
+            <div key={value.id} onClick={() => setBackgroundFn(value)}>
+              <MyColorBox style={{ background: `${value.color}` }}></MyColorBox>
             </div>
           );
         })}
@@ -151,12 +101,6 @@ const Box = styled.div`
   border-radius: 20px;
 `;
 
-const CharBox = styled(Box)`
-  width: 108px;
-  height: 222px;
-  margin: 10px;
-`;
-
 const StickerBox = styled(Box)`
   width: 108px;
   height: 108px;
@@ -169,4 +113,4 @@ const MyColorBox = styled(Box)`
   margin: 10px;
 `;
 
-export default MyProfileBox;
+export default ProfileBoxBottom;

@@ -7,6 +7,7 @@ import partyList from "../axios/partyList";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
 import { authUser } from "../store/slices/userSlice";
 import Header from "../components/Header";
+import loginAxios from "../axios/loginAxios";
 
 // 메인 페이지로써 사용자의 오늘 파티목록을 받아와 보여주는 컴포넌트
 const Main = () => {
@@ -63,6 +64,12 @@ const Main = () => {
     }
   };
 
+  const unlink = () => {
+    console.log("unlink!");
+    loginAxios.unlink().then((res) => {
+      console.log(res);
+    });
+  };
   return (
     <React.Fragment>
       <Header text="Alonerz" type="main"></Header>
@@ -125,6 +132,7 @@ const Main = () => {
             </Grid>
           </Grid>
         </BoxPM>
+        <button onClick={() => unlink()}>탈퇴</button>
       </Grid>
     </React.Fragment>
   );
