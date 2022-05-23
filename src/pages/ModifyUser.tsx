@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import userAxios from "../axios/userAxios";
-import { Grid, Input, Select, Text } from "../elements";
-import useUser from "../useCustom/useUser";
-import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
-import { yearUtils, careerUtils } from "../utils/asset";
-import { useAppSelect } from "../store/config.hook";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import userAxios from '../axios/userAxios';
+import { Grid, Input, Select, Text } from '../elements';
+import useUser from '../useCustom/useUser';
+import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+import { yearUtils, careerUtils } from '../utils/asset';
+import { useAppSelect } from '../store/config.hook';
+import AlertModal from '../components/AlertModal';
 
 // 유저 프로필(이름, 직군, 연차 등) 변경할수 있는 페이지 입니다.
 interface myProfile {
@@ -18,11 +19,17 @@ interface myProfile {
 }
 
 let initialState: myProfile = {
-  nickname: "",
-  imageUrl: "",
+  nickname: '',
+  imageUrl: '',
   careerId: 0,
   yearId: 0,
-  description: "",
+  description: '',
+};
+
+const initAlertProps = {
+  message: '',
+  onClose: () => {},
+  closeLabel: '',
 };
 
 const ModifyUser = () => {
@@ -35,9 +42,10 @@ const ModifyUser = () => {
   const userInfo = useAppSelect((state) => state.user);
   //훅을 통해 가져온 유저정보, 유저가 입력한 정보를 저장합니다.
   const [user, setUser] = useState<myProfile>(initialState);
-  const [myCareerGroup, setMyCareerGroup] = useState<any>("무직");
+  const [myCareerGroup, setMyCareerGroup] = useState<any>('무직');
   const [typeYear, setTypeYear] = useState(0);
   const [err, setErr] = useState(false);
+  const [alertProps, setAlertProps] = useState(initAlertProps);
 
   //커스텀 훅 함수로 유저 정보를 가져옵니다.
   const info = useUser(userInfo.userId);
@@ -61,7 +69,7 @@ const ModifyUser = () => {
       target: { name, value },
     } = e;
     switch (name) {
-      case "nickname":
+      case 'nickname':
         if (value.length < 3) {
           return setErr(true);
         } else {
@@ -93,14 +101,14 @@ const ModifyUser = () => {
 
   // 직군 정보를 갱신합니다.
   const onChangeHandlerCareer = (e: any) => {
-    if (e.target.name === "careerId") {
+    if (e.target.name === 'careerId') {
       setMyCareerGroup(e.target.value);
       switch (e.target.value) {
-        case "무직":
+        case '무직':
           return setTypeYear(1);
-        case "개발직":
+        case '개발직':
           return setTypeYear(3);
-        case "디자인":
+        case '디자인':
           return setTypeYear(3);
         default:
           setTypeYear(1);
@@ -117,17 +125,25 @@ const ModifyUser = () => {
       description: user.description,
     };
     try {
-      await userAxios.setUser(initialState).then((res) => {
-        window.alert("수정완료");
-        navigate("/");
+      await userAxios.setUser(initialState);
+      setAlertProps({
+        message: '저장되었어요.',
+        closeLabel: '확인했어요!',
+        onClose: () => navigate('/'),
       });
     } catch (error) {
-      const { message, name } = error as Error;
+      const { message } = error as Error;
+      setAlertProps({
+        message,
+        closeLabel: '닫기!',
+        onClose: () => setAlertProps(initAlertProps),
+      });
     }
   };
 
   return (
     <React.Fragment>
+      <AlertModal {...alertProps} />
       <Header
         type="userEdit"
         text="내 정보"
@@ -150,7 +166,7 @@ const ModifyUser = () => {
         </Position>
 
         <Grid display="flex" flexFlow="columns wrap">
-          <div style={{ width: "100%", margin: "0px 20px 0px 0px" }}>
+          <div style={{ width: '100%', margin: '0px 20px 0px 0px' }}>
             <Text>직군</Text>
             <Select
               type="user"
@@ -162,7 +178,7 @@ const ModifyUser = () => {
               categories={groups}
             ></Select>
           </div>
-          <div style={{ width: "100%" }}>
+          <div style={{ width: '100%' }}>
             <Text>직업</Text>
             <Select
               placeholder="직업"
@@ -178,6 +194,7 @@ const ModifyUser = () => {
         </Grid>
         <Position>
           <Text>연차</Text>
+          {/* @TODO : 현재 사용자의 yearId로 기본값 설정 필요 */}
           <Select
             type="user"
             placeholder="연차"
