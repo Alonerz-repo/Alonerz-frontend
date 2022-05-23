@@ -17,7 +17,7 @@ const userAxios = {
   },
   //사용자 리프레시토큰 api
   refreshUser: async () => {
-    const url = getUrl("/api/reissue");
+    const url = getUrl("/api/auth/reissue");
     const token = cookie.get("refreshToken");
     const body = {
       refreshToken: token,
@@ -25,7 +25,13 @@ const userAxios = {
     const headers = getHeaders();
     const data = await axios
       .post(url, body, { headers })
-      .then((res) => res.data)
+      .then((res) => {
+        console.log("리프레시 성공!");
+        const { accessToken, refreshToken, auth } = res.data;
+        cookie.set("accessToken", accessToken);
+        cookie.set("refreshToken", refreshToken);
+        return auth;
+      })
       .catch((err) => err.response.data);
     return data;
   },

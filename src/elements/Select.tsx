@@ -59,6 +59,7 @@ const Select = (props: Props) => {
     careerId,
   } = props;
   const selected = !Boolean(careerId);
+
   const mySelectedProps = { name, width, margin, onChange, value, time };
 
   const randerOptions = () => {
