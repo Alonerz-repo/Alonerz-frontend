@@ -4,5 +4,7 @@ import Image from "./Image";
 import Input from "./Input";
 import Text from "./Text";
 import Select from "./Select";
+import InputForm from "./InputForm";
+import SelectForm from "./SelectForm";
 
-export { Grid, Button, Image, Input, Text, Select };
+export { Grid, Button, Image, Input, Text, Select, InputForm, SelectForm };

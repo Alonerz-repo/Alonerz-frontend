@@ -63,7 +63,7 @@ const PartyInfo = () => {
   };
 
   // 참여인원 정보 string
-  const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
+  // const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
   return (
     <React.Fragment>
@@ -84,22 +84,22 @@ const PartyInfo = () => {
         </Text>
 
         {/* 카카오 맵 */}
-        <KakaoMap
-          latitude={group.locationX}
-          longitude={group.locationY}
-          placeName={group.placeName}
-        ></KakaoMap>
+        {/* <KakaoMap
+        // latitude={group.locationX}
+        // longitude={group.locationY}
+        // placeName={group.placeName}
+        ></KakaoMap> */}
 
         <Text type="line" titleText="메뉴" margin="5px 0 5px 0">
           {group.menu}
         </Text>
 
         <Text bold type="line" titleText="시간" margin="5px 0 5px 0">
-          {`${new Date(group.startAt).getMonth() + 1}월 ${new Date(
+          {/* {`${new Date(group.startAt).getMonth() + 1}월 ${new Date(
             group.startAt
           ).getDate()}일 ${new Date(group.startAt).getHours()}:00 ~ ${new Date(
             group.endAt
-          ).getHours()}:00`}
+          ).getHours()}:00`} */}
         </Text>
 
         <Text bold type="area" titleText="상세내용" margin="5px 0 5px 0">
@@ -109,16 +109,16 @@ const PartyInfo = () => {
         <Text
           bold
           type="line"
-          titleText={headCount}
+          // titleText={headCount}
           margin="10px 0 5px 0"
         ></Text>
 
-        <PartyMember
+        {/* <PartyMember
           captain
-          nickname={group.host.nickname}
-          src={group.host.imageUrl}
-          part={getCareer(group.host.careerId)}
-          year={group.host.year}
+          // nickname={group.host.nickname}
+          // src={group.host.imageUrl}
+          // part={getCareer(group.host.careerId)}
+          // year={group.host.year}
         ></PartyMember>
 
         {group.guests.map((guest: any, i: number) => {
@@ -131,13 +131,13 @@ const PartyInfo = () => {
               year={guest.year}
             ></PartyMember>
           );
-        })}
+        })} */}
       </Grid>
       {/* 코멘트 리스트 */}
       <Comment groupId={groupId} />
 
       <Grid absolute="position:sticky; bottom:0; z-index:2;">
-        {user.userId === group.host.userId ? (
+        {/* {user.userId === group.host.userId ? (
           <Grid isFlex>
             <Button
               width="50%"
@@ -172,7 +172,7 @@ const PartyInfo = () => {
           >
             참가하기
           </Button>
-        )}
+        )} */}
       </Grid>
     </React.Fragment>
   );

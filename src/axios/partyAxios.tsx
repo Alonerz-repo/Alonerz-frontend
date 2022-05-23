@@ -15,22 +15,22 @@ interface userInfo {
 // group 데이터의 인터페이스
 export interface GroupInfo {
   groupId?: string;
-  title: string;
-  menu: string;
+  title?: string;
+  menu?: string;
   image?: any;
-  description: string;
-  startAt: Date;
-  endAt: Date;
-  limit: number;
-  locationX: number;
-  locationY: number;
-  address: string;
+  description?: string;
+  startAt?: Date;
+  endAt?: Date;
+  limit?: number;
+  locationX?: number;
+  locationY?: number;
+  address?: string;
   imageUrl?: string;
-  placeName: string;
-  createdAt: string;
-  updateAt: string;
-  host: userInfo;
-  guests: userInfo[];
+  placeName?: string;
+  createdAt?: string;
+  updateAt?: string;
+  host?: userInfo;
+  guests?: userInfo[];
 }
 
 // 그룹의 초기 상태값, 데이터를 받아오기 전 화면을 미리 렌더링하기 위해 입력한 값

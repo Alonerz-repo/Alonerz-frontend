@@ -1,17 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 import DatePickerComponent from "./DatePicker";
-import { Input, Grid, Text, Button, Select } from "../elements";
+import {
+  Input,
+  Grid,
+  Text,
+  Button,
+  Select,
+  InputForm,
+  SelectForm,
+} from "../elements";
 import Upload from "./Upload";
 import Header from "./Header";
 import SearchKakaoMap from "./SearchKakaoMap";
-import { partyAxios } from "../axios/partyAxios";
+import { partyAxios, GroupInfo } from "../axios/partyAxios";
 import times from "../utils/partyTimes";
 import useLoginCheck from "../useCustom/useLoginCheck";
 
 interface CreateProps {
-  group: any;
+  group: GroupInfo;
   time?: number | undefined;
 }
 
@@ -21,10 +30,14 @@ const Create = ({ group, time }: CreateProps) => {
   // title - 제목, menu - 메뉴, description - 설명, opentime - 시작시간, closetime - 마감 시간, date - 날짜
   // placeName - 장소이름(맵에 표시), address - 주소, locationX Y - 좌표, limit - 인원 제한
   // image - 이미지 파일
-  // ???
-  const [title, setTitle] = useState<string>("");
-  const [menu, setMenu] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm<GroupInfo>();
+
   const [opentime, setOpentime] = useState<number>(0);
   const [closetime, setClosetime] = useState<number>(0);
   const [placeName, setPlacename] = useState<string>("");
@@ -38,37 +51,10 @@ const Create = ({ group, time }: CreateProps) => {
   const navigate = useNavigate();
 
   // group 정보를 받아와서 초기 상태값을 세팅
-  useEffect(() => {
-    setTitle(group.title);
-    setMenu(group.menu);
-    setDescription(group.description);
-    setPlacename(group.placeName);
-    setAddress(group.address);
-    setLocationX(group.locationX);
-    setLocationY(group.locationY);
-    setLimit(group.limit);
-    setOpentime(new Date(group.startAt).getHours());
-    setClosetime(new Date(group.endAt).getHours());
-    if (time === 10 || time === 17) {
-      setOpentime(time);
-      setClosetime(time + 1);
-    }
-  }, [group]);
+  useEffect(() => {}, [group]);
 
   const handleImageUrl = (file: any) => {
     setImageUrl(file);
-  };
-
-  const handleTitle = (e: any) => {
-    setTitle(e.target.value);
-  };
-
-  const handleMenu = (e: any) => {
-    setMenu(e.target.value);
-  };
-
-  const handleDescription = (e: any) => {
-    setDescription(e.target.value);
   };
 
   const handleOpentime = (e: any) => {
@@ -81,24 +67,7 @@ const Create = ({ group, time }: CreateProps) => {
 
   // 버튼 클릭시 파티 생성, 수정 이벤트
   const handleCreateParty = async () => {
-    if (title === "") {
-      alert("제목을 입력해주세요.");
-      return;
-    } else if (menu === "") {
-      alert("메뉴를 입력해주세요.");
-      return;
-    } else if (
-      opentime !== undefined &&
-      closetime !== undefined &&
-      opentime >= closetime
-    ) {
-      alert("오픈 시간은 마감 시간보다 빨라야합니다.");
-      return;
-    }
     let groupInfo: any = {
-      title,
-      menu,
-      description,
       placeName,
       startAt: new Date(
         Date.parse(
@@ -119,8 +88,6 @@ const Create = ({ group, time }: CreateProps) => {
       locationY,
       address,
     };
-    console.log(groupInfo.startAt);
-    console.log(groupInfo.endAt);
     // 이미지 정보의 입력이 없는 경우 image를 제외한 정보만 서버와 통신
     if (image) {
       groupInfo = { ...groupInfo, image };
@@ -150,27 +117,46 @@ const Create = ({ group, time }: CreateProps) => {
     }
   };
 
+  const onSubmit = handleSubmit((data) => console.log(data));
+
+  type Option = {
+    name: string;
+    value: string | number;
+  };
+
+  const options: Option[] = [
+    { name: "11:00", value: 11 },
+    { name: "12:00", value: 12 },
+  ];
+
   return (
     <React.Fragment>
       <Header text="파티개설"></Header>
       <Grid padding="0 30px 0 30px">
-        <Input
-          width="100%"
-          text="모임제목"
-          bold
-          placeholder="모임 제목을 입력해주세요 :)"
-          value={title}
-          _onChange={handleTitle}
-        ></Input>
+        <form onSubmit={onSubmit}>
+          <Text bold type="line" titleText="제목" margin="5px 0 5px 0" />
+          <InputForm width="100%" name="title" control={control} />
 
-        <Input
-          width="100%"
-          text="메뉴"
-          bold
-          placeholder="원하시는 음식 메뉴를 적어주세요."
-          value={menu}
-          _onChange={handleMenu}
-        ></Input>
+          <Text bold type="line" titleText="메뉴" margin="5px 0 5px 0" />
+          <InputForm width="100%" name="menu" control={control} />
+          <SelectForm
+            width="40%"
+            categories={options}
+            name="startAt"
+            control={control}
+          ></SelectForm>
+
+          <SelectForm
+            width="40%"
+            categories={options}
+            name="endAt"
+            control={control}
+          ></SelectForm>
+
+          <Text bold type="line" titleText="상세 정보" margin="5px 0 5px 0" />
+          <InputForm width="100%" name="description" control={control} />
+          <input type="submit" value="제출" />
+        </form>
 
         {/* 달력 컴포넌트 */}
         <Text bold type="line" titleText="달력" margin="5px 0 5px 0"></Text>
@@ -272,14 +258,6 @@ const Create = ({ group, time }: CreateProps) => {
           handlePlacename={setPlacename}
         ></SearchKakaoMap>
 
-        <Input
-          width="100%"
-          text="목적"
-          bold
-          placeholder="파티 목적을 간략히 적어주세요."
-          value={description}
-          _onChange={handleDescription}
-        ></Input>
         <Upload
           handleImageUrl={handleImageUrl}
           imageUrl={group.imageUrl}

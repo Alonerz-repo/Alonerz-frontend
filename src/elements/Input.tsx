@@ -18,7 +18,7 @@ interface Props {
 }
 
 // forwardRef로 함수를 감싸서, 다른 컴포넌트/페이지에서 ref를 받을수 있습니다.
-const Input = forwardRef(
+const InputForm = forwardRef(
   ({ text, placeholder, width, _onChange, ref, bold, value, name }: Props) => {
     return (
       <>
@@ -37,12 +37,6 @@ const Input = forwardRef(
   }
 );
 
-Input.defaultProps = {
-  text: "안녕하세요",
-  placeholder: "여기에 입력하세요",
-  width: "100%",
-};
-
 const ElementInput = styled.input`
   background: #eeeeee;
   border-radius: 15px;
@@ -52,4 +46,4 @@ const ElementInput = styled.input`
   padding: 0px 20px;
   box-sizing: border-box;
 `;
-export default Input;
+export default InputForm;
