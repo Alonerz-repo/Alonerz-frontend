@@ -21,6 +21,7 @@ const Create = ({ group, time }: CreateProps) => {
   // title - 제목, menu - 메뉴, description - 설명, opentime - 시작시간, closetime - 마감 시간, date - 날짜
   // placeName - 장소이름(맵에 표시), address - 주소, locationX Y - 좌표, limit - 인원 제한
   // image - 이미지 파일
+  // ???
   const [title, setTitle] = useState<string>("");
   const [menu, setMenu] = useState<string>("");
   const [description, setDescription] = useState<string>("");
