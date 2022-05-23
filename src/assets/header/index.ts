@@ -10,6 +10,8 @@ const icon = [
   require("./chat.png"),
   require("./1.svg"),
   require("./User.png"),
+  require("./right.png"),
+  require("./left.png"),
 ];
 
 export const kakaoImg = login;

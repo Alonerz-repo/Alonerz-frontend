@@ -20,11 +20,10 @@ const loginAxios = {
     const data = await axios
       .post(url, body)
       .then((res) => {
-        const { accessToken, refreshToken, needProfile } = res.data;
+        const { accessToken, refreshToken } = res.data;
 
         cookie.set("accessToken", accessToken);
         cookie.set("refreshToken", refreshToken);
-        return needProfile;
       })
       .catch((err) => err.response.data);
     console.log(data);

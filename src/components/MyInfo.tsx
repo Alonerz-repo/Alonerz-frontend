@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { Grid, Text, Image } from "../elements";
 import Card from "../components/Card";
@@ -66,10 +66,12 @@ interface Props {
 
 const MyInfo = (props: Props) => {
   const { uid, groups } = props;
+  const userId = useAppSelect((state) => state.user).userId;
   const navigate = useNavigate();
+
   //엑시오스로 유저정보를 받아옵니다.
-  const { careerId, nickname, yearId, point, following, follower, userId } =
-    useUser();
+  const { careerId, yearId, nickname, point, following, follower } =
+    useUser(uid);
 
   //커리어 정보를 불러옵니다.
   const career = findCareer(careerId);

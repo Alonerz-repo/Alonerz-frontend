@@ -7,6 +7,7 @@ const userAxios = {
   // 사용자 프로필 수정  api
   // 파라미터 user => 객체
   setUser: (user: any) => {
+    console.log(user);
     const url = getUrl("/api/users/profile");
     const headers = getHeaders();
     const data = axios
@@ -18,11 +19,15 @@ const userAxios = {
   //사용자 정보 조회 api
   // 파라미터 userId => string
   getUser: async (userId: any) => {
+    console.log("user getAxios", userId);
     const url = getUrl(`/api/users/${userId}/main`);
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
-      .then((res) => res.data)
+      .then((res) => {
+        console.log(res.data);
+        return res.data;
+      })
       .catch((err) => userExceptions.modify(err.response.data));
 
     return data;

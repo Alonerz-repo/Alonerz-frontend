@@ -6,6 +6,7 @@ import useUser from "../useCustom/useUser";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { yearUtils, careerUtils } from "../utils/asset";
+import { useAppSelect } from "../store/config.hook";
 
 // 유저 프로필(이름, 직군, 연차 등) 변경할수 있는 페이지 입니다.
 interface myProfile {
@@ -31,7 +32,7 @@ const ModifyUser = () => {
   //
 
   //리덕스에서 현재 유저의 정보를 가져옵니다.
-
+  const userInfo = useAppSelect((state) => state.user);
   //훅을 통해 가져온 유저정보, 유저가 입력한 정보를 저장합니다.
   const [user, setUser] = useState<myProfile>(initialState);
   const [myCareerGroup, setMyCareerGroup] = useState<any>("무직");
@@ -39,7 +40,7 @@ const ModifyUser = () => {
   const [err, setErr] = useState(false);
 
   //커스텀 훅 함수로 유저 정보를 가져옵니다.
-  const info = useUser();
+  const info = useUser(userInfo.userId);
   //직군 리스트
   const groups = careerUtils.getGroups().map((value) => {
     return { value: value, name: value };

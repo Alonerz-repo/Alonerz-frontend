@@ -17,13 +17,12 @@ const initState = {
   yearId: 0,
 };
 
-const useUser = () => {
-  const userInfo = useAppSelect((state) => state.user);
+const useUser = (userId: any) => {
   const [user, setUser] = useState(initState);
   useEffect(() => {
     const data = async () => {
       const response = await userAxios
-        .getUser(userInfo.userId)
+        .getUser(userId)
         .then((res) => {
           return res.user;
         })
@@ -35,5 +34,4 @@ const useUser = () => {
   }, []);
   return user;
 };
-
 export default useUser;
