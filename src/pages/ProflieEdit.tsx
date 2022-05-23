@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
-import { Grid, Text, Button } from "../elements";
-import MyProfileBoxBottom from "../components/ProfileBox.bottom";
-import MyProfileBoxTop from "../components/ProfileBox.top";
-import Assets from "../assets/assets.json";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { setCharacter } from "../store/slices/characterSlice";
-import { useNavigate } from "react-router-dom";
-import boardAxios from "../axios/boardAxios";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Header from '../components/Header';
+import { Grid, Text, Button } from '../elements';
+import MyProfileBoxBottom from '../components/ProfileBox.bottom';
+import MyProfileBoxTop from '../components/ProfileBox.top';
+import Assets from '../assets/assets.json';
+import { useAppSelect, useAppDispatch } from '../store/config.hook';
+import { setCharacter } from '../store/slices/characterSlice';
+import { useNavigate } from 'react-router-dom';
+import boardAxios from '../axios/boardAxios';
+import AlertModal from '../components/AlertModal';
+import ConfirmModal from '../components/ConfirmModal';
 
 //유저 프로필(캐릭터, 배경색상, 스티커)를 변경하는 페이지 입니다.
 interface Character {
@@ -24,6 +26,7 @@ const initChar: Character = {
   stickerOrder: 0,
   stickerImageId: 0,
 };
+
 const ProfileEdit = ({ type }: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -65,15 +68,15 @@ const ProfileEdit = ({ type }: any) => {
         <MyProfileBoxTop state={state}></MyProfileBoxTop>
       </Grid>
       <Grid display="flex" justifyContent="flex-start">
-        <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex' }}>
           <div
-            style={{ margin: "20px", cursor: "pointer" }}
+            style={{ margin: '20px', cursor: 'pointer' }}
             onClick={() => setState(true)}
           >
             스티커
           </div>
           <div
-            style={{ margin: "20px", cursor: "pointer" }}
+            style={{ margin: '20px', cursor: 'pointer' }}
             onClick={() => setState(false)}
           >
             배경색상
