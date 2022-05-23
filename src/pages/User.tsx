@@ -11,13 +11,18 @@ const User = () => {
   const param = useParams();
   const navigate = useNavigate();
   const userInfo = useAppSelect((state) => state.user);
+  console.log(userInfo, "user Page");
   const [groups, setGroups] = useState<Group[]>([]);
 
   useEffect(() => {
     //유저가 참여했던 파티들의 리스트를 요청합니다.
-    partyAxios.getJoinedParty(param.userId).then((res) => {
-      setGroups(res.data.groups);
-    });
+    try {
+      partyAxios.getJoinedParty(param.userId).then((res) => {
+        // setGroups(res.data.groups);
+      });
+    } catch (err) {
+      console.log(err);
+    }
   }, [param]);
 
   // 프로필을 렌더링 합니다.

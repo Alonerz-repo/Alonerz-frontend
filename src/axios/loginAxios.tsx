@@ -20,13 +20,13 @@ const loginAxios = {
     const data = await axios
       .post(url, body)
       .then((res) => {
-        const { accessToken, refreshToken, needProfile } = res.data;
+        const { accessToken, refreshToken } = res.data;
 
         cookie.set("accessToken", accessToken);
         cookie.set("refreshToken", refreshToken);
-        return needProfile;
       })
       .catch((err) => err.response.data);
+    console.log(data);
     return data;
   },
 
@@ -50,6 +50,19 @@ const loginAxios = {
       return user;
     };
     return data.err ? data : removeCookies();
+  },
+
+  unlink: async () => {
+    const url = getUrl("/api/auth/unlink");
+    const headers = getHeaders();
+    const data = await axios
+      .delete(url, { headers })
+      .then((res) => {
+        console.log(res);
+        return res;
+      })
+      .catch((err) => err.response.data);
+    return data;
   },
 };
 

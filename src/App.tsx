@@ -18,6 +18,7 @@ import FollowLIst from "./pages/FollowList";
 import EditParty from "./pages/EditParty";
 import Chatting from "./pages/Chatting";
 import ChatList from "./pages/ChatList";
+import Four from "./pages/404";
 
 import { authUser } from "./store/slices/userSlice";
 import { useAppDispatch } from "./store/config.hook";
@@ -56,6 +57,7 @@ function App() {
             <Route path="/participate/:groupId" element={<PartyInfo />} />
             <Route path="/create/partyInfo/:time" element={<CreateParty />} />
             <Route path="/edit/partyInfo/:groupId" element={<EditParty />} />
+            <Route path="/404" element={<Four />} />
             <Route path="*" element={<Main />} />
           </Routes>
         </BrowserRouter>
