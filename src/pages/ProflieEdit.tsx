@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import Header from "../components/Header";
-import { Grid, Text, Button } from "../elements";
-import MyProfileBox from "../components/ProfileBox";
-import Assets from "../assets/assets.json";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { setCharacter } from "../store/slices/characterSlice";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Header from '../components/Header';
+import { Grid, Text, Button } from '../elements';
+import MyProfileBox from '../components/ProfileBox';
+import Assets from '../assets/assets.json';
+import { useAppSelect, useAppDispatch } from '../store/config.hook';
+import { setCharacter } from '../store/slices/characterSlice';
+import { useNavigate } from 'react-router-dom';
+import AlertModal from '../components/AlertModal';
 
 //유저 프로필(캐릭터, 배경색상, 스티커)를 변경하는 페이지 입니다.
 interface Character {
@@ -17,7 +18,7 @@ interface Character {
 const initChar: Character = {
   Character: 0,
   sticker: [],
-  color: "",
+  color: '',
 };
 const ProfileEdit = ({ type }: any) => {
   const dispatch = useAppDispatch();
@@ -30,6 +31,9 @@ const ProfileEdit = ({ type }: any) => {
   const [curChar, setCurChar] = useState<Character>(initChar);
   // 유저가 스티커를 어디를 클릭했는지 저장하는 스테이트입니다.
   const [curSticker, setCurSticker] = useState(0);
+  const [message, setMessage] = useState<string>('');
+  const onClose = () => setMessage('');
+
   // 유저의 프로필 정보가 변경될때마다, 리덕스의 정보를 업데이트 합니다.
   useEffect(() => {
     setCurChar(userChar);
@@ -41,11 +45,14 @@ const ProfileEdit = ({ type }: any) => {
 
   const saveProfile = () => {
     dispatch(setCharacter(curChar));
-    window.alert("저장이 되었을까요?");
-    navigate("/");
+    setMessage('저장이 되었을까요?');
+    // navigate('/');
   };
+
+  const modalProps = { message, onClose };
   return (
     <React.Fragment>
+      <AlertModal {...modalProps} />
       <Header
         text="프로필 편집"
         type="userEdit"
@@ -54,12 +61,12 @@ const ProfileEdit = ({ type }: any) => {
       />
       <Grid isFlex>
         {/* 스티커 시작! */}
-        <Box style={{ width: "220px", height: "288px", position: "relative" }}>
+        <Box style={{ width: '220px', height: '288px', position: 'relative' }}>
           {userChar.sticker[0] < 0 ? (
             <React.Fragment>
               <Circle
                 onClick={() => stickerSelect(0)}
-                style={{ position: "absolute", left: "50px", top: "42px" }}
+                style={{ position: 'absolute', left: '50px', top: '42px' }}
               >
                 +
               </Circle>
@@ -67,11 +74,11 @@ const ProfileEdit = ({ type }: any) => {
           ) : (
             <img
               style={{
-                width: "88px",
-                height: "88px",
-                position: "absolute",
-                left: "18px",
-                top: "22px",
+                width: '88px',
+                height: '88px',
+                position: 'absolute',
+                left: '18px',
+                top: '22px',
               }}
               onClick={() => stickerSelect(0)}
               src={Assets.frames[userChar.sticker[0]]}
@@ -82,7 +89,7 @@ const ProfileEdit = ({ type }: any) => {
             <React.Fragment>
               <Circle
                 onClick={() => stickerSelect(1)}
-                style={{ position: "absolute", right: "46px", top: "98px" }}
+                style={{ position: 'absolute', right: '46px', top: '98px' }}
               >
                 +
               </Circle>
@@ -90,11 +97,11 @@ const ProfileEdit = ({ type }: any) => {
           ) : (
             <img
               style={{
-                width: "88px",
-                height: "88px",
-                position: "absolute",
-                right: "22px",
-                top: "79px",
+                width: '88px',
+                height: '88px',
+                position: 'absolute',
+                right: '22px',
+                top: '79px',
               }}
               onClick={() => stickerSelect(1)}
               src={Assets.frames[userChar.sticker[1]]}
@@ -105,7 +112,7 @@ const ProfileEdit = ({ type }: any) => {
             <React.Fragment>
               <Circle
                 onClick={() => stickerSelect(2)}
-                style={{ position: "absolute", left: "46px", bottom: "112px" }}
+                style={{ position: 'absolute', left: '46px', bottom: '112px' }}
               >
                 +
               </Circle>
@@ -113,11 +120,11 @@ const ProfileEdit = ({ type }: any) => {
           ) : (
             <img
               style={{
-                width: "88px",
-                height: "88px",
-                position: "absolute",
-                left: "19px",
-                bottom: "75px",
+                width: '88px',
+                height: '88px',
+                position: 'absolute',
+                left: '19px',
+                bottom: '75px',
               }}
               onClick={() => stickerSelect(2)}
               src={Assets.frames[userChar.sticker[2]]}
@@ -128,7 +135,7 @@ const ProfileEdit = ({ type }: any) => {
             <React.Fragment>
               <Circle
                 onClick={() => stickerSelect(3)}
-                style={{ position: "absolute", right: "76px", bottom: "42px" }}
+                style={{ position: 'absolute', right: '76px', bottom: '42px' }}
               >
                 +
               </Circle>
@@ -136,11 +143,11 @@ const ProfileEdit = ({ type }: any) => {
           ) : (
             <img
               style={{
-                width: "88px",
-                height: "88px",
-                position: "absolute",
-                right: "39px",
-                bottom: "7px",
+                width: '88px',
+                height: '88px',
+                position: 'absolute',
+                right: '39px',
+                bottom: '7px',
               }}
               onClick={() => stickerSelect(3)}
               src={Assets.frames[userChar.sticker[3]]}
@@ -152,20 +159,20 @@ const ProfileEdit = ({ type }: any) => {
         {/* 캐릭터 배경 시작! */}
         <MyColorBox
           style={{
-            background: `${userChar.color ? `${userChar.color}` : "#eeeeee"}`,
-            width: "158px",
-            height: "288px",
-            display: "flex",
-            justifyContent: "center",
+            background: `${userChar.color ? `${userChar.color}` : '#eeeeee'}`,
+            width: '158px',
+            height: '288px',
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
-          <div style={{ margin: "69px 29px" }}>
+          <div style={{ margin: '69px 29px' }}>
             <img
               src={Assets.characters[curChar.Character]}
               alt=""
               style={{
-                width: "100px",
-                height: "150px",
+                width: '100px',
+                height: '150px',
               }}
             />
           </div>
@@ -173,21 +180,21 @@ const ProfileEdit = ({ type }: any) => {
         {/* 캐릭터 배경 끝! */}
       </Grid>
       <Grid display="flex" justifyContent="flex-start">
-        <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex' }}>
           <div
-            style={{ margin: "20px", cursor: "pointer" }}
+            style={{ margin: '20px', cursor: 'pointer' }}
             onClick={() => setState(1)}
           >
             캐릭터
           </div>
           <div
-            style={{ margin: "20px", cursor: "pointer" }}
+            style={{ margin: '20px', cursor: 'pointer' }}
             onClick={() => setState(2)}
           >
             스티커
           </div>
           <div
-            style={{ margin: "20px", cursor: "pointer" }}
+            style={{ margin: '20px', cursor: 'pointer' }}
             onClick={() => setState(3)}
           >
             배경색상
@@ -206,7 +213,7 @@ const ProfileEdit = ({ type }: any) => {
 };
 
 ProfileEdit.defaultProps = {
-  type: "color",
+  type: 'color',
 };
 
 const Box = styled.div`
