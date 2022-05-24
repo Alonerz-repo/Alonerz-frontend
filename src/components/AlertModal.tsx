@@ -3,12 +3,13 @@ import styled from 'styled-components';
 
 interface Props {
   message: string;
-  onClose: React.MouseEventHandler<HTMLDivElement>;
+  onClose: Function;
   closeLabel: string;
 }
 
 const Background = styled.div`
   position: fixed;
+  width: 390px;
   top: 0;
   left: 0;
   bottom: 0;
@@ -58,13 +59,15 @@ const CloseButton = styled.div`
 const AlertModal = (props: Props) => {
   const { message, onClose, closeLabel } = props;
 
+  const onClick = () => onClose();
+
   return (
     <React.Fragment>
       {message ? (
         <Background>
           <ModalContainer>
             <MessageBox>{message}</MessageBox>
-            <CloseButton onClick={onClose}>
+            <CloseButton onClick={onClick}>
               {closeLabel ? closeLabel : '닫기'}
             </CloseButton>
           </ModalContainer>

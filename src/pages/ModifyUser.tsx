@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { yearUtils, careerUtils } from "../utils/asset";
 import { useAppSelect } from "../store/config.hook";
+import AlertModal from "../components/AlertModal";
 
 // 유저 프로필(이름, 직군, 연차 등) 변경할수 있는 페이지 입니다.
 interface myProfile {
@@ -23,6 +24,12 @@ let initialState: myProfile = {
   description: "",
 };
 
+const initAlertProps = {
+  message: "",
+  onClose: () => {},
+  closeLabel: "",
+};
+
 const ModifyUser = () => {
   const navigate = useNavigate();
 
@@ -33,6 +40,7 @@ const ModifyUser = () => {
   const [myCareerGroup, setMyCareerGroup] = useState<any>("무직");
   const [typeYear, setTypeYear] = useState(0);
   const [err, setErr] = useState(false);
+  const [alertProps, setAlertProps] = useState(initAlertProps);
 
   //커스텀 훅 함수로 유저 정보를 가져옵니다.
   const info = useUser(userInfo.userId);
@@ -111,17 +119,25 @@ const ModifyUser = () => {
       description: user.description,
     };
     try {
-      await userAxios.setUser(initialState).then((res) => {
-        window.alert("수정완료");
-        navigate("/");
+      await userAxios.setUser(initialState);
+      setAlertProps({
+        message: "저장되었어요.",
+        closeLabel: "확인했어요!",
+        onClose: () => navigate("/"),
       });
     } catch (error) {
-      const { message, name } = error as Error;
+      const { message } = error as Error;
+      setAlertProps({
+        message,
+        closeLabel: "닫기!",
+        onClose: () => setAlertProps(initAlertProps),
+      });
     }
   };
 
   return (
     <React.Fragment>
+      <AlertModal {...alertProps} />
       <Header
         type="userEdit"
         text="내 정보"
@@ -172,6 +188,7 @@ const ModifyUser = () => {
         </Grid>
         <Position>
           <Text>연차</Text>
+          {/* @TODO : 현재 사용자의 yearId로 기본값 설정 필요 */}
           <Select
             type="user"
             placeholder="연차"
