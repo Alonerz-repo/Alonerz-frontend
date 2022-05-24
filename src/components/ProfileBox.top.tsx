@@ -12,6 +12,18 @@ import boardAxios from "../axios/boardAxios";
 interface Props {
   bg?: string;
 }
+
+interface Stickers {
+  stickerOrder: number;
+  id: number;
+  url: string;
+  stickerImageId: number;
+}
+const initialState = {
+  id: 0,
+  stickerOrder: 0,
+  url: "",
+};
 const Box = styled.div<Props>`
   width: 100%;
   height: 396px;
@@ -31,36 +43,73 @@ const Circle = styled.div`
   color: white;
 `;
 
-const StickerBox = () => {
+const StickerImage = styled.img`
+  position: absolute;
+  width: 78px;
+  height: 78px;
+`;
+
+//스티커 컴포넌트
+const StickerBox = (props: any) => {
+  const { sticker } = props;
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    const getSticker = () => {
-      // const data = boardAxios.getSticker()
-    };
-  }, []);
-  const myBoard = useAppSelect((state) => state.char);
-  const mySticker = stickerImageUtils.findById(myBoard.stickerImageId);
-  console.log(mySticker);
-  // 유저가 스티커를 어디를 클릭했는지 저장하는 스테이트입니다.
-  const [curSticker, setCurSticker] = useState(0);
-  useEffect(() => {
-    dispatch(setCharacter({ ...myBoard, stickerOrder: curSticker }));
-  }, [curSticker]);
+
+  const stickerList: Stickers[] = [...sticker.stickers];
+
+  const stikcer = stickerList.map((value) => {
+    const { stickerOrder, stickerImageId } = value;
+    const image = stickerImageUtils.findById(stickerImageId);
+    return { stickerOrder, ...image };
+  });
+
+  //스티커 오더를 리덕스에 저장합니다.
+  const curPosition = (index: number) => {
+    dispatch(setCharacter({ ...sticker, stickerOrder: index }));
+  };
 
   return (
     <React.Fragment>
       <Box>
-        <div onClick={() => setCurSticker(0)}>
-          <Circle style={{ left: "116px", top: "93px" }}>+</Circle>
+        <div onClick={() => curPosition(0)}>
+          {stikcer ? (
+            <StickerImage
+              style={{ left: "100px", top: "75px" }}
+              src={stikcer[0].url}
+              alt=""
+            />
+          ) : (
+            <Circle style={{ left: "116px", top: "93px" }}>+</Circle>
+          )}
         </div>
-        <div onClick={() => setCurSticker(1)}>
-          <Circle style={{ right: "115px", top: "93px" }}>+</Circle>
+        <div onClick={() => curPosition(1)}>
+          {stikcer ? (
+            <StickerImage
+              style={{ right: "94px", top: "75px" }}
+              src={stikcer[1].url}
+            />
+          ) : (
+            <Circle style={{ right: "115px", top: "93px" }}>+</Circle>
+          )}
         </div>
-        <div onClick={() => setCurSticker(2)}>
-          <Circle style={{ left: "116px", bottom: "153px" }}>+</Circle>
+        <div onClick={() => curPosition(2)}>
+          {stikcer ? (
+            <StickerImage
+              style={{ left: "100px", bottom: "137px" }}
+              src={stikcer[2].url}
+            />
+          ) : (
+            <Circle style={{ left: "116px", bottom: "153px" }}>+</Circle>
+          )}
         </div>
-        <div onClick={() => setCurSticker(3)}>
-          <Circle style={{ right: "116px", bottom: "153px" }}>+</Circle>
+        <div onClick={() => curPosition(3)}>
+          {stikcer ? (
+            <StickerImage
+              style={{ right: "94px", bottom: "137px" }}
+              src={stikcer[3].url}
+            />
+          ) : (
+            <Circle style={{ right: "116px", bottom: "153px" }}>+</Circle>
+          )}
         </div>
       </Box>
     </React.Fragment>
@@ -68,6 +117,7 @@ const StickerBox = () => {
 };
 
 const CharBox = (props: any) => {
+  const { Character, color } = props;
   const dispatch = useAppDispatch();
   const [myColor, setColor] = useState<any>("#FFD9D9");
   const [curNum, setNum] = useState<number>(0);
@@ -75,13 +125,20 @@ const CharBox = (props: any) => {
   const image = characterImageUtils.findById(curNum);
   const myBoard = useAppSelect((state) => state.char);
 
+  // useEffect(() => {
+  //   setNum(Character);
+  //   setColor(color);
+  // }, [Character, color]);
+
   useEffect(() => {
     dispatch(setCharacter({ ...myBoard, Character: curNum }));
   }, [curNum]);
+
   useEffect(() => {
     const color = backgroundColorUtils.findById(myBoard.color);
     setColor(color?.color);
   }, [myBoard]);
+
   const click = (changeNum: any) => {
     switch (changeNum) {
       case 1:
@@ -133,9 +190,12 @@ const CharBox = (props: any) => {
 };
 
 const ProfileBoxTop = (props: any) => {
-  const { state } = props;
+  const { state, sticker } = props;
+  console.log(sticker);
   return (
-    <React.Fragment>{state ? <StickerBox /> : <CharBox />}</React.Fragment>
+    <React.Fragment>
+      {state ? <StickerBox sticker={sticker} /> : <CharBox sticker={sticker} />}
+    </React.Fragment>
   );
 };
 

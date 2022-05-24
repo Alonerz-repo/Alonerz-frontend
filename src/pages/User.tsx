@@ -11,7 +11,6 @@ const User = () => {
   const param = useParams();
   const navigate = useNavigate();
   const userInfo = useAppSelect((state) => state.user);
-  console.log(userInfo, "user Page");
   const [groups, setGroups] = useState<Group[]>([]);
 
   useEffect(() => {

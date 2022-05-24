@@ -5,13 +5,23 @@ import { userExceptions } from "../exception/user.exception";
 
 const boardAxios = {
   getSticker: async (userId: string) => {
-    const url = getUrl(`/api/sticker/${userId}`);
+    const url = getUrl(`/api/stickers/${userId}`);
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
       .then((res) => res.data)
       .catch((err) => err.response.data);
 
+    return data;
+  },
+
+  getBoard: async (userId: string) => {
+    const url = getUrl(`/api/users/${userId}/board`);
+    const headers = getHeaders();
+    const data = await axios
+      .get(url, { headers })
+      .then((res) => res.data)
+      .catch((err) => err.response.data);
     return data;
   },
 
@@ -30,15 +40,16 @@ const boardAxios = {
   },
 
   setSticker: async (sticker: any) => {
-    const url = getUrl("/api/sticker");
-    const body = {
-      sticker,
-    };
+    const url = getUrl("/api/stickers");
+    const body = sticker;
     const headers = getHeaders();
     const data = await axios
-      .post(url, body, { headers })
-      .then((res) => res.data)
+      .put(url, body, { headers })
+      .then((res) => {
+        return res.data;
+      })
       .catch((err) => userExceptions.board(err.response.data));
+    return data;
   },
 };
 

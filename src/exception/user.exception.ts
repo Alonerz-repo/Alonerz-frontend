@@ -7,6 +7,7 @@ interface ErrorData {
 
 export const userExceptions = {
   modify: async (error: ErrorData) => {
+    console.log("my error", error);
     if (error === undefined) {
       throw Error("Natwork Error!");
     }
