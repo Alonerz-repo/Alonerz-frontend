@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import commentAxios from '../../axios/commentAxios';
 import { Button, Grid, Input } from '../../elements';
 import GroupChildComment from './GroupChildComment';
-import { ChildComment } from './interface';
+import { ChildComment, valueChangeEvent } from './interface';
+import { InputGroup, SubmitButton, TextArea, Wrapper } from './styled';
 
 type inputEvent = React.ChangeEvent<HTMLInputElement>;
 type inputEventHandler = React.ChangeEventHandler<HTMLInputElement>;
@@ -44,7 +45,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
   const [showChildComment, setShowChildComment] = useState<boolean>(false);
 
   // 하위 댓글 내용 변경 이벤트 핸들러
-  const onChildContentChange = (e: inputEvent) => {
+  const onChildContentChange = (e: valueChangeEvent) => {
     const {
       target: { value },
     } = e;
@@ -81,6 +82,14 @@ const GroupChildComments = (props: ChildCommentsProps) => {
     setShowChildComment(!showChildComment);
   };
 
+  // 댓글 수정
+  const onSaveComment = (commentId: number, content: string) => {
+    const newComments = comments.map((comment) =>
+      comment.commentId === commentId ? { ...comment, content } : comment,
+    );
+    setComments(newComments);
+  };
+
   // 댓글 삭제
   const onRemoveComment = (commentId: number) => {
     const newComments = comments.filter(
@@ -92,20 +101,23 @@ const GroupChildComments = (props: ChildCommentsProps) => {
 
   // 하위 댓글 작성 공간 렌더링
   const renderInputField = () => {
+    const textAreaProps = {
+      value: childContent,
+      onChange: onChildContentChange,
+    };
+
+    const buttonProps = {
+      disabled: !Boolean(childContent),
+      onClick: onCreateChildCommentClick,
+    };
+
     return (
       <React.Fragment>
         {reply ? (
-          <InputField>
-            <Input {...inputProps(childContent, onChildContentChange)} />
-            <Button
-              {...buttonProps(
-                !Boolean(childContent),
-                onCreateChildCommentClick,
-              )}
-            >
-              입력
-            </Button>
-          </InputField>
+          <InputGroup>
+            <TextArea {...textAreaProps} />
+            <SubmitButton {...buttonProps}>등록</SubmitButton>
+          </InputGroup>
         ) : null}
       </React.Fragment>
     );
@@ -135,6 +147,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
                 key,
                 comment,
                 userId,
+                onSaveComment,
                 onRemoveComment,
               };
               return <GroupChildComment {...commentProps} />;
@@ -144,13 +157,22 @@ const GroupChildComments = (props: ChildCommentsProps) => {
     );
   };
 
+  const wrapperProps = {
+    style: {
+      padding: 10,
+      width: '100%',
+    },
+  };
+
   return (
     <React.Fragment>
-      <Grid padding="0 0 0 20px" width="100%">
-        {renderInputField()}
-        {renderShowCommentsButton()}
-        {renderChildComments()}
-      </Grid>
+      {childCommentCount ? (
+        <Wrapper {...wrapperProps}>
+          {renderInputField()}
+          {renderShowCommentsButton()}
+          {renderChildComments()}
+        </Wrapper>
+      ) : null}
     </React.Fragment>
   );
 };

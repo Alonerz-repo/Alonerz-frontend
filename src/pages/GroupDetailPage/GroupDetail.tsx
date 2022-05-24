@@ -1,15 +1,19 @@
 /* 작업자 : 최원영 */
 
 import React from 'react';
-import Header from '../../components/Header';
+import styled from 'styled-components';
 import KakaoMap from '../../components/KakaoMap';
 import { Grid, Image, Text } from '../../elements';
+import { categoryUtils } from '../../utils/asset';
+import { CategoryBadge, ContentTitle, DayBadge } from './styled';
 
 interface GroupDetailProps {
   title: string;
+  dDay: string;
   categoryId: number;
   imageUrl: string | null;
-  datetime: string;
+  dateString: string;
+  timeString: string;
   description: string | null;
   locationX: number;
   locationY: number;
@@ -31,22 +35,28 @@ const textProps = {
     titleText: '장소',
     margin: '5px 0',
   },
-  datetime: {
+  date: {
     bold: true,
     type: 'line',
-    titleText: '모임일시',
+    titleText: '날짜',
+    margin: '5px 0',
+  },
+  time: {
+    bold: true,
+    type: 'line',
+    titleText: '시간',
     margin: '5px 0',
   },
   description: {
     bold: true,
     type: 'area',
-    titleText: '추가내용',
+    titleText: '상세내용',
     margin: '5px 0',
   },
   memberCount: {
     bold: true,
     type: 'line',
-    titleText: '모집인원',
+    titleText: '참여인원',
     margin: '10px 0 5px',
   },
 };
@@ -57,31 +67,46 @@ const imageProps = (imageUrl: string) => ({
   src: imageUrl ? imageUrl : defailtImageUrl,
 });
 
+const BadgeWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 10px 0;
+`;
+
 const GroupDetail = (props: GroupDetailProps) => {
   const {
     title,
     imageUrl,
+    dDay,
+    categoryId,
     address,
+    dateString,
+    timeString,
     description,
-    datetime,
     locationX,
     locationY,
     placeName,
   } = props;
   return (
     <React.Fragment>
-      <Header text="파티참가" />
       <Image {...imageProps(imageUrl as string)} />
       <Grid padding="20px">
-        <Text {...textProps.title(title)} />
+        <BadgeWrapper>
+          <DayBadge>{dDay}</DayBadge>
+          <CategoryBadge>
+            {categoryUtils.findById(categoryId)?.item}
+          </CategoryBadge>
+        </BadgeWrapper>
+        <ContentTitle>{title}</ContentTitle>
         <Text {...textProps.address}>{address}</Text>
         <KakaoMap
           latitude={locationX}
           longitude={locationY}
           placeName={placeName}
         />
-        {/* 음식 카테고리 */}
-        <Text {...textProps.datetime}>{datetime}</Text>
+        <Text {...textProps.date}>{dateString}</Text>
+        <Text {...textProps.time}>{timeString}</Text>
         <Text {...textProps.description}>{description}</Text>
       </Grid>
     </React.Fragment>

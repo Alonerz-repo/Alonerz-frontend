@@ -1,21 +1,12 @@
-import React from 'react';
-import { GroupUser } from '../../axios/groupAxios';
-import { Grid, Text } from '../../elements';
 import GroupMember from './GroupMember';
+import { GroupUser } from '../../axios/groupAxios';
+import { ContentSubTitle, Wrapper } from './styled';
 
 interface GroupMembersProps {
   memberCount: string;
   host: GroupUser;
   guests: GroupUser[];
 }
-
-const textProps = {
-  memberCount: {
-    bold: true,
-    type: 'line',
-    titleText: '모집인원',
-  },
-};
 
 const GroupMembers = (props: GroupMembersProps) => {
   const { memberCount, host, guests } = props;
@@ -33,11 +24,11 @@ const GroupMembers = (props: GroupMembersProps) => {
   };
 
   return (
-    <Grid padding="20px">
-      <Text {...textProps.memberCount}>{memberCount}</Text>
+    <Wrapper>
+      <ContentSubTitle>참여인원{memberCount}</ContentSubTitle>
       {renderHost()}
       {renderGuests()}
-    </Grid>
+    </Wrapper>
   );
 };
 
