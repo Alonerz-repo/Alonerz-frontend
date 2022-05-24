@@ -4,9 +4,11 @@ import { Grid } from "../elements";
 import MyProfileBoxBottom from "../components/ProfileBox.bottom";
 import MyProfileBoxTop from "../components/ProfileBox.top";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
+import { setCharacter } from "../store/slices/characterSlice";
 import { useNavigate } from "react-router-dom";
 import boardAxios from "../axios/boardAxios";
-import { setCharacter } from "../store/slices/characterSlice";
+import AlertModal from "../components/AlertModal";
+import ConfirmModal from "../components/ConfirmModal";
 
 //유저 프로필(캐릭터, 배경색상, 스티커)를 변경하는 페이지 입니다.
 interface Character {
@@ -23,6 +25,7 @@ const initChar: Character = {
   stickerImageId: 0,
   stickers: [],
 };
+
 const ProfileEdit = ({ type }: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
