@@ -4,7 +4,7 @@ import DatePickerComponent from "../components/DatePicker";
 const Test = () => {
   return (
     <React.Fragment>
-      <DatePickerComponent></DatePickerComponent>
+      {/* <DatePickerComponent></DatePickerComponent> */}
     </React.Fragment>
   );
 };

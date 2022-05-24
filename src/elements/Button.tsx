@@ -80,6 +80,7 @@ const LimitButton = styled.button<CommonButtonProps>`
 `;
 
 const CommonButton = styled.button<CommonButtonProps>`
+  margin: 20px 0px 0px 0px;
   ${(props) =>
     props.customize ??
     "outline: none; background: yellow; padding: 20px; box-sizing: border-box;"}

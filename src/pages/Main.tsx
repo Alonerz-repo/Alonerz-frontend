@@ -72,7 +72,7 @@ const Main = () => {
           <Text type="title"> 오늘 파티 잊지 마세요! </Text>
         )}
         {/* 유저 정보가 있다면 리스트를 보여줌 */}
-        {/* {user.userId &&
+        {user.userId &&
           groups.map((value: any, index: number) => {
             return (
               <React.Fragment key={index}>
@@ -90,7 +90,7 @@ const Main = () => {
                 ></Card>
               </React.Fragment>
             );
-          })} */}
+          })}
         <h2>🎉 오늘 파티가 열렸어요! </h2>
         {/* 아침 파티 개설 / 조회 박스 */}
         <BoxAM>

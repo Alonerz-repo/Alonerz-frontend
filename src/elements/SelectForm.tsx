@@ -57,7 +57,7 @@ const SelectForm = ({
     name,
     control,
     rules: { required: true },
-    defaultValue: "",
+    defaultValue: categories[0].value,
   });
 
   const styles = {
@@ -68,11 +68,7 @@ const SelectForm = ({
   const randerOptions = () => {
     return categories.map((item: Option): any => {
       const { name, value } = item;
-      return (
-        <MyOption value={value} key={value}>
-          {name}
-        </MyOption>
-      );
+      return <MyOption label={name} value={value} key={value}></MyOption>;
     });
   };
 
@@ -88,7 +84,7 @@ const SelectForm = ({
   }
   return (
     <React.Fragment>
-      <MySelected style={styles} ref={ref} {...inputProps}>
+      <MySelected style={styles} {...inputProps} ref={ref}>
         {randerOptions()}
       </MySelected>
     </React.Fragment>

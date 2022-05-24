@@ -19,7 +19,7 @@ const Input = ({ control, name, width, rules, margin }: InputProps) => {
   };
 
   const {
-    field: { ref, ...inputProps },
+    field: { ...inputProps },
   } = useController({
     name,
     control,
@@ -29,7 +29,7 @@ const Input = ({ control, name, width, rules, margin }: InputProps) => {
 
   return (
     <Grid {...styles}>
-      <ElementInput {...inputProps} ref={ref}></ElementInput>
+      <ElementInput {...inputProps}></ElementInput>
     </Grid>
   );
 };
