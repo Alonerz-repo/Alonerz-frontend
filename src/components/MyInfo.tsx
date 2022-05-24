@@ -110,15 +110,23 @@ const MyInfo = (props: Props) => {
   const years = yearUtils.findById(yearId);
   const bgColor = backgroundColorUtils.findById(backgroundColorId);
 
-  const result = stickers.map((value: any) => {
-    return { ...value };
-  });
-  const mySticker = result.map((value: any) => {
-    const image = stickerImageUtils.findById(value.stickerImageId);
-    const order = value.stickerOrder;
-    return { order, ...image };
-  });
-
+  const getSticker = (index: number) => {
+    const result = stickers.map((value: any) => {
+      return { ...value };
+    });
+    const mySticker = result.map((value: any) => {
+      const image = stickerImageUtils.findById(value.stickerImageId);
+      const order = value.stickerOrder;
+      return { order, ...image };
+    });
+    const findSticker = mySticker.find((value) => {
+      if (value.order === index) {
+        return value;
+      }
+    });
+    return findSticker;
+  };
+  getSticker(1);
   //팔로우 페이지에 넘어가기전 props로 팔로잉/팔로우, 유저아이디를 전달합니다.
   const goToFollowings = () =>
     navigate("follow", { state: { isfollow: "following", uid: uid } });
@@ -197,33 +205,33 @@ const MyInfo = (props: Props) => {
         <StickerBG>
           <StickerImg
             style={{
-              background: "blue",
               top: "56px",
               left: "1px",
             }}
+            src={getSticker(0)?.url}
             alt=""
           />
 
           <StickerImg
             style={{
-              background: "blue",
               top: "-9px",
               right: "-10px",
             }}
+            src={getSticker(1)?.url}
           />
           <StickerImg
             style={{
-              background: "blue",
               top: "124px",
               right: "-10px",
             }}
+            src={getSticker(2)?.url}
           />
           <StickerImg
             style={{
-              background: "blue",
               top: "124px",
               left: "-10px",
             }}
+            src={getSticker(3)?.url}
           />
         </StickerBG>
 

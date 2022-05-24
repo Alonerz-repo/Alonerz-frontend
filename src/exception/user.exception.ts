@@ -66,4 +66,15 @@ export const userExceptions = {
         return Error("재인증");
     }
   },
+
+  follow: async (err: any) => {
+    console.log(err);
+    const { statusCode } = err;
+    switch (statusCode) {
+      case 401:
+        throw Error("로그인");
+      case 403:
+        throw Error("token");
+    }
+  },
 };

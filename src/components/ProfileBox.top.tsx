@@ -3,10 +3,9 @@ import styled from "styled-components";
 import { characterImageUtils } from "../utils/asset";
 import { Grid } from "../elements";
 import icon from "../assets/header";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
+import { useAppDispatch } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
 import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
-import boardAxios from "../axios/boardAxios";
 
 //프로필 캐릭터 스티커용 상단 컴포넌트입니다.
 interface Props {
@@ -19,11 +18,6 @@ interface Stickers {
   url: string;
   stickerImageId: number;
 }
-const initialState = {
-  id: 0,
-  stickerOrder: 0,
-  url: "",
-};
 const Box = styled.div<Props>`
   width: 100%;
   height: 396px;
@@ -130,14 +124,14 @@ const StickerBox = (props: any) => {
   );
 };
 
+//캐릭터와 배경을 선택하는 박스
 const CharBox = (props: any) => {
-  const { Character, color, board } = props;
+  const { board } = props;
   const dispatch = useAppDispatch();
   const [myColor, setColor] = useState<any>("#FFD9D9");
   const [curNum, setNum] = useState<number>(0);
   const length = characterImageUtils.getAll().length;
   const image = characterImageUtils.findById(curNum);
-  const myBoard = useAppSelect((state) => state.char);
 
   useEffect(() => {
     if (board !== undefined) {
@@ -148,13 +142,8 @@ const CharBox = (props: any) => {
   }, [board]);
 
   useEffect(() => {
-    dispatch(setCharacter({ ...myBoard, Character: curNum }));
+    dispatch(setCharacter({ Character: curNum }));
   }, [curNum]);
-
-  useEffect(() => {
-    const color = backgroundColorUtils.findById(myBoard.color);
-    setColor(color?.color);
-  }, [myBoard]);
 
   const click = (changeNum: any) => {
     switch (changeNum) {

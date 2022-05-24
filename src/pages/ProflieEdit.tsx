@@ -26,6 +26,12 @@ const initChar: Character = {
   stickers: [],
 };
 
+const initAlertProps = {
+  message: "",
+  onClose: () => {},
+  closeLabel: "",
+};
+
 const ProfileEdit = ({ type }: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -37,25 +43,25 @@ const ProfileEdit = ({ type }: any) => {
   const userInfo = useAppSelect((state) => state.user);
   // 유저의 프로필 정보를 변경하는 스테이트 입니다.
   const [curChar, setCurChar] = useState<Character>(initChar);
+
+  const [alert, setAlert] = useState(initAlertProps);
+
   // 유저의 프로필 정보가 변경될때마다, 리덕스의 정보를 업데이트 합니다.
   useEffect(() => {
     setCurChar({ ...initChar, ...userChar });
   }, [userChar]);
   const [getBoard, setBoard] = useState();
-  console.log(curChar);
 
+  //스티커 정보와 캐릭터 정보를 가져옵니다.
   useEffect(() => {
-    const getSticker = async () => {
-      await boardAxios.getSticker(userInfo.userId).then((res) => {
-        dispatch(setCharacter({ ...res }));
-      });
-    };
     const getBoard = () => {
       boardAxios.getBoard(userInfo.userId).then((res) => {
         setBoard({ ...res.user });
+        dispatch(setCharacter({ ...res.user }));
+        console.log("get board", res.user);
       });
     };
-    getSticker();
+
     getBoard();
   }, []);
 
@@ -64,9 +70,21 @@ const ProfileEdit = ({ type }: any) => {
       characterImageId: userChar.Character,
       backgroundColorId: userChar.color,
     };
-    boardAxios.setBoard(data);
-    window.alert("추가 완료!");
-    navigate(`/user/${userInfo.userId}`);
+    try {
+      boardAxios.setBoard(data);
+      setAlert({
+        message: "저장",
+        closeLabel: "확인",
+        onClose: () => navigate(`/user/${userInfo.userId}`),
+      });
+    } catch (error) {
+      const { message } = error as Error;
+      setAlert({
+        message,
+        closeLabel: "닫기",
+        onClose: () => setAlert(initAlertProps),
+      });
+    }
   };
   return (
     <React.Fragment>
@@ -80,6 +98,7 @@ const ProfileEdit = ({ type }: any) => {
           setting={() => saveProfile()}
         />
       )}
+      <AlertModal {...alert}></AlertModal>
       <Grid isFlex>
         <MyProfileBoxTop state={state} sticker={curChar} board={getBoard} />
       </Grid>

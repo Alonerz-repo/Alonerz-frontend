@@ -24,6 +24,7 @@ let initialState: myProfile = {
   description: "",
 };
 
+//모달창 프롭스
 const initAlertProps = {
   message: "",
   onClose: () => {},
@@ -40,6 +41,7 @@ const ModifyUser = () => {
   const [myCareerGroup, setMyCareerGroup] = useState<any>("무직");
   const [typeYear, setTypeYear] = useState(0);
   const [err, setErr] = useState(false);
+  //모달창 스테이트
   const [alertProps, setAlertProps] = useState(initAlertProps);
 
   //커스텀 훅 함수로 유저 정보를 가져옵니다.

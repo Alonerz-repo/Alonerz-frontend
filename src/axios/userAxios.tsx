@@ -41,12 +41,13 @@ const userAxios = {
       .then((res) => {
         return res;
       })
-      .catch((err) => err.response.data);
+      .catch((err) => userExceptions.follow(err.response.data));
     return data;
   },
+
   // 사용자 차단 요청 api
   // 파라미터 userId => string
-  setblockUser: async (userId: any) => {
+  setblockUser: async (userId: string) => {
     const url = getUrl(`/api/blocks/${userId}`);
     const headers = getHeaders();
     const body = {};
@@ -56,17 +57,28 @@ const userAxios = {
       .catch((err) => err.response.data);
     return data;
   },
+
   //사용자 팔로우 정보 요청 api
-  // 파라미터 userId => string, follow => follow || following
-  getFollowUser: async (userId: any, follow: string) => {
-    const url = getUrl(`/api/follows/${userId}?type=${follow}`);
+  getFollowings: async (userId: string) => {
+    const url = getUrl(`/api/follows/${userId}/followings`);
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
-      .then((res) => res)
-      .catch((err) => err.response.data);
+      .then((res) => res.data)
+      .catch((err) => userExceptions.follow(err.response.data));
     return data;
   },
+
+  getFollowers: async (userId: string) => {
+    const url = getUrl(`/api/follows/${userId}/followers`);
+    const headers = getHeaders();
+    const data = await axios
+      .get(url, { headers })
+      .then((res) => res.data)
+      .catch((err) => userExceptions.follow(err.response.data));
+    return data;
+  },
+
   //사용자 차단 정보 요청 api
   getBlockList: async () => {
     const url = getUrl("/api/blocks");
