@@ -1,0 +1,26 @@
+[
+  {
+    "id": 0,
+    "url": "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character01.svg"
+  },
+  {
+    "id": 1,
+    "url": "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character02.svg"
+  },
+  {
+    "id": 2,
+    "url": "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character03.svg"
+  },
+  {
+    "id": 3,
+    "url": "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character04.svg"
+  },
+  {
+    "id": 4,
+    "url": "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character05.svg"
+  },
+  {
+    "id": 5,
+    "url": "https://alonerz-storage.s3.ap-northeast-2.amazonaws.com/assets/character06.svg"
+  }
+]

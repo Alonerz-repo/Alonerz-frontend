@@ -6,7 +6,6 @@ import styled from "styled-components";
   line 은 titleText > 제목, children > 내용
   area 은 children 내용, 파티 상세보기용 출력 컴포넌트
   title 은 제목용 컴포넌트
-
 */
 
 interface Props {

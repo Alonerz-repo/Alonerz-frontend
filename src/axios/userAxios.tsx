@@ -1,31 +1,34 @@
 import { errorHandler, getHeaders, getUrl } from "../utils/api";
 import axios from "axios";
 import cookie from "../utils/cookie";
+import { userExceptions } from "../exception/user.exception";
 
 const userAxios = {
   // 사용자 프로필 수정  api
   // 파라미터 user => 객체
-  setUser: async (user: any) => {
-    const url = getUrl("/api/users");
-    const headers = {
-      "Content-type": "multipart/form-data",
-      Authorization: `Bearer ${cookie.get("accessToken")}`,
-    };
-    const data = await axios
+  setUser: (user: any) => {
+    console.log(user);
+    const url = getUrl("/api/users/profile");
+    const headers = getHeaders();
+    const data = axios
       .patch(url, user, { headers })
-      .then((res) => res)
-      .catch((err) => err.response.data);
+      .then((response) => response.data)
+      .catch((error) => userExceptions.modify(error.response.data));
     return data;
   },
   //사용자 정보 조회 api
   // 파라미터 userId => string
   getUser: async (userId: any) => {
-    const url = getUrl(`/api/users/${userId}`);
+    console.log("user getAxios", userId);
+    const url = getUrl(`/api/users/${userId}/main`);
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
-      .then((res) => res.data)
-      .catch((err) => err.response.data);
+      .then((res) => {
+        console.log(res.data);
+        return res.data;
+      })
+      .catch((err) => userExceptions.modify(err.response.data));
 
     return data;
   },

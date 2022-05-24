@@ -1,13 +1,15 @@
-import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 interface Character {
   Character: number;
-  sticker: any;
-  color: string;
+  color: number;
+  stickerOrder: number;
+  stickerImageId: number;
 }
 const initialState: Character = {
   Character: 0,
-  sticker: [-1, -1, -1, -1],
-  color: "",
+  color: 0,
+  stickerOrder: 0,
+  stickerImageId: 0,
 };
 
 export const userCharacter = createSlice({

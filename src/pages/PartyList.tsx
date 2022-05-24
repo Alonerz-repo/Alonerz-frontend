@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { Grid, Text, Select } from "../elements";
-import Card from "../components/Card";
-import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
-import partyList, { initialState } from "../axios/partyList";
-import { useAppSelector } from "../store/config";
-import { useParams } from "react-router-dom";
-import partyTimes from "../utils/partyTimes";
+import React, { useEffect } from 'react';
+import { Grid, Text, Select } from '../elements';
+import Card from '../components/Card';
+import Header from '../components/Header';
+import { useNavigate } from 'react-router-dom';
+import partyList, { initialState } from '../axios/partyList';
+import { useAppSelector } from '../store/config';
+import { useParams } from 'react-router-dom';
+import partyTimes from '../utils/partyTimes';
 
 // 전체 파티목록 조회 페이지
 const PartyList = () => {
@@ -43,7 +43,7 @@ const PartyList = () => {
       }
     }
   }, [partyTime]);
-  
+
   useEffect(() => {
     console.log(groups);
   }, [groups]);

@@ -1,26 +1,27 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Main from "./pages/Main";
-import Test from "./pages/Test";
-import User from "./pages/User";
-import Login from "./pages/Login";
-import CreateParty from "./pages/CreateParty";
-import PartyInfo from "./pages/PartyInfo";
-import Redirect from "./pages/KakaoRedirectPage";
-import ModifyUser from "./pages/ModifyUser";
-import PartyList from "./pages/PartyList";
-import UserConfig from "./pages/ConfigList";
-import ProfileEdit from "./pages/ProflieEdit";
-import ConsentForm from "./pages/ConsentForm";
-import BlockList from "./pages/BlockList";
-import FollowLIst from "./pages/FollowList";
-import EditParty from "./pages/EditParty";
-import Chatting from "./pages/Chatting";
-import ChatList from "./pages/ChatList";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Main from './pages/Main';
+import Test from './pages/Test';
+import User from './pages/User';
+import Login from './pages/Login';
+import CreateParty from './pages/CreateParty';
+import Redirect from './pages/KakaoRedirectPage';
+import ModifyUser from './pages/ModifyUser';
+import PartyList from './pages/PartyList';
+import UserConfig from './pages/ConfigList';
+import ProfileEdit from './pages/ProflieEdit';
+import ConsentForm from './pages/ConsentForm';
+import BlockList from './pages/BlockList';
+import FollowLIst from './pages/FollowList';
+import EditParty from './pages/EditParty';
+import Chatting from './pages/Chatting';
+import ChatList from './pages/ChatList';
+import Four from './pages/404';
 
-import { authUser } from "./store/slices/userSlice";
-import { useAppDispatch } from "./store/config.hook";
+import { authUser } from './store/slices/userSlice';
+import { useAppDispatch } from './store/config.hook';
+import GroupDetailPage from './pages/GroupDetailPage';
 
 declare global {
   interface Window {
@@ -53,9 +54,11 @@ function App() {
             <Route path="/chat" element={<Chatting />} />
             <Route path="/chatlist" element={<ChatList />} />
             <Route path="/redirect" element={<Redirect />} />
-            <Route path="/participate/:groupId" element={<PartyInfo />} />
+            {/* <Route path="/participate/:groupId" element={<PartyInfo />} /> */}
+            <Route path="/participate/:groupId" element={<GroupDetailPage />} />
             <Route path="/create/partyInfo/:time" element={<CreateParty />} />
             <Route path="/edit/partyInfo/:groupId" element={<EditParty />} />
+            <Route path="/404" element={<Four />} />
             <Route path="*" element={<Main />} />
           </Routes>
         </BrowserRouter>
@@ -65,8 +68,8 @@ function App() {
 }
 
 const Container = styled.div<ContainerProps>`
-  width: ${(props) => props.width ?? "390px"};
-  height: ${(props) => props.height ?? "100vh"};
+  width: ${(props) => props.width ?? '390px'};
+  height: ${(props) => props.height ?? '100vh'};
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
