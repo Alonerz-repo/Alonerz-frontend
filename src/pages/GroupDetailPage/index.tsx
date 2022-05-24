@@ -6,6 +6,7 @@ import GroupParentComments from './GroupParentComments';
 import GroupDetail from './GroupDetail';
 import GroupMembers from './GroupMembers';
 import styled from 'styled-components';
+import Header from '../../components/Header';
 
 // util로 이동시킬 것
 const DateFormatter = (dateString: Date) => {
@@ -170,6 +171,7 @@ const GroupDetailPage = () => {
 
   return (
     <React.Fragment>
+      <Header text="" />
       {group ? (
         <React.Fragment>
           {renderGroupDetail()}

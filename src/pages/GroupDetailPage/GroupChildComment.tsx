@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import commentAxios from '../../axios/commentAxios';
-import { Grid, Image, Text } from '../../elements';
+import { Image, Text } from '../../elements';
 import { careerUtils, characterImageUtils, yearUtils } from '../../utils/asset';
 import { ChildComment, valueChangeEvent } from './interface';
 import {
@@ -9,6 +9,7 @@ import {
   ContentText,
   TextArea,
   TextButton,
+  UserWrapper,
   Wrapper,
 } from './styled';
 
@@ -18,44 +19,6 @@ interface ChildCommentProps {
   onSaveComment(commentId: number, content: string): void;
   onRemoveComment(commentId: number): void;
 }
-
-const imageProps = (imageUrl: string, characterImageId: number) => ({
-  shape: 'circle',
-  size: '30px',
-  src: imageUrl
-    ? imageUrl
-    : characterImageUtils.findById(characterImageId)?.url,
-});
-
-const textProps = {
-  nickname: {
-    style: {
-      fontWeight: 700,
-      marginLeft: 5,
-      padding: 5,
-    },
-  },
-  careerAndYear: {
-    style: {
-      marginLeft: 5,
-    },
-  },
-};
-
-const UserWrapper = styled.div`
-  vertical-align: middle;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  margin: 10px 0;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  jusify-content: center;
-`;
 
 const TopWrapper = styled.div`
   display: flex;

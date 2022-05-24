@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import commentAxios from '../../axios/commentAxios';
-import { Button, Grid, Input } from '../../elements';
 import GroupChildComment from './GroupChildComment';
 import { ChildComment, valueChangeEvent } from './interface';
 import { InputGroup, SubmitButton, TextArea, Wrapper } from './styled';
-
-type inputEvent = React.ChangeEvent<HTMLInputElement>;
-type inputEventHandler = React.ChangeEventHandler<HTMLInputElement>;
-type buttonEventHandler = React.MouseEventHandler<HTMLButtonElement>;
 
 interface ChildCommentsProps {
   userId: string;
@@ -17,21 +12,6 @@ interface ChildCommentsProps {
   childCommentCount: number;
   reply: boolean;
 }
-
-const inputProps = (value: string, _onChange: inputEventHandler) => ({
-  value,
-  _onChange,
-});
-
-const buttonProps = (disabled: boolean, _onClick: buttonEventHandler) => ({
-  disabled,
-  _onClick,
-});
-
-const InputField = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
 
 const VisibleButton = styled.div`
   cursor: pointer;
