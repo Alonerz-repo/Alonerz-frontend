@@ -14,7 +14,7 @@ interface Props {
   ref?: any;
   bold?: boolean;
   children?: any;
-  _onChange?(event: any): void;
+  _onChange?(event: React.ChangeEvent<HTMLInputElement>): void;
   err?: boolean;
 }
 

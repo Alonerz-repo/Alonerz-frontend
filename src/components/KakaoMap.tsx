@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 interface MapProps {
   latitude: Number;
@@ -9,7 +9,7 @@ interface MapProps {
 
 const KakaoMap = ({ latitude, longitude, placeName }: MapProps) => {
   React.useEffect(() => {
-    const container = document.getElementById("map");
+    const container = document.getElementById('map');
     const options = {
       center: new window.kakao.maps.LatLng(latitude, longitude),
       level: 4,
@@ -44,7 +44,7 @@ const KakaoMap = ({ latitude, longitude, placeName }: MapProps) => {
       // 지도 중심좌표를 접속위치로 변경합니다
       map.setCenter(locPosition);
     }
-  }, [latitude, longitude]);
+  }, [latitude, longitude, placeName]);
 
   return (
     <React.Fragment>

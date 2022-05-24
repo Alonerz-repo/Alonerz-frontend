@@ -11,9 +11,9 @@ const useGetparty = (groupId: string | undefined) => {
   // 404 - 조회 실패
   useEffect(() => {
     const t = async () => {
-      if (groupId && groupId !== "-1") {
+      if (groupId) {
         const data = await partyAxios.getPartyInfo(groupId);
-        switch (data.statusCode) {
+        switch (data?.statusCode) {
           case 401:
             alert(data.message);
             return navigate("/login");
