@@ -9,17 +9,17 @@ const CreateParty = () => {
   const user = useAppSelector((state) => state.user);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user.userId) {
-      alert("로그인이 필요한 서비스입니다.");
-      navigate("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!user.userId) {
+  //     alert("로그인이 필요한 서비스입니다.");
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   if (time) {
-    return <Create group={initialState} time={parseInt(time)}></Create>;
+    return <Create time={parseInt(time)}></Create>;
   }
-  return <Create group={initialState}></Create>;
+  return <Create></Create>;
 };
 
 export default CreateParty;

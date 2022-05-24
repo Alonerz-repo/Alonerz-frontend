@@ -13,25 +13,45 @@ interface userInfo {
   careerId: number;
 }
 
-// group 데이터의 인터페이스
+// Create, Edit 페이지 정보 인터페이스
+export interface CreateForm {
+  groupId?: string;
+  title?: string;
+  categoryId?: number;
+  image?: any;
+  description?: string;
+  date?: any;
+  startAt?: any;
+  endAt?: any;
+  limit?: number;
+  locationX?: number;
+  locationY?: number;
+  address?: string;
+  imageUrl?: string;
+  placeName?: string;
+}
+
+// group 데이터베이스 통신을 위한 인터페이스
 export interface GroupInfo {
   groupId?: string;
-  title: string;
-  menu: string;
+  title?: string;
+  menu?: string;
+  categoryId?: number;
   image?: any;
-  description: string;
-  startAt: Date;
-  endAt: Date;
-  limit: number;
-  locationX: number;
-  locationY: number;
-  address: string;
+  description?: string;
+  date?: any;
+  startAt?: any;
+  endAt?: any;
+  limit?: number;
+  locationX?: number;
+  locationY?: number;
+  address?: string;
   imageUrl?: string;
-  placeName: string;
-  createdAt: string;
-  updateAt: string;
-  host: userInfo;
-  guests: userInfo[];
+  placeName?: string;
+  createdAt?: string;
+  updateAt?: string;
+  host?: userInfo;
+  guests?: userInfo[];
 }
 
 // 그룹의 초기 상태값, 데이터를 받아오기 전 화면을 미리 렌더링하기 위해 입력한 값
@@ -40,8 +60,8 @@ export const initialState: GroupInfo = {
   title: "",
   menu: "",
   description: "",
-  startAt: new Date(),
-  endAt: new Date(),
+  startAt: "",
+  endAt: "",
   limit: 4,
   image: null,
   imageUrl: "",
@@ -103,6 +123,8 @@ export const partyAxios = {
   // 파티 수정시 서버와 통신
   // 파일 데이터 전송을 위해 FormData 사용
   editParty: async (group: any, groupId: string) => {
+    console.log(group);
+    console.log(groupId);
     const url = getUrl(`/api/groups/${groupId}`);
 
     // const formData = new FormData();
@@ -121,7 +143,7 @@ export const partyAxios = {
       .patch(url, body, { headers })
       .then((response) => response.data)
       .catch((error) => error.response.data);
-
+    console.log(data);
     return data;
   },
 
@@ -146,7 +168,7 @@ export const partyAxios = {
       .then((response) => response.data)
       .catch((error) => error.response.data);
 
-    return data.error ? data : data.group;
+    return data;
   },
 
   // 사용자가 현재까지 참여했던 모든 파티 정보 요청

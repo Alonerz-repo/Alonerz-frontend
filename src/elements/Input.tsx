@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
-import styled from 'styled-components';
-import { Grid, Text } from './index';
+import React, { forwardRef } from "react";
+import styled from "styled-components";
+import { Grid, Text } from "./index";
 
 //name input 엘리먼트의 인덱스(id)값입니다.
 //useState에서 여러개의 인풋을 입력받기 위해 적용하였습니다.
@@ -42,7 +42,7 @@ const Input = forwardRef(
               onChange={_onChange}
               value={value}
               name={name}
-              style={{ border: '2px solid red' }}
+              style={{ border: "2px solid red" }}
             />
             <Text>2자 이상 작성하세요</Text>
           </Grid>
@@ -64,13 +64,13 @@ const Input = forwardRef(
         </>
       );
     }
-  },
+  }
 );
 
 Input.defaultProps = {
-  text: '',
-  placeholder: '여기에 입력하세요',
-  width: '100%',
+  text: "",
+  placeholder: "여기에 입력하세요",
+  width: "100%",
 };
 
 const ElementInput = styled.input`

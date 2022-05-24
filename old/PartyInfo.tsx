@@ -1,14 +1,14 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Image, Grid, Text, Button } from '../src/elements';
-import PartyMember from '../src/components/PartyMember';
-import KakaoMap from '../src/components/KakaoMap';
-import Header from '../src/components/Header';
-import { partyAxios } from '../src/axios/partyAxios';
-import { useAppSelector } from '../src/store/config';
-import { findCareer } from '../src/utils/career';
-import useGetparty from '../src/useCustom/useGetparty';
-import Comment from './Comment';
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Image, Grid, Text, Button } from "../src/elements";
+import PartyMember from "../src/components/PartyMember";
+import KakaoMap from "../src/components/KakaoMap";
+import Header from "../src/components/Header";
+import { partyAxios } from "../src/axios/partyAxios";
+import { useAppSelector } from "../src/store/config";
+import { findCareer } from "../src/utils/career";
+import useGetparty from "../src/useCustom/useGetparty";
+import Comment from "./Comment";
 
 // 파티 정보 상세 페이지
 const PartyInfo = () => {
@@ -29,12 +29,12 @@ const PartyInfo = () => {
         case 404:
           return alert(data.message);
         default:
-          if (action === 'exit') {
-            alert('파티에서 나가셨습니다.');
-          } else if (action === 'join') {
-            alert('파티에 참가하셨습니다.');
+          if (action === "exit") {
+            alert("파티에서 나가셨습니다.");
+          } else if (action === "join") {
+            alert("파티에 참가하셨습니다.");
           }
-          navigate('/');
+          navigate("/");
       }
     }
   };
@@ -52,8 +52,8 @@ const PartyInfo = () => {
         case 404:
           return alert(data.message);
         default:
-          alert('파티를 삭제하셨습니다.');
-          navigate('/');
+          alert("파티를 삭제하셨습니다.");
+          navigate("/");
       }
     }
   };
@@ -63,7 +63,7 @@ const PartyInfo = () => {
   };
 
   // 참여인원 정보 string
-  const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
+  // const headCount = `참여인원(${group.guests.length + 1}/${group.limit})`;
 
   return (
     <React.Fragment>
@@ -84,11 +84,11 @@ const PartyInfo = () => {
         </Text>
 
         {/* 카카오 맵 */}
-        <KakaoMap
-          latitude={group.locationX}
-          longitude={group.locationY}
-          placeName={group.placeName}
-        ></KakaoMap>
+        {/* <KakaoMap
+        // latitude={group.locationX}
+        // longitude={group.locationY}
+        // placeName={group.placeName}
+        ></KakaoMap> */}
 
         <Text type="line" titleText="메뉴" margin="5px 0 5px 0">
           {group.menu}
@@ -96,9 +96,9 @@ const PartyInfo = () => {
 
         <Text bold type="line" titleText="시간" margin="5px 0 5px 0">
           {`${new Date(group.startAt).getMonth() + 1}월 ${new Date(
-            group.startAt,
+            group.startAt
           ).getDate()}일 ${new Date(group.startAt).getHours()}:00 ~ ${new Date(
-            group.endAt,
+            group.endAt
           ).getHours()}:00`}
         </Text>
 
@@ -109,16 +109,16 @@ const PartyInfo = () => {
         <Text
           bold
           type="line"
-          titleText={headCount}
+          // titleText={headCount}
           margin="10px 0 5px 0"
         ></Text>
 
-        <PartyMember
+        {/* <PartyMember
           captain
-          nickname={group.host.nickname}
-          src={group.host.imageUrl}
-          part={getCareer(group.host.careerId)}
-          year={group.host.year}
+          // nickname={group.host.nickname}
+          // src={group.host.imageUrl}
+          // part={getCareer(group.host.careerId)}
+          // year={group.host.year}
         ></PartyMember>
 
         {group.guests.map((guest: any, i: number) => {
@@ -131,13 +131,13 @@ const PartyInfo = () => {
               year={guest.year}
             ></PartyMember>
           );
-        })}
+        })} */}
       </Grid>
       {/* 코멘트 리스트 */}
       <Comment groupId={groupId as string} />
 
       <Grid absolute="position:sticky; bottom:0; z-index:2;">
-        {user.userId === group.host.userId ? (
+        {/* {user.userId === group.host.userId ? (
           <Grid isFlex>
             <Button
               width="50%"
@@ -172,7 +172,7 @@ const PartyInfo = () => {
           >
             참가하기
           </Button>
-        )}
+        )} */}
       </Grid>
     </React.Fragment>
   );

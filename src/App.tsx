@@ -73,7 +73,6 @@ const Container = styled.div<ContainerProps>`
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
   position: relative;
   overflow: scroll;
 `;
