@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { Grid, Text, Image } from "../elements";
-import commnetAxios from "../axios/commentAxios";
-import SubCmt from "./Comment.subCmt";
-import { findCareer } from "../utils/career";
+/* 작업자(수정 예정) : 최원영 */
+
+import React, { useState, useEffect } from 'react';
+import { Grid, Text, Image } from '../elements';
+import commnetAxios from '../axios/commentAxios';
+import SubCmt from './Comment.subCmt';
+import { findCareer } from '../utils/career';
 
 const MainCmt = (props: any) => {
-  const { comment, uid, groupId } = props;
+  const { comments, uid, groupId } = props;
 
   const [onView, setView] = useState(false);
   const [getCmtNum, setCmtNum] = useState();
@@ -13,7 +15,7 @@ const MainCmt = (props: any) => {
 
   //클릭시 댓글을 수정하는 함수입니다.
   const editCmt = (cmtId: any, content: any) => {
-    const msg = "댓글을 수정합니다.";
+    const msg = '댓글을 수정합니다.';
     const mydata = window.prompt(msg, content);
     commnetAxios.editComment(cmtId, mydata).then((_) => {});
   };
@@ -27,7 +29,7 @@ const MainCmt = (props: any) => {
   const onChildCmt = (commentId: any) => {
     commnetAxios.getChildComment(groupId, commentId).then((res) => {
       if (res.comments.length < 1) {
-        window.alert("댓글이 없슴다");
+        window.alert('댓글이 없슴다');
       }
       setChildCmt((prev: any) => {
         return { ...prev, res };
@@ -40,7 +42,7 @@ const MainCmt = (props: any) => {
 
   //대댓글을 작성합니다.
   const setCmtInCmt = (groupId: any, cmtId: any) => {
-    const data = window.prompt("답글을 작성합니다.");
+    const data = window.prompt('답글을 작성합니다.');
     commnetAxios
       .setChildComment(groupId, cmtId, data)
       .then((_) => window.location.reload());
@@ -53,12 +55,12 @@ const MainCmt = (props: any) => {
 
   return (
     <React.Fragment>
-      {comment.map((value: any, index: number) => {
+      {comments.map((value: any, index: number) => {
         const career = getCareer(value.user.careerId);
         return (
           <Grid key={index}>
             <div
-              style={{ display: "flex", position: "relative", padding: "20px" }}
+              style={{ display: 'flex', position: 'relative', padding: '20px' }}
               key={value.commentId}
             >
               <div>
@@ -84,37 +86,9 @@ const MainCmt = (props: any) => {
                   >
                     댓글 보기 {value.childComments}개
                   </Text>
-
-                  {uid === value.user.userId && (
-                    <React.Fragment>
-                      <Text
-                        customize="color: #BDBDBD; cursor: pointer;"
-                        margin="0px 10px 0px 0px"
-                        _onClick={() => {
-                          editCmt(value.commentId, value.content);
-                        }}
-                      >
-                        댓글수정
-                      </Text>
-                      <Text
-                        customize="color: #BDBDBD; cursor: pointer;"
-                        _onClick={() => removeCmt(value.commentId)}
-                        margin="0px 10px 0px 0px"
-                      >
-                        삭제
-                      </Text>
-                    </React.Fragment>
-                  )}
-                  <Text
-                    customize="color: #BDBDBD; cursor: pointer;"
-                    margin="0px 10px 0px 0px"
-                    _onClick={() => setCmtInCmt(groupId, value.commentId)}
-                  >
-                    답글달기
-                  </Text>
                 </Grid>
               </Grid>
-              <div style={{ position: "absolute", right: "20px" }}>
+              <div style={{ position: 'absolute', right: '20px' }}>
                 <Text>{value.updatedAt.substr(5, 11)}</Text>
               </div>
             </div>
