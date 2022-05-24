@@ -14,28 +14,64 @@ interface Props {
   ref?: any;
   bold?: boolean;
   children?: any;
-  _onChange?(event: any): void;
+  _onChange?(event: React.ChangeEvent<HTMLInputElement>): void;
+  err?: boolean;
 }
 
 // forwardRef로 함수를 감싸서, 다른 컴포넌트/페이지에서 ref를 받을수 있습니다.
-const InputForm = forwardRef(
-  ({ text, placeholder, width, _onChange, ref, bold, value, name }: Props) => {
-    return (
-      <>
-        <Grid width={width}>
-          <Text bold={bold}>{text}</Text>
-          <ElementInput
-            ref={ref}
-            placeholder={placeholder}
-            onChange={_onChange}
-            value={value}
-            name={name}
-          />
-        </Grid>
-      </>
-    );
+const Input = forwardRef(
+  ({
+    text,
+    placeholder,
+    width,
+    _onChange,
+    ref,
+    bold,
+    value,
+    name,
+    err,
+  }: Props) => {
+    if (err) {
+      return (
+        <>
+          <Grid width={width}>
+            <Text bold={bold}>{text}</Text>
+            <ElementInput
+              ref={ref}
+              placeholder={placeholder}
+              onChange={_onChange}
+              value={value}
+              name={name}
+              style={{ border: "2px solid red" }}
+            />
+            <Text>2자 이상 작성하세요</Text>
+          </Grid>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Grid width={width}>
+            <Text bold={bold}>{text}</Text>
+            <ElementInput
+              ref={ref}
+              placeholder={placeholder}
+              onChange={_onChange}
+              value={value}
+              name={name}
+            />
+          </Grid>
+        </>
+      );
+    }
   }
 );
+
+Input.defaultProps = {
+  text: "",
+  placeholder: "여기에 입력하세요",
+  width: "100%",
+};
 
 const ElementInput = styled.input`
   background: #eeeeee;
@@ -46,4 +82,4 @@ const ElementInput = styled.input`
   padding: 0px 20px;
   box-sizing: border-box;
 `;
-export default InputForm;
+export default Input;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { errorHandler, getHeaders, getUrl } from "../utils/api";
+import { userExceptions } from "../exception/user.exception";
 
 // 받아오는 유저 데이터의 인터페이스
 interface userInfo {
@@ -179,8 +180,8 @@ export const partyAxios = {
       .then((res) => {
         return res;
       })
-      .catch((err) => err.response.data);
-    return data.err ? errorHandler(data) : data;
+      .catch((err) => userExceptions.joinParty(err.response.data));
+    return data;
   },
 
   // 사용자의 파티 참가,나가기 요청

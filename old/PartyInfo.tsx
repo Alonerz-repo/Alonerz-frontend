@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Image, Grid, Text, Button } from "../elements";
-import PartyMember from "../components/PartyMember";
-import KakaoMap from "../components/KakaoMap";
-import Header from "../components/Header";
-import { partyAxios, GroupInfo } from "../axios/partyAxios";
-import { useAppSelector } from "../store/config";
-import { findCareer } from "../utils/career";
-import useGetparty from "../useCustom/useGetparty";
-import Comment from "../components/Comment";
+import { Image, Grid, Text, Button } from "../src/elements";
+import PartyMember from "../src/components/PartyMember";
+import KakaoMap from "../src/components/KakaoMap";
+import Header from "../src/components/Header";
+import { partyAxios } from "../src/axios/partyAxios";
+import { useAppSelector } from "../src/store/config";
+import { findCareer } from "../src/utils/career";
+import useGetparty from "../src/useCustom/useGetparty";
+import Comment from "./Comment";
 
 // 파티 정보 상세 페이지
 const PartyInfo = () => {
@@ -95,11 +95,11 @@ const PartyInfo = () => {
         </Text>
 
         <Text bold type="line" titleText="시간" margin="5px 0 5px 0">
-          {/* {`${new Date(group.startAt).getMonth() + 1}월 ${new Date(
+          {`${new Date(group.startAt).getMonth() + 1}월 ${new Date(
             group.startAt
           ).getDate()}일 ${new Date(group.startAt).getHours()}:00 ~ ${new Date(
             group.endAt
-          ).getHours()}:00`} */}
+          ).getHours()}:00`}
         </Text>
 
         <Text bold type="area" titleText="상세내용" margin="5px 0 5px 0">
@@ -134,7 +134,7 @@ const PartyInfo = () => {
         })} */}
       </Grid>
       {/* 코멘트 리스트 */}
-      <Comment groupId={groupId} />
+      <Comment groupId={groupId as string} />
 
       <Grid absolute="position:sticky; bottom:0; z-index:2;">
         {/* {user.userId === group.host.userId ? (
@@ -155,7 +155,7 @@ const PartyInfo = () => {
           -1 ? (
           <Button
             _onClick={() => {
-              handleJoin("exit");
+              handleJoin('exit');
             }}
             width="100%"
           >
@@ -165,7 +165,7 @@ const PartyInfo = () => {
           <Button
             width="100%"
             _onClick={() => {
-              handleJoin("join");
+              handleJoin('join');
             }}
             bg="#F84C40"
             color="white"

@@ -1,0 +1,158 @@
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import commentAxios from '../../axios/commentAxios';
+import { Button, Grid, Input } from '../../elements';
+import GroupChildComment from './GroupChildComment';
+import { ChildComment } from './interface';
+
+type inputEvent = React.ChangeEvent<HTMLInputElement>;
+type inputEventHandler = React.ChangeEventHandler<HTMLInputElement>;
+type buttonEventHandler = React.MouseEventHandler<HTMLButtonElement>;
+
+interface ChildCommentsProps {
+  userId: string;
+  groupId: string;
+  parentId: number;
+  childCommentCount: number;
+  reply: boolean;
+}
+
+const inputProps = (value: string, _onChange: inputEventHandler) => ({
+  value,
+  _onChange,
+});
+
+const buttonProps = (disabled: boolean, _onClick: buttonEventHandler) => ({
+  disabled,
+  _onClick,
+});
+
+const InputField = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const VisibleButton = styled.div`
+  cursor: pointer;
+`;
+
+const GroupChildComments = (props: ChildCommentsProps) => {
+  const { userId, groupId, parentId, childCommentCount, reply } = props;
+  const [comments, setComments] = useState<ChildComment[]>([]);
+  const [commentCount, setCommentCount] = useState<number>(childCommentCount);
+  const [childContent, setChildContent] = useState<string>('');
+  const [showChildComment, setShowChildComment] = useState<boolean>(false);
+
+  // 하위 댓글 내용 변경 이벤트 핸들러
+  const onChildContentChange = (e: inputEvent) => {
+    const {
+      target: { value },
+    } = e;
+    setChildContent(value);
+  };
+
+  // 하위 댓글 등록
+  const onCreateChildCommentClick = async () => {
+    try {
+      await commentAxios.createChildComment(groupId, parentId, childContent);
+      const comments = await commentAxios.getChildComments(groupId, parentId);
+      setComments(comments);
+      setCommentCount(comments.length);
+      setChildContent('');
+      setShowChildComment(true);
+    } catch (e) {
+      const { message } = e as Error;
+      console.log(message);
+    }
+  };
+
+  // N개의 댓글 보기 or 숨기기
+  const onShowChildComments = async () => {
+    if (commentCount > 0) {
+      try {
+        const comments = await commentAxios.getChildComments(groupId, parentId);
+        setComments(comments);
+        setCommentCount(comments.length);
+      } catch (e) {
+        const { message } = e as Error;
+        console.log(message);
+      }
+    }
+    setShowChildComment(!showChildComment);
+  };
+
+  // 댓글 삭제
+  const onRemoveComment = (commentId: number) => {
+    const newComments = comments.filter(
+      (comment) => comment.commentId !== commentId,
+    );
+    setComments(newComments);
+    setCommentCount(newComments.length);
+  };
+
+  // 하위 댓글 작성 공간 렌더링
+  const renderInputField = () => {
+    return (
+      <React.Fragment>
+        {reply ? (
+          <InputField>
+            <Input {...inputProps(childContent, onChildContentChange)} />
+            <Button
+              {...buttonProps(
+                !Boolean(childContent),
+                onCreateChildCommentClick,
+              )}
+            >
+              입력
+            </Button>
+          </InputField>
+        ) : null}
+      </React.Fragment>
+    );
+  };
+
+  // 댓글 더보기/숨김 버튼 렌더링
+  const renderShowCommentsButton = () => {
+    return (
+      <React.Fragment>
+        {commentCount ? (
+          <VisibleButton onClick={onShowChildComments}>
+            {showChildComment ? '숨기기' : `${commentCount}개의 답글 보기`}
+          </VisibleButton>
+        ) : null}
+      </React.Fragment>
+    );
+  };
+
+  // 하위 댓글 렌더링
+  const renderChildComments = () => {
+    return (
+      <React.Fragment>
+        {showChildComment
+          ? comments.map((comment) => {
+              const key = `${userId}-${groupId}${comment.commentId}`;
+              const commentProps = {
+                key,
+                comment,
+                userId,
+                onRemoveComment,
+              };
+              return <GroupChildComment {...commentProps} />;
+            })
+          : null}
+      </React.Fragment>
+    );
+  };
+
+  return (
+    <React.Fragment>
+      <Grid padding="0 0 0 20px" width="100%">
+        {renderInputField()}
+        {renderShowCommentsButton()}
+        {renderChildComments()}
+      </Grid>
+    </React.Fragment>
+  );
+};
+
+export default GroupChildComments;
