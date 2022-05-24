@@ -1,42 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import commentAxios from '../../axios/commentAxios';
-import { Button, Grid, Input, Text } from '../../elements';
 import GroupParentComment from './GroupParentComment';
-import { ParentComment } from './interface';
-
-type inputEvent = React.ChangeEvent<HTMLInputElement>;
-type inputEventHandler = React.ChangeEventHandler<HTMLInputElement>;
-type buttonEventHandler = React.MouseEventHandler<HTMLButtonElement>;
+import { ParentComment, valueChangeEvent } from './interface';
+import {
+  ContentSubTitle,
+  InputGroup,
+  SubmitButton,
+  TextArea,
+  Wrapper,
+} from './styled';
 
 interface GroupCommentsProps {
   groupId: string;
   userId: string;
 }
-
-const inputProps = (value: string, _onChange: inputEventHandler) => ({
-  value,
-  _onChange,
-});
-
-const buttonProps = (disabled: boolean, _onClick: buttonEventHandler) => ({
-  disabled,
-  _onClick,
-});
-
-const textProps = {
-  comment: {
-    bold: true,
-    type: 'line',
-    titleText: '댓글',
-    margin: '10px 0 5px',
-  },
-};
-
-const InputField = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
 
 const GroupParentComments = (props: GroupCommentsProps) => {
   const { groupId, userId } = props;
@@ -49,7 +26,6 @@ const GroupParentComments = (props: GroupCommentsProps) => {
         const comments = await commentAxios.getParentComments(
           groupId as string,
         );
-        console.log(comments);
         setComments(comments);
       } catch (e) {
         console.log(e);
@@ -60,7 +36,7 @@ const GroupParentComments = (props: GroupCommentsProps) => {
   }, [groupId]);
 
   // 그룹 댓글 내용 변경 이벤트 핸들러
-  const onParentContentChange = (e: inputEvent) => {
+  const onParentContentChange = (e: valueChangeEvent) => {
     const {
       target: { value },
     } = e;
@@ -80,6 +56,14 @@ const GroupParentComments = (props: GroupCommentsProps) => {
     }
   };
 
+  // 댓글 수정
+  const onSaveComment = (commentId: number, content: string) => {
+    const newComments = comments.map((comment) =>
+      comment.commentId === commentId ? { ...comment, content } : comment,
+    );
+    setComments(newComments);
+  };
+
   // 댓글 삭제
   const onRemoveComment = (commentId: number) => {
     const newComments = comments.filter(
@@ -90,15 +74,21 @@ const GroupParentComments = (props: GroupCommentsProps) => {
 
   // 댓글 작성 공간 렌더링
   const renderInputField = () => {
+    const textAreaProps = {
+      value: parentContent,
+      onChange: onParentContentChange,
+    };
+
+    const buttonProps = {
+      disabled: !Boolean(parentContent),
+      onClick: onCreateParentCommentClick,
+    };
+
     return (
-      <InputField>
-        <Input {...inputProps(parentContent, onParentContentChange)} />
-        <Button
-          {...buttonProps(!Boolean(parentContent), onCreateParentCommentClick)}
-        >
-          입력
-        </Button>
-      </InputField>
+      <InputGroup>
+        <TextArea {...textAreaProps} />
+        <SubmitButton {...buttonProps}>등록</SubmitButton>
+      </InputGroup>
     );
   };
 
@@ -112,6 +102,7 @@ const GroupParentComments = (props: GroupCommentsProps) => {
             comment,
             userId,
             groupId,
+            onSaveComment,
             onRemoveComment,
           };
           return <GroupParentComment {...commentProps} />;
@@ -121,11 +112,11 @@ const GroupParentComments = (props: GroupCommentsProps) => {
   };
 
   return (
-    <Grid padding="20px">
-      <Text {...textProps.comment} />
+    <Wrapper style={{ marginBottom: 80 }}>
+      <ContentSubTitle>댓글</ContentSubTitle>
       {renderInputField()}
       {renderParentComments()}
-    </Grid>
+    </Wrapper>
   );
 };
 

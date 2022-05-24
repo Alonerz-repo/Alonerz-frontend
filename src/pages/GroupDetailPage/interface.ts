@@ -1,3 +1,5 @@
+export type valueChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
+
 export interface CommentUser {
   profileImageUrl: string;
   characterImageId: number;
