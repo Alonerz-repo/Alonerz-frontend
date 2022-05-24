@@ -52,10 +52,10 @@ const StickerImage = styled.img`
 //스티커 컴포넌트
 const StickerBox = (props: any) => {
   const { sticker } = props;
+
   const dispatch = useAppDispatch();
 
   const stickerList: Stickers[] = [...sticker.stickers];
-
   const stikcer = stickerList.map((value) => {
     const { stickerOrder, stickerImageId } = value;
     const image = stickerImageUtils.findById(stickerImageId);
@@ -67,14 +67,28 @@ const StickerBox = (props: any) => {
     dispatch(setCharacter({ ...sticker, stickerOrder: index }));
   };
 
+  const setST = (myIndex: number) => {
+    const a = stikcer.find((value) => value.stickerOrder === myIndex);
+    if (a !== undefined) {
+      console.log("current!");
+      return true;
+    } else {
+      console.log("false!");
+      return false;
+    }
+  };
+  const getST = (myIndex: number) => {
+    const b = stikcer.find((value) => value.stickerOrder === myIndex);
+    return b;
+  };
   return (
     <React.Fragment>
       <Box>
         <div onClick={() => curPosition(0)}>
-          {stikcer ? (
+          {setST(0) ? (
             <StickerImage
               style={{ left: "100px", top: "75px" }}
-              src={stikcer[0].url}
+              src={getST(0)?.url}
               alt=""
             />
           ) : (
@@ -82,30 +96,30 @@ const StickerBox = (props: any) => {
           )}
         </div>
         <div onClick={() => curPosition(1)}>
-          {stikcer ? (
+          {setST(1) ? (
             <StickerImage
               style={{ right: "94px", top: "75px" }}
-              src={stikcer[1].url}
+              src={getST(1)?.url}
             />
           ) : (
             <Circle style={{ right: "115px", top: "93px" }}>+</Circle>
           )}
         </div>
         <div onClick={() => curPosition(2)}>
-          {stikcer ? (
+          {setST(2) ? (
             <StickerImage
               style={{ left: "100px", bottom: "137px" }}
-              src={stikcer[2].url}
+              src={getST(2)?.url}
             />
           ) : (
             <Circle style={{ left: "116px", bottom: "153px" }}>+</Circle>
           )}
         </div>
         <div onClick={() => curPosition(3)}>
-          {stikcer ? (
+          {setST(3) ? (
             <StickerImage
               style={{ right: "94px", bottom: "137px" }}
-              src={stikcer[3].url}
+              src={getST(3)?.url}
             />
           ) : (
             <Circle style={{ right: "116px", bottom: "153px" }}>+</Circle>
@@ -117,7 +131,7 @@ const StickerBox = (props: any) => {
 };
 
 const CharBox = (props: any) => {
-  const { Character, color } = props;
+  const { Character, color, board } = props;
   const dispatch = useAppDispatch();
   const [myColor, setColor] = useState<any>("#FFD9D9");
   const [curNum, setNum] = useState<number>(0);
@@ -125,10 +139,13 @@ const CharBox = (props: any) => {
   const image = characterImageUtils.findById(curNum);
   const myBoard = useAppSelect((state) => state.char);
 
-  // useEffect(() => {
-  //   setNum(Character);
-  //   setColor(color);
-  // }, [Character, color]);
+  useEffect(() => {
+    if (board !== undefined) {
+      setNum(board.characterImageId);
+      const getColor = backgroundColorUtils.findById(board.backgroundColorId);
+      setColor(getColor?.color);
+    }
+  }, [board]);
 
   useEffect(() => {
     dispatch(setCharacter({ ...myBoard, Character: curNum }));
@@ -190,11 +207,14 @@ const CharBox = (props: any) => {
 };
 
 const ProfileBoxTop = (props: any) => {
-  const { state, sticker } = props;
-  console.log(sticker);
+  const { state, sticker, board } = props;
   return (
     <React.Fragment>
-      {state ? <StickerBox sticker={sticker} /> : <CharBox sticker={sticker} />}
+      {state ? (
+        <StickerBox sticker={sticker} />
+      ) : (
+        <CharBox board={board} sticker={sticker} />
+      )}
     </React.Fragment>
   );
 };

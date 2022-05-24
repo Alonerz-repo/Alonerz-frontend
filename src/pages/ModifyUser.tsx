@@ -11,7 +11,6 @@ import { useAppSelect } from "../store/config.hook";
 // 유저 프로필(이름, 직군, 연차 등) 변경할수 있는 페이지 입니다.
 interface myProfile {
   nickname: string;
-  imageUrl: string | null;
   careerId: number;
   yearId: number;
   description: string;
@@ -19,7 +18,6 @@ interface myProfile {
 
 let initialState: myProfile = {
   nickname: "",
-  imageUrl: "",
   careerId: 0,
   yearId: 0,
   description: "",
@@ -27,9 +25,6 @@ let initialState: myProfile = {
 
 const ModifyUser = () => {
   const navigate = useNavigate();
-  //연차
-  // console.log(yearUtils.getYearsByCareerId(1));
-  //
 
   //리덕스에서 현재 유저의 정보를 가져옵니다.
   const userInfo = useAppSelect((state) => state.user);
@@ -75,7 +70,6 @@ const ModifyUser = () => {
   useEffect(() => {
     initialState = {
       nickname: info.nickname,
-      imageUrl: info.profileImageUrl,
       careerId: info.careerId,
       yearId: info.yearId,
       description: info.description,

@@ -41,17 +41,22 @@ const ProfileEdit = ({ type }: any) => {
   useEffect(() => {
     setCurChar({ ...initChar, ...userChar });
   }, [userChar]);
+  const [getBoard, setBoard] = useState();
+  console.log(curChar);
+
   useEffect(() => {
     const getSticker = async () => {
       await boardAxios.getSticker(userInfo.userId).then((res) => {
         dispatch(setCharacter({ ...res }));
       });
     };
-    const getCharacter = () => {
-      boardAxios.getBoard(userInfo.userId).then((res) => console.log(res));
+    const getBoard = () => {
+      boardAxios.getBoard(userInfo.userId).then((res) => {
+        setBoard({ ...res.user });
+      });
     };
     getSticker();
-    getCharacter();
+    getBoard();
   }, []);
 
   const saveProfile = () => {
@@ -60,6 +65,8 @@ const ProfileEdit = ({ type }: any) => {
       backgroundColorId: userChar.color,
     };
     boardAxios.setBoard(data);
+    window.alert("추가 완료!");
+    navigate(`/user/${userInfo.userId}`);
   };
   return (
     <React.Fragment>
@@ -70,11 +77,11 @@ const ProfileEdit = ({ type }: any) => {
           text="프로필 편집"
           type="userEdit"
           btnName="완료"
-          setting={saveProfile}
+          setting={() => saveProfile()}
         />
       )}
       <Grid isFlex>
-        <MyProfileBoxTop state={state} sticker={curChar} />
+        <MyProfileBoxTop state={state} sticker={curChar} board={getBoard} />
       </Grid>
       <Grid display="flex" justifyContent="flex-start">
         <div style={{ display: "flex" }}>

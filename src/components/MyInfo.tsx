@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid, Text, Image } from "../elements";
 import Card from "../components/Card";
@@ -7,15 +7,21 @@ import useUser from "../useCustom/useUser";
 import { useAppSelect } from "../store/config.hook";
 import BtnAction from "./MyInfo.BtnAction";
 import GridTxt from "./MyInfo.GridTxt";
-import { findCareer } from "../utils/career";
-import assets from "../assets/assets.json";
+import {
+  characterImageUtils,
+  careerUtils,
+  yearUtils,
+  backgroundColorUtils,
+  stickerImageUtils,
+} from "../utils/asset";
 
-const defaultImage = assets.characters[0];
+interface Props {
+  bg?: string;
+}
 
-const ProfileBG = styled.div`
+const BG = styled.div`
   width: 183px;
   height: 336px;
-  background: #ffd9d9;
   border-radius: 20px 0px 0px 20px;
   position: relative;
   right: -53%;
@@ -59,6 +65,20 @@ const NicknameIs = styled.p`
   margin: auto;
 `;
 
+const StickerBG = styled.div`
+  position: absolute;
+  width: 150px;
+  height: 230px;
+  top: 79px;
+  left: 28px;
+`;
+
+const StickerImg = styled.img`
+  position: absolute;
+  width: 78px;
+  height: 78px;
+`;
+
 interface Props {
   uid?: string;
   groups: any[];
@@ -66,17 +86,40 @@ interface Props {
 
 const MyInfo = (props: Props) => {
   const { uid, groups } = props;
-  const userId = useAppSelect((state) => state.user).userId;
+  const user = useAppSelect((state) => state.user);
   const navigate = useNavigate();
 
   //엑시오스로 유저정보를 받아옵니다.
-  const { careerId, yearId, nickname, point, following, follower } =
-    useUser(uid);
+  const {
+    careerId,
+    yearId,
+    nickname,
+    point,
+    followingUserCount,
+    followerUserCount,
+    description,
+    backgroundColorId,
+    characterImageId,
+    stickers,
+  } = useUser(uid);
 
   //커리어 정보를 불러옵니다.
-  const career = findCareer(careerId);
-  //팔로우 페이지에 넘어가기전 props로 팔로잉/팔로우, 유저아이디를 전달합니다.
 
+  const char = characterImageUtils.findById(characterImageId);
+  const career = careerUtils.findById(careerId);
+  const years = yearUtils.findById(yearId);
+  const bgColor = backgroundColorUtils.findById(backgroundColorId);
+
+  const result = stickers.map((value: any) => {
+    return { ...value };
+  });
+  const mySticker = result.map((value: any) => {
+    const image = stickerImageUtils.findById(value.stickerImageId);
+    const order = value.stickerOrder;
+    return { order, ...image };
+  });
+
+  //팔로우 페이지에 넘어가기전 props로 팔로잉/팔로우, 유저아이디를 전달합니다.
   const goToFollowings = () =>
     navigate("follow", { state: { isfollow: "following", uid: uid } });
   const goToFollowers = () =>
@@ -84,16 +127,12 @@ const MyInfo = (props: Props) => {
 
   // 내 커리어 정보
   const renderCareerAndNickname = () => {
-    const careerGroupName = career ? career.careerGroupName : "";
-    const careerItemName = career ? career.careerItemName : "";
     return (
       <Position style={{ position: "absolute", top: "1px" }}>
         <Grid display="flex" flexFlow="column wrap">
-          <CareerGroupDiv>
-            {careerGroupName} / {careerItemName}
-          </CareerGroupDiv>
+          <CareerGroupDiv>{description}</CareerGroupDiv>
           <CareerItemDiv>
-            {careerItemName} {yearId}
+            {career?.item} {years?.item}
           </CareerItemDiv>
           <NicknameDiv>
             <Nickname>{nickname}</Nickname>
@@ -110,9 +149,17 @@ const MyInfo = (props: Props) => {
       <>
         <Grid isFlex customize="margin: 39px 20px 33px 20px;">
           <GridTxt text="참가회수" point={point} />
-          <GridTxt text="follow" point={following} _onClick={goToFollowings} />
-          <GridTxt text="follower" point={follower} _onClick={goToFollowers} />
-          <BtnAction myId={userId} yourId={uid} />
+          <GridTxt
+            text="follow"
+            point={followingUserCount}
+            _onClick={goToFollowings}
+          />
+          <GridTxt
+            text="follower"
+            point={followerUserCount}
+            _onClick={goToFollowers}
+          />
+          <BtnAction myId={user.userId} yourId={uid} />
         </Grid>
       </>
     );
@@ -145,10 +192,44 @@ const MyInfo = (props: Props) => {
     <React.Fragment>
       <Grid>
         {/* 프로필 백그라운드 */}
-        <ProfileBG />
+        <BG style={{ background: `${bgColor?.color}` }} />
+
+        <StickerBG>
+          <StickerImg
+            style={{
+              background: "blue",
+              top: "56px",
+              left: "1px",
+            }}
+            alt=""
+          />
+
+          <StickerImg
+            style={{
+              background: "blue",
+              top: "-9px",
+              right: "-10px",
+            }}
+          />
+          <StickerImg
+            style={{
+              background: "blue",
+              top: "124px",
+              right: "-10px",
+            }}
+          />
+          <StickerImg
+            style={{
+              background: "blue",
+              top: "124px",
+              left: "-10px",
+            }}
+          />
+        </StickerBG>
+
         {/* 프로필 이미지 */}
         <ImgPosition>
-          <Image shape="rectangle" src={defaultImage} size="100px"></Image>
+          <Image shape="rectangle" src={char?.url} size="100px"></Image>
         </ImgPosition>
         {renderCareerAndNickname()}
       </Grid>

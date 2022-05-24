@@ -19,13 +19,11 @@ const userAxios = {
   //사용자 정보 조회 api
   // 파라미터 userId => string
   getUser: async (userId: any) => {
-    console.log("user getAxios", userId);
     const url = getUrl(`/api/users/${userId}/main`);
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
       .then((res) => {
-        console.log(res.data);
         return res.data;
       })
       .catch((err) => userExceptions.modify(err.response.data));
