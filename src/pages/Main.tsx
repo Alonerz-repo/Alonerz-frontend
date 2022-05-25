@@ -40,9 +40,9 @@ const Main = () => {
   }, [user]);
 
   // 사용자 인증
-  useEffect(() => {
-    dispatch(authUser());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(authUser());
+  // }, []);
 
   // 받아온 정보가 바뀌었을시 rerendering
   useEffect(() => {}, [groups]);
