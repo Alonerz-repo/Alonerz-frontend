@@ -48,7 +48,6 @@ const ProfileEdit = () => {
 
   // 유저의 프로필 정보가 변경될때마다, 리덕스의 정보를 업데이트 합니다.
   useEffect(() => {
-    console.log("스티커 이미지가 변경이 되었나?", userChar.stickerImageId);
     setCurChar({ ...initChar, ...userChar });
   }, [userChar]);
 
@@ -65,13 +64,7 @@ const ProfileEdit = () => {
         dispatch(setCharacter({ ...res.user }));
       });
     };
-    // const getStickerAxios = () => {
-    //   boardAxios.getSticker(userInfo.userId).then((res) => {
-    //     setCurChar({ ...initChar, ...res.stickers });
-    //   });
-    // };
     getBoardAxois();
-    // getStickerAxios();
   }, []);
 
   const saveProfile = () => {
