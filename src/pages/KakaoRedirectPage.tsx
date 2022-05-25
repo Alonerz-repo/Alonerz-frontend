@@ -18,7 +18,6 @@ const Redirect = () => {
         .then((_) => {
           authAxios.authUser().then((res) => {
             const { needProfile } = res.auth;
-            console.log("i need profile", needProfile);
             return needProfile ? navigate("/user/config/edit") : navigate("/");
           });
         })

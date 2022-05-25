@@ -3,14 +3,24 @@ import styled from "styled-components";
 import { Image, Grid, Text, Button } from "../elements";
 import userAxios from "../axios/userAxios";
 import Header from "../components/Header";
+import AlertModal from "../components/AlertModal";
+import { useNavigate } from "react-router-dom";
 
 const Position = styled.div`
   position: absolute;
   right: 20px;
 `;
 
+const alertInit = {
+  message: "",
+  closeLabel: "",
+  onClose: () => {},
+};
+
 const BlockList = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
+  const [alert, setAlert] = useState(alertInit);
   useEffect(() => {
     const test = async () => {
       await userAxios.getBlockList().then((response) => {
@@ -21,12 +31,24 @@ const BlockList = () => {
   }, []);
 
   const setBlock = (userId: any) => {
-    window.alert("차단이 해제됨");
-    userAxios.setblockUser(userId).then((res) => console.log(res));
+    try {
+      userAxios.setblockUser(userId).then((res) =>
+        setAlert({
+          message: "차단이 해제되었습니다.",
+          closeLabel: "닫기",
+          onClose: () => setAlert(alertInit),
+        })
+      );
+
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <React.Fragment>
-      <Header text="차단목록"></Header>
+      <Header text="차단목록" />
+      <AlertModal {...alert} />
       {users.map((user, key) => {
         const { userId, nickname, imageUrl, careerId } = user;
         return (

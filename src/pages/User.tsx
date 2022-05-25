@@ -9,6 +9,7 @@ import { Group } from "../common/interface";
 //유저 프로필 페이지 뷰 입니다.
 const User = () => {
   const param = useParams();
+  const { userId } = param;
   const navigate = useNavigate();
   const userInfo = useAppSelect((state) => state.user);
   const [groups, setGroups] = useState<Group[]>([]);
@@ -16,9 +17,8 @@ const User = () => {
   useEffect(() => {
     //유저가 참여했던 파티들의 리스트를 요청합니다.
     try {
-      partyAxios.getJoinedParty(param.userId).then((res) => {
-        // setGroups(res.data.groups);
-      });
+      if (userId !== undefined)
+        partyAxios.getJoinedParty(userId).then((res) => setGroups(res.groups));
     } catch (err) {
       console.log(err);
     }

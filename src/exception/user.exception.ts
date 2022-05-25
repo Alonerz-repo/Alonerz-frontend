@@ -28,7 +28,7 @@ export const userExceptions = {
         err.name = statusCode.toString();
         err.message = errMessage;
         window.alert(err);
-        authAxios.refreshUser().then((_) => window.location.reload());
+        authAxios.refreshUser().then((_) => window.location.replace("/"));
         throw err;
       case 409:
         window.alert("닉네임이 중복되었습니다.");
