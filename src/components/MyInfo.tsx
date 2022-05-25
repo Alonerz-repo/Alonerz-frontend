@@ -182,7 +182,16 @@ const MyInfo = (props: Props) => {
   const renderGroups = () => {
     return groups.map((group: any, key: number) => {
       const isFlex = true;
-      const { imageUrl, title, placeName, limit, join, groupId } = group;
+      const {
+        imageUrl,
+        title,
+        placeName,
+        limit,
+        join,
+        groupId,
+        startAt,
+        endAt,
+      } = group;
       const cardProps = {
         key,
         title,
@@ -191,6 +200,8 @@ const MyInfo = (props: Props) => {
         address: placeName,
         headcount: join,
         isFlex,
+        startAt,
+        endAt,
       };
       return <Card {...cardProps} _onClick={() => goToGroups(groupId)} />;
     });

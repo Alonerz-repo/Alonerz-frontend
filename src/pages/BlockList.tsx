@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Image, Grid, Text, Button } from "../elements";
+import { Image, Grid, Text } from "../elements";
 import userAxios from "../axios/userAxios";
 import Header from "../components/Header";
 import AlertModal from "../components/AlertModal";
 import { useNavigate } from "react-router-dom";
+import { careerUtils } from "../utils/asset";
 
 const Position = styled.div`
   position: absolute;
@@ -22,12 +23,10 @@ const BlockList = () => {
   const [users, setUsers] = useState([]);
   const [alert, setAlert] = useState(alertInit);
   useEffect(() => {
-    const test = async () => {
-      await userAxios.getBlockList().then((response) => {
-        setUsers(response.data.users);
-      });
+    const getBlockList = async () => {
+      await userAxios.getBlockList().then((res) => setUsers(res.data.users));
     };
-    test();
+    getBlockList();
   }, []);
 
   const setBlock = (userId: any) => {
@@ -51,13 +50,16 @@ const BlockList = () => {
       <AlertModal {...alert} />
       {users.map((user, key) => {
         const { userId, nickname, imageUrl, careerId } = user;
+        const career = careerUtils.findById(careerId);
         return (
           <Grid key={key}>
             <Grid display="flex" padding="20px 20px">
               <Image size="44px" src={imageUrl}></Image>
               <Grid padding="3px 14px">
                 <Text>{nickname}</Text>
-                <Text>{careerId}</Text>
+                <Text>
+                  {career?.group} / {career?.item}
+                </Text>
               </Grid>
               <Position>
                 <button
