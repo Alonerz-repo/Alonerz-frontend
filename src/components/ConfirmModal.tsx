@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {
+export interface ConfirmModalProps {
   message: string;
-  yesCallback: Function;
-  noCallback: Function;
+  onOk: Function;
+  onClose: Function;
   yesLabel: string;
   noLabel: string;
 }
@@ -39,7 +39,6 @@ const ModalContainer = styled.div`
 const MessageBox = styled.div`
   height: 100%;
   font-size: 15px;
-  font-weight: 800;
   color: #000;
   display: flex;
   flex-direction: column;
@@ -78,11 +77,19 @@ const YesButton = styled.div`
   color: #fff;
 `;
 
-const ConfirmModal = (props: Props) => {
-  const { message, yesLabel, noLabel, yesCallback, noCallback } = props;
+export const initConfirmModalProps: ConfirmModalProps = {
+  message: '',
+  yesLabel: '예',
+  noLabel: '아니오',
+  onOk: () => {},
+  onClose: () => {},
+};
 
-  const onNoClick = () => noCallback();
-  const onYesClick = () => yesCallback();
+const ConfirmModal = (props: ConfirmModalProps) => {
+  const { message, yesLabel, noLabel, onOk, onClose } = props;
+
+  const onNoClick = () => onClose();
+  const onYesClick = () => onOk();
 
   return (
     <React.Fragment>

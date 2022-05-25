@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import commentAxios from "../../axios/commentAxios";
-import GroupChildComment from "./GroupChildComment";
-import { ChildComment, valueChangeEvent } from "./interface";
-import { InputGroup, SubmitButton, TextArea, Wrapper } from "./styled";
+import { useState } from 'react';
+import styled from 'styled-components';
+import commentAxios from '../../axios/commentAxios';
+import GroupChildComment from './GroupChildComment';
+import { ChildComment, valueChangeEvent } from './interface';
+import { InputGroup, SubmitButton, TextArea, Wrapper } from './styled';
 
 interface ChildCommentsProps {
   userId: string;
@@ -15,13 +15,19 @@ interface ChildCommentsProps {
 
 const VisibleButton = styled.div`
   cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: #aaa;
 `;
 
 const GroupChildComments = (props: ChildCommentsProps) => {
   const { userId, groupId, parentId, childCommentCount, reply } = props;
   const [comments, setComments] = useState<ChildComment[]>([]);
   const [commentCount, setCommentCount] = useState<number>(childCommentCount);
-  const [childContent, setChildContent] = useState<string>("");
+  const [childContent, setChildContent] = useState<string>('');
   const [showChildComment, setShowChildComment] = useState<boolean>(false);
   console.log(comments);
 
@@ -40,7 +46,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
       const comments = await commentAxios.getChildComments(groupId, parentId);
       setComments(comments);
       setCommentCount(comments.length);
-      setChildContent("");
+      setChildContent('');
       setShowChildComment(true);
     } catch (e) {
       const { message } = e as Error;
@@ -66,7 +72,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
   // 댓글 수정
   const onSaveComment = (commentId: number, content: string) => {
     const newComments = comments.map((comment) =>
-      comment.commentId === commentId ? { ...comment, content } : comment
+      comment.commentId === commentId ? { ...comment, content } : comment,
     );
     setComments(newComments);
   };
@@ -74,7 +80,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
   // 댓글 삭제
   const onRemoveComment = (commentId: number) => {
     const newComments = comments.filter(
-      (comment) => comment.commentId !== commentId
+      (comment) => comment.commentId !== commentId,
     );
     setComments(newComments);
     setCommentCount(newComments.length);
@@ -93,34 +99,34 @@ const GroupChildComments = (props: ChildCommentsProps) => {
     };
 
     return (
-      <React.Fragment>
+      <>
         {reply ? (
-          <InputGroup>
+          <InputGroup style={{ paddingBottom: 10 }}>
             <TextArea {...textAreaProps} />
             <SubmitButton {...buttonProps}>등록</SubmitButton>
           </InputGroup>
         ) : null}
-      </React.Fragment>
+      </>
     );
   };
 
   // 댓글 더보기/숨김 버튼 렌더링
   const renderShowCommentsButton = () => {
     return (
-      <React.Fragment>
+      <>
         {commentCount ? (
           <VisibleButton onClick={onShowChildComments}>
-            {showChildComment ? "숨기기" : `${commentCount}개의 답글 보기`}
+            {showChildComment ? '숨기기' : `${commentCount}개의 답글 보기`}
           </VisibleButton>
         ) : null}
-      </React.Fragment>
+      </>
     );
   };
 
   // 하위 댓글 렌더링
   const renderChildComments = () => {
     return (
-      <React.Fragment>
+      <>
         {showChildComment
           ? comments.map((comment) => {
               const key = `${userId}-${groupId}${comment.commentId}`;
@@ -134,28 +140,30 @@ const GroupChildComments = (props: ChildCommentsProps) => {
               return <GroupChildComment {...commentProps} />;
             })
           : null}
-      </React.Fragment>
+      </>
     );
   };
 
   const wrapperProps = {
     style: {
-      padding: 10,
-      width: "100%",
+      padding: '0 10px',
+      width: '100%',
     },
   };
 
   // childCommentCount가 없으면 노출되지 않음
   return (
-    <React.Fragment>
-      {childCommentCount ? (
-        <Wrapper {...wrapperProps}>
-          {renderInputField()}
-          {renderShowCommentsButton()}
-          {renderChildComments()}
-        </Wrapper>
-      ) : null}
-    </React.Fragment>
+    <>
+      <Wrapper {...wrapperProps}>
+        {renderInputField()}
+        {commentCount ? (
+          <>
+            {renderShowCommentsButton()}
+            {renderChildComments()}
+          </>
+        ) : null}
+      </Wrapper>
+    </>
   );
 };
 

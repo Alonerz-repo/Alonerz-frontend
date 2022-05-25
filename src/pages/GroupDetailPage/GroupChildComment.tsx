@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import commentAxios from '../../axios/commentAxios';
+import ConfirmModal, {
+  ConfirmModalProps,
+  initConfirmModalProps,
+} from '../../components/ConfirmModal';
 import { Image, Text } from '../../elements';
 import { careerUtils, characterImageUtils, yearUtils } from '../../utils/asset';
 import { ChildComment, valueChangeEvent } from './interface';
@@ -36,11 +40,13 @@ const GroupChildComment = (props: ChildCommentProps) => {
   const { userId, comment, onSaveComment, onRemoveComment } = props;
   const [editContent, setEditContent] = useState<string>(comment.content);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
+    initConfirmModalProps,
+  );
 
+  const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
   const onEditClick = () => setEditMode(true);
-
   const onCancelClick = () => setEditMode(false);
-
   const onContentChange = (e: valueChangeEvent) => {
     const {
       target: { value },
@@ -55,10 +61,19 @@ const GroupChildComment = (props: ChildCommentProps) => {
     setEditMode(false);
   };
 
-  const onRemoveClick = async () => {
+  const onRemoveClick = () => {
     const { commentId } = comment as ChildComment;
-    await commentAxios.removeComment(commentId);
-    onRemoveComment(commentId);
+    setConfirmMoalProps({
+      message: '댓글을 삭제하시겠습니까?',
+      yesLabel: '삭제',
+      noLabel: '취소',
+      onOk: async () => {
+        await commentAxios.removeComment(commentId);
+        onRemoveComment(commentId);
+        onCloseConfirmModal();
+      },
+      onClose: onCloseConfirmModal,
+    });
   };
 
   // 유저 렌더링
@@ -128,13 +143,16 @@ const GroupChildComment = (props: ChildCommentProps) => {
   };
 
   return (
-    <Wrapper style={{ padding: '0 10px' }}>
-      <TopWrapper>
-        {renderUser()}
-        {renderButtons()}
-      </TopWrapper>
-      <BottomWrapper>{renderComment()}</BottomWrapper>
-    </Wrapper>
+    <>
+      <ConfirmModal {...confirmModalProps} />
+      <Wrapper style={{ padding: '0 10px' }}>
+        <TopWrapper>
+          {renderUser()}
+          {renderButtons()}
+        </TopWrapper>
+        <BottomWrapper>{renderComment()}</BottomWrapper>
+      </Wrapper>
+    </>
   );
 };
 
