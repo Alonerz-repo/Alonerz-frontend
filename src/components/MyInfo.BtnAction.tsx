@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Grid, Image } from "../elements";
 import userAxios from "../axios/userAxios";
 import chatIcon from "../assets/header/1.svg";
+import AlertModal from "./AlertModal";
+
+const alertInit = {
+  message: "",
+  closeLabel: "",
+  onClose: () => {},
+};
 
 //리덕스의 유저 정보와 url param의 유저 정보를 비교해서 두개가 일치하면 내정보 수정버튼
 //일치 하지 않으면 팔로우와 채팅 버튼이 보이게 분기 처리 했습니다.
 const BtnAction = (props: any) => {
   const navigate = useNavigate();
   const { myId, yourId } = props;
+  const [alert, setAlert] = useState(alertInit);
 
   const goTochat = () => {
     console.log("hello chat");
@@ -20,11 +28,18 @@ const BtnAction = (props: any) => {
     });
   };
 
-  const setBlock = async () => {
-    console.log("hello block!");
-    await userAxios.setblockUser(yourId).then((res) => {
-      window.alert("block!!");
-    });
+  const setBlock = () => {
+    try {
+      userAxios.setblockUser(yourId).then((res) => {
+        setAlert({
+          message: "차단되었습니다.",
+          closeLabel: "닫기",
+          onClose: () => setAlert(alertInit),
+        });
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
   if (myId === yourId) {
     return (
@@ -46,6 +61,7 @@ const BtnAction = (props: any) => {
   } else if (myId !== yourId) {
     return (
       <React.Fragment>
+        <AlertModal {...alert} />
         <Grid display="flex">
           <div onClick={goTochat}>
             <Image size="44px" src={chatIcon}></Image>

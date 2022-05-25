@@ -12,8 +12,18 @@ interface user {
   userId: string;
   yearId: number;
 }
+const initState: user = {
+  careerId: 0,
+  characterImageId: 0,
+  description: "",
+  nickname: "",
+  point: 0,
+  profileImageUrl: "",
+  userId: "",
+  yearId: 0,
+};
 const useFollow = (uid: string, isfollow: string) => {
-  const [users, setUsers] = useState<user[]>();
+  const [users, setUsers] = useState<user[]>([initState]);
 
   const getFollowers = async () => {
     await userAxios.getFollowers(uid).then((res) => setUsers([...res.users]));

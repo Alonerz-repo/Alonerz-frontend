@@ -172,13 +172,13 @@ export const partyAxios = {
   },
 
   // 사용자가 현재까지 참여했던 모든 파티 정보 요청
-  getJoinedParty: async (userId: any) => {
+  getJoinedParty: async (userId: string) => {
     const url = getUrl(`/api/groups/${userId}/joined`);
     const headers = getHeaders();
     const data = await axios
       .get(url, { headers })
       .then((res) => {
-        return res;
+        return res.data;
       })
       .catch((err) => userExceptions.joinParty(err.response.data));
     return data;
