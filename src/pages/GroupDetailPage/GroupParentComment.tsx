@@ -1,19 +1,19 @@
 // 작업자 : 최원영
 
-import { useState } from 'react';
-import styled from 'styled-components';
-import commentAxios from '../../axios/commentAxios';
-import { Image, Text } from '../../elements';
-import { careerUtils, characterImageUtils, yearUtils } from '../../utils/asset';
-import GroupChildComments from './GroupChildComments';
-import { ParentComment, valueChangeEvent } from './interface';
+import { useState } from "react";
+import styled from "styled-components";
+import commentAxios from "../../axios/commentAxios";
+import { Image, Text } from "../../elements";
+import { careerUtils, characterImageUtils, yearUtils } from "../../utils/asset";
+import GroupChildComments from "./GroupChildComments";
+import { ParentComment, valueChangeEvent } from "./interface";
 import {
   ButtonGroups,
   ContentText,
   TextArea,
   TextButton,
   UserWrapper,
-} from './styled';
+} from "./styled";
 
 interface GroupCommentProps {
   comment: ParentComment;
@@ -40,6 +40,7 @@ const GroupParentComment = (props: GroupCommentProps) => {
   const [editContent, setEditContent] = useState<string>(comment.content);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [reply, setReply] = useState<boolean>(false);
+  console.log(reply);
 
   const onReplyClick = () => setReply(!reply);
 
@@ -77,8 +78,8 @@ const GroupParentComment = (props: GroupCommentProps) => {
     const year = yearUtils.findById(yearId) as { item: string };
 
     const imageProps = (imageUrl: string, characterImageId: number) => ({
-      shape: 'circle',
-      size: '30px',
+      shape: "circle",
+      size: "30px",
       src: imageUrl
         ? imageUrl
         : characterImageUtils.findById(characterImageId)?.url,

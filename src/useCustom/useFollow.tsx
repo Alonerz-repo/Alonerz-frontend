@@ -14,8 +14,12 @@ interface user {
 }
 const useFollow = (uid: string, isfollow: string) => {
   const [users, setUsers] = useState<user[]>();
+
   const getFollowers = async () => {
     await userAxios.getFollowers(uid).then((res) => setUsers([...res.users]));
+  };
+  const getFollowings = async () => {
+    await userAxios.getFollowings(uid).then((res) => setUsers([...res.users]));
   };
   useEffect(() => {
     switch (isfollow) {
@@ -23,6 +27,7 @@ const useFollow = (uid: string, isfollow: string) => {
         getFollowers();
         return;
       case "following":
+        getFollowings();
         return;
     }
   }, [uid, isfollow]);

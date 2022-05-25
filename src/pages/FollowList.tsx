@@ -1,10 +1,9 @@
 import React from "react";
-import styled from "styled-components";
 import Header from "../components/Header";
 import useFollow from "../useCustom/useFollow";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Grid, Image, Text } from "../elements";
+import { useLocation } from "react-router-dom";
 import { careerUtils } from "../utils/asset";
+import FollowUser from "../components/Follow";
 
 interface user {
   careerId: number;
@@ -17,47 +16,49 @@ interface user {
   yearId: number;
 }
 
-const MyBtn = styled.button``;
-
 const FollowList = () => {
   //상위 연결된 컴포넌트에서 navigate 옵션값으로 들어온 데이터를 uselocation함수로 받습니다.
   const { state }: any = useLocation();
-  const navigate = useNavigate();
   const { uid, isfollow } = state;
+
   //유저의 팔로우/팔로잉 리스트를 커스텀 훅으로 받습니다.
   const users = useFollow(uid, isfollow);
+  const myFollowingList = useFollow(uid, "following");
 
-  //리스트를 클릭했을떄, 상대방 유저프로필로 이동합니다.
-  const goToUser = (userId: string) => {
-    navigate(`/user/${userId}`);
+  const isFollow = (userId: string) => {
+    const myfollowid = myFollowingList?.find(
+      (value) => value.userId === userId
+    );
+    if (myfollowid !== undefined) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const renderUsers = () => {
     if (users !== undefined) {
       const results = users.map((value: user, key: number) => {
-        const { nickname, careerId, userId } = value;
+        const { careerId, userId } = value;
         const groupItem = careerUtils.findById(careerId);
+        const isfolo = isFollow(userId);
 
         return (
-          <Grid key={key}>
-            <div onClick={() => goToUser(userId)}>
-              <Grid display="flex" padding="20px 20px">
-                <Image size="44px"></Image>
-                <Grid padding="3px 14px">
-                  <Text>{nickname}</Text>
-                  <Text>
-                    {groupItem?.group} / {groupItem?.item}
-                  </Text>
-                </Grid>
-                <MyBtn>버튼</MyBtn>
-              </Grid>
-            </div>
-          </Grid>
+          <FollowUser
+            isfolo={isfolo}
+            uid={uid}
+            user={value}
+            groupItem={groupItem}
+          />
         );
       });
       return results;
     } else {
-      return <React.Fragment></React.Fragment>;
+      return (
+        <React.Fragment>
+          함께하고 싶은 나만의 파티원을 채우길바람
+        </React.Fragment>
+      );
     }
   };
 

@@ -158,14 +158,14 @@ const MyInfo = (props: Props) => {
         <Grid isFlex customize="margin: 39px 20px 33px 20px;">
           <GridTxt text="참가회수" point={point} />
           <GridTxt
-            text="follow"
-            point={followingUserCount}
-            _onClick={goToFollowings}
-          />
-          <GridTxt
             text="follower"
             point={followerUserCount}
             _onClick={goToFollowers}
+          />
+          <GridTxt
+            text="following"
+            point={followingUserCount}
+            _onClick={goToFollowings}
           />
           <BtnAction myId={user.userId} yourId={uid} />
         </Grid>
