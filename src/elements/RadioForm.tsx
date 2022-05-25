@@ -56,6 +56,7 @@ const LimitButton = styled.div<CommonButtonProps>`
   text-align: center;
   display: table-cell;
   vertical-align: middle;
+  cursor: pointer;
 `;
 
 export default Radio;

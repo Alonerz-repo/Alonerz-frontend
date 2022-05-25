@@ -123,8 +123,6 @@ export const partyAxios = {
   // 파티 수정시 서버와 통신
   // 파일 데이터 전송을 위해 FormData 사용
   editParty: async (group: any, groupId: string) => {
-    console.log(group);
-    console.log(groupId);
     const url = getUrl(`/api/groups/${groupId}`);
 
     // const formData = new FormData();
@@ -143,7 +141,6 @@ export const partyAxios = {
       .patch(url, body, { headers })
       .then((response) => response.data)
       .catch((error) => error.response.data);
-    console.log(data);
     return data;
   },
 
@@ -155,7 +152,6 @@ export const partyAxios = {
       .delete(url, { headers, data: { groupId } })
       .then((response) => response.data)
       .catch((error) => error.response.data);
-    console.log(data);
     return data;
   },
 
@@ -189,7 +185,6 @@ export const partyAxios = {
   joinParty: async (groupId: string, action: string) => {
     const url = getUrl(`/api/groups/${groupId}?action=${action}`);
     const headers = getHeaders();
-    console.log(groupId, action);
     const data = await axios
       .put(url, {}, { headers })
       .then((res) => {

@@ -32,6 +32,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     handleSubmit,
     control,
     reset,
+    setError,
     formState: { errors },
   } = useForm<CreateForm>();
 
@@ -151,6 +152,9 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             <RadioForm control={control} name="limit" v={4} />
           </Grid>
 
+          <Text bold type="line" titleText="장소" margin="5px 0 5px 0" />
+          <NewKakaoMap></NewKakaoMap>
+
           <Text bold type="line" titleText="상세 정보" margin="5px 0 5px 0" />
           <InputForm width="100%" name="description" control={control} />
           {errors.title?.type === "required" && (
@@ -163,8 +167,6 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             imageUrl={imageUrl}
             margin="0px 10px 0px 20px"
           ></UploadForm>
-
-          <NewKakaoMap></NewKakaoMap>
         </Grid>
         <Grid absolute="position:sticky; bottom:0px; width:inherit;">
           {group ? (
