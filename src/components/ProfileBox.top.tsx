@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { characterImageUtils } from "../utils/asset";
 import { Grid } from "../elements";
 import icon from "../assets/header";
-import { useAppDispatch, useAppSelect } from "../store/config.hook";
+import { useAppDispatch } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
 import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
 
@@ -11,21 +11,6 @@ import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
 interface Props {
   bg?: string;
 }
-
-interface Character {
-  Character: number;
-  color: number;
-  stickerOrder: number;
-  stickerImageId: number;
-  stickers: [];
-}
-const initChar: Character = {
-  Character: 0,
-  color: 0,
-  stickerOrder: 0,
-  stickerImageId: 0,
-  stickers: [],
-};
 
 interface Stickers {
   stickerOrder: number;
@@ -61,36 +46,43 @@ const StickerImage = styled.img`
 //스티커 컴포넌트
 const StickerBox = (props: any) => {
   const { sticker } = props;
-
+  console.log(
+    "top 스티커 컴포넌트에서 이미지가 변경되었나?",
+    sticker.stickerImageId
+  );
   const dispatch = useAppDispatch();
 
   const stickerList: Stickers[] = [...sticker.stickers];
-  const stikcer = stickerList.map((value) => {
-    const { stickerOrder, stickerImageId } = value;
+  const myStikcer = stickerList.map((value, index) => {
+    let { stickerOrder, stickerImageId } = value;
+    if (stickerOrder === sticker.stickerOrder && sticker.stickerImageId) {
+      stickerOrder = sticker.stickerOrder;
+      stickerImageId = sticker.stickerImageId;
+    }
     const image = stickerImageUtils.findById(stickerImageId);
+    console.log("스티커이미지 맵안에서 변경되었나?", stickerImageId, index);
     return { stickerOrder, ...image };
   });
 
   //스티커 오더를 리덕스에 저장합니다.
   const curPosition = (index: number) => {
     dispatch(setCharacter({ ...sticker, stickerOrder: index }));
-    console.log("3");
   };
 
   const setST = (myIndex: number) => {
-    const a = stikcer.find((value) => value.stickerOrder === myIndex);
-    if (a !== undefined) {
-      console.log("current!");
+    const findST = myStikcer.find((value) => value.stickerOrder === myIndex);
+    if (findST !== undefined) {
       return true;
     } else {
-      console.log("false!");
       return false;
     }
   };
+
   const getST = (myIndex: number) => {
-    const ST = stikcer.find((value) => value.stickerOrder === myIndex);
+    const ST = myStikcer.find((value) => value.stickerOrder === myIndex);
     return ST;
   };
+
   return (
     <React.Fragment>
       <Box>
@@ -141,8 +133,7 @@ const StickerBox = (props: any) => {
 };
 
 //캐릭터와 배경을 선택하는 박스
-const CharBox = (props: any) => {
-  const { board, sticker } = props;
+const CharBox = ({ board }: any) => {
   const dispatch = useAppDispatch();
   const [myColor, setColor] = useState<any>("#FFD9D9");
   const [curNum, setNum] = useState<number>(0);
@@ -158,27 +149,44 @@ const CharBox = (props: any) => {
     }
   }, [board]);
 
-  useEffect(() => {
-    dispatch(
-      setCharacter({ ...board, characterImageId: curNum, Character: curNum })
-    );
-  }, [curNum]);
-
   const click = (changeNum: number) => {
-    switch (changeNum) {
-      case 1:
-        if (curNum === length - 1) {
-          return setNum(0);
-        }
-
+    if (changeNum > 0) {
+      if (curNum === length - 1) {
+        dispatch(setCharacter({ ...board, characterImageId: 0, Character: 0 }));
+        return setNum(0);
+      } else {
+        dispatch(
+          setCharacter({
+            ...board,
+            characterImageId: curNum + 1,
+            Character: curNum + 1,
+          })
+        );
         return setNum(curNum + 1);
-      case -1:
-        if (curNum === 0) {
-          return setNum(length - 1);
-        }
+      }
+    } else {
+      if (curNum === 0) {
+        dispatch(
+          setCharacter({
+            ...board,
+            characterImageId: length - 1,
+            Character: length - 1,
+          })
+        );
+        return setNum(length - 1);
+      } else {
+        dispatch(
+          setCharacter({
+            ...board,
+            characterImageId: curNum - 1,
+            Character: curNum - 1,
+          })
+        );
         return setNum(curNum - 1);
+      }
     }
   };
+
   return (
     <React.Fragment>
       <Grid width="100%">

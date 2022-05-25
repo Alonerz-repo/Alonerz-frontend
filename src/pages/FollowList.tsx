@@ -4,6 +4,7 @@ import useFollow from "../useCustom/useFollow";
 import { useLocation } from "react-router-dom";
 import { careerUtils } from "../utils/asset";
 import FollowUser from "../components/Follow";
+import src from "../assets/Character";
 
 interface user {
   careerId: number;
@@ -23,6 +24,7 @@ const FollowList = () => {
 
   //유저의 팔로우/팔로잉 리스트를 커스텀 훅으로 받습니다.
   const users = useFollow(uid, isfollow);
+  console.log(users.length);
   const myFollowingList = useFollow(uid, "following");
 
   const isFollow = (userId: string) => {
@@ -37,26 +39,45 @@ const FollowList = () => {
   };
 
   const renderUsers = () => {
-    if (users !== undefined) {
+    if (users !== undefined && users.length > 0) {
       const results = users.map((value: user, key: number) => {
         const { careerId, userId } = value;
         const groupItem = careerUtils.findById(careerId);
         const isfolo = isFollow(userId);
 
         return (
-          <FollowUser
-            isfolo={isfolo}
-            uid={uid}
-            user={value}
-            groupItem={groupItem}
-          />
+          <React.Fragment key={key}>
+            <FollowUser
+              isfolo={isfolo}
+              uid={uid}
+              user={value}
+              groupItem={groupItem}
+            />
+          </React.Fragment>
         );
       });
       return results;
     } else {
       return (
         <React.Fragment>
-          함께하고 싶은 나만의 파티원을 채우길바람
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div
+              style={{ position: "absolute", top: "20vh", textAlign: "center" }}
+            >
+              <img style={{ width: "130px" }} src={src[0]} alt="" />{" "}
+              {isfollow === "following" ? (
+                <React.Fragment>
+                  <p>팔로잉이 없어요</p>
+                  <p>함께하고 싶은 나의 파티원들을 채워주세요</p>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <p>팔로워이 없어요</p>
+                  <p>함께하고 싶은 나의 파티원들을 채워주세요</p>
+                </React.Fragment>
+              )}
+            </div>
+          </div>
         </React.Fragment>
       );
     }
