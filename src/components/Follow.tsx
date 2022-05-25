@@ -4,7 +4,6 @@ import { Grid, Text, Image } from "../elements";
 import userAxios from "../axios/userAxios";
 import AlertModal from "../components/AlertModal";
 import { useNavigate } from "react-router-dom";
-import useFollow from "../useCustom/useFollow";
 
 const FollowerBtn = styled.button`
   position: absolute;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { characterImageUtils } from "../utils/asset";
 import { Grid } from "../elements";
 import icon from "../assets/header";
-import { useAppDispatch } from "../store/config.hook";
+import { useAppDispatch, useAppSelect } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
 import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
 
@@ -11,6 +11,21 @@ import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
 interface Props {
   bg?: string;
 }
+
+interface Character {
+  Character: number;
+  color: number;
+  stickerOrder: number;
+  stickerImageId: number;
+  stickers: [];
+}
+const initChar: Character = {
+  Character: 0,
+  color: 0,
+  stickerOrder: 0,
+  stickerImageId: 0,
+  stickers: [],
+};
 
 interface Stickers {
   stickerOrder: number;
@@ -59,6 +74,7 @@ const StickerBox = (props: any) => {
   //스티커 오더를 리덕스에 저장합니다.
   const curPosition = (index: number) => {
     dispatch(setCharacter({ ...sticker, stickerOrder: index }));
+    console.log("3");
   };
 
   const setST = (myIndex: number) => {
@@ -72,8 +88,8 @@ const StickerBox = (props: any) => {
     }
   };
   const getST = (myIndex: number) => {
-    const b = stikcer.find((value) => value.stickerOrder === myIndex);
-    return b;
+    const ST = stikcer.find((value) => value.stickerOrder === myIndex);
+    return ST;
   };
   return (
     <React.Fragment>
@@ -126,7 +142,7 @@ const StickerBox = (props: any) => {
 
 //캐릭터와 배경을 선택하는 박스
 const CharBox = (props: any) => {
-  const { board } = props;
+  const { board, sticker } = props;
   const dispatch = useAppDispatch();
   const [myColor, setColor] = useState<any>("#FFD9D9");
   const [curNum, setNum] = useState<number>(0);
@@ -136,21 +152,25 @@ const CharBox = (props: any) => {
   useEffect(() => {
     if (board !== undefined) {
       setNum(board.characterImageId);
-      const getColor = backgroundColorUtils.findById(board.backgroundColorId);
-      setColor(getColor?.color);
+      const result = backgroundColorUtils.findById(board.backgroundColorId);
+
+      setColor(result?.color);
     }
   }, [board]);
 
   useEffect(() => {
-    dispatch(setCharacter({ Character: curNum }));
+    dispatch(
+      setCharacter({ ...board, characterImageId: curNum, Character: curNum })
+    );
   }, [curNum]);
 
-  const click = (changeNum: any) => {
+  const click = (changeNum: number) => {
     switch (changeNum) {
       case 1:
         if (curNum === length - 1) {
           return setNum(0);
         }
+
         return setNum(curNum + 1);
       case -1:
         if (curNum === 0) {

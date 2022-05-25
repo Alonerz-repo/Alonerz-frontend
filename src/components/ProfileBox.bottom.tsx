@@ -64,7 +64,13 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
   };
   //백그라운드 컬러를 스테이트에 갱신합니다.
   const setBackgroundFn = (myColor: any) => {
-    dispatch(setCharacter({ ...Board, color: myColor.id }));
+    dispatch(
+      setCharacter({
+        ...Board,
+        backgroundColorId: myColor.id,
+        color: myColor.id,
+      })
+    );
   };
   //프로필 캐릭터 선택 카드들
   if (setCard) {

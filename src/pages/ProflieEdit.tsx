@@ -12,14 +12,14 @@ import ConfirmModal from "../components/ConfirmModal";
 
 //유저 프로필(캐릭터, 배경색상, 스티커)를 변경하는 페이지 입니다.
 interface Character {
-  Character: number;
+  characterImageId: number;
   color: number;
   stickerOrder: number;
   stickerImageId: number;
   stickers: [];
 }
 const initChar: Character = {
-  Character: 0,
+  characterImageId: 0,
   color: 0,
   stickerOrder: 0,
   stickerImageId: 0,
@@ -32,7 +32,7 @@ const initAlertProps = {
   closeLabel: "",
 };
 
-const ProfileEdit = ({ type }: any) => {
+const ProfileEdit = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -50,26 +50,30 @@ const ProfileEdit = ({ type }: any) => {
   useEffect(() => {
     setCurChar({ ...initChar, ...userChar });
   }, [userChar]);
-  const [getBoard, setBoard] = useState();
+
+  const [getBoard, setBoard] = useState<Character>(initChar);
+  useEffect(() => {
+    setBoard({ ...userChar });
+  }, [userChar]);
 
   //스티커 정보와 캐릭터 정보를 가져옵니다.
   useEffect(() => {
-    const getBoard = () => {
+    const getBoardAxois = () => {
       boardAxios.getBoard(userInfo.userId).then((res) => {
         setBoard({ ...res.user });
         dispatch(setCharacter({ ...res.user }));
-        console.log("get board", res.user);
       });
     };
 
-    getBoard();
+    getBoardAxois();
   }, []);
 
   const saveProfile = () => {
     const data = {
-      characterImageId: userChar.Character,
+      characterImageId: userChar.characterImageId,
       backgroundColorId: userChar.color,
     };
+    console.log(data);
     try {
       boardAxios.setBoard(data);
       setAlert({
@@ -86,6 +90,7 @@ const ProfileEdit = ({ type }: any) => {
       });
     }
   };
+
   return (
     <React.Fragment>
       {state ? (

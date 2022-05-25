@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 interface Character {
-  Character: number;
+  characterImageId: number;
   color: number;
   stickerOrder: number;
   stickerImageId: number;
   stickers: [];
 }
 const initialState: Character = {
-  Character: 0,
+  characterImageId: 0,
   color: 0,
   stickerOrder: 0,
   stickerImageId: 0,

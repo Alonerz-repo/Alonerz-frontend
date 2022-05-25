@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import MyInfo from '../components/MyInfo';
-import Header from '../components/Header';
-import { useParams, useNavigate } from 'react-router-dom';
-import partyAxios from '../axios/partyAxios';
-import { useAppSelect } from '../store/config.hook';
-import { Group } from '../common/interface';
+import React, { useEffect, useState } from "react";
+import MyInfo from "../components/MyInfo";
+import Header from "../components/Header";
+import { useParams, useNavigate } from "react-router-dom";
+import partyAxios from "../axios/partyAxios";
+import { useAppSelect } from "../store/config.hook";
+import { Group } from "../common/interface";
 
 //유저 프로필 페이지 뷰 입니다.
 const User = () => {
@@ -26,17 +26,17 @@ const User = () => {
 
   // 프로필을 렌더링 합니다.
   const renderUserInfo = () => {
-    const text = '프로필';
+    const text = "프로필";
     const headerProps =
       param.userId === userInfo.userId
         ? {
             text,
-            type: 'user',
+            type: "user",
             home: () => {
-              navigate('/');
+              navigate("/");
             },
             setting: () => {
-              navigate('/user/config');
+              navigate("/user/config");
             },
           }
         : { text };
