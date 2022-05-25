@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './pages/Main';
@@ -54,7 +54,6 @@ function App() {
             <Route path="/chat" element={<Chatting />} />
             <Route path="/chatlist" element={<ChatList />} />
             <Route path="/redirect" element={<Redirect />} />
-            {/* <Route path="/participate/:groupId" element={<PartyInfo />} /> */}
             <Route path="/participate/:groupId" element={<GroupDetailPage />} />
             <Route path="/create/partyInfo/:time" element={<CreateParty />} />
             <Route path="/edit/partyInfo/:groupId" element={<EditParty />} />

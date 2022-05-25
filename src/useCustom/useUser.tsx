@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import userAxios from "../axios/userAxios";
-import { useAppSelect } from "../store/config.hook";
 
 //유저 정보를 불러오는 커스텀 훅입니다.
 
 const initState = {
-  careerId: 1,
+  backgroundColorId: 0,
+  careerId: 0,
+  characterImageId: 0,
   description: "",
-  follower: 0,
-  followers: [],
-  following: 0,
+  followerUserCount: 0,
+  followingUserCount: 0,
+  isFollower: false,
+  isFollowing: false,
   nickname: "",
   point: 0,
-  profileImageUrl: "",
-  userId: "0",
+  stickers: [],
+  userId: "",
   yearId: 0,
 };
 

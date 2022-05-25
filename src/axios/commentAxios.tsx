@@ -1,31 +1,13 @@
 import { getHeaders, getUrl } from '../utils/api';
 import axios from 'axios';
 
-export const commentException = {
-  getCommentList: (err: any) => {
-    const {
-      response: {
-        data: { error },
-      },
-    } = err;
-    throw new Error(error);
-  },
-  createComment: (err: any) => {
-    const {
-      response: {
-        data: { error },
-      },
-    } = err;
-    throw new Error(error);
-  },
-  removeComment: (err: any) => {
-    const {
-      response: {
-        data: { error },
-      },
-    } = err;
-    throw new Error(error);
-  },
+export const commentException = (err: any) => {
+  const {
+    response: {
+      data: { error },
+    },
+  } = err;
+  throw new Error(error);
 };
 
 const commentAxios = {
@@ -38,7 +20,7 @@ const commentAxios = {
       const { data } = await axios.get(url, { headers });
       comments = data.comments;
     } catch (error) {
-      commentException.getCommentList(error);
+      commentException(error);
     }
     return comments;
   },
@@ -52,7 +34,7 @@ const commentAxios = {
       const { data } = await axios.get(url, { headers });
       comments = data.comments;
     } catch (error) {
-      commentException.getCommentList(error);
+      commentException(error);
     }
     return comments;
   },
@@ -66,7 +48,7 @@ const commentAxios = {
       const { data } = await axios.post(url, body, { headers });
       comment = data;
     } catch (error) {
-      commentException.createComment(error);
+      commentException(error);
     }
     return comment;
   },
@@ -84,43 +66,21 @@ const commentAxios = {
       const { data } = await axios.post(url, body, { headers });
       comment = data;
     } catch (error) {
-      console.log(error);
-      commentException.createComment(error);
+      commentException(error);
     }
     return comment;
   },
-  //하위 코멘트 조회
-  getChildComment: async (roomId: any, cmtNum: number) => {
-    const url = getUrl(`/api/comments/${roomId}/${cmtNum}`);
-    const headers = getHeaders();
-    const data = await axios
-      .get(url, { headers })
-      .then((res) => res.data)
-      .catch((err) => err.response.data);
-    return data;
-  },
-
-  setChildComment: async (roomId: any, parentId: any, content: any) => {
-    const url = getUrl(`/api/comments/${roomId}/${parentId}`);
-    const headers = getHeaders();
-    const body = { content };
-    const data = await axios
-      .post(url, body, { headers })
-      .then((res) => res.data)
-      .catch((err) => err.response.data);
-    return data;
-  },
-
   //코멘트 수정요청 api
-  editComment: async (cmtId: any, content: any) => {
-    const url = getUrl(`/api/comments/${cmtId}`);
+  saveComment: async (commentId: number, content: string) => {
+    const url = getUrl(`/api/comments/${commentId}`);
     const headers = getHeaders();
     const body = { content };
-    const data = await axios
-      .patch(url, body, { headers })
-      .then((res) => res.data)
-      .catch((err) => err.response.data);
-    return data;
+    try {
+      await axios.patch(url, body, { headers });
+    } catch (error) {
+      commentException(error);
+    }
+    return;
   },
 
   //코멘트 삭제 요청 api
@@ -130,7 +90,7 @@ const commentAxios = {
     try {
       await axios.delete(url, { headers });
     } catch (error) {
-      commentException.createComment(error);
+      commentException(error);
     }
   },
 };

@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 /*
   type ::::::::::::::::::::::::::::::::::::::
@@ -31,11 +31,11 @@ const Text = ({
   _onClick,
 }: Props) => {
   switch (type) {
-    case "line":
+    case 'line':
       return (
         <React.Fragment>
           <Div
-            style={{ display: "flex" }}
+            style={{ display: 'flex' }}
             padding={padding}
             margin={margin}
             customize={customize}
@@ -47,21 +47,22 @@ const Text = ({
           </Div>
         </React.Fragment>
       );
-    case "area":
+    case 'area':
       return (
         <Div margin={margin} padding={padding} customize={customize}>
-          <P bold>상세 내용</P>
+          <P bold>{titleText}</P>
           <Box>
             <P>{children}</P>
           </Box>
         </Div>
       );
-    case "title":
+    case 'title':
       return (
         <Div margin={margin} padding={padding} customize={customize}>
           <P bold fontSize="20px">
-            {children}
+            {titleText}
           </P>
+          <p>{children}</p>
         </Div>
       );
   }
@@ -77,13 +78,13 @@ const Text = ({
 };
 
 Text.defaultProps = {
-  titleText: "제목",
+  titleText: '제목',
 };
 
 const Div = styled.div<Props>`
-  ${(props) => (props.padding ? `padding: ${props.padding};` : "0px")};
-  ${(props) => (props.margin ? `margin: ${props.margin};` : "0px")};
-  ${(props) => props.customize ?? ""}
+  ${(props) => (props.padding ? `padding: ${props.padding};` : '0px')};
+  ${(props) => (props.margin ? `margin: ${props.margin};` : '0px')};
+  ${(props) => props.customize ?? ''}
 `;
 
 const Box = styled.div`
@@ -95,9 +96,9 @@ const Box = styled.div`
 
 const P = styled.p<Props>`
   ${(props) =>
-    props.fontSize ? `font-size: ${props.fontSize}` : "font-size: 15px"};
-  ${(props) => (props.margin ? `margin: ${props.margin}` : "margin: 0px;")};
-  ${(props) => (props.padding ? `padding: ${props.padding}` : "padding: 0px;")};
-  ${(props) => (props.bold ? `font-weight: bold;` : "")}
+    props.fontSize ? `font-size: ${props.fontSize}` : 'font-size: 15px'};
+  ${(props) => (props.margin ? `margin: ${props.margin}` : 'margin: 0px;')};
+  ${(props) => (props.padding ? `padding: ${props.padding}` : 'padding: 0px;')};
+  ${(props) => (props.bold ? `font-weight: bold;` : '')}
 `;
 export default Text;

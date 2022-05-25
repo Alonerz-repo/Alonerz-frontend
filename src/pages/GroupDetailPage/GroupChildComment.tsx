@@ -1,52 +1,28 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import commentAxios from '../../axios/commentAxios';
-import { Grid, Image, Text } from '../../elements';
+import ConfirmModal, {
+  ConfirmModalProps,
+  initConfirmModalProps,
+} from '../../components/ConfirmModal';
+import { Image, Text } from '../../elements';
 import { careerUtils, characterImageUtils, yearUtils } from '../../utils/asset';
-import { ChildComment } from './interface';
+import { ChildComment, valueChangeEvent } from './interface';
+import {
+  ButtonGroups,
+  ContentText,
+  TextArea,
+  TextButton,
+  UserWrapper,
+  Wrapper,
+} from './styled';
 
 interface ChildCommentProps {
   userId: string;
   comment: ChildComment;
+  onSaveComment(commentId: number, content: string): void;
   onRemoveComment(commentId: number): void;
 }
-
-const imageProps = (imageUrl: string, characterImageId: number) => ({
-  shape: 'circle',
-  size: '30px',
-  src: imageUrl
-    ? imageUrl
-    : characterImageUtils.findById(characterImageId)?.url,
-});
-
-const textProps = {
-  nickname: {
-    style: {
-      fontWeight: 700,
-      marginLeft: 5,
-      padding: 5,
-    },
-  },
-  careerAndYear: {
-    style: {
-      marginLeft: 5,
-    },
-  },
-};
-
-const UserWrapper = styled.div`
-  vertical-align: middle;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  margin: 10px 0;
-`;
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  jusify-content: center;
-`;
 
 const TopWrapper = styled.div`
   display: flex;
@@ -61,65 +37,122 @@ const BottomWrapper = styled.div`
 `;
 
 const GroupChildComment = (props: ChildCommentProps) => {
-  const { userId, comment, onRemoveComment } = props;
-  const onEditClick = () => {};
-  const onRemoveClick = async () => {
-    const { commentId } = comment as ChildComment;
-    await commentAxios.removeComment(commentId);
-    onRemoveComment(commentId);
+  const { userId, comment, onSaveComment, onRemoveComment } = props;
+  const [editContent, setEditContent] = useState<string>(comment.content);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
+    initConfirmModalProps,
+  );
+
+  const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
+  const onEditClick = () => setEditMode(true);
+  const onCancelClick = () => setEditMode(false);
+  const onContentChange = (e: valueChangeEvent) => {
+    const {
+      target: { value },
+    } = e;
+    setEditContent(value);
   };
-  // 사용자 렌더링
+
+  const onSaveClick = async () => {
+    const { commentId } = comment;
+    await commentAxios.saveComment(commentId, editContent);
+    onSaveComment(commentId, editContent);
+    setEditMode(false);
+  };
+
+  const onRemoveClick = () => {
+    const { commentId } = comment as ChildComment;
+    setConfirmMoalProps({
+      message: '댓글을 삭제하시겠습니까?',
+      yesLabel: '삭제',
+      noLabel: '취소',
+      onOk: async () => {
+        await commentAxios.removeComment(commentId);
+        onRemoveComment(commentId);
+        onCloseConfirmModal();
+      },
+      onClose: onCloseConfirmModal,
+    });
+  };
+
+  // 유저 렌더링
   const renderUser = () => {
     const {
       user: { nickname, careerId, yearId, profileImageUrl, characterImageId },
     } = comment as ChildComment;
+
     const career = careerUtils.findById(careerId) as { item: string };
     const year = yearUtils.findById(yearId) as { item: string };
+
+    const imageProps = (imageUrl: string, characterImageId: number) => ({
+      shape: 'circle',
+      size: '30px',
+      src: imageUrl
+        ? imageUrl
+        : characterImageUtils.findById(characterImageId)?.url,
+    });
+
+    const nicknameProps = {
+      style: {
+        fontWeight: 700,
+        padding: 5,
+      },
+    };
+
     return (
       <UserWrapper>
         <Image {...imageProps(profileImageUrl, characterImageId)} />
-        <div {...textProps.nickname}>{nickname}</div>
-        <div {...textProps.careerAndYear}>
+        <ContentText {...nicknameProps}>{nickname}</ContentText>
+        <ContentText>
           {career?.item} / {year?.item}
-        </div>
+        </ContentText>
       </UserWrapper>
     );
   };
 
-  // 댓글 렌더링
+  // 댓글 내용 렌더링
   const renderComment = () => {
     const { content } = comment as ChildComment;
-    return <Text>{content}</Text>;
+    const textAreaProps = {
+      value: editContent,
+      onChange: onContentChange,
+    };
+    return editMode ? <TextArea {...textAreaProps} /> : <Text>{content}</Text>;
   };
 
   // 버튼 렌더링
   const renderButtons = () => {
     const { user } = comment as ChildComment;
-    const buttonProps = {
-      customize: 'color: #BDBDBD; cursor: pointer;',
-      margin: '0 3px',
-      fontSize: '13px',
-    };
+
+    if (editMode) {
+      return (
+        <ButtonGroups>
+          <TextButton onClick={onSaveClick}>저장</TextButton>
+          <TextButton onClick={onCancelClick}>취소</TextButton>
+        </ButtonGroups>
+      );
+    }
+
     return userId === user.userId ? (
-      <ButtonWrapper>
-        <Text {...buttonProps} _onClick={onEditClick}>
-          수정
-        </Text>
-        <Text {...buttonProps} _onClick={onRemoveClick}>
-          삭제
-        </Text>
-      </ButtonWrapper>
+      <ButtonGroups>
+        <TextButton onClick={onEditClick}>수정</TextButton>
+        <TextButton onClick={onRemoveClick}>삭제</TextButton>
+      </ButtonGroups>
     ) : null;
   };
 
   return (
-    <Grid>
-      <TopWrapper>
-        {renderUser()}
-        {renderButtons()}
-      </TopWrapper>
-      <BottomWrapper>{renderComment()}</BottomWrapper>
-    </Grid>
+    <>
+      <ConfirmModal {...confirmModalProps} />
+      <Wrapper style={{ padding: '0 10px' }}>
+        <TopWrapper>
+          {renderUser()}
+          {renderButtons()}
+        </TopWrapper>
+        <BottomWrapper>{renderComment()}</BottomWrapper>
+      </Wrapper>
+    </>
   );
 };
 
