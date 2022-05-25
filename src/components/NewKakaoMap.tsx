@@ -28,10 +28,12 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
     new window.kakao.maps.Size(28, 38)
   );
 
+  // X, Y 좌표가 변하거나 새로운 keyword로 검색이 왔을 때 정보 받아오기
   React.useEffect(() => {
     searching();
   }, [X, Y, keyword]);
 
+  // 현재 지도에 있는 마커들을 지우기 위함
   const removeMarkers = () => {
     for (let i = 0; i < markers.length; i++) {
       console.log(markers[i]);
@@ -40,6 +42,7 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
     markers = [];
   };
 
+  // key에 맞는 장소를 검색
   const searching = () => {
     if (keyword !== "") {
       removeMarkers();
@@ -51,6 +54,7 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
     }
   };
 
+  // 최초 지도를 초기화
   React.useEffect(() => {
     const mapContainer = document.getElementById("map"); // 지도를 표시할 div
 
@@ -66,6 +70,8 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
           level: 4,
         };
         const map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+        // 지도가 dragend되었을 때 X,Y 상태값 변화
         window.kakao.maps.event.addListener(map, "dragend", function () {
           // 지도 중심좌표를 얻어옵니다
           const center = map.getCenter();
@@ -76,24 +82,22 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
       });
     }
 
+    // X,Y값을 상위 컴포넌트로 받아온다면 현재 위치가 아닌 해당 위치로
+    // 현재위치를 받아오기 전에 실행할 필요가 있어보임
     if (prevX && prevY) {
     }
   }, []);
 
+  // 장소를 검색하고 결과를 data로 받아옴
   function placesSearchCB(data: any, status: any) {
     if (status === window.kakao.maps.services.Status.OK) {
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-      // LatLngBounds 객체에 좌표를 추가합니다
-      const bounds = new window.kakao.maps.LatLngBounds();
       for (let i = 0; i < data.length; i++) {
         searchDisplayMarker(data[i]);
-        bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
       }
-
-      // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-      // map.setBounds(bounds);
     }
   }
+
+  // 검색한 결과를 하나씩 받아 marker를 표시
   function searchDisplayMarker(place: any) {
     const marker = new window.kakao.maps.Marker({
       map: map,
@@ -101,6 +105,7 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
       image: markerImage,
     });
 
+    // 검색된 마커를 마커 배열에 저장 (추후 마커를 지우기 위해)
     markers.push(marker);
 
     const iwContent = "", // 인포윈도우에 표시할 내용
@@ -121,6 +126,7 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
           "</div>"
       );
       infowindow.open(map, marker);
+      // 클릭한 장소를 모임 장소로 설정
       handleMap(
         Number(place.y),
         Number(place.x),
@@ -135,8 +141,8 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
   };
 
   const handleKeyPress = (e: any) => {
-    e.stopPropagation();
     if (e.key === "Enter") {
+      e.preventDefault();
       handleSearch();
     }
   };
