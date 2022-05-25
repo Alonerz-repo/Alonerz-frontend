@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useController } from "react-hook-form";
 
 interface Data {
   locationX: number;
@@ -8,13 +9,19 @@ interface Data {
   placeName: string;
 }
 
-const NewKakaoMap = () => {
+interface MapProps {
+  handleMap: any;
+  prevX?: number;
+  prevY?: number;
+}
+
+const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
   const [X, setX] = React.useState<number>();
   const [Y, setY] = React.useState<number>();
   const [map, setMap] = React.useState<any>();
   const search = React.useRef<any>(null);
   const [keyword, setKeyword] = React.useState("");
-  const [data, setData] = React.useState<Data>();
+  let markers: any[] = [];
 
   const markerImage = new window.kakao.maps.MarkerImage(
     "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
@@ -22,19 +29,27 @@ const NewKakaoMap = () => {
   );
 
   React.useEffect(() => {
-    console.log(data);
-  }, [data]);
+    searching();
+  }, [X, Y, keyword]);
 
-  React.useEffect(() => {
+  const removeMarkers = () => {
+    for (let i = 0; i < markers.length; i++) {
+      console.log(markers[i]);
+      markers[i].setMap(null);
+    }
+    markers = [];
+  };
+
+  const searching = () => {
     if (keyword !== "") {
-      console.log(X, Y);
+      removeMarkers();
       const ps = new window.kakao.maps.services.Places();
       const location = new window.kakao.maps.LatLng(X, Y);
       const radius = 3000;
       // 키워드로 장소를 검색합니다
       ps.keywordSearch(keyword, placesSearchCB, { location, radius });
     }
-  }, [keyword]);
+  };
 
   React.useEffect(() => {
     const mapContainer = document.getElementById("map"); // 지도를 표시할 div
@@ -60,6 +75,9 @@ const NewKakaoMap = () => {
         setMap(map);
       });
     }
+
+    if (prevX && prevY) {
+    }
   }, []);
 
   function placesSearchCB(data: any, status: any) {
@@ -83,6 +101,8 @@ const NewKakaoMap = () => {
       image: markerImage,
     });
 
+    markers.push(marker);
+
     const iwContent = "", // 인포윈도우에 표시할 내용
       iwRemoveable = true;
 
@@ -101,12 +121,12 @@ const NewKakaoMap = () => {
           "</div>"
       );
       infowindow.open(map, marker);
-      setData({
-        placeName: place.place_name,
-        locationX: place.x,
-        locationY: place.y,
-        address: place.address_name,
-      });
+      handleMap(
+        Number(place.y),
+        Number(place.x),
+        place.address_name,
+        place.place_name
+      );
     });
   }
 
@@ -114,18 +134,18 @@ const NewKakaoMap = () => {
     setKeyword(search.current.value);
   };
 
-  // const handleKeyPress = (e: any) => {
-  //   e.stopPropagation();
-  //   if (e.key === "Enter") {
-  //     handleSearch();
-  //   }
-  // };
+  const handleKeyPress = (e: any) => {
+    e.stopPropagation();
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <React.Fragment>
       <MapContainer id="map"></MapContainer>
       <Wrap>
-        <SearchInput ref={search}></SearchInput>
+        <SearchInput ref={search} onKeyPress={handleKeyPress}></SearchInput>
         <SearchButton onClick={handleSearch}>검색</SearchButton>
       </Wrap>
     </React.Fragment>
