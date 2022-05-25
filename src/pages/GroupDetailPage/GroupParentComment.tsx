@@ -3,6 +3,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import commentAxios from '../../axios/commentAxios';
+import ConfirmModal, {
+  ConfirmModalProps,
+  initConfirmModalProps,
+} from '../../components/ConfirmModal';
 import { Image, Text } from '../../elements';
 import { careerUtils, characterImageUtils, yearUtils } from '../../utils/asset';
 import GroupChildComments from './GroupChildComments';
@@ -40,13 +44,14 @@ const GroupParentComment = (props: GroupCommentProps) => {
   const [editContent, setEditContent] = useState<string>(comment.content);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [reply, setReply] = useState<boolean>(false);
+  const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
+    initConfirmModalProps,
+  );
 
+  const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
   const onReplyClick = () => setReply(!reply);
-
   const onEditClick = () => setEditMode(true);
-
   const onCancelClick = () => setEditMode(false);
-
   const onContentChange = (e: valueChangeEvent) => {
     const {
       target: { value },
@@ -61,10 +66,19 @@ const GroupParentComment = (props: GroupCommentProps) => {
     setEditMode(false);
   };
 
-  const onRemoveClick = async () => {
+  const onRemoveClick = () => {
     const { commentId } = comment as ParentComment;
-    await commentAxios.removeComment(commentId);
-    onRemoveComment(commentId);
+    setConfirmMoalProps({
+      message: '댓글을 삭제하시겠습니까?',
+      yesLabel: '삭제',
+      noLabel: '취소',
+      onOk: async () => {
+        await commentAxios.removeComment(commentId);
+        onRemoveComment(commentId);
+        onCloseConfirmModal();
+      },
+      onClose: onCloseConfirmModal,
+    });
   };
 
   // 유저 렌더링
@@ -109,7 +123,11 @@ const GroupParentComment = (props: GroupCommentProps) => {
       value: editContent,
       onChange: onContentChange,
     };
-    return editMode ? <TextArea {...textAreaProps} /> : <Text>{content}</Text>;
+    return (
+      <BottomWrapper>
+        {editMode ? <TextArea {...textAreaProps} /> : <Text>{content}</Text>}
+      </BottomWrapper>
+    );
   };
 
   // 버튼 렌더링
@@ -125,13 +143,19 @@ const GroupParentComment = (props: GroupCommentProps) => {
       );
     }
 
-    return userId === user.userId ? (
+    return (
       <ButtonGroups>
-        <TextButton onClick={onReplyClick}>답글</TextButton>
-        <TextButton onClick={onEditClick}>수정</TextButton>
-        <TextButton onClick={onRemoveClick}>삭제</TextButton>
+        <TextButton onClick={onReplyClick}>
+          {reply ? '숨기기' : '답글 남기기'}
+        </TextButton>
+        {userId === user.userId && (
+          <>
+            <TextButton onClick={onEditClick}>수정</TextButton>
+            <TextButton onClick={onRemoveClick}>삭제</TextButton>
+          </>
+        )}
       </ButtonGroups>
-    ) : null;
+    );
   };
 
   // 하위 댓글 컴포넌트 렌더링
@@ -144,18 +168,23 @@ const GroupParentComment = (props: GroupCommentProps) => {
       childCommentCount,
       reply,
     };
-    return <GroupChildComments {...childCommentsProps} />;
+    return (
+      <BottomWrapper>
+        <GroupChildComments {...childCommentsProps} />
+      </BottomWrapper>
+    );
   };
 
   return (
-    <div>
+    <>
+      <ConfirmModal {...confirmModalProps} />
       <TopWrapper>
         {renderUser()}
         {renderButtons()}
       </TopWrapper>
-      <BottomWrapper>{renderComment()}</BottomWrapper>
-      <BottomWrapper>{renderChildComments()}</BottomWrapper>
-    </div>
+      {renderComment()}
+      {renderChildComments()}
+    </>
   );
 };
 

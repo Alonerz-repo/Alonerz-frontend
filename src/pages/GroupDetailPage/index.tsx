@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Group, groupAxios } from '../../axios/groupAxios';
 import { useAppSelector } from '../../store/config';
 import GroupParentComments from './GroupParentComments';
@@ -7,6 +7,18 @@ import GroupDetail from './GroupDetail';
 import GroupMembers from './GroupMembers';
 import styled from 'styled-components';
 import Header from '../../components/Header';
+import ConfirmModal, {
+  ConfirmModalProps,
+  initConfirmModalProps,
+} from '../../components/ConfirmModal';
+import AlertModal, {
+  AlertModalProps,
+  initAlertModalProps,
+} from '../../components/AlertModal';
+import {
+  GroupDetailPageException,
+  GroupDetailPageStatusCode,
+} from './exception';
 
 // util로 이동시킬 것
 const DateFormatter = (dateString: Date) => {
@@ -31,11 +43,11 @@ const DDayCalculator = (dateString: Date) => {
   const today = new Date().getTime();
   const target = new Date(dateString).getTime();
   const diffTime = target - today;
-  const diffDays = Math.abs(Math.ceil(diffTime / (1000 * 3600 * 24)));
+  const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24));
   if (diffDays === 0) {
     return `D-Day`;
   }
-  return `D${diffDays > 0 ? '+' : '-'}${diffDays}`;
+  return `D${diffDays > 0 ? '-' : '+'}${Math.abs(diffDays)}`;
 };
 
 const ButtonBox = styled.div`
@@ -73,9 +85,15 @@ const GrayButton = styled.div`
 `;
 
 const GroupDetailPage = () => {
+  const navigate = useNavigate();
   const { userId } = useAppSelector((state) => state.user);
   const { groupId } = useParams<string>();
   const [group, setGroup] = useState<Group>();
+  const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
+    initConfirmModalProps,
+  );
+  const [alertMoalProps, setAlertModalProps] =
+    useState<AlertModalProps>(initAlertModalProps);
 
   // After :: Custom Hook
   useEffect(() => {
@@ -84,11 +102,64 @@ const GroupDetailPage = () => {
         const group = await groupAxios.getOneByGroupId(groupId as string);
         setGroup(group);
       } catch (e) {
-        console.log(e);
+        const { statusCode } = e as GroupDetailPageStatusCode;
+        GroupDetailPageException(navigate, setAlertModalProps)[statusCode]();
       }
     };
     getGroup();
-  }, [groupId]);
+  }, [navigate, groupId]);
+
+  const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
+  const onEditClick = () => navigate(`/edit/partyInfo/${groupId}`);
+  const onDeleteClick = () => {
+    setConfirmMoalProps({
+      message: '그룹을 삭제하시겠습니까?',
+      yesLabel: '삭제',
+      noLabel: '취소',
+      onOk: async () => {
+        try {
+          await groupAxios.deleteGroup(groupId as string);
+          onCloseConfirmModal();
+          navigate('/');
+        } catch (e) {
+          const { statusCode } = e as GroupDetailPageStatusCode;
+          onCloseConfirmModal();
+          GroupDetailPageException(navigate, setAlertModalProps)[statusCode]();
+        }
+      },
+      onClose: onCloseConfirmModal,
+    });
+  };
+
+  const onExitClick = async () => {
+    setConfirmMoalProps({
+      message: '그룹에서 탈퇴하시겠습니까?',
+      yesLabel: '나가기',
+      noLabel: '취소',
+      onOk: async () => {
+        try {
+          await groupAxios.joinOrExitGroup(groupId as string, 'exit');
+          const group = await groupAxios.getOneByGroupId(groupId as string);
+          onCloseConfirmModal();
+          setGroup(group);
+        } catch (e) {
+          onCloseConfirmModal();
+        }
+      },
+      onClose: onCloseConfirmModal,
+    });
+  };
+
+  const onJoinClick = async () => {
+    try {
+      await groupAxios.joinOrExitGroup(groupId as string, 'join');
+      const group = await groupAxios.getOneByGroupId(groupId as string);
+      setGroup(group);
+    } catch (e) {
+      const { statusCode } = e as GroupDetailPageStatusCode;
+      GroupDetailPageException(navigate, setAlertModalProps)[statusCode]();
+    }
+  };
 
   // 그룹 상세 내용 렌더링
   const renderGroupDetail = () => {
@@ -130,11 +201,13 @@ const GroupDetailPage = () => {
     return <GroupDetail {...groupDetailProps} />;
   };
 
+  // Alert, Confirm 모달 적용
+
   // 그룹 참여 인원 목록 렌더링
   const renderGroupMembers = () => {
     const { host, guests, limit } = group as Group;
     const memberCount = `(${guests.length + 1}/${limit})`;
-    const groupMembersProps = { memberCount, host, guests };
+    const groupMembersProps = { memberCount, host, guests, navigate };
     return <GroupMembers {...groupMembersProps} />;
   };
 
@@ -151,8 +224,8 @@ const GroupDetailPage = () => {
     if (host.userId === userId) {
       return (
         <ButtonBox>
-          <RedButton>수정</RedButton>
-          <RedButton>삭제</RedButton>
+          <RedButton onClick={onEditClick}>수정</RedButton>
+          <RedButton onClick={onDeleteClick}>삭제</RedButton>
         </ButtonBox>
       );
     }
@@ -161,9 +234,9 @@ const GroupDetailPage = () => {
     return (
       <ButtonBox>
         {isAlreadyJoin ? (
-          <GrayButton>탈퇴하기</GrayButton>
+          <GrayButton onClick={onExitClick}>탈퇴하기</GrayButton>
         ) : (
-          <RedButton>참여하기</RedButton>
+          <RedButton onClick={onJoinClick}>참여하기</RedButton>
         )}
       </ButtonBox>
     );
@@ -171,6 +244,8 @@ const GroupDetailPage = () => {
 
   return (
     <React.Fragment>
+      <AlertModal {...alertMoalProps} />
+      <ConfirmModal {...confirmModalProps} />
       <Header text="" />
       {group ? (
         <React.Fragment>

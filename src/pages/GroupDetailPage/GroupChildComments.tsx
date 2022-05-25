@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import commentAxios from '../../axios/commentAxios';
 import GroupChildComment from './GroupChildComment';
@@ -15,6 +15,12 @@ interface ChildCommentsProps {
 
 const VisibleButton = styled.div`
   cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: #aaa;
 `;
 
 const GroupChildComments = (props: ChildCommentsProps) => {
@@ -92,34 +98,34 @@ const GroupChildComments = (props: ChildCommentsProps) => {
     };
 
     return (
-      <React.Fragment>
+      <>
         {reply ? (
-          <InputGroup>
+          <InputGroup style={{ paddingBottom: 10 }}>
             <TextArea {...textAreaProps} />
             <SubmitButton {...buttonProps}>등록</SubmitButton>
           </InputGroup>
         ) : null}
-      </React.Fragment>
+      </>
     );
   };
 
   // 댓글 더보기/숨김 버튼 렌더링
   const renderShowCommentsButton = () => {
     return (
-      <React.Fragment>
+      <>
         {commentCount ? (
           <VisibleButton onClick={onShowChildComments}>
             {showChildComment ? '숨기기' : `${commentCount}개의 답글 보기`}
           </VisibleButton>
         ) : null}
-      </React.Fragment>
+      </>
     );
   };
 
   // 하위 댓글 렌더링
   const renderChildComments = () => {
     return (
-      <React.Fragment>
+      <>
         {showChildComment
           ? comments.map((comment) => {
               const key = `${userId}-${groupId}${comment.commentId}`;
@@ -133,27 +139,29 @@ const GroupChildComments = (props: ChildCommentsProps) => {
               return <GroupChildComment {...commentProps} />;
             })
           : null}
-      </React.Fragment>
+      </>
     );
   };
 
   const wrapperProps = {
     style: {
-      padding: 10,
+      padding: '0 10px',
       width: '100%',
     },
   };
 
   return (
-    <React.Fragment>
-      {childCommentCount ? (
-        <Wrapper {...wrapperProps}>
-          {renderInputField()}
-          {renderShowCommentsButton()}
-          {renderChildComments()}
-        </Wrapper>
-      ) : null}
-    </React.Fragment>
+    <>
+      <Wrapper {...wrapperProps}>
+        {renderInputField()}
+        {commentCount ? (
+          <>
+            {renderShowCommentsButton()}
+            {renderChildComments()}
+          </>
+        ) : null}
+      </Wrapper>
+    </>
   );
 };
 

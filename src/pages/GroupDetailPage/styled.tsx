@@ -13,6 +13,24 @@ export const ContentSubTitle = styled.h2`
   font-size: 16px;
 `;
 
+export const ContentBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+export const ContentField = styled.div`
+  padding: 5px 2px;
+  margin: 0 30px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+`;
+export const ContentItem = styled.div`
+  padding: 2px;
+  font-size: 14px;
+`;
+
 export const ContentText = styled.div`
   margin: 0 0 0 3px;
   display: flex;
@@ -70,6 +88,11 @@ export const UserWrapper = styled.div`
   justify-content: start;
   align-items: center;
   margin: 10px 0;
+`;
+
+export const UserItem = styled.div`
+  margin: 0 0 0 5px;
+  font-size: 14px;
 `;
 
 export const ButtonGroups = styled.div`

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props {
+export interface AlertModalProps {
   message: string;
   onClose: Function;
   closeLabel: string;
@@ -56,7 +56,13 @@ const CloseButton = styled.div`
   color: #fff;
 `;
 
-const AlertModal = (props: Props) => {
+export const initAlertModalProps: AlertModalProps = {
+  message: '',
+  closeLabel: '',
+  onClose: () => {},
+};
+
+const AlertModal = (props: AlertModalProps) => {
   const { message, onClose, closeLabel } = props;
 
   const onClick = () => onClose();

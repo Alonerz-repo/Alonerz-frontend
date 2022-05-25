@@ -32,13 +32,6 @@ export interface Group {
   guests: GroupUser[];
 }
 
-export const groupException = {
-  getOneByGroupId: (err: any) => {
-    const { error } = err;
-    throw new Error(error);
-  },
-};
-
 export const groupAxios = {
   getOneByGroupId: async (groupId: string): Promise<Group> => {
     const url = getUrl(`/api/groups/${groupId}`);
@@ -47,9 +40,39 @@ export const groupAxios = {
     try {
       const { data } = await axios.get(url, { headers });
       group = data;
-    } catch (error) {
-      groupException.getOneByGroupId(error);
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
     }
     return group;
+  },
+  joinOrExitGroup: async (
+    groupId: string,
+    action: 'join' | 'exit',
+  ): Promise<void> => {
+    const url = getUrl(`/api/groups/${groupId}?action=${action}`);
+    const headers = getHeaders();
+    try {
+      await axios.put(url, {}, { headers });
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+  },
+  deleteGroup: async (groupId: string): Promise<void> => {
+    const url = getUrl(`/api/groups/${groupId}`);
+    const headers = getHeaders();
+    try {
+      await axios.delete(url, { headers });
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
   },
 };
