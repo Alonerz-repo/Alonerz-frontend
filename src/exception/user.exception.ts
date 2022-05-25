@@ -7,6 +7,7 @@ interface ErrorData {
 
 export const userExceptions = {
   modify: async (error: ErrorData) => {
+    console.log("my error", error);
     if (error === undefined) {
       throw Error("Natwork Error!");
     }
@@ -63,6 +64,17 @@ export const userExceptions = {
       case 403:
         authAxios.refreshUser().then((_) => window.location.reload());
         return Error("재인증");
+    }
+  },
+
+  follow: async (err: any) => {
+    console.log(err);
+    const { statusCode } = err;
+    switch (statusCode) {
+      case 401:
+        throw Error("로그인");
+      case 403:
+        throw Error("token");
     }
   },
 };

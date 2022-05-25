@@ -1,52 +1,65 @@
 import React from "react";
 import Header from "../components/Header";
 import useFollow from "../useCustom/useFollow";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Image, Grid, Text } from "../elements";
-import assets from "../assets/assets.json";
+import { useLocation } from "react-router-dom";
+import { careerUtils } from "../utils/asset";
+import FollowUser from "../components/Follow";
 
-const defaultImage = assets.characters[0];
-
-interface User {
-  userId: string;
-  imageUrl: string | null;
+interface user {
+  careerId: number;
+  characterImageId: number;
+  description: string;
   nickname: string;
-  careerId: number | null;
+  point: number;
+  profileImageUrl: string | null;
+  userId: string;
+  yearId: number;
 }
 
 const FollowList = () => {
   //상위 연결된 컴포넌트에서 navigate 옵션값으로 들어온 데이터를 uselocation함수로 받습니다.
   const { state }: any = useLocation();
-  const navigate = useNavigate();
   const { uid, isfollow } = state;
+
   //유저의 팔로우/팔로잉 리스트를 커스텀 훅으로 받습니다.
   const users = useFollow(uid, isfollow);
+  const myFollowingList = useFollow(uid, "following");
 
-  //리스트를 클릭했을떄, 상대방 유저프로필로 이동합니다.
-  const goToUser = (userId: string) => {
-    navigate(`/user/${userId}`);
+  const isFollow = (userId: string) => {
+    const myfollowid = myFollowingList?.find(
+      (value) => value.userId === userId
+    );
+    if (myfollowid !== undefined) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const renderUsers = () => {
-    return users.map((user: User, key: number) => {
-      const { imageUrl, nickname, careerId, userId } = user;
+    if (users !== undefined) {
+      const results = users.map((value: user, key: number) => {
+        const { careerId, userId } = value;
+        const groupItem = careerUtils.findById(careerId);
+        const isfolo = isFollow(userId);
+
+        return (
+          <FollowUser
+            isfolo={isfolo}
+            uid={uid}
+            user={value}
+            groupItem={groupItem}
+          />
+        );
+      });
+      return results;
+    } else {
       return (
-        <Grid key={key}>
-          <div onClick={() => goToUser(userId)}>
-            <Grid display="flex" padding="20px 20px">
-              <Image
-                size="44px"
-                src={imageUrl ? imageUrl : defaultImage}
-              ></Image>
-              <Grid padding="3px 14px">
-                <Text>{nickname}</Text>
-                <Text>{careerId}</Text>
-              </Grid>
-            </Grid>
-          </div>
-        </Grid>
+        <React.Fragment>
+          함께하고 싶은 나만의 파티원을 채우길바람
+        </React.Fragment>
       );
-    });
+    }
   };
 
   return (

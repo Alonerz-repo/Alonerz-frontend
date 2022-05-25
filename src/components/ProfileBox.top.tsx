@@ -3,14 +3,35 @@ import styled from "styled-components";
 import { characterImageUtils } from "../utils/asset";
 import { Grid } from "../elements";
 import icon from "../assets/header";
-import { useAppSelect, useAppDispatch } from "../store/config.hook";
+import { useAppDispatch, useAppSelect } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
 import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
-import boardAxios from "../axios/boardAxios";
 
 //프로필 캐릭터 스티커용 상단 컴포넌트입니다.
 interface Props {
   bg?: string;
+}
+
+interface Character {
+  Character: number;
+  color: number;
+  stickerOrder: number;
+  stickerImageId: number;
+  stickers: [];
+}
+const initChar: Character = {
+  Character: 0,
+  color: 0,
+  stickerOrder: 0,
+  stickerImageId: 0,
+  stickers: [],
+};
+
+interface Stickers {
+  stickerOrder: number;
+  id: number;
+  url: string;
+  stickerImageId: number;
 }
 const Box = styled.div<Props>`
   width: 100%;
@@ -31,63 +52,125 @@ const Circle = styled.div`
   color: white;
 `;
 
-const StickerBox = () => {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    const getSticker = () => {
-      // const data = boardAxios.getSticker()
-    };
-  }, []);
-  const myBoard = useAppSelect((state) => state.char);
-  const mySticker = stickerImageUtils.findById(myBoard.stickerImageId);
-  console.log(mySticker);
-  // 유저가 스티커를 어디를 클릭했는지 저장하는 스테이트입니다.
-  const [curSticker, setCurSticker] = useState(0);
-  useEffect(() => {
-    dispatch(setCharacter({ ...myBoard, stickerOrder: curSticker }));
-  }, [curSticker]);
+const StickerImage = styled.img`
+  position: absolute;
+  width: 78px;
+  height: 78px;
+`;
 
+//스티커 컴포넌트
+const StickerBox = (props: any) => {
+  const { sticker } = props;
+
+  const dispatch = useAppDispatch();
+
+  const stickerList: Stickers[] = [...sticker.stickers];
+  const stikcer = stickerList.map((value) => {
+    const { stickerOrder, stickerImageId } = value;
+    const image = stickerImageUtils.findById(stickerImageId);
+    return { stickerOrder, ...image };
+  });
+
+  //스티커 오더를 리덕스에 저장합니다.
+  const curPosition = (index: number) => {
+    dispatch(setCharacter({ ...sticker, stickerOrder: index }));
+    console.log("3");
+  };
+
+  const setST = (myIndex: number) => {
+    const a = stikcer.find((value) => value.stickerOrder === myIndex);
+    if (a !== undefined) {
+      console.log("current!");
+      return true;
+    } else {
+      console.log("false!");
+      return false;
+    }
+  };
+  const getST = (myIndex: number) => {
+    const ST = stikcer.find((value) => value.stickerOrder === myIndex);
+    return ST;
+  };
   return (
     <React.Fragment>
       <Box>
-        <div onClick={() => setCurSticker(0)}>
-          <Circle style={{ left: "116px", top: "93px" }}>+</Circle>
+        <div onClick={() => curPosition(0)}>
+          {setST(0) ? (
+            <StickerImage
+              style={{ left: "100px", top: "75px" }}
+              src={getST(0)?.url}
+              alt=""
+            />
+          ) : (
+            <Circle style={{ left: "116px", top: "93px" }}>+</Circle>
+          )}
         </div>
-        <div onClick={() => setCurSticker(1)}>
-          <Circle style={{ right: "115px", top: "93px" }}>+</Circle>
+        <div onClick={() => curPosition(1)}>
+          {setST(1) ? (
+            <StickerImage
+              style={{ right: "94px", top: "75px" }}
+              src={getST(1)?.url}
+            />
+          ) : (
+            <Circle style={{ right: "115px", top: "93px" }}>+</Circle>
+          )}
         </div>
-        <div onClick={() => setCurSticker(2)}>
-          <Circle style={{ left: "116px", bottom: "153px" }}>+</Circle>
+        <div onClick={() => curPosition(2)}>
+          {setST(2) ? (
+            <StickerImage
+              style={{ left: "100px", bottom: "137px" }}
+              src={getST(2)?.url}
+            />
+          ) : (
+            <Circle style={{ left: "116px", bottom: "153px" }}>+</Circle>
+          )}
         </div>
-        <div onClick={() => setCurSticker(3)}>
-          <Circle style={{ right: "116px", bottom: "153px" }}>+</Circle>
+        <div onClick={() => curPosition(3)}>
+          {setST(3) ? (
+            <StickerImage
+              style={{ right: "94px", bottom: "137px" }}
+              src={getST(3)?.url}
+            />
+          ) : (
+            <Circle style={{ right: "116px", bottom: "153px" }}>+</Circle>
+          )}
         </div>
       </Box>
     </React.Fragment>
   );
 };
 
+//캐릭터와 배경을 선택하는 박스
 const CharBox = (props: any) => {
+  const { board, sticker } = props;
   const dispatch = useAppDispatch();
   const [myColor, setColor] = useState<any>("#FFD9D9");
   const [curNum, setNum] = useState<number>(0);
   const length = characterImageUtils.getAll().length;
   const image = characterImageUtils.findById(curNum);
-  const myBoard = useAppSelect((state) => state.char);
 
   useEffect(() => {
-    dispatch(setCharacter({ ...myBoard, Character: curNum }));
-  }, [curNum]);
+    if (board !== undefined) {
+      setNum(board.characterImageId);
+      const result = backgroundColorUtils.findById(board.backgroundColorId);
+
+      setColor(result?.color);
+    }
+  }, [board]);
+
   useEffect(() => {
-    const color = backgroundColorUtils.findById(myBoard.color);
-    setColor(color?.color);
-  }, [myBoard]);
-  const click = (changeNum: any) => {
+    dispatch(
+      setCharacter({ ...board, characterImageId: curNum, Character: curNum })
+    );
+  }, [curNum]);
+
+  const click = (changeNum: number) => {
     switch (changeNum) {
       case 1:
         if (curNum === length - 1) {
           return setNum(0);
         }
+
         return setNum(curNum + 1);
       case -1:
         if (curNum === 0) {
@@ -133,9 +216,15 @@ const CharBox = (props: any) => {
 };
 
 const ProfileBoxTop = (props: any) => {
-  const { state } = props;
+  const { state, sticker, board } = props;
   return (
-    <React.Fragment>{state ? <StickerBox /> : <CharBox />}</React.Fragment>
+    <React.Fragment>
+      {state ? (
+        <StickerBox sticker={sticker} />
+      ) : (
+        <CharBox board={board} sticker={sticker} />
+      )}
+    </React.Fragment>
   );
 };
 

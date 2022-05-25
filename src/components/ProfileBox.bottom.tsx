@@ -4,41 +4,73 @@ import Assets from "../assets/assets.json";
 import { useAppDispatch, useAppSelect } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
 import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
+import boardAxios from "../axios/boardAxios";
 
 //프로필(캐릭터, 스티커, 색상)용으로 반복되는 카드들 모음입니다.
+interface Character {
+  Character: number;
+  color: number;
+  stickerOrder: number;
+  stickerImageId: number;
+  stickers: [];
+}
 
+const initialState: Character = {
+  Character: 0,
+  color: 0,
+  stickerOrder: 0,
+  stickerImageId: 0,
+  stickers: [],
+};
 interface ProflieBoxProps {
   setCard?: any;
 }
 
 const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
   const dispatch = useAppDispatch();
+  //리덕스의 유저 캐릭터 정보를 데이터를 가져옵니다.
+  const userInfo = useAppSelect((state) => state.user);
   const Board = useAppSelect((state) => state.char);
   const colorList = backgroundColorUtils.getAll();
   const stickerList = stickerImageUtils.getAll();
 
-  //에셋 정보를 가져옵니다.
-  const myasset = Assets;
   //스테이트에 프로필 정보를 저장합니다.
-  const [curChar, setCurChar] = useState({
-    Character: 0,
-    color: "",
-    stickerOrder: 0,
-    stickerImageId: 0,
-  });
+  const [curChar, setCurChar] = useState<Character>(initialState);
+  useEffect(() => {
+    setCurChar({ ...initialState, ...Board });
+  }, [Board]);
 
   //프로필 정보가 바뀔때마다 리덕스의 데이터를 갱신합니다.
   useEffect(() => {
-    dispatch(setCharacter(curChar));
+    // dispatch(setCharacter({ ...curChar }));
   }, [curChar]);
 
-  //스티커 정보를 스테이트에 갱신합니다.
+  // //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
-    dispatch(setCharacter({ ...Board, stickerImageId: index }));
+    dispatch(
+      setCharacter({
+        ...Board,
+        stickerImageId: index,
+      })
+    );
+    const data = {
+      stickerOrder: curChar.stickerOrder,
+      stickerImageId: index,
+    };
+    boardAxios.setSticker(data);
+    boardAxios.getSticker(userInfo.userId).then((res) => {
+      dispatch(setCharacter({ ...Board, ...res }));
+    });
   };
   //백그라운드 컬러를 스테이트에 갱신합니다.
   const setBackgroundFn = (myColor: any) => {
-    dispatch(setCharacter({ ...Board, color: myColor.id }));
+    dispatch(
+      setCharacter({
+        ...Board,
+        backgroundColorId: myColor.id,
+        color: myColor.id,
+      })
+    );
   };
   //프로필 캐릭터 선택 카드들
   if (setCard) {
