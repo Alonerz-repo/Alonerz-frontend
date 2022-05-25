@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import commentAxios from '../../axios/commentAxios';
-import GroupChildComment from './GroupChildComment';
-import { ChildComment, valueChangeEvent } from './interface';
-import { InputGroup, SubmitButton, TextArea, Wrapper } from './styled';
+import React, { useState } from "react";
+import styled from "styled-components";
+import commentAxios from "../../axios/commentAxios";
+import GroupChildComment from "./GroupChildComment";
+import { ChildComment, valueChangeEvent } from "./interface";
+import { InputGroup, SubmitButton, TextArea, Wrapper } from "./styled";
 
 interface ChildCommentsProps {
   userId: string;
@@ -21,8 +21,9 @@ const GroupChildComments = (props: ChildCommentsProps) => {
   const { userId, groupId, parentId, childCommentCount, reply } = props;
   const [comments, setComments] = useState<ChildComment[]>([]);
   const [commentCount, setCommentCount] = useState<number>(childCommentCount);
-  const [childContent, setChildContent] = useState<string>('');
+  const [childContent, setChildContent] = useState<string>("");
   const [showChildComment, setShowChildComment] = useState<boolean>(false);
+  console.log(comments);
 
   // 하위 댓글 내용 변경 이벤트 핸들러
   const onChildContentChange = (e: valueChangeEvent) => {
@@ -39,7 +40,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
       const comments = await commentAxios.getChildComments(groupId, parentId);
       setComments(comments);
       setCommentCount(comments.length);
-      setChildContent('');
+      setChildContent("");
       setShowChildComment(true);
     } catch (e) {
       const { message } = e as Error;
@@ -65,7 +66,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
   // 댓글 수정
   const onSaveComment = (commentId: number, content: string) => {
     const newComments = comments.map((comment) =>
-      comment.commentId === commentId ? { ...comment, content } : comment,
+      comment.commentId === commentId ? { ...comment, content } : comment
     );
     setComments(newComments);
   };
@@ -73,7 +74,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
   // 댓글 삭제
   const onRemoveComment = (commentId: number) => {
     const newComments = comments.filter(
-      (comment) => comment.commentId !== commentId,
+      (comment) => comment.commentId !== commentId
     );
     setComments(newComments);
     setCommentCount(newComments.length);
@@ -109,7 +110,7 @@ const GroupChildComments = (props: ChildCommentsProps) => {
       <React.Fragment>
         {commentCount ? (
           <VisibleButton onClick={onShowChildComments}>
-            {showChildComment ? '숨기기' : `${commentCount}개의 답글 보기`}
+            {showChildComment ? "숨기기" : `${commentCount}개의 답글 보기`}
           </VisibleButton>
         ) : null}
       </React.Fragment>
@@ -140,10 +141,11 @@ const GroupChildComments = (props: ChildCommentsProps) => {
   const wrapperProps = {
     style: {
       padding: 10,
-      width: '100%',
+      width: "100%",
     },
   };
 
+  // childCommentCount가 없으면 노출되지 않음
   return (
     <React.Fragment>
       {childCommentCount ? (

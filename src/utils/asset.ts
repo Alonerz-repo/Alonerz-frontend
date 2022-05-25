@@ -1,10 +1,10 @@
-import backgroundAssets from '../assets/data/backgrounds.json';
-import characterAssets from '../assets/data/characters.json';
-import iconAssets from '../assets/data/icons.json';
-import stickerAssets from '../assets/data/stickers.json';
-import careerAssets from '../assets/data/careers.json';
-import yearAssets from '../assets/data/years.json';
-import categoryAssets from '../assets/data/categories.json';
+import backgroundAssets from "../assets/data/backgrounds.json";
+import characterAssets from "../assets/data/characters.json";
+import iconAssets from "../assets/data/icons.json";
+import stickerAssets from "../assets/data/stickers.json";
+import careerAssets from "../assets/data/careers.json";
+import yearAssets from "../assets/data/years.json";
+import categoryAssets from "../assets/data/categories.json";
 
 // 얘네들도 파일 나누시면 좋습니다!
 interface BackgroundColor {
