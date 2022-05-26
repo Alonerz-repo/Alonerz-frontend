@@ -1,18 +1,17 @@
+import { onboardImages } from '../../utils/images';
 import { OnBoardCardWrapper, OnBoardContent, OnBoardImage } from './styled';
 
 interface OnBoardingCardProps {
-  imageUrl: string;
+  id: number;
   content: string;
 }
 
 const OnBoardingCard = (props: OnBoardingCardProps) => {
-  // TODO : ./assets/data/onboards.json
-  // 이미지 경로 저장 필요
-  const { imageUrl, content } = props;
+  const { id, content } = props;
 
   const onBoardImageProps = {
     style: {
-      backgroundImage: `url(${imageUrl})`,
+      backgroundImage: `url(${onboardImages[id]})`,
     },
   };
   return (
