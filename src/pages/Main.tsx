@@ -6,7 +6,6 @@ import Card from "../components/Card";
 import partyList from "../axios/partyList";
 import { useAppSelect } from "../store/config.hook";
 import Header from "../components/Header";
-import Carousel from "react-material-ui-carousel";
 
 // 메인 페이지로써 사용자의 오늘 파티목록을 받아와 보여주는 컴포넌트
 const Main = () => {
@@ -82,36 +81,27 @@ const Main = () => {
             </div>
           </React.Fragment>
         )}
-        {groups.length !== 0 && (
-          <Carousel
-            autoPlay={false}
-            animation="slide"
-            swipe={true}
-            indicators={true}
-            height="200px"
-          >
-            {/* 유저 정보가 있다면 리스트를 보여줌 */}
-            {user.userId &&
-              groups.map((value: any, index: number) => {
-                return (
-                  <React.Fragment key={index}>
-                    <Card
-                      title={value.title}
-                      limit={value.limit}
-                      headcount={value.join}
-                      address={value.address}
-                      startAt={new Date(value.startAt)}
-                      endAt={new Date(value.endAt)}
-                      src={value.imageUrl}
-                      _onClick={() => {
-                        navigate(`/participate/${value.groupId}`);
-                      }}
-                    ></Card>
-                  </React.Fragment>
-                );
-              })}
-          </Carousel>
-        )}
+        {/* 유저 정보가 있다면 리스트를 보여줌 */}
+        {user.userId &&
+          groups.map((value: any, index: number) => {
+            return (
+              <React.Fragment key={index}>
+                <Card
+                  categoryId={value.categoryId}
+                  title={value.title}
+                  limit={value.limit}
+                  headcount={value.join}
+                  address={value.address}
+                  startAt={new Date(value.startAt)}
+                  endAt={new Date(value.endAt)}
+                  src={value.imageUrl}
+                  _onClick={() => {
+                    navigate(`/participate/${value.groupId}`);
+                  }}
+                ></Card>
+              </React.Fragment>
+            );
+          })}
         <h2>🎉 오늘 파티가 열렸어요! </h2>
         {/* 아침 파티 개설 / 조회 박스 */}
         <BoxAM style={{ backgroundSize: "cover" }}>

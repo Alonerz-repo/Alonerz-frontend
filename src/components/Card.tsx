@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Category from "../assets/category";
 
 type Props = {
   title: string;
@@ -12,6 +13,7 @@ type Props = {
   _onClick?(): void;
   src?: string;
   menu?: string;
+  categoryId: number;
 };
 
 const Card = ({
@@ -25,8 +27,9 @@ const Card = ({
   _onClick,
   src,
   menu,
+  categoryId,
 }: Props) => {
-  const able = limit === headcount;
+  const findCategory = Category.findById(categoryId);
   if (isFlex) {
     const time = `${new Date(startAt ?? "").getHours()} ~ ${new Date(
       endAt ?? ""
@@ -36,7 +39,7 @@ const Card = ({
     return (
       <React.Fragment>
         <BackgroundImage isFlex onClick={_onClick} src={src}>
-          <Abled able={able} />
+          <Abled categoryId={findCategory?.image} />
           <PartyInfo isFlex>
             <div>{title}</div>
             <div>{menu}</div>
@@ -58,7 +61,6 @@ const Card = ({
           <div>{title}</div>
           <div>{`${address} | ${startAt?.getHours()}:00 ~ ${endAt?.getHours()}:00`}</div>
         </PartyInfo>
-        <Abled able={able} />
         <PartyHeadcount>
           {headcount} / {limit}
         </PartyHeadcount>
@@ -82,17 +84,20 @@ interface PartyInfoProps {
 }
 
 interface AbledProps {
-  able: boolean;
+  categoryId: string | undefined;
 }
 
 const Abled = styled.div<AbledProps>`
   width: 33px;
   height: 33px;
-  background: ${(props) => (props.able ? "gray" : "green")};
   top: -7px;
   left: -7px;
   border-radius: 33px;
   position: inherit;
+  ${(props) =>
+    props.categoryId
+      ? `background: #fff url('${props.categoryId}') no-repeat center/100%;`
+      : "background: #fff;"}
 `;
 
 const BackgroundImage = styled.div<BackgroundImageProps>`
