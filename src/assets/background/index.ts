@@ -5,11 +5,14 @@ interface Row {
   color: string;
 }
 
-const BackgroundModule = (() => ({
-  rows: data.map((color, id) => ({ id, color })),
+class BackgroundModule {
+  constructor(
+    public readonly rows: Row[] = data.map((color, id) => ({ id, color })),
+  ) {}
+
   findById(id: number): Row | undefined {
     return this.rows.find((row) => row.id === id);
-  },
-}))();
+  }
+}
 
-export default BackgroundModule;
+export default new BackgroundModule();

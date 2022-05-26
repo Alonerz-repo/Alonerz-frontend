@@ -1,18 +1,22 @@
-import data from './data.json';
+import data from "./data.json";
 
 interface Row {
   id: number;
   item: string;
 }
 
-const YearModule = (() => ({
-  rows: data.map((item, id) => ({
-    id: id + 1,
-    item,
-  })) as Row[],
+class YearModule {
+  constructor(
+    public readonly rows: Row[] = data.map((item, id) => ({
+      id: id + 1,
+      item,
+    })),
+  ) {}
+
   findById(id: number): Row | undefined {
     return this.rows.find((row) => row.id === id);
-  },
+  }
+
   findByCareerId(careerId: number): Row[] {
     switch (careerId) {
       case 1:
@@ -22,7 +26,7 @@ const YearModule = (() => ({
       default:
         return this.rows.slice(3);
     }
-  },
-}))();
+  }
+}
 
-export default YearModule;
+export default new YearModule();

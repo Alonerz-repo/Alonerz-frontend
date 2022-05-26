@@ -5,11 +5,14 @@ interface Row {
   item: string;
 }
 
-const CategoryModule = (() => ({
-  rows: data.map((item, id) => ({ id, item })) as Row[],
+class CategoryModule {
+  constructor(
+    public readonly rows: Row[] = data.map((item, id) => ({ id, item })),
+  ) {}
+
   findById(id: number): Row | undefined {
     return this.rows.find((row) => row.id === id);
-  },
-}))();
+  }
+}
 
-export default CategoryModule;
+export default new CategoryModule();
