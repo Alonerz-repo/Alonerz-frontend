@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Image, Grid, Text } from "../elements";
-import userAxios from "../axios/userAxios";
-import Header from "../components/Header";
-import AlertModal from "../components/AlertModal";
-import { useNavigate } from "react-router-dom";
-import { careerUtils } from "../utils/asset";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Image, Grid, Text } from '../elements';
+import userAxios from '../axios/userAxios';
+import Header from '../components/Header';
+import AlertModal from '../components/AlertModal';
+import { useNavigate } from 'react-router-dom';
+import CareerModule from '../assets/career';
 
 const Position = styled.div`
   position: absolute;
@@ -13,8 +13,8 @@ const Position = styled.div`
 `;
 
 const alertInit = {
-  message: "",
-  closeLabel: "",
+  message: '',
+  closeLabel: '',
   onClose: () => {},
 };
 
@@ -33,13 +33,13 @@ const BlockList = () => {
     try {
       userAxios.setblockUser(userId).then((res) =>
         setAlert({
-          message: "차단이 해제되었습니다.",
-          closeLabel: "닫기",
+          message: '차단이 해제되었습니다.',
+          closeLabel: '닫기',
           onClose: () => setAlert(alertInit),
-        })
+        }),
       );
 
-      navigate("/");
+      navigate('/');
     } catch (err) {
       console.log(err);
     }
@@ -50,7 +50,7 @@ const BlockList = () => {
       <AlertModal {...alert} />
       {users.map((user, key) => {
         const { userId, nickname, imageUrl, careerId } = user;
-        const career = careerUtils.findById(careerId);
+        const career = CareerModule.findById(careerId);
         return (
           <Grid key={key}>
             <Grid display="flex" padding="20px 20px">
@@ -64,11 +64,11 @@ const BlockList = () => {
               <Position>
                 <button
                   style={{
-                    border: "2px solid #F5F5F5",
-                    borderRadius: "30px",
-                    padding: "15px 20px",
-                    background: "#FFFFFF",
-                    color: "#BDBDBD",
+                    border: '2px solid #F5F5F5',
+                    borderRadius: '30px',
+                    padding: '15px 20px',
+                    background: '#FFFFFF',
+                    color: '#BDBDBD',
                   }}
                   onClick={() => setBlock(userId)}
                 >

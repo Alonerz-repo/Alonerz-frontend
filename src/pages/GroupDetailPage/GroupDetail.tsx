@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 import KakaoMap from '../../components/KakaoMap';
 import { Image } from '../../elements';
-import { categoryUtils } from '../../utils/asset';
+import CategoryModule from '../../assets/category';
 import {
   CategoryBadge,
   ContentBox,
@@ -81,7 +81,7 @@ const GroupDetail = (props: GroupDetailProps) => {
         <BadgeWrapper>
           <DayBadge>{dDay}</DayBadge>
           <CategoryBadge>
-            {categoryUtils.findById(categoryId)?.item}
+            {CategoryModule.findById(categoryId)?.item}
           </CategoryBadge>
         </BadgeWrapper>
         <ContentTitle>{title}</ContentTitle>

@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { onBoardUtils } from '../../utils/asset';
+import OnboardModule from '../../assets/onboards';
 import OnBoardingCard from './OnBoadingCard';
 import OnBoadingDots from './OnBoadingDots';
 import * as Style from './styled';
 
-const onboards = onBoardUtils.getAll();
+const count = OnboardModule.len();
+const max = count - 1;
+const items = OnboardModule.rows;
 
 const OnBoardingPage = () => {
   const navigate = useNavigate();
@@ -29,12 +31,12 @@ const OnBoardingPage = () => {
         {cardIndex > 0 && (
           <Style.OnBoardButton {...preButtonProps}>이전</Style.OnBoardButton>
         )}
-        {cardIndex < onboards.length - 1 && (
+        {cardIndex < max && (
           <Style.OnBoardButton onClick={onNextButtonClick}>
             다음
           </Style.OnBoardButton>
         )}
-        {cardIndex === onboards.length - 1 && (
+        {cardIndex === max && (
           <Style.OnBoardButton onClick={onStartButtonClick}>
             시작하기
           </Style.OnBoardButton>
@@ -54,14 +56,14 @@ const OnBoardingPage = () => {
   };
 
   const onBoardingDotsProps = {
-    count: onboards.length,
+    count,
     cardIndex,
     setCardIndex,
   };
 
   return (
     <Style.OnBoardPageWrapper>
-      <OnBoardingCard {...onboards[cardIndex]} />
+      <OnBoardingCard {...items[cardIndex]} />
       {<OnBoadingDots {...onBoardingDotsProps} />}
       {renderButtons()}
       {renderSkipButton()}

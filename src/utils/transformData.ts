@@ -1,30 +1,28 @@
 import { CreateForm } from "../axios/partyAxios";
 
-export const transformCreate = (data : CreateForm):CreateForm => {
-  const Info ={
+export const transformCreate = (data: CreateForm): CreateForm => {
+  const Info = {
     title: data.title,
-    description : data.description,
-    categoryId : 1,
-    placeName : data.placeName,
-    address : data.address,
-    locationX : data.locationX,
-    locationY : data.locationY,
+    description: data.description,
+    categoryId: 1,
+    placeName: data.placeName,
+    address: data.address,
+    locationX: data.locationX,
+    locationY: data.locationY,
     limit: data.limit,
     startAt: new Date(
-      data.date ? data.date.setHours(data.startAt ?? 0, 0, 0) : ""
+      data.date ? data.date.setHours(data.startAt ?? 0, 0, 0) : "",
     ),
-    endAt: new Date(
-      data.date ? data.date.setHours(data.endAt ?? 0, 0, 0) : ""
-    ),
+    endAt: new Date(data.date ? data.date.setHours(data.endAt ?? 0, 0, 0) : ""),
   };
-  if (data.image===null){
-    return {...Info}
+  if (data.image === null) {
+    return { ...Info };
   } else {
-    return {...Info, image:data.image}
+    return { ...Info, image: data.image };
   }
-}
+};
 
-export const transformEditPage = (data:any):CreateForm => {
+export const transformEditPage = (data: any): CreateForm => {
   const Info: CreateForm = {
     title: data.title,
     description: data.description,
@@ -37,5 +35,5 @@ export const transformEditPage = (data:any):CreateForm => {
     locationX: data.locationX,
     locationY: data.locationY,
   };
-  return Info
-}
+  return Info;
+};
