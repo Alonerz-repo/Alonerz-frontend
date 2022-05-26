@@ -45,12 +45,15 @@ const Main = () => {
   const goToLink = (num: number) => {
     // 페이지 이동 함수
     switch (num) {
+      // 아침 & 점심 그룹 생성
       case 10:
         return navigate(`/create/partyInfo/${num}`);
       case 4:
         return navigate("/list/lunch");
       case 5:
         return navigate("/list/dinner");
+
+      // 저녁 & 야식 그룹 생성
       case 17:
         return navigate(`/create/partyInfo/${num}`);
       default:
@@ -94,8 +97,8 @@ const Main = () => {
               );
             })}
         </Carousel>
-        <h2>🎉 오늘 파티가 열렸어요! </h2>
         {/* 아침 파티 개설 / 조회 박스 */}
+        <h2>🎉 오늘 파티가 열렸어요! </h2>
         <BoxAM
           style={{ backgroundImage: `${img[1]}`, backgroundSize: "cover" }}
         >

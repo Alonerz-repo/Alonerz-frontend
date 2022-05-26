@@ -1,7 +1,5 @@
-/* 작성자 : 최원영 */
-
-import axios from 'axios';
-import { getHeaders, getUrl } from '../utils/api';
+import axios from "axios";
+import { getHeaders, getUrl } from "../utils/api";
 
 export interface GroupUser {
   userId: string;
@@ -32,7 +30,36 @@ export interface Group {
   guests: GroupUser[];
 }
 
+export interface TodayGroup {
+  groupId: string;
+  title: string;
+  categoryId: number;
+  imageUrl: string | null;
+  description: string;
+  startAt: Date;
+  endAt: Date;
+  limit: number;
+  address: string;
+  join: number;
+  host: GroupUser;
+}
+
 export const groupAxios = {
+  getMyGroups: async (): Promise<TodayGroup[]> => {
+    const url = getUrl("/api/groups/today");
+    const headers = getHeaders();
+    let groups: TodayGroup[] = [];
+    try {
+      const { data } = await axios.get(url, { headers });
+      groups = data.groups;
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+    return groups;
+  },
   getOneByGroupId: async (groupId: string): Promise<Group> => {
     const url = getUrl(`/api/groups/${groupId}`);
     const headers = getHeaders();
@@ -50,7 +77,7 @@ export const groupAxios = {
   },
   joinOrExitGroup: async (
     groupId: string,
-    action: 'join' | 'exit',
+    action: "join" | "exit",
   ): Promise<void> => {
     const url = getUrl(`/api/groups/${groupId}?action=${action}`);
     const headers = getHeaders();

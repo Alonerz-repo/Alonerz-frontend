@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Grid } from '../elements';
-import icon from '../assets/header';
-import { useAppDispatch } from '../store/config.hook';
-import { setCharacter } from '../store/slices/characterSlice';
-import BackgroundModule from '../assets/background';
-import CharacterModule from '../assets/characters';
-import StickerModule from '../assets/sticker';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { Grid } from "../elements";
+import icon from "../assets/header";
+import { useAppDispatch } from "../store/config.hook";
+import { setCharacter } from "../store/slices/characterSlice";
+import BackgroundModule from "../assets/background";
+import CharacterModule from "../assets/characters";
+import StickerModule from "../assets/sticker";
 
 //프로필 캐릭터 스티커용 상단 컴포넌트입니다.
 interface Props {
@@ -85,42 +85,42 @@ const StickerBox = (props: any) => {
         <div onClick={() => curPosition(0)}>
           {setST(0) ? (
             <StickerImage
-              style={{ left: '100px', top: '75px' }}
+              style={{ left: "100px", top: "75px" }}
               src={getST(0)?.image}
               alt=""
             />
           ) : (
-            <Circle style={{ left: '116px', top: '93px' }}>+</Circle>
+            <Circle style={{ left: "116px", top: "93px" }}>+</Circle>
           )}
         </div>
         <div onClick={() => curPosition(1)}>
           {setST(1) ? (
             <StickerImage
-              style={{ right: '94px', top: '75px' }}
+              style={{ right: "94px", top: "75px" }}
               src={getST(1)?.image}
             />
           ) : (
-            <Circle style={{ right: '115px', top: '93px' }}>+</Circle>
+            <Circle style={{ right: "115px", top: "93px" }}>+</Circle>
           )}
         </div>
         <div onClick={() => curPosition(2)}>
           {setST(2) ? (
             <StickerImage
-              style={{ left: '100px', bottom: '137px' }}
+              style={{ left: "100px", bottom: "137px" }}
               src={getST(2)?.image}
             />
           ) : (
-            <Circle style={{ left: '116px', bottom: '153px' }}>+</Circle>
+            <Circle style={{ left: "116px", bottom: "153px" }}>+</Circle>
           )}
         </div>
         <div onClick={() => curPosition(3)}>
           {setST(3) ? (
             <StickerImage
-              style={{ right: '94px', bottom: '137px' }}
+              style={{ right: "94px", bottom: "137px" }}
               src={getST(3)?.image}
             />
           ) : (
-            <Circle style={{ right: '116px', bottom: '153px' }}>+</Circle>
+            <Circle style={{ right: "116px", bottom: "153px" }}>+</Circle>
           )}
         </div>
       </Box>
@@ -131,7 +131,7 @@ const StickerBox = (props: any) => {
 //캐릭터와 배경을 선택하는 박스
 const CharBox = ({ board }: any) => {
   const dispatch = useAppDispatch();
-  const [myColor, setColor] = useState<any>('#FFD9D9');
+  const [myColor, setColor] = useState<any>("#FFD9D9");
   const [curNum, setNum] = useState<number>(0);
   const length = CharacterModule.rows.length;
   const image = CharacterModule.findById(curNum);
@@ -188,28 +188,28 @@ const CharBox = ({ board }: any) => {
       <Grid width="100%">
         <Box
           style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-evenly",
+            alignItems: "center",
           }}
           bg={myColor}
         >
           <img
             onClick={() => click(-1)}
-            style={{ width: '34px', height: '34px' }}
+            style={{ width: "34px", height: "34px" }}
             src={icon[6]}
             alt=""
           />
 
           <img
-            style={{ width: '114px', height: '171px' }}
-            src={image ? image.image : ''}
+            style={{ width: "114px", height: "171px" }}
+            src={image ? image.image : ""}
             alt=""
           />
           <img
             onClick={() => click(1)}
-            style={{ width: '34px', height: '34px' }}
+            style={{ width: "34px", height: "34px" }}
             src={icon[5]}
             alt=""
           />
