@@ -1844,7 +1844,7 @@
     prop-types "^15.8.1"
     react-is "^17.0.2"
 
-"@mui/icons-material@^5.4.1":
+"@mui/icons-material@^5.4.1", "@mui/icons-material@^5.8.0":
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/@mui/icons-material/-/icons-material-5.8.0.tgz#c85768434bda885c64a8e4b9e222e73912244570"
   integrity sha512-ScwLxa0q5VYV70Jfc60V/9VD0b9SvIeZ0Jddx2Dt2pBUFFO9vKdrbt9LYiT+4p21Au5NdYIb2XSHj46CLN1v3g==
@@ -1879,6 +1879,7 @@
     prop-types "^15.8.1"
 
 "@mui/styled-engine-sc@^5.8.0", "@mui/styled-engine@npm:@mui/styled-engine-sc@5.8.0":
+  name "@mui/styled-engine"
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/@mui/styled-engine-sc/-/styled-engine-sc-5.8.0.tgz#20bc536dce25739e38fcd2586f100e70fbf02065"
   integrity sha512-46eRLWxjTF0d50Q1Q9tj96cgF41r7lesbXAy6kKocCdUfJ8rbIo36C4Ws8Pd7nfVsvaitTb7tmCbVQzDT3niJQ==
