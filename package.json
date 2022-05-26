@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@mui/material": "^5.8.1",
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@5.8.0",
+    "@mui/styled-engine-sc": "^5.8.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -23,6 +26,7 @@
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.1.0",
     "react-hook-form": "^7.31.2",
+    "react-material-ui-carousel": "^3.3.3",
     "react-redux": "^8.0.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
@@ -32,6 +36,9 @@
     "typescript": "^4.4.2",
     "web-vitals": "^2.1.0",
     "yarn": "^1.22.18"
+  },
+  "resolutions": {
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@5.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -49,7 +49,7 @@ const StickerBox = (props: any) => {
   const dispatch = useAppDispatch();
 
   const stickerList: Stickers[] = [...sticker.stickers];
-  const myStikcer = stickerList.map((value, index) => {
+  const myStikcer = stickerList.map((value) => {
     let { stickerOrder, stickerImageId } = value;
     if (stickerOrder === sticker.stickerOrder && sticker.stickerImageId) {
       stickerOrder = sticker.stickerOrder;
