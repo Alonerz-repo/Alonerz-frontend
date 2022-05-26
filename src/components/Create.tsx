@@ -19,12 +19,24 @@ import NewKakaoMap from "./NewKakaoMap";
 import { partyAxios, CreateForm } from "../axios/partyAxios";
 import times from "../utils/partyTimes";
 import useLoginCheck from "../useCustom/useLoginCheck";
+import ConfirmModal, {
+  ConfirmModalProps,
+  initConfirmModalProps,
+} from "../components/ConfirmModal";
+import AlertModal, {
+  AlertModalProps,
+  initAlertModalProps,
+} from "../components/AlertModal";
 
 interface CreateProps {
   group?: CreateForm;
   time?: number | undefined;
   groupId?: string;
   imageUrl?: string;
+}
+
+interface CreateStatusCode {
+  statusCode: 400 | 401 | 403 | 500;
 }
 
 const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
@@ -36,24 +48,17 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     formState: { errors },
   } = useForm<CreateForm>();
 
+  const navigate = useNavigate();
+
   const [address, setAddress] = useState<string>();
   const [placeName, setPlaceName] = useState<string>();
   const [locationX, setLocationX] = useState<number>();
   const [locationY, setLocationY] = useState<number>();
-
-  const handleMap = (
-    locationX: number,
-    locationY: number,
-    address: string,
-    placeName: string
-  ) => {
-    setLocationX(locationX);
-    setLocationY(locationY);
-    setAddress(address);
-    setPlaceName(placeName);
-  };
-
-  const navigate = useNavigate();
+  const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
+    initConfirmModalProps
+  );
+  const [alertModalProps, setAlertModalProps] =
+    useState<AlertModalProps>(initAlertModalProps);
 
   // group 정보를 받아와서 초기 상태값을 세팅
   useEffect(() => {
@@ -78,6 +83,15 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
       return;
     }
 
+    if (placeName === "") {
+      console.log(placeName);
+      setError("placeName", {
+        type: "place",
+        message: "지도를 통해 장소를 선택해주세요.",
+      });
+      return;
+    }
+
     const newData = transformCreate({
       ...data,
       locationX,
@@ -87,40 +101,75 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     });
     try {
       if (!group) {
-        const result = await partyAxios.createParty(newData);
-        switch (result.statusCode) {
-          case 400:
-            return alert(result.message);
-          case 401:
-            return alert(result.message);
-          case 403:
-            return alert(result.message);
-          case 404:
-            return alert(result.message);
-          default:
-            navigate("/");
-        }
+        onCreate(newData);
       } else {
         const result = await partyAxios.editParty(newData, groupId ?? "");
-        switch (result.statusCode) {
-          case 400:
-            return alert(result.message);
-          case 401:
-            return alert(result.message);
-          case 403:
-            return alert(result.message);
-          case 404:
-            return alert(result.message);
-          default:
-            console.log("완료");
-            navigate("/");
-        }
       }
     } catch {}
   });
 
+  const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
+  const onCreate = (group: CreateForm) => {
+    setConfirmMoalProps({
+      message: "그룹을 생성하시겠습니까?",
+      yesLabel: "생성",
+      noLabel: "취소",
+      onOk: async () => {
+        try {
+          await partyAxios.createParty(group);
+          onCloseConfirmModal();
+          navigate("/", { replace: true });
+        } catch (error) {
+          const { statusCode } = error as CreateStatusCode;
+          onCloseConfirmModal();
+          switch (statusCode) {
+            case 400:
+              setAlertModalProps({
+                message: "입력이 잘못되었습니다.",
+                closeLabel: "확인",
+                onClose: () => {
+                  setAlertModalProps(initAlertModalProps);
+                },
+              });
+              return;
+            case 401:
+              navigate("/login");
+              return;
+            case 403:
+              window.location.reload();
+              return;
+            case 500:
+              setAlertModalProps({
+                message: "서버에 오류가 발생하였습니다.",
+                closeLabel: "확인",
+                onClose: () => {
+                  setAlertModalProps(initAlertModalProps);
+                },
+              });
+              return;
+          }
+        }
+      },
+      onClose: onCloseConfirmModal,
+    });
+  };
+
+  const handleMap = (
+    locationX: number,
+    locationY: number,
+    address: string,
+    placeName: string
+  ) => {
+    setLocationX(locationX);
+    setLocationY(locationY);
+    setAddress(address);
+    setPlaceName(placeName);
+  };
+
   return (
     <React.Fragment>
+      <AlertModal {...alertModalProps} />
+      <ConfirmModal {...confirmModalProps} />
       <form onSubmit={onSubmit}>
         <Header text="파티개설"></Header>
         <Grid padding="0 30px 0 30px">
@@ -130,7 +179,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             <ErrorBox>제목은 필수 입력사항입니다.</ErrorBox>
           )}
 
-          <Text bold type="line" titleText="달력" margin="5px 0 5px 0"></Text>
+          <Text bold type="line" titleText="날짜" margin="5px 0 5px 0"></Text>
           <DatePickerComponent
             name="date"
             control={control}
@@ -181,6 +230,9 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
           <Text bold type="line" titleText="장소" margin="5px 0 5px 0" />
           {placeName ?? null}
           <NewKakaoMap handleMap={handleMap}></NewKakaoMap>
+          {errors.placeName?.type === "place" && placeName === "" && (
+            <ErrorBox>{errors.placeName?.message}</ErrorBox>
+          )}
 
           <Text bold type="line" titleText="상세 정보" margin="5px 0 5px 0" />
           <InputForm width="100%" name="description" control={control} />
@@ -188,6 +240,12 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             <ErrorBox>상세 내용을 입력해주세요.</ErrorBox>
           )}
 
+          <Text
+            bold
+            type="line"
+            titleText="이미지 업로드"
+            margin="15px 0 0 0"
+          />
           <UploadForm
             control={control}
             name="image"

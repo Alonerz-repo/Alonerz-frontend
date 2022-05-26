@@ -99,7 +99,7 @@ export type Group = Partial<GroupInfo>;
 export const partyAxios = {
   // 파티 생성시 서버와 통신
   // 파일 데이터 전송을 위해 FormData 사용
-  createParty: async (group: any) => {
+  createParty: async (group: CreateForm) => {
     // const formData = new FormData();
 
     // Object.keys(group).forEach((key) => {
@@ -122,7 +122,7 @@ export const partyAxios = {
 
   // 파티 수정시 서버와 통신
   // 파일 데이터 전송을 위해 FormData 사용
-  editParty: async (group: any, groupId: string) => {
+  editParty: async (group: CreateForm, groupId: string) => {
     const url = getUrl(`/api/groups/${groupId}`);
 
     // const formData = new FormData();

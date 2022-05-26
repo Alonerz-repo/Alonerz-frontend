@@ -46,11 +46,7 @@ const UploadForm = ({ name, control, imageUrl, margin }: UploadProps) => {
         style={{ marginTop: "20px" }}
         {...inputProps}
       />
-      {image ? (
-        <Image shape="rectangle" src={image.toString()}></Image>
-      ) : (
-        <Image shape="rectangle" src={baseFile} size="64px" tmpFile></Image>
-      )}
+      {image ? <Image shape="rectangle" src={image.toString()}></Image> : null}
     </Grid>
   );
 };
