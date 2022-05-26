@@ -46,21 +46,16 @@ const StickerImage = styled.img`
 //스티커 컴포넌트
 const StickerBox = (props: any) => {
   const { sticker } = props;
-  console.log(
-    "top 스티커 컴포넌트에서 이미지가 변경되었나?",
-    sticker.stickerImageId
-  );
   const dispatch = useAppDispatch();
 
   const stickerList: Stickers[] = [...sticker.stickers];
-  const myStikcer = stickerList.map((value, index) => {
+  const myStikcer = stickerList.map((value) => {
     let { stickerOrder, stickerImageId } = value;
     if (stickerOrder === sticker.stickerOrder && sticker.stickerImageId) {
       stickerOrder = sticker.stickerOrder;
       stickerImageId = sticker.stickerImageId;
     }
     const image = stickerImageUtils.findById(stickerImageId);
-    console.log("스티커이미지 맵안에서 변경되었나?", stickerImageId, index);
     return { stickerOrder, ...image };
   });
 

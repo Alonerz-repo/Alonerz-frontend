@@ -67,10 +67,10 @@ const NicknameIs = styled.p`
 
 const StickerBG = styled.div`
   position: absolute;
-  width: 150px;
-  height: 230px;
+  width: 172px;
+  height: 254px;
   top: 79px;
-  left: 28px;
+  left: 20px;
 `;
 
 const StickerImg = styled.img`
@@ -216,8 +216,8 @@ const MyInfo = (props: Props) => {
         <StickerBG>
           <StickerImg
             style={{
-              top: "56px",
-              left: "1px",
+              top: "47px",
+              left: "4px",
             }}
             src={getSticker(0)?.url}
             alt=""
@@ -225,22 +225,22 @@ const MyInfo = (props: Props) => {
 
           <StickerImg
             style={{
-              top: "-9px",
-              right: "-10px",
+              top: "9px",
+              right: "4px",
             }}
             src={getSticker(1)?.url}
           />
           <StickerImg
             style={{
-              top: "124px",
-              right: "-10px",
+              top: "121px",
+              right: "-8px",
             }}
             src={getSticker(2)?.url}
           />
           <StickerImg
             style={{
-              top: "124px",
-              left: "-10px",
+              bottom: "22px",
+              left: "16px",
             }}
             src={getSticker(3)?.url}
           />

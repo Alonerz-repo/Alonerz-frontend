@@ -40,11 +40,6 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
     setCurChar({ ...initialState, ...Board });
   }, [Board]);
 
-  //프로필 정보가 바뀔때마다 리덕스의 데이터를 갱신합니다.
-  useEffect(() => {
-    // dispatch(setCharacter({ ...curChar }));
-  }, [curChar]);
-
   // //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
     dispatch(
@@ -58,9 +53,6 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
       stickerImageId: index,
     };
     boardAxios.setSticker(data);
-    // boardAxios.getSticker(userInfo.userId).then((res) => {
-    //   dispatch(setCharacter({ ...Board, ...res }));
-    // });
   };
   //백그라운드 컬러를 스테이트에 갱신합니다.
   const setBackgroundFn = (myColor: any) => {

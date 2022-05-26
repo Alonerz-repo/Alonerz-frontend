@@ -5,9 +5,9 @@ import { Grid, Text } from "../elements";
 import Card from "../components/Card";
 import partyList from "../axios/partyList";
 import { useAppSelect, useAppDispatch } from "../store/config.hook";
-import { authUser } from "../store/slices/userSlice";
 import Header from "../components/Header";
-import loginAxios from "../axios/loginAxios";
+import Carousel from "react-material-ui-carousel";
+import img from "../assets/Character";
 
 // 메인 페이지로써 사용자의 오늘 파티목록을 받아와 보여주는 컴포넌트
 const Main = () => {
@@ -17,7 +17,7 @@ const Main = () => {
   const [groups, setGroups] = React.useState<any>([]);
 
   const user = useAppSelect((state) => state.user);
-
+  const myimg = img;
   // 해당 페이지 접속시 사용자의 오늘의 파티 목록을 받아옴
   // 데이터의 최신화를 위해 redux를 사용하지 않고 페이지 접속 시마다 받아옴
   useEffect(() => {
@@ -38,11 +38,6 @@ const Main = () => {
     };
     getParty();
   }, [user]);
-
-  // 사용자 인증
-  // useEffect(() => {
-  //   dispatch(authUser());
-  // }, []);
 
   // 받아온 정보가 바뀌었을시 rerendering
   useEffect(() => {}, [groups]);
@@ -71,29 +66,39 @@ const Main = () => {
         {groups.length !== 0 && (
           <Text type="title"> 오늘 파티 잊지 마세요! </Text>
         )}
-        {/* 유저 정보가 있다면 리스트를 보여줌 */}
-        {user.userId &&
-          groups.map((value: any, index: number) => {
-            return (
-              <React.Fragment key={index}>
-                <Card
-                  title={value.title}
-                  limit={value.limit}
-                  headcount={value.join}
-                  address={value.address}
-                  startAt={new Date(value.startAt)}
-                  endAt={new Date(value.endAt)}
-                  src={value.imageUrl}
-                  _onClick={() => {
-                    navigate(`/participate/${value.groupId}`);
-                  }}
-                ></Card>
-              </React.Fragment>
-            );
-          })}
+        <Carousel
+          autoPlay={false}
+          animation="slide"
+          swipe={true}
+          indicators={true}
+          height="140px"
+        >
+          {/* 유저 정보가 있다면 리스트를 보여줌 */}
+          {user.userId &&
+            groups.map((value: any, index: number) => {
+              return (
+                <React.Fragment key={index}>
+                  <Card
+                    title={value.title}
+                    limit={value.limit}
+                    headcount={value.join}
+                    address={value.address}
+                    startAt={new Date(value.startAt)}
+                    endAt={new Date(value.endAt)}
+                    src={value.imageUrl}
+                    _onClick={() => {
+                      navigate(`/participate/${value.groupId}`);
+                    }}
+                  ></Card>
+                </React.Fragment>
+              );
+            })}
+        </Carousel>
         <h2>🎉 오늘 파티가 열렸어요! </h2>
         {/* 아침 파티 개설 / 조회 박스 */}
-        <BoxAM>
+        <BoxAM
+          style={{ backgroundImage: `${img[1]}`, backgroundSize: "cover" }}
+        >
           <Grid padding="20px">
             <Text type="title">🍖 아침&점심 파티 </Text>
             <Text>10:00 ~ 16:00</Text>
@@ -144,15 +149,16 @@ const PartyButton = styled.button<buttonProps>`
 `;
 
 const BoxAM = styled.div`
-  height: 170px;
-  background: linear-gradient(
+  /* height: 170px; */
+  background-image: url("/static/media/3.9eef754780995abf9911.png");
+  /* background: linear-gradient(
       291.4deg,
       rgba(255, 255, 255, 0.7) 0.62%,
       rgba(255, 255, 255, 0) 97.95%
     ),
     #beefff;
   border-radius: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 20px; */
 `;
 
 const BoxPM = styled(BoxAM)`

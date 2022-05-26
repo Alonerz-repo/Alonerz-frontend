@@ -19,7 +19,6 @@ export const userExceptions = {
         err = new Error("잘못된 입력입니다.");
         err.name = statusCode.toString();
         err.message = errMessage;
-        window.alert(err);
         throw err;
       case 401:
         throw Error("로그인이 필요합니다.");
