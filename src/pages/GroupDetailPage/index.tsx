@@ -19,36 +19,8 @@ import {
   GroupDetailPageException,
   GroupDetailPageStatusCode,
 } from './exception';
-
-// util로 이동시킬 것
-const DateFormatter = (dateString: Date) => {
-  const date = new Date(dateString);
-  return [
-    `0${date.getMonth() + 1}`.slice(-2) + '월',
-    `0${date.getDate()}`.slice(-2) + '일',
-  ].join(' ');
-};
-
-// util로 이동시킬 것
-const TimeFormatter = (dateString: Date) => {
-  const date = new Date(dateString);
-  return [
-    `0${date.getHours()}`.slice(-2),
-    `0${date.getMinutes()}`.slice(-2),
-  ].join(':');
-};
-
-// utils로 이동시킬 것
-const DDayCalculator = (dateString: Date) => {
-  const today = new Date().getTime();
-  const target = new Date(dateString).getTime();
-  const diffTime = target - today;
-  const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24));
-  if (diffDays === 0) {
-    return `D-Day`;
-  }
-  return `D${diffDays > 0 ? '-' : '+'}${Math.abs(diffDays)}`;
-};
+import { DateFormatter, TimeFormatter } from '../../utils/tools/formatter';
+import { DDayCalculator } from '../../utils/tools/calculator';
 
 const ButtonBox = styled.div`
   width: 390px;

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Assets from "../assets/assets.json";
-import { useAppDispatch, useAppSelect } from "../store/config.hook";
-import { setCharacter } from "../store/slices/characterSlice";
-import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
-import boardAxios from "../axios/boardAxios";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import Assets from '../assets/assets.json';
+import { useAppDispatch, useAppSelect } from '../store/config.hook';
+import { setCharacter } from '../store/slices/characterSlice';
+import { stickerImageUtils } from '../utils/asset';
+import boardAxios from '../axios/boardAxios';
+import BackgroundModule from '../assets/background';
 
 //프로필(캐릭터, 스티커, 색상)용으로 반복되는 카드들 모음입니다.
 interface Character {
@@ -31,7 +32,7 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
   //리덕스의 유저 캐릭터 정보를 데이터를 가져옵니다.
   const userInfo = useAppSelect((state) => state.user);
   const Board = useAppSelect((state) => state.char);
-  const colorList = backgroundColorUtils.getAll();
+  const colorList = BackgroundModule.rows;
   const stickerList = stickerImageUtils.getAll();
 
   //스테이트에 프로필 정보를 저장합니다.
@@ -46,7 +47,7 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
       setCharacter({
         ...Board,
         stickerImageId: index,
-      })
+      }),
     );
     const data = {
       stickerOrder: curChar.stickerOrder,
@@ -61,7 +62,7 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
         ...Board,
         backgroundColorId: myColor.id,
         color: myColor.id,
-      })
+      }),
     );
   };
   //프로필 캐릭터 선택 카드들
@@ -72,16 +73,16 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
         {stickerList.map((value) => {
           return (
             <div onClick={() => setStickersFn(value.id)} key={value.id}>
-              <StickerBox style={{ textAlign: "center" }}>
+              <StickerBox style={{ textAlign: 'center' }}>
                 <img
                   src={value.url}
                   object-fit="cover"
                   alt=""
                   style={{
-                    width: "88px",
-                    height: "88px",
-                    position: "relative",
-                    top: "10px",
+                    width: '88px',
+                    height: '88px',
+                    position: 'relative',
+                    top: '10px',
                   }}
                 />
               </StickerBox>
@@ -94,15 +95,15 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
     //프로필 색상 선택 카드들
     return (
       <React.Fragment>
-        <MyColorBox style={{ background: "white", border: "1px solid" }}>
+        <MyColorBox style={{ background: 'white', border: '1px solid' }}>
           <div
             style={{
-              border: "1px solid rgb(255, 0, 0)",
-              transform: "rotate(135deg)",
-              position: "absolute",
-              width: "135px",
-              top: "64px",
-              left: "-3px",
+              border: '1px solid rgb(255, 0, 0)',
+              transform: 'rotate(135deg)',
+              position: 'absolute',
+              width: '135px',
+              top: '64px',
+              left: '-3px',
             }}
           ></div>
         </MyColorBox>

@@ -1,10 +1,10 @@
-import React from "react";
-import Header from "../components/Header";
-import useFollow from "../useCustom/useFollow";
-import { useLocation } from "react-router-dom";
-import { careerUtils } from "../utils/asset";
-import FollowUser from "../components/Follow";
-import src from "../assets/Character";
+import React from 'react';
+import Header from '../components/Header';
+import useFollow from '../useCustom/useFollow';
+import { useLocation } from 'react-router-dom';
+import CareerModule from '../assets/career';
+import FollowUser from '../components/Follow';
+import src from '../assets/Character';
 
 interface user {
   careerId: number;
@@ -25,11 +25,11 @@ const FollowList = () => {
   //유저의 팔로우/팔로잉 리스트를 커스텀 훅으로 받습니다.
   const users = useFollow(uid, isfollow);
   console.log(users.length);
-  const myFollowingList = useFollow(uid, "following");
+  const myFollowingList = useFollow(uid, 'following');
 
   const isFollow = (userId: string) => {
     const myfollowid = myFollowingList?.find(
-      (value) => value.userId === userId
+      (value) => value.userId === userId,
     );
     if (myfollowid !== undefined) {
       return true;
@@ -42,7 +42,7 @@ const FollowList = () => {
     if (users !== undefined && users.length > 0) {
       const results = users.map((value: user, key: number) => {
         const { careerId, userId } = value;
-        const groupItem = careerUtils.findById(careerId);
+        const groupItem = CareerModule.findById(careerId);
         const isfolo = isFollow(userId);
 
         return (
@@ -60,12 +60,12 @@ const FollowList = () => {
     } else {
       return (
         <React.Fragment>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <div
-              style={{ position: "absolute", top: "20vh", textAlign: "center" }}
+              style={{ position: 'absolute', top: '20vh', textAlign: 'center' }}
             >
-              <img style={{ width: "130px" }} src={src[0]} alt="" />{" "}
-              {isfollow === "following" ? (
+              <img style={{ width: '130px' }} src={src[0]} alt="" />{' '}
+              {isfollow === 'following' ? (
                 <React.Fragment>
                   <p>팔로잉이 없어요</p>
                   <p>함께하고 싶은 나의 파티원들을 채워주세요</p>
