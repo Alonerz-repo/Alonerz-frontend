@@ -7,11 +7,11 @@ import useUser from '../useCustom/useUser';
 import { useAppSelect } from '../store/config.hook';
 import BtnAction from './MyInfo.BtnAction';
 import GridTxt from './MyInfo.GridTxt';
-import { stickerImageUtils } from '../utils/asset';
 import BackgroundModule from '../assets/background';
 import CharacterModule from '../assets/characters';
 import CareerModule from '../assets/career';
 import YearModule from '../assets/year';
+import StickerModule from '../assets/sticker';
 
 interface Props {
   bg?: string;
@@ -109,7 +109,7 @@ const MyInfo = (props: Props) => {
 
   const getSticker = (index: number) => {
     const mySticker = stickers.map((value: any) => {
-      const image = stickerImageUtils.findById(value.stickerImageId);
+      const image = StickerModule.findById(value.stickerImageId);
       const order = value.stickerOrder;
       return { order, ...image };
     });
@@ -210,7 +210,7 @@ const MyInfo = (props: Props) => {
               top: '47px',
               left: '4px',
             }}
-            src={getSticker(0)?.url}
+            src={getSticker(0)?.image}
             alt=""
           />
 
@@ -219,21 +219,21 @@ const MyInfo = (props: Props) => {
               top: '9px',
               right: '4px',
             }}
-            src={getSticker(1)?.url}
+            src={getSticker(1)?.image}
           />
           <StickerImg
             style={{
               top: '121px',
               right: '-8px',
             }}
-            src={getSticker(2)?.url}
+            src={getSticker(2)?.image}
           />
           <StickerImg
             style={{
               bottom: '22px',
               left: '16px',
             }}
-            src={getSticker(3)?.url}
+            src={getSticker(3)?.image}
           />
         </StickerBG>
 

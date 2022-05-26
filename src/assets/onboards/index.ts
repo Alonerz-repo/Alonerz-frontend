@@ -1,6 +1,6 @@
 import data from './data.json';
 const max = 4;
-const extention = '.png';
+const extension = '.png';
 
 interface Data {
   id: number;
@@ -11,7 +11,7 @@ interface Data {
 const OnboardModule = (() => ({
   rows: [...Array(max)].map((_, id) => {
     const imageName = ('0' + (id + 1)).slice(-2);
-    const image = require(`./${imageName}${extention}`);
+    const image = require(`./${imageName}${extension}`);
     const row: Data = {
       id,
       image: String(image),
