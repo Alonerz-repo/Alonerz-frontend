@@ -126,13 +126,21 @@ export const GroupButton = styled.button<GroupButtonProps>`
   }
 `;
 
-export const GroupIonButton = styled.div`
+interface GroupIconButtonProps {
+  image: string;
+}
+
+export const GroupIonButton = styled.div<GroupIconButtonProps>`
   color: #fff;
-  padding: 10px;
+  padding: 15px;
   margin: 5px;
   cursor: pointer;
   border-radius: 50%;
+  background: ${(props) => `url(${props.image})`};
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   &:hover {
-    background: rgba(255, 255, 255, 10%);
+    background-color: rgba(255, 255, 255, 20%);
   }
 `;

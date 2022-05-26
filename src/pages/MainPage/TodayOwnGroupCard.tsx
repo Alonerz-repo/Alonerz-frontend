@@ -1,5 +1,4 @@
-import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
-import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
+import { IconImageModule } from "./images";
 import { NavigateFunction } from "react-router-dom";
 import * as Style from "./styled";
 
@@ -37,17 +36,21 @@ const TodayOwnGroupCard = (props: TodayOwnGroupCardProps) => {
   const buttonWrapperProps = {
     style: { justifyContent: "space-between" },
   };
+  const preButtonProps = {
+    onClick: onPreClick,
+    image: IconImageModule.LeftArrowIcon,
+  };
+  const nextButtonProps = {
+    onClick: onNextClick,
+    image: IconImageModule.RightArrowIcon,
+  };
 
   return (
     <Style.GroupItemWrapper {...groupItemProps}>
       <Style.GroupImageWrapper {...coverProps}>
         <Style.GroupButtonWrapper {...buttonWrapperProps}>
-          <Style.GroupIonButton onClick={onPreClick}>
-            <ArrowBackIosRoundedIcon />
-          </Style.GroupIonButton>
-          <Style.GroupIonButton onClick={onNextClick}>
-            <ArrowForwardIosRoundedIcon />
-          </Style.GroupIonButton>
+          <Style.GroupIonButton {...preButtonProps} />
+          <Style.GroupIonButton {...nextButtonProps} />
         </Style.GroupButtonWrapper>
         <Style.GroupContentWrapper {...contentProps}>
           <Style.GroupTitle>{title}</Style.GroupTitle>

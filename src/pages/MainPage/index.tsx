@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TodayGroup, groupAxios } from "../../axios/groupAxios";
 import { useAppSelector } from "../../store/config";
+import { CardImagesModule } from "./images";
 import TodayOtherGroupCard from "./TodayOtherGroupCard";
 import TodayOwnGroupCards from "./TodayOwnGroupCards";
-import CardImages from "./images";
 import Header from "../../components/Header";
 import * as Style from "./styled";
 
@@ -19,7 +19,7 @@ const otherGroupCardProps = (cardClickEvents: CardClickEvents) => [
   {
     title: "아침 & 점심 모임",
     subTitle: " 오전 9시 ~ 오후 5시",
-    image: CardImages.lunch,
+    image: CardImagesModule.lunch,
     buttonColor: "248, 76, 64",
     fontColor: "#000",
     onCreate: cardClickEvents.lunchCreateClick,
@@ -28,7 +28,7 @@ const otherGroupCardProps = (cardClickEvents: CardClickEvents) => [
   {
     title: "저녁 & 야식 모임",
     subTitle: "오후 5시 ~ 오후 11시",
-    image: CardImages.dinner,
+    image: CardImagesModule.dinner,
     buttonColor: "88, 37, 200",
     fontColor: "#fff",
     onCreate: cardClickEvents.dinnerCreateClick,
