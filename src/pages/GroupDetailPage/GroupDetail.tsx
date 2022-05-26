@@ -90,10 +90,13 @@ const GroupDetail = (props: GroupDetailProps) => {
           longitude={locationY}
           placeName={placeName}
         />
-        {contents(props).map((content) => {
+        {contents(props).map((content, index) => {
           const { field, item, contentBoxProps, contentItemProps } = content;
           return (
-            <ContentBox {...contentBoxProps}>
+            <ContentBox
+              key={`${content.field}-${content.item}-${index}`}
+              {...contentBoxProps}
+            >
               <ContentField>{field}</ContentField>
               <ContentItem {...contentItemProps}>{item}</ContentItem>
             </ContentBox>

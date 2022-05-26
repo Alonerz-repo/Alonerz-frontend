@@ -22,6 +22,7 @@ import Four from './pages/404';
 import { authUser } from './store/slices/userSlice';
 import { useAppDispatch } from './store/config.hook';
 import GroupDetailPage from './pages/GroupDetailPage';
+import OnBoardingPage from './pages/OnBoardingPage';
 
 declare global {
   interface Window {
@@ -41,6 +42,7 @@ function App() {
         <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<Main />} />
+            <Route path="/introduce" element={<OnBoardingPage />} />
             <Route path="/coution" element={<ConsentForm />} />
             <Route path="/list/:time" element={<PartyList />} />
             <Route path="/test" element={<Test />} />
@@ -74,6 +76,7 @@ const Container = styled.div<ContainerProps>`
   align-items: center;
   position: relative;
   overflow: scroll;
+  background: #fff;
 `;
 
 interface ContainerProps {

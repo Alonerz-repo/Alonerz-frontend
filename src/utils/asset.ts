@@ -1,10 +1,11 @@
-import backgroundAssets from "../assets/data/backgrounds.json";
-import characterAssets from "../assets/data/characters.json";
-import iconAssets from "../assets/data/icons.json";
-import stickerAssets from "../assets/data/stickers.json";
-import careerAssets from "../assets/data/careers.json";
-import yearAssets from "../assets/data/years.json";
-import categoryAssets from "../assets/data/categories.json";
+import backgroundAssets from '../assets/data/backgrounds.json';
+import characterAssets from '../assets/data/characters.json';
+import iconAssets from '../assets/data/icons.json';
+import stickerAssets from '../assets/data/stickers.json';
+import careerAssets from '../assets/data/careers.json';
+import yearAssets from '../assets/data/years.json';
+import categoryAssets from '../assets/data/categories.json';
+import onboardAssets from '../assets/data/onboards.json';
 
 // 얘네들도 파일 나누시면 좋습니다!
 interface BackgroundColor {
@@ -34,6 +35,12 @@ interface Category {
   item: string;
 }
 
+interface Onboard {
+  id: number;
+  imageUrl: string;
+  content: string;
+}
+
 const backgroundColors = backgroundAssets as Array<BackgroundColor>;
 const characters = characterAssets as Array<S3Image>;
 const icons = iconAssets as Array<S3Image>;
@@ -41,6 +48,7 @@ const stickers = stickerAssets as Array<S3Image>;
 const careers = careerAssets as Array<Career>;
 const years = yearAssets as Array<Year>;
 const categories = categoryAssets as Array<Category>;
+const onboards = onboardAssets as Array<Onboard>;
 
 export const backgroundColorUtils = {
   getAll: () => backgroundColors,
@@ -99,4 +107,8 @@ export const yearUtils = {
 export const categoryUtils = {
   getAll: () => categories,
   findById: (id: number) => categories.find((category) => category.id === id),
+};
+
+export const onBoardUtils = {
+  getAll: () => onboards,
 };
