@@ -29,7 +29,6 @@ const GroupChildComments = (props: ChildCommentsProps) => {
   const [commentCount, setCommentCount] = useState<number>(childCommentCount);
   const [childContent, setChildContent] = useState<string>('');
   const [showChildComment, setShowChildComment] = useState<boolean>(false);
-  console.log(comments);
 
   // 하위 댓글 내용 변경 이벤트 핸들러
   const onChildContentChange = (e: valueChangeEvent) => {
