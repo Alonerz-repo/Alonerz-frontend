@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Category from "../assets/category";
+import Header from "../assets/header";
+import { DDayCalculator } from "../utils/tools/calculator";
 
 type Props = {
   title: string;
@@ -16,6 +18,8 @@ type Props = {
   categoryId: number;
 };
 
+const styledNum = styled.div``;
+
 const Card = ({
   title,
   address,
@@ -30,24 +34,82 @@ const Card = ({
   categoryId,
 }: Props) => {
   const findCategory = Category.findById(categoryId);
+  const icon = Header.findById(1);
+
   if (isFlex) {
-    const time = `${new Date(startAt ?? "").getHours()} ~ ${new Date(
-      endAt ?? ""
-    ).getHours()}`;
+    const time = `${new Date(startAt ?? "").getHours()}:${new Date(
+      startAt ?? ""
+    ).getMinutes()} ~ ${new Date(endAt ?? "").getHours()}:${new Date(
+      startAt ?? ""
+    ).getMinutes()}`;
     const adres = address.split(" ");
     const place = `${adres[0] ?? ""} ${adres[1] ?? ""} ${adres[2] ?? ""}`;
     return (
       <React.Fragment>
         <BackgroundImage isFlex onClick={_onClick} src={src}>
           <Abled categoryId={findCategory?.image} />
+          {startAt !== undefined ? (
+            <div
+              style={{
+                position: "absolute",
+                bottom: "75px",
+                margin: "0px 0px 0px 11px",
+                background: "#FBB631",
+                borderRadius: "15px",
+                fontSize: "12px",
+                padding: "3px 8px",
+              }}
+            >
+              {DDayCalculator(startAt)}
+            </div>
+          ) : (
+            <></>
+          )}
           <PartyInfo isFlex>
-            <div>{title}</div>
+            <div style={{ fontWeight: "bold" }}>{title}</div>
             <div>{menu}</div>
-            <div>{place}</div>
-            <div>{time}</div>
+            <div
+              style={{
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "baseline",
+              }}
+            >
+              <img
+                style={{ width: "13px", height: "13px" }}
+                src={Header.rows[6].image}
+                alt=""
+              />
+              {place}
+            </div>
+            <div
+              style={{
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "baseline",
+              }}
+            >
+              <img
+                style={{ width: "13px", height: "13px" }}
+                src={Header.rows[7].image}
+                alt=""
+              />
+              {time}
+            </div>
           </PartyInfo>
+
           <PartyHeadcount>
-            {headcount} / {limit}
+            <img
+              style={{ width: "13px", height: "13px" }}
+              src={Header.rows[8].image}
+              alt=""
+            />
+
+            {headcount}
+
+            <div style={{ color: "#9E9E9E" }}>
+              <>/ {limit}</>
+            </div>
           </PartyHeadcount>
         </BackgroundImage>
       </React.Fragment>
@@ -123,18 +185,19 @@ const BackgroundImage = styled.div<BackgroundImageProps>`
 
 const PartyInfo = styled.div<PartyInfoProps>`
   position: inherit;
-  top: ${(props) => (props.isFlex ? "100px" : "75px")};
+  top: ${(props) => (props.isFlex ? "120px" : "75px")};
   left: ${(props) => (props.isFlex ? "" : "10px")};
+  margin: 0px 0px 0px 11px;
 `;
 const PartyHeadcount = styled.div<PartyHeadcountProps>`
   position: absolute;
-  width: 50px;
-  height: 28px;
-  border-radius: 10px;
+  border-radius: 15px;
   padding: 3px 4px;
   background: #424242;
   right: 10px;
   top: 10px;
   text-align: center;
+  display: flex;
+  align-items: center;
 `;
 export default Card;

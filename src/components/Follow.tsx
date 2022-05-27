@@ -15,6 +15,7 @@ const FollowerBtn = styled.button`
   width: 80px;
   height: 44px;
   color: #ffffff;
+  cursor: pointer;
 `;
 
 const FollowingBtn = styled.button`
@@ -27,6 +28,7 @@ const FollowingBtn = styled.button`
   width: 80px;
   height: 44px;
   color: #f84c40;
+  cursor: pointer;
 `;
 const initAlertProps = {
   message: "",

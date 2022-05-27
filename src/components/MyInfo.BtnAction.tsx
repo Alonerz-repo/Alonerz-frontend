@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Grid, Image } from "../elements";
+import { Button, Grid } from "../elements";
 import userAxios from "../axios/userAxios";
-import chatIcon from "../assets/header/1.svg";
 import AlertModal from "./AlertModal";
 
 const alertInit = {
@@ -18,13 +17,13 @@ const BtnAction = (props: any) => {
   const { myId, yourId } = props;
   const [alert, setAlert] = useState(alertInit);
 
-  const goTochat = () => {
-    console.log("hello chat");
-  };
-
   const setFollow = () => {
     userAxios.setFollowUser(yourId).then((res) => {
-      window.alert("follow!");
+      setAlert({
+        message: "팔로우하였습니다.",
+        closeLabel: "닫기",
+        onClose: () => setAlert(alertInit),
+      });
     });
   };
 
@@ -64,18 +63,17 @@ const BtnAction = (props: any) => {
       <React.Fragment>
         <AlertModal {...alert} />
         <Grid display="flex">
-          <div onClick={goTochat}>
-            <Image size="44px" src={chatIcon}></Image>
-          </div>
           <Button
             _onClick={setFollow}
             customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
+            cursor
           >
             팔로우
           </Button>
           <Button
             _onClick={setBlock}
             customize="border-radius: 30px; padding: 15px 20px; color: white; background: #355DFA; border: none;"
+            cursor
           >
             차단
           </Button>
