@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Category from "../assets/category";
 import Header from "../assets/header";
+import { DDayCalculator } from "../utils/tools/calculator";
 
 type Props = {
   title: string;
@@ -16,6 +17,8 @@ type Props = {
   menu?: string;
   categoryId: number;
 };
+
+const styledNum = styled.div``;
 
 const Card = ({
   title,
@@ -32,27 +35,7 @@ const Card = ({
 }: Props) => {
   const findCategory = Category.findById(categoryId);
   const icon = Header.findById(1);
-  const dday = (startAt: Date | undefined) => {
-    if (startAt !== undefined) {
-      const setDate = new Date(startAt);
-      const now = new Date();
-      const distance = now.getTime() - setDate.getTime();
-      console.log(startAt);
-      console.log(setDate.getTime());
-      const day = Math.floor(distance / (1000 * 60 * 60 * 24));
-      console.log("d-day is", day);
 
-      if (day < 1) {
-        return "d-day";
-      } else {
-        return `d-${day}`;
-      }
-    } else {
-      const a = "D-Day";
-      return a;
-    }
-  };
-  dday(startAt);
   if (isFlex) {
     const time = `${new Date(startAt ?? "").getHours()}:${new Date(
       startAt ?? ""
@@ -65,18 +48,23 @@ const Card = ({
       <React.Fragment>
         <BackgroundImage isFlex onClick={_onClick} src={src}>
           <Abled categoryId={findCategory?.image} />
-          <div
-            style={{
-              position: "absolute",
-              bottom: "75px",
-              margin: "0px 0px 0px 11px",
-              background: "#FBB631",
-              borderRadius: "15px",
-              fontSize: "12px",
-            }}
-          >
-            {dday(startAt)}
-          </div>
+          {startAt !== undefined ? (
+            <div
+              style={{
+                position: "absolute",
+                bottom: "75px",
+                margin: "0px 0px 0px 11px",
+                background: "#FBB631",
+                borderRadius: "15px",
+                fontSize: "12px",
+                padding: "3px 8px",
+              }}
+            >
+              {DDayCalculator(startAt)}
+            </div>
+          ) : (
+            <></>
+          )}
           <PartyInfo isFlex>
             <div style={{ fontWeight: "bold" }}>{title}</div>
             <div>{menu}</div>
@@ -109,8 +97,19 @@ const Card = ({
               {time}
             </div>
           </PartyInfo>
+
           <PartyHeadcount>
-            {headcount} / {limit}
+            <img
+              style={{ width: "13px", height: "13px" }}
+              src={Header.rows[8].image}
+              alt=""
+            />
+
+            {headcount}
+
+            <div style={{ color: "#9E9E9E" }}>
+              <>/ {limit}</>
+            </div>
           </PartyHeadcount>
         </BackgroundImage>
       </React.Fragment>
@@ -192,13 +191,13 @@ const PartyInfo = styled.div<PartyInfoProps>`
 `;
 const PartyHeadcount = styled.div<PartyHeadcountProps>`
   position: absolute;
-  width: 50px;
-  height: 28px;
-  border-radius: 10px;
+  border-radius: 15px;
   padding: 3px 4px;
   background: #424242;
   right: 10px;
   top: 10px;
   text-align: center;
+  display: flex;
+  align-items: center;
 `;
 export default Card;

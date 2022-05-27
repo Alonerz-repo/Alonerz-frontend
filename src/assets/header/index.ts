@@ -1,5 +1,5 @@
 import data from "./data.json";
-const max = 8;
+const max = 9;
 const extension = ".svg";
 
 interface Row {
