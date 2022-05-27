@@ -17,12 +17,12 @@ import EditGroup from "./pages/EditGroup";
 import Chatting from "./pages/Chatting";
 import ChatList from "./pages/ChatList";
 import Four from "./pages/404";
-
 import { authUser } from "./store/slices/userSlice";
 import { useAppDispatch } from "./store/config.hook";
 import GroupDetailPage from "./pages/GroupDetailPage";
 import OnBoardingPage from "./pages/OnBoardingPage";
 import MainPage from "./pages/MainPage";
+import GroupListPage from "./pages/GroupListPage";
 
 declare global {
   interface Window {
@@ -34,17 +34,18 @@ function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(authUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
       <Container>
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
             <Route path="/coution" element={<ConsentForm />} />
-            <Route path="/list/:time" element={<PartyList />} />
+            {/* <Route path="/groups/:time" element={<GroupListPage />} /> */}
+            <Route path="/groups/:time" element={<PartyList />} />
             <Route path="/test" element={<Test />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user/:userId" element={<User />} />
@@ -57,8 +58,7 @@ function App() {
             <Route path="/chat" element={<Chatting />} />
             <Route path="/chatlist" element={<ChatList />} />
             <Route path="/redirect" element={<Redirect />} />
-            <Route path="/participate/:groupId" element={<GroupDetailPage />} />
-            {/* <Route path="/create/partyInfo/:time" element={<CreateParty />} /> */}
+            <Route path="/group/:groupId" element={<GroupDetailPage />} />
             <Route path="/edit/partyInfo/:groupId" element={<EditGroup />} />
             <Route path="/404" element={<Four />} />
             <Route path="*" element={<MainPage />} />

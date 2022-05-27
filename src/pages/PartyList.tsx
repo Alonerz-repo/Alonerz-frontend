@@ -96,7 +96,7 @@ const PartyList = () => {
                 endAt={new Date(value.endAt)}
                 src={value.imageUrl}
                 _onClick={() => {
-                  navigate(`/participate/${value.groupId}`);
+                  navigate(`/group/${value.groupId}`);
                 }}
               ></Card>
             );
