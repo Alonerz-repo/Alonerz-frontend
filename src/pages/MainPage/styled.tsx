@@ -80,8 +80,7 @@ export const GroupImageWrapper = styled.div<GroupItemgWrapperProps>`
   height: 100%;
   background: ${(
     props,
-  ) => `linear-gradient(180deg, rgba(0, 0, 0, 0.25) 10%, rgba(0, 0, 0, .30) 50%, rgba(0, 0, 0, 0.25) 100%),
-            linear-gradient(0deg, rgba(110,110,110,1) 0%, rgba(255,255,255,0) 60%),
+  ) => `linear-gradient(180deg, rgba(0, 0, 0, 0) 23.96%, #000000 83.85%),
             url("${props.imageUrl}");`};
   background-size: cover;
   background-repeat: no-repeat;
@@ -165,7 +164,6 @@ interface GroupIconButtonProps {
 }
 
 export const GroupIonButton = styled.div<GroupIconButtonProps>`
-  color: #fff;
   padding: 15px;
   margin: 5px;
   cursor: pointer;
@@ -218,16 +216,17 @@ interface GroupCategoryIconProps {
 export const GroupCategotyIcon = styled.div<GroupCategoryIconProps>`
   width: 33px;
   height: 33px;
-  border: 1px solid #eee;
+  border: 1px solid #ddd;
   border-radius: 50%;
+  padding: 5px;
   background: ${(props) => `url(${props.image})`};
   background-color: rgba(255, 255, 255);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
-  left: 10px;
-  top: -25px;
+  left: 5px;
+  top: -30px;
 `;
 
 export const GroupCategotyItem = styled.div`
