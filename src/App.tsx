@@ -44,8 +44,8 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
             <Route path="/coution" element={<ConsentForm />} />
-            <Route path="/groups/:option" element={<GroupListPage />} />
-            {/* <Route path="/groups/:option" element={<PartyList />} /> */}
+            {/* <Route path="/groups/:time" element={<GroupListPage />} /> */}
+            <Route path="/groups/:time" element={<PartyList />} />
             <Route path="/test" element={<Test />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user/:userId" element={<User />} />

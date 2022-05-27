@@ -45,6 +45,15 @@ export interface TodayGroup {
 }
 
 export const groupAxios = {
+  getGroups: async (
+    x: number,
+    y: number,
+    key: string,
+  ): Promise<TodayGroup[]> => {
+    const time = ["lunch", "dinner"].includes(key) ? key : "";
+    const url = getUrl(`/api/groups?time=${time}`);
+    return [];
+  },
   getMyGroups: async (): Promise<TodayGroup[]> => {
     const url = getUrl("/api/groups/today");
     const headers = getHeaders();

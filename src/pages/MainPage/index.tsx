@@ -77,9 +77,9 @@ const MainPage = () => {
   }, [navigate, user]);
 
   const onCreateLunchGroupClick = () => navigate("/group/create/lunch");
-  const onEnterLunchGroupClick = () => navigate("/list/lunch");
+  const onEnterLunchGroupClick = () => navigate("/groups/lunch");
   const onCreateDinnerGroupClick = () => navigate("/group/create/dinner");
-  const onEnterDinnerGroupClick = () => navigate("/list/dinner");
+  const onEnterDinnerGroupClick = () => navigate("/groups/dinner");
 
   const renderTodayGroupCard = () => {
     const count = groups.length;
