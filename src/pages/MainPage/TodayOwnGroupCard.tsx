@@ -40,7 +40,7 @@ const TodayOwnGroupCard = (props: TodayOwnGroupCardProps) => {
   const contentProps = {
     color: "#fff",
     cursor: "pointer",
-    onClick: () => navigate(`/participate/${groupId}`),
+    onClick: () => navigate(`/group/${groupId}`),
   };
   const buttonWrapperProps = {
     style: { justifyContent: "space-between" },
