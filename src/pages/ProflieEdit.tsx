@@ -72,7 +72,6 @@ const ProfileEdit = () => {
       characterImageId: userChar.characterImageId,
       backgroundColorId: userChar.color,
     };
-    console.log(data);
     try {
       boardAxios.setBoard(data);
       setAlert({
