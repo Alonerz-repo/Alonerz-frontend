@@ -80,7 +80,7 @@ export const GroupImageWrapper = styled.div<GroupItemgWrapperProps>`
   height: 100%;
   background: ${(
     props,
-  ) => `linear-gradient(180deg, rgba(0, 0, 0, 0) 23.96%, #000000 83.85%),
+  ) => `linear-gradient(180deg, rgba(0, 0, 0, 0) 32.81%, rgba(0, 0, 0, 0.8) 88.54%), 
             url("${props.imageUrl}");`};
   background-size: cover;
   background-repeat: no-repeat;
@@ -175,6 +175,7 @@ export const GroupIonButton = styled.div<GroupIconButtonProps>`
   &:hover {
     background-color: rgba(255, 255, 255, 20%);
   }
+  margin: 20px 0 0;
 `;
 
 export const GroupDotWrapper = styled.div`
@@ -225,8 +226,8 @@ export const GroupCategotyIcon = styled.div<GroupCategoryIconProps>`
   background-repeat: no-repeat;
   background-position: center;
   position: relative;
-  left: 5px;
-  top: -30px;
+  left: 10px;
+  top: -25px;
 `;
 
 export const GroupCategotyItem = styled.div`

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { groupAxios, SelectGroup } from "../../axios/groupAxios";
 import { useAppSelector } from "../../store/config";
@@ -34,6 +34,16 @@ const GroupListPage = () => {
   const { time } = useParams();
   const [groups, setGroups] = useState<SelectGroup[]>([]);
 
+  const getGroups = useCallback(
+    async (current: CurrentLocation) => {
+      const { x, y } = current;
+      const { param } = times.find((item) => item.key === time) as Time;
+      const groups = await groupAxios.getGroups(x, y, param);
+      setGroups(groups);
+    },
+    [time],
+  );
+
   useEffect(() => {
     if (!userId) {
       return navigate("/login");
@@ -42,12 +52,6 @@ const GroupListPage = () => {
   }, [userId, navigate]);
 
   useEffect(() => {
-    const getGroups = async (current: CurrentLocation) => {
-      const { x, y } = current;
-      const { param } = times.find((item) => item.key === time) as Time;
-      const groups = await groupAxios.getGroups(x, y, param);
-      setGroups(groups);
-    };
     const { geolocation } = navigator;
     const current = { ...initCurrentLocation };
     if (geolocation) {
@@ -58,10 +62,35 @@ const GroupListPage = () => {
     }
     getGroups(current);
     return () => {};
-  }, [time]);
+  }, [time, getGroups]);
 
-  const renderFilters = () => {
-    return <div>filter</div>;
+  const onTimeOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const {
+      target: { value },
+    } = e;
+    return navigate(`/groups/${value}`);
+  };
+
+  const renderTimeFilters = () => {
+    return (
+      <Style.GroupTimeSelect value={time} onChange={onTimeOptionChange}>
+        <option value="all">전체</option>
+        <option value="lunch">{"아침 & 점심"}</option>
+        <option value="dinner">{"저녁 & 야식"}</option>
+      </Style.GroupTimeSelect>
+    );
+  };
+
+  const renderOrderFilters = () => {
+    return (
+      <div>
+        <Style.GroupOrderFilter>
+          <option defaultChecked>정렬</option>
+          <option>거리순</option>
+          <option>시간순</option>
+        </Style.GroupOrderFilter>
+      </div>
+    );
   };
 
   const renderGroups = () => {
@@ -82,11 +111,12 @@ const GroupListPage = () => {
 
   return (
     <>
-      <Header text="" />
-      <Style.Container>
-        {renderFilters()}
-        <Style.Wrapper>{renderGroups()}</Style.Wrapper>
-      </Style.Container>
+      <Header text="모집중인 파티" type="user" />
+      <Style.GroupToolsWrapper>
+        {renderTimeFilters()}
+        {renderOrderFilters()}
+      </Style.GroupToolsWrapper>
+      <Style.GroupListWrapper>{renderGroups()}</Style.GroupListWrapper>
     </>
   );
 };

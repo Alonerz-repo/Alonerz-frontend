@@ -102,6 +102,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
           <Text bold fontSize="20px" padding="10px">
             {text}
           </Text>
+
           <div style={{ display: "flex", position: "absolute", right: "1px" }}>
             <Icon
               style={{ margin: "0px 5px" }}
@@ -126,7 +127,11 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
   }
   return (
     <React.Fragment>
-      <Wrap>
+      <Wrap
+        style={{
+          backgroundColor: "#fff",
+        }}
+      >
         <GoBack
           size="20px"
           src={HeaderModule.rows[0].image}
