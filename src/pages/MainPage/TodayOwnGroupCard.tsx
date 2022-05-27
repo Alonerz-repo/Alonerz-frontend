@@ -2,12 +2,14 @@ import { IconImageModule } from "./images";
 import { NavigateFunction } from "react-router-dom";
 import CategoryModule from "../../assets/category";
 import * as Style from "./styled";
+import GroupImageModule from "../../assets/group";
 
 interface TodayOwnGroupCardProps {
   groupId: string;
   title: string;
   imageUrl: string | null;
   address: string;
+  isMorning: boolean;
   timeString: string;
   categoryId: number;
   onPreClick(): void;
@@ -27,6 +29,7 @@ const TodayOwnGroupCard = (props: TodayOwnGroupCardProps) => {
     imageUrl,
     title,
     address,
+    isMorning,
     timeString,
     categoryId,
     onPreClick,
@@ -36,7 +39,11 @@ const TodayOwnGroupCard = (props: TodayOwnGroupCardProps) => {
 
   const { image, item } = CategoryModule.findById(categoryId) as CategoryRow;
 
-  const coverProps = { imageUrl };
+  const coverProps = {
+    imageUrl: imageUrl
+      ? imageUrl
+      : GroupImageModule.rows[isMorning ? 0 : 1].image,
+  };
   const contentProps = {
     color: "#fff",
     cursor: "pointer",
