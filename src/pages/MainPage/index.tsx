@@ -15,6 +15,7 @@ interface CardClickEvents {
   dinnerEnterClick(): void;
 }
 
+// 최원영
 const otherGroupCardProps = (cardClickEvents: CardClickEvents) => [
   {
     title: "아침 & 점심 모임",
@@ -122,16 +123,11 @@ const MainPage = () => {
     );
   };
 
-  const renderBanner = () => {
-    return <div style={{ color: "#fff" }}>...배너...</div>;
-  };
-
   return (
     <Style.MainWrapper>
       <Header text="Alonerz" type="main" />
       {renderTodayGroupCard()}
       {renderOtherGroupCards()}
-      {renderBanner()}
     </Style.MainWrapper>
   );
 };
