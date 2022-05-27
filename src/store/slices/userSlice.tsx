@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import loginAxios from "../../axios/loginAxios";
 import authAxsios from "../../axios/authAxios";
 
@@ -39,7 +39,7 @@ export const authUser = createAsyncThunk(
       }
     });
     return response;
-  }
+  },
 );
 
 //로그아웃 버튼을 클릭하면 사용자 정보를 초기상태로 갱신합니다.
@@ -53,7 +53,7 @@ export const kakaoLogout = createAsyncThunk(
       })
       .catch((err) => err.response.data);
     return response;
-  }
+  },
 );
 
 export const userSlice = createSlice({

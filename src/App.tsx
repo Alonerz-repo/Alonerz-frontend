@@ -35,6 +35,8 @@ function App() {
     dispatch(authUser());
   }, [dispatch]);
 
+  console.log(process.env.PUBLIC_URL);
+
   return (
     <div className="App">
       <Container>
