@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid } from "../elements";
-import icon from "../assets/header";
 import { useAppDispatch } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
 import BackgroundModule from "../assets/background";
 import CharacterModule from "../assets/characters";
 import StickerModule from "../assets/sticker";
+import HeaderModule from "../assets/header";
 
 //프로필 캐릭터 스티커용 상단 컴포넌트입니다.
 interface Props {
@@ -156,7 +156,7 @@ const CharBox = ({ board }: any) => {
             ...board,
             characterImageId: curNum + 1,
             Character: curNum + 1,
-          }),
+          })
         );
         return setNum(curNum + 1);
       }
@@ -167,7 +167,7 @@ const CharBox = ({ board }: any) => {
             ...board,
             characterImageId: length - 1,
             Character: length - 1,
-          }),
+          })
         );
         return setNum(length - 1);
       } else {
@@ -176,7 +176,7 @@ const CharBox = ({ board }: any) => {
             ...board,
             characterImageId: curNum - 1,
             Character: curNum - 1,
-          }),
+          })
         );
         return setNum(curNum - 1);
       }
@@ -198,7 +198,7 @@ const CharBox = ({ board }: any) => {
           <img
             onClick={() => click(-1)}
             style={{ width: "34px", height: "34px" }}
-            src={icon[6]}
+            src={HeaderModule.rows[0].image}
             alt=""
           />
 
@@ -210,7 +210,7 @@ const CharBox = ({ board }: any) => {
           <img
             onClick={() => click(1)}
             style={{ width: "34px", height: "34px" }}
-            src={icon[5]}
+            src={HeaderModule.rows[0].image}
             alt=""
           />
         </Box>

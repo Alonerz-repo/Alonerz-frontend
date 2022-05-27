@@ -1,20 +1,30 @@
-//사용자 헤더 아이콘입니다.
-//json으로 리펙토링시 성능상 유리
-import login from "./kakaologin.svg";
-import notion from "./notion.svg";
-import mylogo from "./Logo.svg";
+import data from "./data.json";
+const max = 8;
+const extension = ".svg";
 
-const icon = [
-  require("./home.png"),
-  require("./setting.png"),
-  require("./chat.png"),
-  require("./1.svg"),
-  require("./User.png"),
-  require("./right.png"),
-  require("./left.png"),
-];
+interface Row {
+  id: number;
+  image: string;
+  item: string;
+}
 
-export const kakaoImg = login;
-export const noti = notion;
-export const logo = mylogo;
-export default icon;
+class HeaderModule {
+  constructor(
+    public readonly rows: Row[] = [...Array(max)].map((_, id) => {
+      const imageName = ("0" + (id + 1)).slice(-2);
+      const image = require(`./${imageName}${extension}`);
+      const row: Row = {
+        id,
+        image: String(image),
+        item: String(data[id]),
+      };
+      return row;
+    })
+  ) {}
+
+  findById(id: number): Row | undefined {
+    return this.rows.find((row) => row.id === id);
+  }
+}
+
+export default new HeaderModule();

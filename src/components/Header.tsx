@@ -1,10 +1,9 @@
 import React from "react";
 import { Text } from "../elements";
 import styled from "styled-components";
-import goback from "../assets/goback.png";
-import icon from "../assets/header";
 import { useAppSelector } from "../store/config";
 import { useNavigate } from "react-router-dom";
+import HeaderModule from "../assets/header";
 
 interface Props {
   text: string;
@@ -16,6 +15,7 @@ interface Props {
 }
 
 const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
+  const a = HeaderModule.findById(1);
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
   if (type === "user") {
@@ -30,7 +30,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
         >
           <GoBack
             size="20px"
-            src={goback}
+            src={HeaderModule.rows[0].image}
             onClick={() => {
               navigate("/");
             }}
@@ -42,7 +42,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={icon[2]}
+              src={HeaderModule.rows[0].image}
               onClick={() => {
                 window.alert("준비중입니다.");
               }}
@@ -50,7 +50,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={icon[1]}
+              src={HeaderModule.rows[0].image}
               onClick={() => {
                 navigate("/user/config");
               }}
@@ -58,7 +58,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={icon[0]}
+              src={HeaderModule.rows[0].image}
               onClick={() => {
                 navigate("/");
               }}
@@ -73,7 +73,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
         <Wrap>
           <GoBack
             size="20px"
-            src={goback}
+            src={HeaderModule.rows[0].image}
             onClick={() => {
               navigate(-1);
             }}
@@ -115,7 +115,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={icon[4]}
+              src={HeaderModule.rows[0].image}
               onClick={() => {
                 navigate(`/user/${user.userId}`);
               }}
@@ -123,7 +123,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={icon[1]}
+              src={HeaderModule.rows[0].image}
               onClick={() => {
                 navigate("/user/config");
               }}
@@ -138,7 +138,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
       <Wrap>
         <GoBack
           size="20px"
-          src={goback}
+          src={HeaderModule.rows[0].image}
           onClick={() => {
             navigate(-1);
           }}

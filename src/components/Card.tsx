@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Category from "../assets/category";
+import Header from "../assets/header";
 
 type Props = {
   title: string;
@@ -30,21 +31,83 @@ const Card = ({
   categoryId,
 }: Props) => {
   const findCategory = Category.findById(categoryId);
+  const icon = Header.findById(1);
+  const dday = (startAt: Date | undefined) => {
+    if (startAt !== undefined) {
+      const setDate = new Date(startAt);
+      const now = new Date();
+      const distance = now.getTime() - setDate.getTime();
+      console.log(startAt);
+      console.log(setDate.getTime());
+      const day = Math.floor(distance / (1000 * 60 * 60 * 24));
+      console.log("d-day is", day);
+
+      if (day < 1) {
+        return "d-day";
+      } else {
+        return `d-${day}`;
+      }
+    } else {
+      const a = "D-Day";
+      return a;
+    }
+  };
+  dday(startAt);
   if (isFlex) {
-    const time = `${new Date(startAt ?? "").getHours()} ~ ${new Date(
-      endAt ?? ""
-    ).getHours()}`;
+    const time = `${new Date(startAt ?? "").getHours()}:${new Date(
+      startAt ?? ""
+    ).getMinutes()} ~ ${new Date(endAt ?? "").getHours()}:${new Date(
+      startAt ?? ""
+    ).getMinutes()}`;
     const adres = address.split(" ");
     const place = `${adres[0] ?? ""} ${adres[1] ?? ""} ${adres[2] ?? ""}`;
     return (
       <React.Fragment>
         <BackgroundImage isFlex onClick={_onClick} src={src}>
           <Abled categoryId={findCategory?.image} />
+          <div
+            style={{
+              position: "absolute",
+              bottom: "75px",
+              margin: "0px 0px 0px 11px",
+              background: "#FBB631",
+              borderRadius: "15px",
+              fontSize: "12px",
+            }}
+          >
+            {dday(startAt)}
+          </div>
           <PartyInfo isFlex>
-            <div>{title}</div>
+            <div style={{ fontWeight: "bold" }}>{title}</div>
             <div>{menu}</div>
-            <div>{place}</div>
-            <div>{time}</div>
+            <div
+              style={{
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "baseline",
+              }}
+            >
+              <img
+                style={{ width: "13px", height: "13px" }}
+                src={Header.rows[6].image}
+                alt=""
+              />
+              {place}
+            </div>
+            <div
+              style={{
+                fontSize: "14px",
+                display: "flex",
+                alignItems: "baseline",
+              }}
+            >
+              <img
+                style={{ width: "13px", height: "13px" }}
+                src={Header.rows[7].image}
+                alt=""
+              />
+              {time}
+            </div>
           </PartyInfo>
           <PartyHeadcount>
             {headcount} / {limit}
@@ -123,8 +186,9 @@ const BackgroundImage = styled.div<BackgroundImageProps>`
 
 const PartyInfo = styled.div<PartyInfoProps>`
   position: inherit;
-  top: ${(props) => (props.isFlex ? "100px" : "75px")};
+  top: ${(props) => (props.isFlex ? "120px" : "75px")};
   left: ${(props) => (props.isFlex ? "" : "10px")};
+  margin: 0px 0px 0px 11px;
 `;
 const PartyHeadcount = styled.div<PartyHeadcountProps>`
   position: absolute;

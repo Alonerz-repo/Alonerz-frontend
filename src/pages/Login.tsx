@@ -1,29 +1,30 @@
-import React from 'react';
-import styled from 'styled-components';
-import loginAxios from '../axios/loginAxios';
-import { Grid } from '../elements';
-import { kakaoImg, noti, logo } from '../assets/header';
+import React from "react";
+import styled from "styled-components";
+import loginAxios from "../axios/loginAxios";
+import { Grid } from "../elements";
+import HeaderModule from "../assets/header";
 
 const Login = () => {
+  const a = HeaderModule.findById(1);
   return (
     <React.Fragment>
       <Grid>
-        <Position style={{ top: '20vh' }}>
-          <img src={logo} alt="Alonerz" />
+        <Position style={{ top: "20vh" }}>
+          <img src={a?.image} alt="Alonerz" />
         </Position>
         <Position
           style={{
-            flexFlow: 'column wrap',
-            top: '60vh',
+            flexFlow: "column wrap",
+            top: "60vh",
           }}
         >
-          <img src={noti} alt="noti" />
+          <img src={a?.image} alt="noti" />
           <img
             onClick={loginAxios.kakaoLogin}
-            src={kakaoImg}
+            src={a?.image}
             alt="kakaologin"
             style={{
-              cursor: 'pointer',
+              cursor: "pointer",
             }}
           />
         </Position>

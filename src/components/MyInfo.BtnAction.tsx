@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Grid, Image } from "../elements";
 import userAxios from "../axios/userAxios";
-import chatIcon from "../assets/header/1.svg";
 import AlertModal from "./AlertModal";
+import HeaderModule from "../assets/header";
 
 const alertInit = {
   message: "",
@@ -14,6 +14,8 @@ const alertInit = {
 //리덕스의 유저 정보와 url param의 유저 정보를 비교해서 두개가 일치하면 내정보 수정버튼
 //일치 하지 않으면 팔로우와 채팅 버튼이 보이게 분기 처리 했습니다.
 const BtnAction = (props: any) => {
+  const a = HeaderModule.findById(1);
+  console.log(a?.image);
   const navigate = useNavigate();
   const { myId, yourId } = props;
   const [alert, setAlert] = useState(alertInit);
@@ -65,7 +67,7 @@ const BtnAction = (props: any) => {
         <AlertModal {...alert} />
         <Grid display="flex">
           <div onClick={goTochat}>
-            <Image size="44px" src={chatIcon}></Image>
+            <Image size="44px" src={a?.image}></Image>
           </div>
           <Button
             _onClick={setFollow}
