@@ -46,7 +46,7 @@ const MainPage = () => {
       return navigate("/introduce");
     }
 
-    if (!user) {
+    if (!user.userId) {
       return navigate("/login");
     }
 
@@ -81,13 +81,23 @@ const MainPage = () => {
   const onEnterDinnerGroupClick = () => navigate("/list/dinner");
 
   const renderTodayGroupCard = () => {
-    const todayGroupCardsProps = {
-      groups,
-      count: groups.length,
-      navigate,
-    };
+    const count = groups.length;
+    const todayGroupCardsProps = { groups, count, navigate };
+    const visible = user.userId && count;
     return (
-      <>{user.userId && <TodayOwnGroupCards {...todayGroupCardsProps} />}</>
+      <>
+        {visible ? (
+          <>
+            <Style.GroupCardHeader>
+              <Style.GroupCardBadge>D-day</Style.GroupCardBadge>
+              <Style.GroupCardTitle>
+                오늘 참여할 파티가 있어요!
+              </Style.GroupCardTitle>
+            </Style.GroupCardHeader>
+            <TodayOwnGroupCards {...todayGroupCardsProps} />
+          </>
+        ) : null}
+      </>
     );
   };
 
@@ -100,6 +110,11 @@ const MainPage = () => {
     };
     return (
       <>
+        <Style.GroupCardHeader>
+          <Style.GroupCardTitle>
+            🎉 여러분을 기다리고 있는 파티가 있어요!
+          </Style.GroupCardTitle>
+        </Style.GroupCardHeader>
         {otherGroupCardProps(cardClickEvents).map((props, index) => (
           <TodayOtherGroupCard key={`${props.title}-${index}`} {...props} />
         ))}

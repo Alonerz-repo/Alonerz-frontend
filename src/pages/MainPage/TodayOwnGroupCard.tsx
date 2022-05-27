@@ -30,7 +30,8 @@ const TodayOwnGroupCard = (props: TodayOwnGroupCardProps) => {
   const groupItemProps = { visible };
   const coverProps = { imageUrl };
   const contentProps = {
-    style: { color: "#fff" },
+    color: "#fff",
+    cursor: "pointer",
     onClick: () => navigate(`/participate/${groupId}`),
   };
   const buttonWrapperProps = {
