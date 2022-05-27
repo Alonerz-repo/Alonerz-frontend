@@ -268,7 +268,9 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             margin="0px 10px 0px 20px"
           ></UploadForm>
         </Grid>
-        <Grid absolute="position:sticky; bottom:0px; width:inherit;">
+        {/* 컨텐츠가 버튼과 겹치지 않기 위한 area */}
+        <div style={{ height: "70px" }}></div>
+        <Grid absolute="position:fixed; bottom:0px; width:inherit;">
           {group ? (
             <Button width="100%" bg="#F84C40" color="white">
               수정하기
