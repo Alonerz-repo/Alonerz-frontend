@@ -39,7 +39,7 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <BrowserRouter basename="/">
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
