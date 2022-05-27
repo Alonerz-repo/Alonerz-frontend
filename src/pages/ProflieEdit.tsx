@@ -43,16 +43,12 @@ const ProfileEdit = () => {
   const userInfo = useAppSelect((state) => state.user);
   // 유저의 프로필 정보를 변경하는 스테이트 입니다.
   const [curChar, setCurChar] = useState<Character>(initChar);
-
   const [alert, setAlert] = useState(initAlertProps);
+  const [getBoard, setBoard] = useState<Character>(initChar);
 
   // 유저의 프로필 정보가 변경될때마다, 리덕스의 정보를 업데이트 합니다.
   useEffect(() => {
     setCurChar({ ...initChar, ...userChar });
-  }, [userChar]);
-
-  const [getBoard, setBoard] = useState<Character>(initChar);
-  useEffect(() => {
     setBoard({ ...userChar });
   }, [userChar]);
 
