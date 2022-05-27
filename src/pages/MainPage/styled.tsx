@@ -8,6 +8,35 @@ export const MainWrapper = styled.div`
   justify-content: center;
 `;
 
+export const GroupCardHeader = styled.div`
+  width: 100%;
+  padding: 0 15px;
+  margin: 20px 0 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-left;
+  box-sizing: border-box;
+`;
+
+export const GroupCardBadge = styled.div`
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px;
+  background-color: #f84c40;
+  border: 0px;
+  border-radius: 15px;
+  margin: 0 10px 0 0;
+`;
+
+export const GroupCardTitle = styled.h1`
+  font-size: 20px;
+  font-weight: 500;
+  padding: 0;
+  margin: 0;
+`;
+
 export const GroupCardWrapper = styled.div`
   width: 100%;
   height: 250px;
@@ -70,13 +99,19 @@ export const GroupImageWrapper = styled.div<GroupItemgWrapperProps>`
   box-sizing: border-box;
 `;
 
-export const GroupContentWrapper = styled.div`
+interface GroupContentWrapperProps {
+  color: string;
+  cursor: string;
+}
+
+export const GroupContentWrapper = styled.div<GroupContentWrapperProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  color: ${(props) => props.color};
+  cursor: ${(props) => props.cursor};
 `;
 
 export const GroupTitle = styled.h1`

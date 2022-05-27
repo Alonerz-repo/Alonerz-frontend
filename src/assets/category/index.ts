@@ -26,6 +26,10 @@ class CategoryModule {
   findById(id: number): Row | undefined {
     return this.rows.find((row) => row.id === id);
   }
+
+  findCategories() : Row[] {
+    return this.rows
+  }
 }
 
 export default new CategoryModule();

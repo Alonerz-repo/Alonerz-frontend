@@ -65,7 +65,7 @@ const GroupDetailPage = () => {
   const { groupId } = useParams<string>();
   const [group, setGroup] = useState<Group>();
   const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
-    initConfirmModalProps,
+    initConfirmModalProps
   );
   const [alertMoalProps, setAlertModalProps] =
     useState<AlertModalProps>(initAlertModalProps);
@@ -156,7 +156,7 @@ const GroupDetailPage = () => {
     const dDay = DDayCalculator(startAt);
     const dateString = DateFormatter(startAt);
     const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(
-      " ~ ",
+      " ~ "
     );
     const groupDetailProps = {
       title,
