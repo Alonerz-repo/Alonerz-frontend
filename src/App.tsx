@@ -38,7 +38,7 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <BrowserRouter basename="/">
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
