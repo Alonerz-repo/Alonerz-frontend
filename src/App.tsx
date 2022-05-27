@@ -35,12 +35,10 @@ function App() {
     dispatch(authUser());
   }, [dispatch]);
 
-  console.log(process.env.PUBLIC_URL);
-
   return (
     <div className="App">
       <Container>
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <BrowserRouter basename="/">
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
