@@ -18,7 +18,7 @@ export interface CreateForm {
   groupId?: string;
   title?: string;
   categoryId?: number;
-  image?: any;
+  image?: File;
   description?: string;
   date?: any;
   startAt?: any;

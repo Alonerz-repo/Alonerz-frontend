@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import UploadForm from "./UploadForm";
+import UploadForm from "../../components/UploadForm";
+import { EditGroupException, EditStatusCode } from "./exception";
+import data from "../../assets/category";
 
-import DatePickerComponent from "./DatePicker";
+import DatePickerComponent from "../../components/DatePicker";
 import {
   Grid,
   Text,
@@ -12,31 +14,26 @@ import {
   InputForm,
   SelectForm,
   RadioForm,
-} from "../elements";
-import Header from "./Header";
-import { transformCreate } from "../utils/transformData";
-import NewKakaoMap from "./NewKakaoMap";
-import { partyAxios, CreateForm } from "../axios/partyAxios";
-import times from "../utils/partyTimes";
-import useLoginCheck from "../useCustom/useLoginCheck";
+} from "../../elements";
+import Header from "../../components/Header";
+import { transformCreate } from "../../utils/transformData";
+import SearchKakaoMap from "../../components/SearchKakaoMap";
+import { partyAxios, CreateForm } from "../../axios/partyAxios";
+import times from "../../utils/partyTimes";
 import ConfirmModal, {
   ConfirmModalProps,
   initConfirmModalProps,
-} from "../components/ConfirmModal";
+} from "../../components/ConfirmModal";
 import AlertModal, {
   AlertModalProps,
   initAlertModalProps,
-} from "../components/AlertModal";
+} from "../../components/AlertModal";
 
 interface CreateProps {
   group?: CreateForm;
   time?: number | undefined;
   groupId?: string;
   imageUrl?: string;
-}
-
-interface CreateStatusCode {
-  statusCode: 400 | 401 | 403 | 500;
 }
 
 const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
@@ -60,6 +57,10 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
   const [alertModalProps, setAlertModalProps] =
     useState<AlertModalProps>(initAlertModalProps);
 
+  const categories = data.findCategories().map((value, _) => {
+    return { name: value.item, value: value.id };
+  });
+
   // group 정보를 받아와서 초기 상태값을 세팅
   useEffect(() => {
     reset({
@@ -74,7 +75,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     setAddress(group?.address ?? "");
   }, [group]);
 
-  const onSubmit = handleSubmit(async (data: CreateForm) => {
+  const onSubmit = handleSubmit((data: CreateForm) => {
     if (data.startAt >= data.endAt) {
       setError("startAt", {
         type: "time",
@@ -84,12 +85,22 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     }
 
     if (placeName === "") {
-      console.log(placeName);
       setError("placeName", {
         type: "place",
-        message: "지도를 통해 장소를 선택해주세요.",
+        message: "검색을 통해 장소를 선택해주세요.",
       });
       return;
+    }
+
+    if (data.image?.name !== undefined) {
+      const file = data.image.name.split(".");
+      if (file[file.length - 1] !== ("jpg" || "jepg" || "png")) {
+        setError("image", {
+          type: "type",
+          message: "jpg, jpeg, png 형식의 이미지만 가능합니다",
+        });
+        return;
+      }
     }
 
     const newData = transformCreate({
@@ -99,17 +110,15 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
       address,
       placeName,
     });
-    try {
-      if (!group) {
-        onCreate(newData);
-      } else {
-        const result = await partyAxios.editParty(newData, groupId ?? "");
-      }
-    } catch {}
+    if (!group) {
+      onCreate(newData);
+    } else {
+      onEdit(newData, groupId ?? "");
+    }
   });
 
   const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
-  const onCreate = (group: CreateForm) => {
+  const onCreate = async (group: CreateForm) => {
     setConfirmMoalProps({
       message: "그룹을 생성하시겠습니까?",
       yesLabel: "생성",
@@ -120,34 +129,29 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
           onCloseConfirmModal();
           navigate("/", { replace: true });
         } catch (error) {
-          const { statusCode } = error as CreateStatusCode;
+          const { statusCode } = error as EditStatusCode;
           onCloseConfirmModal();
-          switch (statusCode) {
-            case 400:
-              setAlertModalProps({
-                message: "입력이 잘못되었습니다.",
-                closeLabel: "확인",
-                onClose: () => {
-                  setAlertModalProps(initAlertModalProps);
-                },
-              });
-              return;
-            case 401:
-              navigate("/login");
-              return;
-            case 403:
-              window.location.reload();
-              return;
-            case 500:
-              setAlertModalProps({
-                message: "서버에 오류가 발생하였습니다.",
-                closeLabel: "확인",
-                onClose: () => {
-                  setAlertModalProps(initAlertModalProps);
-                },
-              });
-              return;
-          }
+          EditGroupException(navigate, setAlertModalProps)[statusCode]();
+        }
+      },
+      onClose: onCloseConfirmModal,
+    });
+  };
+
+  const onEdit = (group: CreateForm, groupId: string) => {
+    setConfirmMoalProps({
+      message: "그룹을 수정하시겠습니까?",
+      yesLabel: "수정",
+      noLabel: "취소",
+      onOk: async () => {
+        try {
+          await partyAxios.editParty(group, groupId);
+          onCloseConfirmModal();
+          navigate("/", { replace: true });
+        } catch (error) {
+          const { statusCode } = error as EditStatusCode;
+          onCloseConfirmModal();
+          EditGroupException(navigate, setAlertModalProps)[statusCode]();
         }
       },
       onClose: onCloseConfirmModal,
@@ -179,7 +183,14 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             <ErrorBox>제목은 필수 입력사항입니다.</ErrorBox>
           )}
 
-          <Text bold type="line" titleText="날짜" margin="5px 0 5px 0"></Text>
+          <Text bold type="line" titleText="카테고리" margin="5px 0 5px 0" />
+          <SelectForm
+            name="categoryId"
+            control={control}
+            categories={categories}
+          ></SelectForm>
+
+          <Text bold type="line" titleText="날짜" margin="5px 0 5px 0" />
           <DatePickerComponent
             name="date"
             control={control}
@@ -229,7 +240,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
 
           <Text bold type="line" titleText="장소" margin="5px 0 5px 0" />
           {placeName ?? null}
-          <NewKakaoMap handleMap={handleMap}></NewKakaoMap>
+          <SearchKakaoMap handleMap={handleMap}></SearchKakaoMap>
           {errors.placeName?.type === "place" && placeName === "" && (
             <ErrorBox>{errors.placeName?.message}</ErrorBox>
           )}
@@ -246,6 +257,9 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             titleText="이미지 업로드"
             margin="15px 0 0 0"
           />
+          {errors.image?.type === "type" && (
+            <ErrorBox>{errors.image?.message}</ErrorBox>
+          )}
           <UploadForm
             control={control}
             name="image"
