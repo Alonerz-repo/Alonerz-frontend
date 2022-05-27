@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { TodayGroup } from "../../axios/groupAxios";
-import { TimeFormatter } from "../../utils/tools/formatter";
+import { TimeFormatter, TimeGetter } from "../../utils/tools/formatter";
 import TodayOwnGroupCard from "./TodayOwnGroupCard";
 import * as Style from "./styled";
 
@@ -29,6 +29,7 @@ const TodayOwnGroupCards = (props: TodayOwnGroupCardsProps) => {
   const renderOwnGroupCards = () => {
     const { groupId, imageUrl, title, address, startAt, endAt, categoryId } =
       groups[current];
+    const isMorning = TimeGetter(startAt);
     const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(
       " ~ ",
     );
@@ -39,6 +40,7 @@ const TodayOwnGroupCards = (props: TodayOwnGroupCardsProps) => {
       title,
       imageUrl,
       address,
+      isMorning,
       timeString,
       categoryId,
       onPreClick,
