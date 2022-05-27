@@ -27,9 +27,15 @@ const Input = ({ control, name, width, rules, margin }: InputProps) => {
     defaultValue: "",
   });
 
+  const preventEnter = (e: any) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
   return (
     <Grid {...styles}>
-      <ElementInput {...inputProps}></ElementInput>
+      <ElementInput onKeyPress={preventEnter} {...inputProps}></ElementInput>
     </Grid>
   );
 };

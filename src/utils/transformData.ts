@@ -4,7 +4,7 @@ export const transformCreate = (data: CreateForm): CreateForm => {
   const Info = {
     title: data.title,
     description: data.description,
-    categoryId: 1,
+    categoryId: data.categoryId as number,
     placeName: data.placeName,
     address: data.address,
     locationX: data.locationX,
