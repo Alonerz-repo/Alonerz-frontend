@@ -2,15 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import loginAxios from "../axios/loginAxios";
 import { Grid } from "../elements";
-import HeaderModule from "../assets/header";
+import LoginModule from "../assets/login";
 
 const Login = () => {
-  const a = HeaderModule.findById(1);
   return (
     <React.Fragment>
       <Grid>
         <Position style={{ top: "20vh" }}>
-          <img src={a?.image} alt="Alonerz" />
+          <img src={LoginModule.rows[0].image} alt="Alonerz" />
         </Position>
         <Position
           style={{
@@ -18,10 +17,10 @@ const Login = () => {
             top: "60vh",
           }}
         >
-          <img src={a?.image} alt="noti" />
+          <img src={LoginModule.rows[2].image} alt="noti" />
           <img
             onClick={loginAxios.kakaoLogin}
-            src={a?.image}
+            src={LoginModule.rows[1].image}
             alt="kakaologin"
             style={{
               cursor: "pointer",

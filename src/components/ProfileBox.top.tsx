@@ -7,6 +7,7 @@ import BackgroundModule from "../assets/background";
 import CharacterModule from "../assets/characters";
 import StickerModule from "../assets/sticker";
 import HeaderModule from "../assets/header";
+import ProfileIcon from "../assets/profileIcon";
 
 //프로필 캐릭터 스티커용 상단 컴포넌트입니다.
 interface Props {
@@ -131,7 +132,7 @@ const StickerBox = (props: any) => {
 //캐릭터와 배경을 선택하는 박스
 const CharBox = ({ board }: any) => {
   const dispatch = useAppDispatch();
-  const [myColor, setColor] = useState<any>("#FFD9D9");
+  const [myColor, setColor] = useState<any>("#EEEEEE");
   const [curNum, setNum] = useState<number>(0);
   const length = CharacterModule.rows.length;
   const image = CharacterModule.findById(curNum);
@@ -197,8 +198,8 @@ const CharBox = ({ board }: any) => {
         >
           <img
             onClick={() => click(-1)}
-            style={{ width: "34px", height: "34px" }}
-            src={HeaderModule.rows[0].image}
+            style={{ width: "34px", height: "34px", cursor: "pointer" }}
+            src={ProfileIcon.rows[1].image}
             alt=""
           />
 
@@ -209,8 +210,8 @@ const CharBox = ({ board }: any) => {
           />
           <img
             onClick={() => click(1)}
-            style={{ width: "34px", height: "34px" }}
-            src={HeaderModule.rows[0].image}
+            style={{ width: "34px", height: "34px", cursor: "pointer" }}
+            src={ProfileIcon.rows[0].image}
             alt=""
           />
         </Box>

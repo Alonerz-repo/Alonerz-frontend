@@ -15,7 +15,6 @@ interface Props {
 }
 
 const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
-  const a = HeaderModule.findById(1);
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
   if (type === "user") {
@@ -42,15 +41,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={HeaderModule.rows[0].image}
-              onClick={() => {
-                window.alert("준비중입니다.");
-              }}
-            ></Icon>
-            <Icon
-              style={{ margin: "0px 5px" }}
-              size="20px"
-              src={HeaderModule.rows[0].image}
+              src={HeaderModule.rows[4].image}
               onClick={() => {
                 navigate("/user/config");
               }}
@@ -58,7 +49,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={HeaderModule.rows[0].image}
+              src={HeaderModule.rows[1].image}
               onClick={() => {
                 navigate("/");
               }}
@@ -115,7 +106,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={HeaderModule.rows[0].image}
+              src={HeaderModule.rows[2].image}
               onClick={() => {
                 navigate(`/user/${user.userId}`);
               }}
@@ -123,7 +114,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
             <Icon
               style={{ margin: "0px 5px" }}
               size="20px"
-              src={HeaderModule.rows[0].image}
+              src={HeaderModule.rows[4].image}
               onClick={() => {
                 navigate("/user/config");
               }}
