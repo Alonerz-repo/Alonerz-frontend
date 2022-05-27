@@ -39,12 +39,15 @@ const Main = () => {
   const goToLink = (num: number) => {
     // 페이지 이동 함수
     switch (num) {
+      // 아침 & 점심 그룹 생성
       case 10:
         return navigate(`/create/partyInfo/${num}`);
       case 4:
         return navigate("/list/lunch");
       case 5:
         return navigate("/list/dinner");
+
+      // 저녁 & 야식 그룹 생성
       case 17:
         return navigate(`/create/partyInfo/${num}`);
       default:

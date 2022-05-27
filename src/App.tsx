@@ -1,28 +1,28 @@
-import { useEffect } from 'react';
-import styled from 'styled-components';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Main from './pages/Main';
-import Test from './pages/Test';
-import User from './pages/User';
-import Login from './pages/Login';
-import CreateParty from './pages/CreateParty';
-import Redirect from './pages/KakaoRedirectPage';
-import ModifyUser from './pages/ModifyUser';
-import PartyList from './pages/PartyList';
-import UserConfig from './pages/ConfigList';
-import ProfileEdit from './pages/ProflieEdit';
-import ConsentForm from './pages/ConsentForm';
-import BlockList from './pages/BlockList';
-import FollowLIst from './pages/FollowList';
-import EditParty from './pages/EditParty';
-import Chatting from './pages/Chatting';
-import ChatList from './pages/ChatList';
-import Four from './pages/404';
+import { useEffect } from "react";
+import styled from "styled-components";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Test from "./pages/Test";
+import User from "./pages/User";
+import Login from "./pages/Login";
+import CreateParty from "./pages/CreateParty";
+import Redirect from "./pages/KakaoRedirectPage";
+import ModifyUser from "./pages/ModifyUser";
+import PartyList from "./pages/PartyList";
+import UserConfig from "./pages/ConfigList";
+import ProfileEdit from "./pages/ProflieEdit";
+import ConsentForm from "./pages/ConsentForm";
+import BlockList from "./pages/BlockList";
+import FollowLIst from "./pages/FollowList";
+import EditParty from "./pages/EditParty";
+import Chatting from "./pages/Chatting";
+import ChatList from "./pages/ChatList";
+import Four from "./pages/404";
 
-import { authUser } from './store/slices/userSlice';
-import { useAppDispatch } from './store/config.hook';
-import GroupDetailPage from './pages/GroupDetailPage';
-import OnBoardingPage from './pages/OnBoardingPage';
+import { authUser } from "./store/slices/userSlice";
+import { useAppDispatch } from "./store/config.hook";
+import GroupDetailPage from "./pages/GroupDetailPage";
+import OnBoardingPage from "./pages/OnBoardingPage";
+import MainPage from "./pages/MainPage";
 
 declare global {
   interface Window {
@@ -41,7 +41,7 @@ function App() {
       <Container>
         <BrowserRouter basename="/">
           <Routes>
-            <Route path="/" element={<Main />} />
+            <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
             <Route path="/coution" element={<ConsentForm />} />
             <Route path="/list/:time" element={<PartyList />} />
@@ -53,14 +53,15 @@ function App() {
             <Route path="/user/config/edit" element={<ModifyUser />} />
             <Route path="/user/config/blocklist" element={<BlockList />} />
             <Route path="/user/edit" element={<ProfileEdit />} />
+            <Route path="/group/create/:option" element={<CreateParty />} />
             <Route path="/chat" element={<Chatting />} />
             <Route path="/chatlist" element={<ChatList />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate/:groupId" element={<GroupDetailPage />} />
-            <Route path="/create/partyInfo/:time" element={<CreateParty />} />
+            {/* <Route path="/create/partyInfo/:time" element={<CreateParty />} /> */}
             <Route path="/edit/partyInfo/:groupId" element={<EditParty />} />
             <Route path="/404" element={<Four />} />
-            <Route path="*" element={<Main />} />
+            <Route path="*" element={<MainPage />} />
           </Routes>
         </BrowserRouter>
       </Container>
@@ -69,8 +70,8 @@ function App() {
 }
 
 const Container = styled.div<ContainerProps>`
-  width: ${(props) => props.width ?? '390px'};
-  height: ${(props) => props.height ?? '100vh'};
+  width: ${(props) => props.width ?? "390px"};
+  height: ${(props) => props.height ?? "100vh"};
   box-sizing: border-box;
   justify-content: center;
   align-items: center;

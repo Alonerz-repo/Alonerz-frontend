@@ -102,6 +102,7 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
       <React.Fragment>
         <Wrap
           style={{
+            width: "100%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

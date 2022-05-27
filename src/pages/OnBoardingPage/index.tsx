@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import OnboardModule from '../../assets/onboards';
-import OnBoardingCard from './OnBoadingCard';
-import OnBoadingDots from './OnBoadingDots';
-import * as Style from './styled';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import OnboardModule from "../../assets/onboards";
+import OnBoardingCard from "./OnBoadingCard";
+import OnBoadingDots from "./OnBoadingDots";
+import * as Style from "./styled";
 
 const count = OnboardModule.len();
 const max = count - 1;
@@ -14,14 +14,20 @@ const OnBoardingPage = () => {
   const [cardIndex, setCardIndex] = useState<number>(0);
   const onPreButtonClick = () => setCardIndex(cardIndex - 1);
   const onNextButtonClick = () => setCardIndex(cardIndex + 1);
-  const onStartButtonClick = () => navigate('/login');
-  const onSkipButtonClick = () => navigate('/login');
+  const onStartButtonClick = () => {
+    localStorage.setItem("__alonerz__visit__", new Date().toLocaleString());
+    navigate("/login");
+  };
+  const onSkipButtonClick = () => {
+    localStorage.setItem("__alonerz__visit__", new Date().toLocaleString());
+    navigate("/login");
+  };
 
   const renderButtons = () => {
     const preButtonProps = {
       style: {
-        background: '#bdbdbd',
-        color: '#616161',
+        background: "#bdbdbd",
+        color: "#616161",
       },
       onClick: onPreButtonClick,
     };
