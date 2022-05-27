@@ -44,11 +44,7 @@ export const GroupCardWrapper = styled.div`
   box-sizing: border-box;
 `;
 
-export interface GroupItemWrapperProps {
-  visible: boolean;
-}
-
-export const GroupItemWrapper = styled.div<GroupItemWrapperProps>`
+export const GroupItemWrapper = styled.div`
   width: 100%;
   height: 200px;
   padding: 15px;
@@ -108,7 +104,7 @@ export const GroupContentWrapper = styled.div<GroupContentWrapperProps>`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   color: ${(props) => props.color};
   cursor: ${(props) => props.cursor};
@@ -116,6 +112,7 @@ export const GroupContentWrapper = styled.div<GroupContentWrapperProps>`
 
 export const GroupTitle = styled.h1`
   width: 100%;
+  line-height: 100%;
   padding: 10px 0;
   text-align: left;
   font-size: 20px;
@@ -125,6 +122,7 @@ export const GroupTitle = styled.h1`
 
 export const GroupSubTitle = styled.h2`
   width: 100%;
+  line-height: 100%;
   text-align: left;
   font-size: 14px;
   font-weight: 400;
@@ -138,6 +136,7 @@ export const GroupButtonWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 `;
 
 interface GroupButtonProps {
@@ -178,4 +177,64 @@ export const GroupIonButton = styled.div<GroupIconButtonProps>`
   &:hover {
     background-color: rgba(255, 255, 255, 20%);
   }
+`;
+
+export const GroupDotWrapper = styled.div`
+  width: 100%;
+  height: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 10px;
+`;
+
+interface GroupDotProps {
+  filled: boolean;
+}
+
+export const GroupDot = styled.div<GroupDotProps>`
+  width: 15px;
+  height: 15px;
+  border: 1px;
+  border-radius: 50%;
+  background: ${(props) => (props.filled ? "#fbb631" : "#ddd")};
+  margin: 0 5px;
+  cursor: pointer;
+`;
+
+export const GroupCategoryWrapper = styled.div`
+  width: 100%;
+  height: 33px;
+  display: flex;
+  position: absolute;
+  z-index: 0;
+`;
+
+interface GroupCategoryIconProps {
+  image: string;
+}
+
+export const GroupCategotyIcon = styled.div<GroupCategoryIconProps>`
+  width: 33px;
+  height: 33px;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  background: ${(props) => `url(${props.image})`};
+  background-color: rgba(255, 255, 255);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  left: 10px;
+  top: -25px;
+`;
+
+export const GroupCategotyItem = styled.div`
+  padding: 5px 10px;
+  margin: -5px 0 5px;
+  background: #fbb631;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 15px;
 `;

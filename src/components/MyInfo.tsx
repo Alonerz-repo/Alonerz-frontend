@@ -1,17 +1,17 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Grid, Text, Image } from '../elements';
-import Card from '../components/Card';
-import { useNavigate } from 'react-router-dom';
-import useUser from '../useCustom/useUser';
-import { useAppSelect } from '../store/config.hook';
-import BtnAction from './MyInfo.BtnAction';
-import GridTxt from './MyInfo.GridTxt';
-import BackgroundModule from '../assets/background';
-import CharacterModule from '../assets/characters';
-import CareerModule from '../assets/career';
-import YearModule from '../assets/year';
-import StickerModule from '../assets/sticker';
+import React from "react";
+import styled from "styled-components";
+import { Grid, Text, Image } from "../elements";
+import Card from "../components/Card";
+import { useNavigate } from "react-router-dom";
+import useUser from "../useCustom/useUser";
+import { useAppSelect } from "../store/config.hook";
+import BtnAction from "./MyInfo.BtnAction";
+import GridTxt from "./MyInfo.GridTxt";
+import BackgroundModule from "../assets/background";
+import CharacterModule from "../assets/characters";
+import CareerModule from "../assets/career";
+import YearModule from "../assets/year";
+import StickerModule from "../assets/sticker";
 
 interface Props {
   bg?: string;
@@ -120,14 +120,14 @@ const MyInfo = (props: Props) => {
   getSticker(1);
   //팔로우 페이지에 넘어가기전 props로 팔로잉/팔로우, 유저아이디를 전달합니다.
   const goToFollowings = () =>
-    navigate('follow', { state: { isfollow: 'following', uid: uid } });
+    navigate("follow", { state: { isfollow: "following", uid: uid } });
   const goToFollowers = () =>
-    navigate('follow', { state: { isfollow: 'follower', uid: uid } });
+    navigate("follow", { state: { isfollow: "follower", uid: uid } });
 
   // 내 커리어 정보
   const renderCareerAndNickname = () => {
     return (
-      <Position style={{ position: 'absolute', top: '1px' }}>
+      <Position style={{ position: "absolute", top: "1px" }}>
         <Grid display="flex" flexFlow="column wrap">
           <CareerGroupDiv>{description}</CareerGroupDiv>
           <CareerItemDiv>
@@ -147,14 +147,13 @@ const MyInfo = (props: Props) => {
     return (
       <>
         <Grid isFlex customize="margin: 39px 20px 33px 20px;">
-          <GridTxt text="참가회수" point={point} />
           <GridTxt
-            text="follower"
+            text="팔로워"
             point={followerUserCount}
             _onClick={goToFollowers}
           />
           <GridTxt
-            text="following"
+            text="팔로잉"
             point={followingUserCount}
             _onClick={goToFollowings}
           />
@@ -165,7 +164,7 @@ const MyInfo = (props: Props) => {
   };
 
   // 내 참여 그룹 목록
-  const gridProps = { padding: '20px', isFlex: true };
+  const gridProps = { padding: "20px", isFlex: true };
 
   const goToGroups = (groupId: string) => {
     navigate(`/participate/${groupId}`);
@@ -182,6 +181,7 @@ const MyInfo = (props: Props) => {
         groupId,
         startAt,
         endAt,
+        categoryId,
       } = group;
       const cardProps = {
         key,
@@ -193,6 +193,7 @@ const MyInfo = (props: Props) => {
         isFlex,
         startAt,
         endAt,
+        categoryId,
       };
       return <Card {...cardProps} _onClick={() => goToGroups(groupId)} />;
     });
@@ -207,8 +208,8 @@ const MyInfo = (props: Props) => {
         <StickerBG>
           <StickerImg
             style={{
-              top: '47px',
-              left: '4px',
+              top: "47px",
+              left: "4px",
             }}
             src={getSticker(0)?.image}
             alt=""
@@ -216,22 +217,22 @@ const MyInfo = (props: Props) => {
 
           <StickerImg
             style={{
-              top: '9px',
-              right: '4px',
+              top: "9px",
+              right: "4px",
             }}
             src={getSticker(1)?.image}
           />
           <StickerImg
             style={{
-              top: '121px',
-              right: '-8px',
+              top: "121px",
+              right: "-8px",
             }}
             src={getSticker(2)?.image}
           />
           <StickerImg
             style={{
-              bottom: '22px',
-              left: '16px',
+              bottom: "22px",
+              left: "16px",
             }}
             src={getSticker(3)?.image}
           />

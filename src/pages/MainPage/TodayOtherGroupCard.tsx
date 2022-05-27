@@ -10,6 +10,7 @@ interface TodayOtherGroupCardProps {
   onEnter(): void;
 }
 
+// 최원영
 const TodayOtherGroupCard = (props: TodayOtherGroupCardProps) => {
   const { title, subTitle, image, buttonColor, fontColor, onCreate, onEnter } =
     props;
@@ -39,8 +40,8 @@ const TodayOtherGroupCard = (props: TodayOtherGroupCardProps) => {
           <Style.GroupSubTitle>{subTitle}</Style.GroupSubTitle>
         </Style.GroupContentWrapper>
         <Style.GroupButtonWrapper>
-          <Style.GroupButton {...createButtonProps}>모임생성</Style.GroupButton>
-          <Style.GroupButton {...enterButtonProps}>목록보기</Style.GroupButton>
+          <Style.GroupButton {...createButtonProps}>개설하기</Style.GroupButton>
+          <Style.GroupButton {...enterButtonProps}>파티보기</Style.GroupButton>
         </Style.GroupButtonWrapper>
       </Style.GroupCover>
     </Style.GroupCardWrapper>

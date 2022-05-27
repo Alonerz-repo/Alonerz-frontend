@@ -65,7 +65,7 @@ const GroupDetailPage = () => {
   const { groupId } = useParams<string>();
   const [group, setGroup] = useState<Group>();
   const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
-    initConfirmModalProps
+    initConfirmModalProps,
   );
   const [alertMoalProps, setAlertModalProps] =
     useState<AlertModalProps>(initAlertModalProps);
@@ -156,7 +156,7 @@ const GroupDetailPage = () => {
     const dDay = DDayCalculator(startAt);
     const dateString = DateFormatter(startAt);
     const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(
-      " ~ "
+      " ~ ",
     );
     const groupDetailProps = {
       title,
@@ -195,7 +195,6 @@ const GroupDetailPage = () => {
   // 수정, 삭제, 참여, 탈퇴 버튼 렌더링
   const renderGroupButtons = () => {
     const { host, guests } = group as Group;
-
     if (host.userId === userId) {
       return (
         <ButtonBox>
@@ -209,9 +208,9 @@ const GroupDetailPage = () => {
     return (
       <ButtonBox>
         {isAlreadyJoin ? (
-          <GrayButton onClick={onExitClick}>탈퇴하기</GrayButton>
+          <GrayButton onClick={onExitClick}>나가기</GrayButton>
         ) : (
-          <RedButton onClick={onJoinClick}>참여하기</RedButton>
+          <RedButton onClick={onJoinClick}>파티입장</RedButton>
         )}
       </ButtonBox>
     );

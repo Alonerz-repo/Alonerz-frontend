@@ -74,7 +74,7 @@ const Follow = (props: any) => {
       <Grid display="flex" padding="20px 20px">
         <Image size="44px"></Image>
         <Grid padding="3px 14px">
-          <div onClick={() => goToUser(userId)}>
+          <div onClick={() => goToUser(userId)} style={{ cursor: "pointer" }}>
             <Text>{nickname}</Text>
             <Text>
               {groupItem?.group} / {groupItem?.item}

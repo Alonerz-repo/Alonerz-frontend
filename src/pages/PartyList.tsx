@@ -12,9 +12,11 @@ import partyTimes from "../utils/partyTimes";
 const PartyList = () => {
   const navigate = useNavigate();
   const [groups, setGroups] = React.useState<any>(initialState);
+
   // time = lunch 또는 dinner 를 받아옴
   const { time } = useParams();
   const [partyTime, setPartyTime] = React.useState<string>();
+
   // 사용자가 로그인했는지 확인하기 위한 상태값을 받아옴
   const user = useAppSelector((state) => state.user);
   console.log(groups);
@@ -56,7 +58,14 @@ const PartyList = () => {
     <React.Fragment>
       <Header text="파티리스트"></Header>
       <Grid padding="20px">
-        <Text type="title"> party</Text>
+        <h2>모집중인 파티</h2>
+        <Select
+          width="90px"
+          onChange={handleSelect}
+          categories={partyTimes.listTimes}
+          value={partyTime}
+          time={partyTime}
+        ></Select>
         <Select
           width="90px"
           onChange={handleSelect}
@@ -69,10 +78,15 @@ const PartyList = () => {
       <Grid isFlex padding="20px">
         <React.Fragment>
           {groups.map((value: any, i: number) => {
+            const a = new Date(value.startAt);
+            const b = new Date(value.endAt);
+            console.log("state At", a);
+            console.log("end At", b);
             return (
               <Card
                 key={i}
                 isFlex
+                categoryId={value.categoryId}
                 title={value.title}
                 menu={value.menu}
                 limit={value.limit}
@@ -82,7 +96,7 @@ const PartyList = () => {
                 endAt={new Date(value.endAt)}
                 src={value.imageUrl}
                 _onClick={() => {
-                  navigate(`/participate/${value.groupId}`);
+                  navigate(`/group/${value.groupId}`);
                 }}
               ></Card>
             );
