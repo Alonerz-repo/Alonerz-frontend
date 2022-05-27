@@ -1,4 +1,4 @@
-import { onboardImages } from '../../utils/images';
+import OnboardModule from '../../assets/onboards';
 import { OnBoardCardWrapper, OnBoardContent, OnBoardImage } from './styled';
 
 interface OnBoardingCardProps {
@@ -11,7 +11,7 @@ const OnBoardingCard = (props: OnBoardingCardProps) => {
 
   const onBoardImageProps = {
     style: {
-      backgroundImage: `url(${onboardImages[id]})`,
+      backgroundImage: `url(${OnboardModule.rows[id].image})`,
     },
   };
   return (

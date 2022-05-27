@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Grid, Text, Image } from "../elements";
-import Card from "../components/Card";
-import { useNavigate } from "react-router-dom";
-import useUser from "../useCustom/useUser";
-import { useAppSelect } from "../store/config.hook";
-import BtnAction from "./MyInfo.BtnAction";
-import GridTxt from "./MyInfo.GridTxt";
-import {
-  characterImageUtils,
-  careerUtils,
-  yearUtils,
-  backgroundColorUtils,
-  stickerImageUtils,
-} from "../utils/asset";
+import React from 'react';
+import styled from 'styled-components';
+import { Grid, Text, Image } from '../elements';
+import Card from '../components/Card';
+import { useNavigate } from 'react-router-dom';
+import useUser from '../useCustom/useUser';
+import { useAppSelect } from '../store/config.hook';
+import BtnAction from './MyInfo.BtnAction';
+import GridTxt from './MyInfo.GridTxt';
+import BackgroundModule from '../assets/background';
+import CharacterModule from '../assets/characters';
+import CareerModule from '../assets/career';
+import YearModule from '../assets/year';
+import StickerModule from '../assets/sticker';
 
 interface Props {
   bg?: string;
@@ -104,39 +102,32 @@ const MyInfo = (props: Props) => {
   } = useUser(uid);
 
   //커리어 정보를 불러옵니다.
-
-  const char = characterImageUtils.findById(characterImageId);
-  const career = careerUtils.findById(careerId);
-  const years = yearUtils.findById(yearId);
-  const bgColor = backgroundColorUtils.findById(backgroundColorId);
+  const char = CharacterModule.findById(characterImageId);
+  const career = CareerModule.findById(careerId);
+  const years = YearModule.findById(yearId);
+  const bgColor = BackgroundModule.findById(backgroundColorId);
 
   const getSticker = (index: number) => {
-    const result = stickers.map((value: any) => {
-      return { ...value };
-    });
-    const mySticker = result.map((value: any) => {
-      const image = stickerImageUtils.findById(value.stickerImageId);
+    const mySticker = stickers.map((value: any) => {
+      const image = StickerModule.findById(value.stickerImageId);
       const order = value.stickerOrder;
       return { order, ...image };
     });
-    const findSticker = mySticker.find((value) => {
-      if (value.order === index) {
-        return value;
-      }
-    });
+    const findSticker = mySticker.find((value) => value.order === index);
     return findSticker;
   };
+
   getSticker(1);
   //팔로우 페이지에 넘어가기전 props로 팔로잉/팔로우, 유저아이디를 전달합니다.
   const goToFollowings = () =>
-    navigate("follow", { state: { isfollow: "following", uid: uid } });
+    navigate('follow', { state: { isfollow: 'following', uid: uid } });
   const goToFollowers = () =>
-    navigate("follow", { state: { isfollow: "follower", uid: uid } });
+    navigate('follow', { state: { isfollow: 'follower', uid: uid } });
 
   // 내 커리어 정보
   const renderCareerAndNickname = () => {
     return (
-      <Position style={{ position: "absolute", top: "1px" }}>
+      <Position style={{ position: 'absolute', top: '1px' }}>
         <Grid display="flex" flexFlow="column wrap">
           <CareerGroupDiv>{description}</CareerGroupDiv>
           <CareerItemDiv>
@@ -174,7 +165,7 @@ const MyInfo = (props: Props) => {
   };
 
   // 내 참여 그룹 목록
-  const gridProps = { padding: "20px", isFlex: true };
+  const gridProps = { padding: '20px', isFlex: true };
 
   const goToGroups = (groupId: string) => {
     navigate(`/participate/${groupId}`);
@@ -216,39 +207,39 @@ const MyInfo = (props: Props) => {
         <StickerBG>
           <StickerImg
             style={{
-              top: "47px",
-              left: "4px",
+              top: '47px',
+              left: '4px',
             }}
-            src={getSticker(0)?.url}
+            src={getSticker(0)?.image}
             alt=""
           />
 
           <StickerImg
             style={{
-              top: "9px",
-              right: "4px",
+              top: '9px',
+              right: '4px',
             }}
-            src={getSticker(1)?.url}
+            src={getSticker(1)?.image}
           />
           <StickerImg
             style={{
-              top: "121px",
-              right: "-8px",
+              top: '121px',
+              right: '-8px',
             }}
-            src={getSticker(2)?.url}
+            src={getSticker(2)?.image}
           />
           <StickerImg
             style={{
-              bottom: "22px",
-              left: "16px",
+              bottom: '22px',
+              left: '16px',
             }}
-            src={getSticker(3)?.url}
+            src={getSticker(3)?.image}
           />
         </StickerBG>
 
         {/* 프로필 이미지 */}
         <ImgPosition>
-          <Image shape="rectangle" src={char?.url} size="100px"></Image>
+          <Image shape="rectangle" src={char?.image} size="100px"></Image>
         </ImgPosition>
         {renderCareerAndNickname()}
       </Grid>

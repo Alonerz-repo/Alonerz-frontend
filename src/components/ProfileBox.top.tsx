@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { characterImageUtils } from "../utils/asset";
 import { Grid } from "../elements";
 import icon from "../assets/header";
 import { useAppDispatch } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
-import { backgroundColorUtils, stickerImageUtils } from "../utils/asset";
+import BackgroundModule from "../assets/background";
+import CharacterModule from "../assets/characters";
+import StickerModule from "../assets/sticker";
 
 //프로필 캐릭터 스티커용 상단 컴포넌트입니다.
 interface Props {
@@ -55,7 +56,7 @@ const StickerBox = (props: any) => {
       stickerOrder = sticker.stickerOrder;
       stickerImageId = sticker.stickerImageId;
     }
-    const image = stickerImageUtils.findById(stickerImageId);
+    const image = StickerModule.findById(stickerImageId);
     return { stickerOrder, ...image };
   });
 
@@ -85,7 +86,7 @@ const StickerBox = (props: any) => {
           {setST(0) ? (
             <StickerImage
               style={{ left: "100px", top: "75px" }}
-              src={getST(0)?.url}
+              src={getST(0)?.image}
               alt=""
             />
           ) : (
@@ -96,7 +97,7 @@ const StickerBox = (props: any) => {
           {setST(1) ? (
             <StickerImage
               style={{ right: "94px", top: "75px" }}
-              src={getST(1)?.url}
+              src={getST(1)?.image}
             />
           ) : (
             <Circle style={{ right: "115px", top: "93px" }}>+</Circle>
@@ -106,7 +107,7 @@ const StickerBox = (props: any) => {
           {setST(2) ? (
             <StickerImage
               style={{ left: "100px", bottom: "137px" }}
-              src={getST(2)?.url}
+              src={getST(2)?.image}
             />
           ) : (
             <Circle style={{ left: "116px", bottom: "153px" }}>+</Circle>
@@ -116,7 +117,7 @@ const StickerBox = (props: any) => {
           {setST(3) ? (
             <StickerImage
               style={{ right: "94px", bottom: "137px" }}
-              src={getST(3)?.url}
+              src={getST(3)?.image}
             />
           ) : (
             <Circle style={{ right: "116px", bottom: "153px" }}>+</Circle>
@@ -132,13 +133,13 @@ const CharBox = ({ board }: any) => {
   const dispatch = useAppDispatch();
   const [myColor, setColor] = useState<any>("#FFD9D9");
   const [curNum, setNum] = useState<number>(0);
-  const length = characterImageUtils.getAll().length;
-  const image = characterImageUtils.findById(curNum);
+  const length = CharacterModule.rows.length;
+  const image = CharacterModule.findById(curNum);
 
   useEffect(() => {
     if (board !== undefined) {
       setNum(board.characterImageId);
-      const result = backgroundColorUtils.findById(board.backgroundColorId);
+      const result = BackgroundModule.findById(board.backgroundColorId);
 
       setColor(result?.color);
     }
@@ -155,7 +156,7 @@ const CharBox = ({ board }: any) => {
             ...board,
             characterImageId: curNum + 1,
             Character: curNum + 1,
-          })
+          }),
         );
         return setNum(curNum + 1);
       }
@@ -166,7 +167,7 @@ const CharBox = ({ board }: any) => {
             ...board,
             characterImageId: length - 1,
             Character: length - 1,
-          })
+          }),
         );
         return setNum(length - 1);
       } else {
@@ -175,7 +176,7 @@ const CharBox = ({ board }: any) => {
             ...board,
             characterImageId: curNum - 1,
             Character: curNum - 1,
-          })
+          }),
         );
         return setNum(curNum - 1);
       }
@@ -203,7 +204,7 @@ const CharBox = ({ board }: any) => {
 
           <img
             style={{ width: "114px", height: "171px" }}
-            src={image ? image.url : ""}
+            src={image ? image.image : ""}
             alt=""
           />
           <img

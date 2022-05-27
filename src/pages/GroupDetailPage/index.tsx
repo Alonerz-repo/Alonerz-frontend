@@ -1,54 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Group, groupAxios } from '../../axios/groupAxios';
-import { useAppSelector } from '../../store/config';
-import GroupParentComments from './GroupParentComments';
-import GroupDetail from './GroupDetail';
-import GroupMembers from './GroupMembers';
-import styled from 'styled-components';
-import Header from '../../components/Header';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { Group, groupAxios } from "../../axios/groupAxios";
+import { useAppSelector } from "../../store/config";
+import GroupParentComments from "./GroupParentComments";
+import GroupDetail from "./GroupDetail";
+import GroupMembers from "./GroupMembers";
+import styled from "styled-components";
+import Header from "../../components/Header";
 import ConfirmModal, {
   ConfirmModalProps,
   initConfirmModalProps,
-} from '../../components/ConfirmModal';
+} from "../../components/ConfirmModal";
 import AlertModal, {
   AlertModalProps,
   initAlertModalProps,
-} from '../../components/AlertModal';
+} from "../../components/AlertModal";
 import {
   GroupDetailPageException,
   GroupDetailPageStatusCode,
-} from './exception';
-
-// util로 이동시킬 것
-const DateFormatter = (dateString: Date) => {
-  const date = new Date(dateString);
-  return [
-    `0${date.getMonth() + 1}`.slice(-2) + '월',
-    `0${date.getDate()}`.slice(-2) + '일',
-  ].join(' ');
-};
-
-// util로 이동시킬 것
-const TimeFormatter = (dateString: Date) => {
-  const date = new Date(dateString);
-  return [
-    `0${date.getHours()}`.slice(-2),
-    `0${date.getMinutes()}`.slice(-2),
-  ].join(':');
-};
-
-// utils로 이동시킬 것
-const DDayCalculator = (dateString: Date) => {
-  const today = new Date().getTime();
-  const target = new Date(dateString).getTime();
-  const diffTime = target - today;
-  const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24));
-  if (diffDays === 0) {
-    return `D-Day`;
-  }
-  return `D${diffDays > 0 ? '-' : '+'}${Math.abs(diffDays)}`;
-};
+} from "./exception";
+import { DateFormatter, TimeFormatter } from "../../utils/tools/formatter";
+import { DDayCalculator } from "../../utils/tools/calculator";
+import { Container } from "./styled";
 
 const ButtonBox = styled.div`
   width: 390px;
@@ -71,6 +44,7 @@ const RedButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 500;
 `;
 
 const GrayButton = styled.div`
@@ -82,6 +56,7 @@ const GrayButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 500;
 `;
 
 const GroupDetailPage = () => {
@@ -113,14 +88,14 @@ const GroupDetailPage = () => {
   const onEditClick = () => navigate(`/edit/partyInfo/${groupId}`);
   const onDeleteClick = () => {
     setConfirmMoalProps({
-      message: '그룹을 삭제하시겠습니까?',
-      yesLabel: '삭제',
-      noLabel: '취소',
+      message: "그룹을 삭제하시겠습니까?",
+      yesLabel: "삭제",
+      noLabel: "취소",
       onOk: async () => {
         try {
           await groupAxios.deleteGroup(groupId as string);
           onCloseConfirmModal();
-          navigate('/');
+          navigate("/");
         } catch (e) {
           const { statusCode } = e as GroupDetailPageStatusCode;
           onCloseConfirmModal();
@@ -133,12 +108,12 @@ const GroupDetailPage = () => {
 
   const onExitClick = async () => {
     setConfirmMoalProps({
-      message: '그룹에서 탈퇴하시겠습니까?',
-      yesLabel: '나가기',
-      noLabel: '취소',
+      message: "그룹에서 탈퇴하시겠습니까?",
+      yesLabel: "나가기",
+      noLabel: "취소",
       onOk: async () => {
         try {
-          await groupAxios.joinOrExitGroup(groupId as string, 'exit');
+          await groupAxios.joinOrExitGroup(groupId as string, "exit");
           const group = await groupAxios.getOneByGroupId(groupId as string);
           onCloseConfirmModal();
           setGroup(group);
@@ -152,7 +127,7 @@ const GroupDetailPage = () => {
 
   const onJoinClick = async () => {
     try {
-      await groupAxios.joinOrExitGroup(groupId as string, 'join');
+      await groupAxios.joinOrExitGroup(groupId as string, "join");
       const group = await groupAxios.getOneByGroupId(groupId as string);
       setGroup(group);
     } catch (e) {
@@ -181,7 +156,7 @@ const GroupDetailPage = () => {
     const dDay = DDayCalculator(startAt);
     const dateString = DateFormatter(startAt);
     const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(
-      ' ~ ',
+      " ~ ",
     );
     const groupDetailProps = {
       title,
@@ -225,7 +200,7 @@ const GroupDetailPage = () => {
       return (
         <ButtonBox>
           <RedButton onClick={onEditClick}>수정</RedButton>
-          <RedButton onClick={onDeleteClick}>삭제</RedButton>
+          <GrayButton onClick={onDeleteClick}>삭제</GrayButton>
         </ButtonBox>
       );
     }
@@ -243,7 +218,7 @@ const GroupDetailPage = () => {
   };
 
   return (
-    <React.Fragment>
+    <Container>
       <AlertModal {...alertMoalProps} />
       <ConfirmModal {...confirmModalProps} />
       <Header text="" />
@@ -255,7 +230,7 @@ const GroupDetailPage = () => {
           {renderGroupButtons()}
         </React.Fragment>
       ) : null}
-    </React.Fragment>
+    </Container>
   );
 };
 

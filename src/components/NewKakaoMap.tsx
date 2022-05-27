@@ -25,7 +25,7 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
 
   const markerImage = new window.kakao.maps.MarkerImage(
     "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
-    new window.kakao.maps.Size(28, 38)
+    new window.kakao.maps.Size(28, 38),
   );
 
   // X, Y 좌표가 변하거나 새로운 keyword로 검색이 왔을 때 정보 받아오기
@@ -65,7 +65,7 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
         const mapOption = {
           center: new window.kakao.maps.LatLng(
             position.coords.latitude,
-            position.coords.longitude
+            position.coords.longitude,
           ), // 지도의 중심좌표
           level: 4,
         };
@@ -123,7 +123,7 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
       infowindow.setContent(
         '<div style="padding:5px;font-size:12px;">' +
           place.place_name +
-          "</div>"
+          "</div>",
       );
       infowindow.open(map, marker);
       // 클릭한 장소를 모임 장소로 설정
@@ -131,7 +131,7 @@ const NewKakaoMap = ({ handleMap, prevX, prevY }: MapProps) => {
         Number(place.y),
         Number(place.x),
         place.address_name,
-        place.place_name
+        place.place_name,
       );
     });
   }

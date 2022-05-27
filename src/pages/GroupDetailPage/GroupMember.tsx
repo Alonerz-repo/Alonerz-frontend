@@ -1,8 +1,10 @@
 import { NavigateFunction } from 'react-router-dom';
 import styled from 'styled-components';
+import CareerModule from '../../assets/career';
+import CharacterModule from '../../assets/characters';
+import YearModule from '../../assets/year';
 import { GroupUser } from '../../axios/groupAxios';
 import { Image } from '../../elements';
-import { careerUtils, characterImageUtils, yearUtils } from '../../utils/asset';
 import { UserItem } from './styled';
 
 interface GroupUserProps {
@@ -32,9 +34,7 @@ const HostBadge = styled.div`
 const imageProps = (imageUrl: string, characterImageId: number) => ({
   shape: 'circle',
   size: '30px',
-  src: imageUrl
-    ? imageUrl
-    : characterImageUtils.findById(characterImageId)?.url,
+  src: imageUrl ? imageUrl : CharacterModule.findById(characterImageId)?.image,
 });
 
 const nicknameProps = (userId: string, navigate: NavigateFunction) => ({
@@ -59,8 +59,8 @@ const GroupMember = (props: GroupUserProps) => {
     yearId,
   } = user;
 
-  const career = careerUtils.findById(careerId) as { item: string };
-  const year = yearUtils.findById(yearId) as { item: string };
+  const career = CareerModule.findById(careerId);
+  const year = YearModule.findById(yearId);
 
   return (
     <UserWrapper>
