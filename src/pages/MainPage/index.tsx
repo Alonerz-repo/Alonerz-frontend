@@ -87,7 +87,19 @@ const MainPage = () => {
       navigate,
     };
     return (
-      <>{user.userId && <TodayOwnGroupCards {...todayGroupCardsProps} />}</>
+      <>
+        {user.userId && (
+          <>
+            <Style.GroupCardHeader>
+              <Style.GroupCardBadge>D-day</Style.GroupCardBadge>
+              <Style.GroupCardTitle>
+                오늘 참여할 파티가 있어요!
+              </Style.GroupCardTitle>
+            </Style.GroupCardHeader>
+            <TodayOwnGroupCards {...todayGroupCardsProps} />
+          </>
+        )}
+      </>
     );
   };
 
@@ -100,6 +112,11 @@ const MainPage = () => {
     };
     return (
       <>
+        <Style.GroupCardHeader>
+          <Style.GroupCardTitle>
+            🎉 여러분을 기다리고 있는 파티가 있어요!
+          </Style.GroupCardTitle>
+        </Style.GroupCardHeader>
         {otherGroupCardProps(cardClickEvents).map((props, index) => (
           <TodayOtherGroupCard key={`${props.title}-${index}`} {...props} />
         ))}

@@ -27,9 +27,8 @@ const TodayOtherGroupCard = (props: TodayOtherGroupCardProps) => {
   };
 
   const contentProps = {
-    style: {
-      color: fontColor,
-    },
+    color: fontColor,
+    cursor: "default",
   };
 
   return (
