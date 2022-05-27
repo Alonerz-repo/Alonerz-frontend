@@ -81,14 +81,12 @@ const MainPage = () => {
   const onEnterDinnerGroupClick = () => navigate("/list/dinner");
 
   const renderTodayGroupCard = () => {
-    const todayGroupCardsProps = {
-      groups,
-      count: groups.length,
-      navigate,
-    };
+    const count = groups.length;
+    const todayGroupCardsProps = { groups, count, navigate };
+    const visible = user.userId && count;
     return (
       <>
-        {user.userId && (
+        {visible ? (
           <>
             <Style.GroupCardHeader>
               <Style.GroupCardBadge>D-day</Style.GroupCardBadge>
@@ -98,7 +96,7 @@ const MainPage = () => {
             </Style.GroupCardHeader>
             <TodayOwnGroupCards {...todayGroupCardsProps} />
           </>
-        )}
+        ) : null}
       </>
     );
   };
