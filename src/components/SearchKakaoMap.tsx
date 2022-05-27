@@ -1,25 +1,140 @@
 import React from "react";
 import styled from "styled-components";
+import { useController } from "react-hook-form";
 
-interface MapProps {
-  locationX?: number;
-  locationY?: number;
-  handlePlacename?: any;
-  handleLocationX?: any;
-  handleLocationY?: any;
-  handleAddress?: any;
+interface Data {
+  locationX: number;
+  locationY: number;
+  address: string;
+  placeName: string;
 }
 
-const SearchKakaoMap = ({
-  locationX,
-  locationY,
-  handlePlacename,
-  handleLocationX,
-  handleLocationY,
-  handleAddress,
-}: MapProps) => {
+interface MapProps {
+  handleMap: any;
+  prevX?: number;
+  prevY?: number;
+}
+
+const SearchKakaoMapoMap = ({ handleMap, prevX, prevY }: MapProps) => {
+  const [X, setX] = React.useState<number>();
+  const [Y, setY] = React.useState<number>();
+  const [map, setMap] = React.useState<any>();
   const search = React.useRef<any>(null);
   const [keyword, setKeyword] = React.useState("");
+  let markers: any[] = [];
+
+  const markerImage = new window.kakao.maps.MarkerImage(
+    "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
+    new window.kakao.maps.Size(28, 38)
+  );
+
+  // X, Y 좌표가 변하거나 새로운 keyword로 검색이 왔을 때 정보 받아오기
+  React.useEffect(() => {
+    searching();
+  }, [X, Y, keyword]);
+
+  // 현재 지도에 있는 마커들을 지우기 위함
+  const removeMarkers = () => {
+    for (let i = 0; i < markers.length; i++) {
+      console.log(markers[i]);
+      markers[i].setMap(null);
+    }
+    markers = [];
+  };
+
+  // key에 맞는 장소를 검색
+  const searching = () => {
+    if (keyword !== "") {
+      removeMarkers();
+      const ps = new window.kakao.maps.services.Places();
+      const location = new window.kakao.maps.LatLng(X, Y);
+      const radius = 3000;
+      // 키워드로 장소를 검색합니다
+      ps.keywordSearch(keyword, placesSearchCB, { location, radius });
+    }
+  };
+
+  // 최초 지도를 초기화
+  React.useEffect(() => {
+    const mapContainer = document.getElementById("map"); // 지도를 표시할 div
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        setX(position.coords.latitude);
+        setY(position.coords.longitude);
+        const mapOption = {
+          center: new window.kakao.maps.LatLng(
+            position.coords.latitude,
+            position.coords.longitude
+          ), // 지도의 중심좌표
+          level: 4,
+        };
+        const map = new window.kakao.maps.Map(mapContainer, mapOption);
+
+        // 지도가 dragend되었을 때 X,Y 상태값 변화
+        window.kakao.maps.event.addListener(map, "dragend", function () {
+          // 지도 중심좌표를 얻어옵니다
+          const center = map.getCenter();
+          setX(center.getLat());
+          setY(center.getLng());
+        });
+        setMap(map);
+      });
+    }
+
+    // X,Y값을 상위 컴포넌트로 받아온다면 현재 위치가 아닌 해당 위치로
+    // 현재위치를 받아오기 전에 실행할 필요가 있어보임
+    if (prevX && prevY) {
+    }
+  }, []);
+
+  // 장소를 검색하고 결과를 data로 받아옴
+  function placesSearchCB(data: any, status: any) {
+    if (status === window.kakao.maps.services.Status.OK) {
+      for (let i = 0; i < data.length; i++) {
+        searchDisplayMarker(data[i]);
+      }
+    }
+  }
+
+  // 검색한 결과를 하나씩 받아 marker를 표시
+  function searchDisplayMarker(place: any) {
+    const marker = new window.kakao.maps.Marker({
+      map: map,
+      position: new window.kakao.maps.LatLng(place.y, place.x),
+      image: markerImage,
+    });
+
+    // 검색된 마커를 마커 배열에 저장 (추후 마커를 지우기 위해)
+    markers.push(marker);
+
+    const iwContent = "", // 인포윈도우에 표시할 내용
+      iwRemoveable = true;
+
+    // 인포윈도우를 생성합니다
+    const infowindow = new window.kakao.maps.InfoWindow({
+      content: iwContent,
+      removable: iwRemoveable,
+    });
+
+    // 마커에 클릭이벤트를 등록합니다
+    window.kakao.maps.event.addListener(marker, "click", function () {
+      // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+      infowindow.setContent(
+        '<div style="padding:5px;font-size:12px;">' +
+          place.place_name +
+          "</div>"
+      );
+      infowindow.open(map, marker);
+      // 클릭한 장소를 모임 장소로 설정
+      handleMap(
+        Number(place.y),
+        Number(place.x),
+        place.address_name,
+        place.place_name
+      );
+    });
+  }
 
   const handleSearch = () => {
     setKeyword(search.current.value);
@@ -27,221 +142,10 @@ const SearchKakaoMap = ({
 
   const handleKeyPress = (e: any) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleSearch();
     }
   };
-
-  React.useEffect(() => {
-    const mapContainer = document.getElementById("map"), // 지도를 표시할 div
-      mapOption = {
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 4, // 지도의 확대 레벨
-      };
-
-    const markers: any[] = [];
-    let tmpInfowindow: any = null;
-    const markerImage = new window.kakao.maps.MarkerImage(
-      "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
-      new window.kakao.maps.Size(28, 38)
-    );
-
-    const map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-
-    // HTML5의 geolocation으로 사용할 수 있는지 확인합니다
-    if (navigator.geolocation) {
-      // GeoLocation을 이용해서 접속 위치를 얻어옵니다
-      navigator.geolocation.getCurrentPosition(function (position) {
-        const lat = position.coords.latitude, // 위도
-          lon = position.coords.longitude; // 경도
-
-        const locPosition = new window.kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
-          message = "<div>현재 위치</div>"; // 인포윈도우에 표시될 내용입니다
-
-        // 마커와 인포윈도우를 표시합니다
-        displayMarker(locPosition, message);
-
-        if (locationX && locationY) {
-          const placeLoc = new window.kakao.maps.LatLng(locationX, locationY);
-          const marker = new window.kakao.maps.Marker({
-            map: map,
-            position: placeLoc,
-            image: markerImage,
-          });
-          // const bounds = new window.kakao.maps.LatLngBounds(
-          //   locPosition,
-          //   placeLoc
-          // );
-          // map.setBounds(bounds);
-        }
-
-        if (keyword === "") {
-          return;
-        }
-
-        const ps = new window.kakao.maps.services.Places();
-        let location = new window.kakao.maps.LatLng(lat, lon);
-        let radius = 3000;
-        // 키워드로 장소를 검색합니다
-        ps.keywordSearch(keyword, placesSearchCB, { location, radius });
-      });
-    } else {
-      // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
-
-      const locPosition = new window.kakao.maps.LatLng(33.450701, 126.570667),
-        message = "geolocation을 사용할수 없어요..";
-
-      displayMarker(locPosition, message);
-    }
-
-    // 지도에 마커와 인포윈도우를 표시하는 함수입니다
-    function displayMarker(locPosition: any, message: string) {
-      const imageSrc = "https://i1.daumcdn.net/dmaps/apis/n_local_blit_04.png",
-        imageSize = new window.kakao.maps.Size(31, 35);
-
-      const markerImage = new window.kakao.maps.MarkerImage(
-        imageSrc,
-        imageSize
-      );
-      // 마커를 생성합니다
-      const marker = new window.kakao.maps.Marker({
-        map: map,
-        position: locPosition,
-        image: markerImage,
-      });
-
-      marker.setZIndex(2);
-
-      //   const iwContent = message, // 인포윈도우에 표시할 내용
-      //     iwRemoveable = true;
-
-      //   // 인포윈도우를 생성합니다
-      //   const infowindow = new window.kakao.maps.InfoWindow({
-      //     content: iwContent,
-      //     removable: iwRemoveable,
-      //   });
-
-      //   // 인포윈도우를 마커위에 표시합니다
-      //   infowindow.open(map, marker);
-
-      // 지도 중심좌표를 접속위치로 변경합니다
-      map.setCenter(locPosition);
-    }
-
-    function placesSearchCB(data: any, status: any) {
-      if (status === window.kakao.maps.services.Status.OK) {
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-        // LatLngBounds 객체에 좌표를 추가합니다
-        const bounds = new window.kakao.maps.LatLngBounds();
-        if (markers.length === 1) {
-          markers[0].setVisible(false);
-          markers.pop();
-          handleAddress("");
-          handlePlacename("");
-        }
-
-        for (let i = 0; i < data.length; i++) {
-          searchDisplayMarker(data[i]);
-          bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
-        }
-
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
-        // map.setBounds(bounds);
-      }
-    }
-
-    // 지도에 마커를 표시하는 함수입니다
-    function searchDisplayMarker(place: any) {
-      const marker = new window.kakao.maps.Marker({
-        map: map,
-        position: new window.kakao.maps.LatLng(place.y, place.x),
-        image: markerImage,
-      });
-
-      const iwContent = "", // 인포윈도우에 표시할 내용
-        iwRemoveable = true;
-
-      // 인포윈도우를 생성합니다
-      const infowindow = new window.kakao.maps.InfoWindow({
-        content: iwContent,
-        removable: iwRemoveable,
-      });
-
-      // 마커에 클릭이벤트를 등록합니다
-      window.kakao.maps.event.addListener(marker, "click", function () {
-        if (tmpInfowindow) {
-          tmpInfowindow.close();
-        }
-        if (markers.length === 1) {
-          markers[0].setVisible(false);
-          markers.pop();
-        }
-        // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-        infowindow.setContent(
-          '<div style="padding:5px;font-size:12px;">' +
-            place.place_name +
-            "</div>"
-        );
-        infowindow.open(map, marker);
-        tmpInfowindow = infowindow;
-        handlePlacename(place.place_name);
-        handleLocationX(place.y);
-        handleLocationY(place.x);
-        handleAddress(place.address_name);
-      });
-    }
-
-    window.kakao.maps.event.addListener(
-      map,
-      "click",
-      function (mouseEvent: any) {
-        const marker = new window.kakao.maps.Marker(); // 클릭한 위치를 표시할 마커입니다
-        searchDetailAddrFromCoords(
-          mouseEvent.latLng,
-          function (result: any, status: any) {
-            if (status === window.kakao.maps.services.Status.OK) {
-              if (tmpInfowindow) {
-                tmpInfowindow.close();
-              }
-
-              if (markers.length === 1) {
-                markers[0].setVisible(false);
-                markers.pop();
-              }
-
-              handleAddress(
-                result[0].address
-                  ? result[0].address.address_name
-                  : result[0].road_address.address_name
-              );
-              handleLocationX(mouseEvent.latLng.getLat());
-              handleLocationY(mouseEvent.latLng.getLng());
-              handlePlacename("나만의 장소");
-
-              // 마커를 클릭한 위치에 표시합니다
-              marker.setPosition(mouseEvent.latLng);
-              marker.setImage(markerImage);
-              marker.setMap(map);
-              markers.push(marker);
-              const infowindow = new window.kakao.maps.InfoWindow({
-                removable: true,
-              });
-              infowindow.setContent(
-                '<div style="padding:5px;font-size:12px;">나만의 장소</div>'
-              );
-              infowindow.open(map, marker);
-              tmpInfowindow = infowindow;
-            }
-          }
-        );
-      }
-    );
-
-    function searchDetailAddrFromCoords(coords: any, callback: any) {
-      // 좌표로 법정동 상세 주소 정보를 요청합니다
-      const geocoder = new window.kakao.maps.services.Geocoder();
-      geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
-    }
-  }, [keyword]);
 
   return (
     <React.Fragment>
@@ -256,6 +160,7 @@ const SearchKakaoMap = ({
 
 const MapContainer = styled.div`
   aspect-ratio: 400/250;
+  z-index: 0;
 `;
 
 const Wrap = styled.div`
@@ -273,13 +178,16 @@ const SearchInput = styled.input`
   width: 40%;
 `;
 
-const SearchButton = styled.button`
+const SearchButton = styled.div`
   width: 50px;
   height: 30px;
   border: 0px;
   background: #1b5ac2;
   outline: none;
   color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
-
-export default SearchKakaoMap;
+export default SearchKakaoMapoMap;
