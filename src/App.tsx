@@ -13,8 +13,6 @@ import ConsentForm from "./pages/ConsentForm";
 import BlockList from "./pages/BlockList";
 import FollowLIst from "./pages/FollowList";
 import EditGroup from "./pages/EditGroup";
-import Chatting from "./pages/Chatting";
-import ChatList from "./pages/ChatList";
 import Four from "./pages/404";
 import { authUser } from "./store/slices/userSlice";
 import { useAppDispatch } from "./store/config.hook";
@@ -53,8 +51,6 @@ function App() {
             <Route path="/user/config/blocklist" element={<BlockList />} />
             <Route path="/user/edit" element={<ProfileEdit />} />
             <Route path="/group/create/:option" element={<CreateGroup />} />
-            <Route path="/chat" element={<Chatting />} />
-            <Route path="/chatlist" element={<ChatList />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/group/:groupId" element={<GroupDetailPage />} />
             <Route path="/edit/partyInfo/:groupId" element={<EditGroup />} />
