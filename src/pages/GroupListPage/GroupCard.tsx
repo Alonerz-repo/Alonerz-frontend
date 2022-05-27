@@ -35,16 +35,18 @@ const GroupCard = (props: GroupCardProps) => {
 
   const { image, item } = CategoryModule.findById(categoryId) as CategoryRow;
   const dDay = DDayCalculator(startAt);
+  const isEditable = dDay[0] === "D";
   const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(" ~ ");
   const isMorning = TimeGetter(startAt);
   const onClick = () => navigate(`/group/${groupId}`);
+  const gradation = imageUrl !== null;
   const backgroundImage = imageUrl
     ? imageUrl
     : GroupImageModule.rows[isMorning ? 2 : 3].image;
 
   return (
     <Style.GroupCardWrapper onClick={onClick}>
-      <Style.GroupCover image={backgroundImage}>
+      <Style.GroupCover image={backgroundImage} gradation={gradation}>
         <Style.GroupTopWrapper>
           <Style.GroupCategoryWrapper>
             <Style.GroupCategoryIcon image={image} />
@@ -54,11 +56,17 @@ const GroupCard = (props: GroupCardProps) => {
           </Style.GroupCategoryWrapper>
         </Style.GroupTopWrapper>
         <Style.GroupBottomWrapper>
-          <Style.GroupDday>{dDay}</Style.GroupDday>
+          <Style.GroupDday editable={isEditable}>{dDay}</Style.GroupDday>
           <Style.GroupTitle>{title}</Style.GroupTitle>
           <Style.GroupSubTitle>{item}</Style.GroupSubTitle>
-          <Style.GroupSubTitle>{placeName}</Style.GroupSubTitle>
-          <Style.GroupSubTitle>{timeString}</Style.GroupSubTitle>
+          <Style.GroupSubTitle>
+            <Style.LocationIcon />
+            {placeName}
+          </Style.GroupSubTitle>
+          <Style.GroupSubTitle>
+            <Style.TimeIcon />
+            {timeString}
+          </Style.GroupSubTitle>
         </Style.GroupBottomWrapper>
       </Style.GroupCover>
     </Style.GroupCardWrapper>
