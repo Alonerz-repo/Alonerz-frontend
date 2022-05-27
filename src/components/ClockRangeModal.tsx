@@ -27,6 +27,7 @@ const ClockRangeModal = (props: any) => {
             <div style={{ color: "#F84C40" }}>적용</div>
           </div>
           <div>시작</div>
+          <div>폼</div>
         </div>
       </BG>
     </React.Fragment>
