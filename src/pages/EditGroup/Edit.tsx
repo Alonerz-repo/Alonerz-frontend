@@ -5,6 +5,7 @@ import styled from "styled-components";
 import UploadForm from "../../components/UploadForm";
 import { EditGroupException, EditStatusCode } from "./exception";
 import data from "../../assets/category";
+import { Available } from "./available";
 
 import DatePickerComponent from "../../components/DatePicker";
 import {
@@ -94,7 +95,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
 
     if (data.image?.name !== undefined) {
       const file = data.image.name.split(".");
-      if (file[file.length - 1] !== ("jpg" || "jepg" || "png")) {
+      if (Available.checkImage(file[file.length - 1])) {
         setError("image", {
           type: "type",
           message: "jpg, jpeg, png 형식의 이미지만 가능합니다",
