@@ -64,13 +64,17 @@ export const SubmitButton = styled.button`
   justify-content: center;
 `;
 
-export const DayBadge = styled.div`
-  padding: 8px 10px;
+interface DayBadgeProps {
+  editable: boolean;
+}
+
+export const DayBadge = styled.div<DayBadgeProps>`
+  padding: 5px 10px;
   margin: 0 5px 0 0;
   color: #fff;
   font-weight: 500;
-  background-color: #ff0000;
-  border: 2px solid #ff0000;
+  background-color: ${(props) => (props.editable ? "#ff0000" : "#959595")};
+  border: 2px solid ${(props) => (props.editable ? "#ff0000" : "#959595")};
   border-radius: 30px;
 `;
 

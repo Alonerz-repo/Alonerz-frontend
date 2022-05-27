@@ -160,6 +160,7 @@ const SearchKakaoMapoMap = ({ handleMap, prevX, prevY }: MapProps) => {
 
 const MapContainer = styled.div`
   aspect-ratio: 400/250;
+  border-radius: 15px;
   z-index: 0;
 `;
 

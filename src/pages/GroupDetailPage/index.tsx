@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Group, groupAxios } from "../../axios/groupAxios";
 import { useAppSelector } from "../../store/config";
@@ -140,15 +140,20 @@ const GroupDetailPage = () => {
     }
   };
 
+  const onBackClick = () => navigate(-1);
+
   // 그룹 상세 내용 렌더링
-  const renderGroupDetail = () => {
+  const renderGroupDetail = (
+    dDay: string,
+    isMorning: boolean,
+    dateString: string,
+    timeString: string,
+  ) => {
     const {
       title,
       categoryId,
       imageUrl,
       description,
-      startAt,
-      endAt,
       locationX,
       locationY,
       address,
@@ -157,12 +162,6 @@ const GroupDetailPage = () => {
       updatedAt,
     } = group as Group;
 
-    const dDay = DDayCalculator(startAt);
-    const dateString = DateFormatter(startAt);
-    const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(
-      " ~ ",
-    );
-    const isMorning = TimeGetter(startAt);
     const groupDetailProps = {
       title,
       dDay,
@@ -182,8 +181,6 @@ const GroupDetailPage = () => {
     return <GroupDetail {...groupDetailProps} />;
   };
 
-  // Alert, Confirm 모달 적용
-
   // 그룹 참여 인원 목록 렌더링
   const renderGroupMembers = () => {
     const { host, guests, limit } = group as Group;
@@ -199,7 +196,15 @@ const GroupDetailPage = () => {
   };
 
   // 수정, 삭제, 참여, 탈퇴 버튼 렌더링
-  const renderGroupButtons = () => {
+  const renderGroupButtons = (isEditable: boolean) => {
+    if (!isEditable) {
+      return (
+        <ButtonBox>
+          <GrayButton onClick={onBackClick}>뒤로가기</GrayButton>
+        </ButtonBox>
+      );
+    }
+
     const { host, guests } = group as Group;
     if (host.userId === userId) {
       return (
@@ -222,19 +227,24 @@ const GroupDetailPage = () => {
     );
   };
 
+  if (!group) return null;
+
+  const { startAt, endAt } = group as Group;
+  const dDay = DDayCalculator(startAt);
+  const isEditable = dDay[0] === "D";
+  const isMorning = TimeGetter(startAt);
+  const dateString = DateFormatter(startAt);
+  const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(" ~ ");
+
   return (
     <Container>
       <AlertModal {...alertMoalProps} />
       <ConfirmModal {...confirmModalProps} />
       <Header text="" />
-      {group ? (
-        <React.Fragment>
-          {renderGroupDetail()}
-          {renderGroupMembers()}
-          {renderGroupComments()}
-          {renderGroupButtons()}
-        </React.Fragment>
-      ) : null}
+      {renderGroupDetail(dDay, isMorning, dateString, timeString)}
+      {renderGroupMembers()}
+      {renderGroupComments()}
+      {renderGroupButtons(isEditable)}
     </Container>
   );
 };

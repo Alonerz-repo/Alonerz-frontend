@@ -167,7 +167,7 @@ const MyInfo = (props: Props) => {
   const gridProps = { padding: "20px", isFlex: true };
 
   const goToGroups = (groupId: string) => {
-    navigate(`/participate/${groupId}`);
+    navigate(`/group/${groupId}`);
   };
   const renderGroups = () => {
     return groups.map((group: any, key: number) => {

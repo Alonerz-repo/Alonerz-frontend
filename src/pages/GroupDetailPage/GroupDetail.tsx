@@ -90,7 +90,7 @@ const GroupDetail = (props: GroupDetailProps) => {
       <Image {...imageProps(imageUrl as string, isMorning)} />
       <Wrapper>
         <BadgeWrapper>
-          <DayBadge>{dDay}</DayBadge>
+          <DayBadge editable={dDay[0] === "D"}>{dDay}</DayBadge>
           <CategoryBadge>
             {CategoryModule.findById(categoryId)?.item}
           </CategoryBadge>

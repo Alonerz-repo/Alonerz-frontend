@@ -7,5 +7,6 @@ export const DDayCalculator = (dateString: Date) => {
   if (diffDays === 0) {
     return `D-Day`;
   }
-  return `D${diffDays > 0 ? '-' : '+'}${Math.abs(diffDays)}`;
+  const dayCount = Math.abs(diffDays);
+  return diffDays > 0 ? `D-${dayCount}` : `종료(D+${dayCount})`;
 };
