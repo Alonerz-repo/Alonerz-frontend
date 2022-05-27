@@ -14,6 +14,7 @@ interface Props {
   customize?: string;
   color?: string;
   disabled?: boolean;
+  cursor?: boolean;
 }
 
 const Button = ({
@@ -26,6 +27,7 @@ const Button = ({
   color,
   customize,
   disabled,
+  cursor,
 }: Props) => {
   if (isCategory) {
     return (
@@ -54,6 +56,7 @@ const Button = ({
         bg={bg}
         color={color}
         disabled={disabled}
+        cursor={cursor}
       >
         {children}
       </CommonButton>
@@ -76,6 +79,7 @@ interface CommonButtonProps {
   customize?: string;
   color?: string;
   disabled?: boolean;
+  cursor?: boolean;
 }
 
 const LimitButton = styled.button<CommonButtonProps>`
@@ -100,5 +104,6 @@ const CommonButton = styled.button<CommonButtonProps>`
     color: #ddd;
     background: #bdbdbd;
   }
+  ${(props) => (props.cursor ? "cursor: pointer" : "")}
 `;
 export default Button;

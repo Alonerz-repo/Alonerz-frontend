@@ -44,15 +44,41 @@ export interface TodayGroup {
   host: GroupUser;
 }
 
+export interface SelectGroup {
+  groupId: string;
+  title: string;
+  categoryId: number;
+  placeName: string;
+  imageUrl: string | null;
+  startAt: Date;
+  endAt: Date;
+  limit: number;
+  address: string;
+  join: number;
+  host: GroupUser;
+}
+
 export const groupAxios = {
   getGroups: async (
     x: number,
     y: number,
-    key: string,
-  ): Promise<TodayGroup[]> => {
-    const time = ["lunch", "dinner"].includes(key) ? key : "";
-    const url = getUrl(`/api/groups?time=${time}`);
-    return [];
+    param: string,
+  ): Promise<SelectGroup[]> => {
+    const require = `x=${x}&y=${y}`;
+    const query = param ? `&time=${param}` : "";
+    const url = getUrl(`/api/groups?${require}${query}`);
+    const headers = getHeaders();
+    let groups: SelectGroup[] = [];
+    try {
+      const { data } = await axios.get(url, { headers });
+      groups = data.groups;
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+    return groups;
   },
   getMyGroups: async (): Promise<TodayGroup[]> => {
     const url = getUrl("/api/groups/today");

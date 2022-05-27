@@ -7,7 +7,6 @@ import Login from "./pages/Login";
 import CreateGroup from "./pages/CreateGroup";
 import Redirect from "./pages/KakaoRedirectPage";
 import ModifyUser from "./pages/ModifyUser";
-import PartyList from "./pages/PartyList";
 import UserConfig from "./pages/ConfigList";
 import ProfileEdit from "./pages/ProflieEdit";
 import ConsentForm from "./pages/ConsentForm";
@@ -44,8 +43,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
             <Route path="/coution" element={<ConsentForm />} />
-            {/* <Route path="/groups/:time" element={<GroupListPage />} /> */}
-            <Route path="/groups/:time" element={<PartyList />} />
+            <Route path="/groups/:time" element={<GroupListPage />} />
             <Route path="/test" element={<Test />} />
             <Route path="/login" element={<Login />} />
             <Route path="/user/:userId" element={<User />} />

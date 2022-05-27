@@ -1,5 +1,5 @@
 import data from "./data.json";
-const max = 9;
+const max = 3;
 const extension = ".svg";
 
 interface Row {
@@ -8,7 +8,7 @@ interface Row {
   item: string;
 }
 
-class HeaderModule {
+class loginModule {
   constructor(
     public readonly rows: Row[] = [...Array(max)].map((_, id) => {
       const imageName = ("0" + (id + 1)).slice(-2);
@@ -27,4 +27,4 @@ class HeaderModule {
   }
 }
 
-export default new HeaderModule();
+export default new loginModule();

@@ -19,7 +19,11 @@ import {
   GroupDetailPageException,
   GroupDetailPageStatusCode,
 } from "./exception";
-import { DateFormatter, TimeFormatter } from "../../utils/tools/formatter";
+import {
+  DateFormatter,
+  TimeFormatter,
+  TimeGetter,
+} from "../../utils/tools/formatter";
 import { DDayCalculator } from "../../utils/tools/calculator";
 import { Container } from "./styled";
 
@@ -158,11 +162,13 @@ const GroupDetailPage = () => {
     const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(
       " ~ ",
     );
+    const isMorning = TimeGetter(startAt);
     const groupDetailProps = {
       title,
       dDay,
       categoryId,
       imageUrl,
+      isMorning,
       dateString,
       timeString,
       description,
