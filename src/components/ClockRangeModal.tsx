@@ -26,8 +26,21 @@ const ClockRangeModal = (props: any) => {
             <div style={{ fontSize: "20px" }}>파티 개설 시간 범위</div>
             <div style={{ color: "#F84C40" }}>적용</div>
           </div>
-          <div>시작</div>
-          <div>폼</div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div style={{ flexFlow: "row nowrap" }}>
+              <div>시작</div>
+              <input type="time"></input>
+            </div>
+            <div style={{ display: "flex" }}>
+              <div>시작</div>
+              <input type="time"></input>
+            </div>
+          </div>
         </div>
       </BG>
     </React.Fragment>

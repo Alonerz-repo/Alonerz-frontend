@@ -51,6 +51,7 @@ const BtnAction = (props: any) => {
             padding: "15px 20px",
             background: "#FFFFFF",
             color: "#BDBDBD",
+            cursor: "pointer",
           }}
           onClick={() => navigate("/user/edit")}
         >

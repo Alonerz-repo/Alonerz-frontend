@@ -6,7 +6,7 @@ import { Text } from "../elements";
 const GridTxt = ({ text, _onClick, point }: any) => {
   return (
     <React.Fragment>
-      <div onClick={_onClick}>
+      <div onClick={_onClick} style={{ cursor: "pointer" }}>
         <Text>{text}</Text>
         <Text>{point}</Text>
       </div>
