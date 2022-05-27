@@ -46,7 +46,7 @@ const MainPage = () => {
       return navigate("/introduce");
     }
 
-    if (!user) {
+    if (!user.userId) {
       return navigate("/login");
     }
 
