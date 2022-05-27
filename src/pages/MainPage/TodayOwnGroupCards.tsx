@@ -3,6 +3,7 @@ import { NavigateFunction } from "react-router-dom";
 import { TodayGroup } from "../../axios/groupAxios";
 import { TimeFormatter } from "../../utils/tools/formatter";
 import TodayOwnGroupCard from "./TodayOwnGroupCard";
+import * as Style from "./styled";
 
 interface TodayOwnGroupCardsProps {
   groups: TodayGroup[];
@@ -10,6 +11,7 @@ interface TodayOwnGroupCardsProps {
   navigate: NavigateFunction;
 }
 
+// 최원영
 const TodayOwnGroupCards = (props: TodayOwnGroupCardsProps) => {
   const { groups, count, navigate } = props;
   const [current, setCurrent] = useState<number>(0);
@@ -24,32 +26,49 @@ const TodayOwnGroupCards = (props: TodayOwnGroupCardsProps) => {
     setCurrent(next);
   };
 
+  const renderOwnGroupCards = () => {
+    const { groupId, imageUrl, title, address, startAt, endAt, categoryId } =
+      groups[current];
+    const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(
+      " ~ ",
+    );
+
+    const groupCardProps = {
+      key: groupId,
+      groupId,
+      title,
+      imageUrl,
+      address,
+      timeString,
+      categoryId,
+      onPreClick,
+      onNextClick,
+      navigate,
+    };
+
+    return <TodayOwnGroupCard {...groupCardProps} />;
+  };
+
+  const renderCardDots = () => {
+    return (
+      <Style.GroupDotWrapper>
+        {[...Array(count)].map((_, index) => {
+          const groupDotProps = {
+            filled: index === current,
+            onClick: () => {
+              setCurrent(index);
+            },
+          };
+          return <Style.GroupDot {...groupDotProps} />;
+        })}
+      </Style.GroupDotWrapper>
+    );
+  };
+
   return (
     <>
-      {groups
-        .filter((_, index) => index === current)
-        .map((group, index) => {
-          const { groupId, imageUrl, title, address, startAt, endAt } = group;
-          const timeString = [
-            TimeFormatter(startAt),
-            TimeFormatter(endAt),
-          ].join(" ~ ");
-
-          const groupCardProps = {
-            key: groupId,
-            visible: current === index,
-            groupId,
-            title,
-            imageUrl,
-            address,
-            timeString,
-            onPreClick,
-            onNextClick,
-            navigate,
-          };
-
-          return <TodayOwnGroupCard {...groupCardProps} />;
-        })}
+      {renderOwnGroupCards()}
+      {renderCardDots()}
     </>
   );
 };

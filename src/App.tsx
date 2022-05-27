@@ -17,7 +17,6 @@ import EditGroup from "./pages/EditGroup";
 import Chatting from "./pages/Chatting";
 import ChatList from "./pages/ChatList";
 import Four from "./pages/404";
-
 import { authUser } from "./store/slices/userSlice";
 import { useAppDispatch } from "./store/config.hook";
 import GroupDetailPage from "./pages/GroupDetailPage";
@@ -34,7 +33,7 @@ function App() {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(authUser());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="App">
@@ -58,7 +57,6 @@ function App() {
             <Route path="/chatlist" element={<ChatList />} />
             <Route path="/redirect" element={<Redirect />} />
             <Route path="/participate/:groupId" element={<GroupDetailPage />} />
-            {/* <Route path="/create/partyInfo/:time" element={<CreateParty />} /> */}
             <Route path="/edit/partyInfo/:groupId" element={<EditGroup />} />
             <Route path="/404" element={<Four />} />
             <Route path="*" element={<MainPage />} />
