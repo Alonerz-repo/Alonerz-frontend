@@ -57,8 +57,8 @@ const ProfileEdit = () => {
     console.log("최상위 부모 박스!", userChar);
     boardAxios.getSticker(userInfo.userId).then((res) => {
       console.log("최상위 부모박스에서 겟 스티커 받은 결과", res);
+      setCurChar({ ...initChar, ...userChar, ...res });
     });
-    setCurChar({ ...initChar, ...userChar });
     setBoard({ ...userChar });
   }, [userChar]);
 

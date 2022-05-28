@@ -53,13 +53,7 @@ const ProfileBoxBottom = (props: any) => {
   const setStickersFn = (index: any) => {
     // setMySt(index);
     console.log(Board);
-    dispatch(
-      setCharacter({
-        ...Board,
-        stickerOrder: props.myOrder,
-        stickerImageId: index,
-      })
-    );
+
     const data = {
       stickerOrder: props.myOrder,
       stickerImageId: index,
@@ -68,6 +62,13 @@ const ProfileBoxBottom = (props: any) => {
     boardAxios.setSticker(data).then((_) => {
       // setMyBool(!curBool);
       dispatch(setBool(curBool));
+      dispatch(
+        setCharacter({
+          ...Board,
+          stickerOrder: props.myOrder,
+          stickerImageId: index,
+        })
+      );
       // console.log("axios response!!");
     });
   };
