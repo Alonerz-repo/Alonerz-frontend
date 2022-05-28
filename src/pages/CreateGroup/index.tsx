@@ -7,7 +7,7 @@ const CreateGroup = () => {
   if (option !== undefined && option === "dinner") {
     return <Create time={17}></Create>;
   }
-  return <Create time={10}></Create>;
+  return <Create time={9}></Create>;
 };
 
 export default CreateGroup;
