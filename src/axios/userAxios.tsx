@@ -1,7 +1,16 @@
-import { errorHandler, getHeaders, getUrl } from "../utils/api";
+import { getHeaders, getUrl } from "../utils/api";
 import axios from "axios";
-import cookie from "../utils/cookie";
 import { userExceptions } from "../exception/user.exception";
+
+export interface UserProfile {
+  userId: string;
+  nickname: string;
+  careerId: number;
+  yearId: number;
+  description: string;
+  point: number;
+  profileImageUrl: string;
+}
 
 const userAxios = {
   // 사용자 프로필 수정  api
@@ -15,6 +24,33 @@ const userAxios = {
       .then((response) => response.data)
       .catch((error) => userExceptions.modify(error.response.data));
     return data;
+  },
+  getUserProfile: async (userId: any) => {
+    const url = getUrl(`/api/users/${userId}/profile`);
+    const headers = getHeaders();
+    let user: UserProfile;
+    try {
+      const { data } = await axios.get(url, { headers });
+      user = data.user;
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+    return user;
+  },
+  updateUserProfile: async (body: Partial<UserProfile>) => {
+    const url = getUrl(`/api/users/profile`);
+    const headers = getHeaders();
+    try {
+      await axios.patch(url, body, { headers });
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
   },
   //사용자 정보 조회 api
   // 파라미터 userId => string

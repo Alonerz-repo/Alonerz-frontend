@@ -15,7 +15,8 @@ export interface ConfigItem {
 const configItems = [
   {
     label: "내정보 수정",
-    onClick: (navigate: NavigateFunction) => () => navigate("edit"),
+    onClick: (navigate: NavigateFunction) => () =>
+      navigate("/user/profile/edit"),
   },
   // {
   //   label: "내정보",

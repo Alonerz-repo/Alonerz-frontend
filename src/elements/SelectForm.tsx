@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { CategoryItem } from "../common/interface";
-import { useController } from "react-hook-form";
+import { useController, UseFormRegister } from "react-hook-form";
+import { CreateForm } from "../axios/partyAxios";
 
 type Option = {
   name: string;
@@ -17,6 +18,8 @@ interface Props {
   type?: string;
   careerId?: any;
   placeholder?: string;
+  register?: UseFormRegister<CreateForm>;
+  v?: number;
 }
 
 const MyOption = styled.option`
@@ -50,9 +53,10 @@ const SelectForm = ({
   margin,
   categories,
   type,
+  register,
 }: Props) => {
   const {
-    field: { ref, ...inputProps },
+    field: { ...inputProps },
   } = useController({
     name,
     control,
@@ -85,7 +89,7 @@ const SelectForm = ({
   }
   return (
     <React.Fragment>
-      <MySelected style={styles} {...inputProps} ref={ref}>
+      <MySelected style={styles} {...inputProps}>
         {randerOptions()}
       </MySelected>
     </React.Fragment>
