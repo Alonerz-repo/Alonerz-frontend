@@ -8,7 +8,7 @@ interface Row {
 class YearModule {
   constructor(
     public readonly rows: Row[] = data.map((item, id) => ({
-      id: id + 1,
+      id,
       item,
     })),
   ) {}
@@ -19,12 +19,14 @@ class YearModule {
 
   findByCareerId(careerId: number): Row[] {
     switch (careerId) {
+      case 0:
+        return this.rows.slice(0, 1);
       case 1:
-        return this.rows.slice(0, 2);
+        return this.rows.slice(1, 3);
       case 2:
-        return this.rows.slice(2, 3);
+        return this.rows.slice(3, 4);
       default:
-        return this.rows.slice(3);
+        return this.rows.slice(4);
     }
   }
 }

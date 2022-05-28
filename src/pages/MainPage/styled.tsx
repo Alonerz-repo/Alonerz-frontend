@@ -173,7 +173,7 @@ export const GroupIonButton = styled.div<GroupIconButtonProps>`
   background-repeat: no-repeat;
   background-position: center;
   &:hover {
-    background-color: rgba(255, 255, 255, 20%);
+    background-color: rgba(0, 0, 0, 10%);
   }
   margin: 20px 0 0;
 `;

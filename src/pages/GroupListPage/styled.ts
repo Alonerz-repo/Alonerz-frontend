@@ -12,20 +12,18 @@ export const GroupToolsWrapper = styled.div`
 `;
 
 export const GroupTimeSelect = styled.select`
-  color: #fff;
-  background: #f84c40 url(${selectDropIcon}) no-repeat 90% 50%;
   width: 120px;
   height: 35px;
-  padding: 5px 13px;
-  font-size: 15px;
-  border: 0;
-  -webkit-appearance: none; /* for chrome */
-  -moz-appearance: none; /*for firefox*/
-  appearance: none;
-  box-sizing: border-box;
+  background: #f84c40 url(${selectDropIcon}) no-repeat 90% 50%;
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none;
+  padding: 5px 13px;
+  color: #fff;
+  font-size: 15px;
+  border: 0;
   border-radius: 2rem;
+  box-sizing: border-box;
   cursor: pointer;
 `;
 
@@ -49,7 +47,6 @@ export const GroupCardWrapper = styled.div`
   width: 45%;
   height: 230px;
   margin: 7px;
-  cursor: pointer;
   border-radius: 20px;
 `;
 
@@ -86,7 +83,6 @@ export const GroupTopWrapper = styled.div`
 `;
 
 export const GroupCategoryWrapper = styled.div`
-  width: 100%;
   height: 33px;
   display: flex;
   flex-direction: row;
@@ -135,6 +131,8 @@ export const GroupBottomWrapper = styled.div`
   align-items: flex-start;
   justify-content: center;
   padding: 15px 15px 0;
+  box-sizing: border-box;
+  cursor: pointer;
 `;
 
 interface GroupDayProps {
