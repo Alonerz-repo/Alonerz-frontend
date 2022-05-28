@@ -215,11 +215,10 @@ interface GroupCategoryIconProps {
 }
 
 export const GroupCategotyIcon = styled.div<GroupCategoryIconProps>`
-  width: 33px;
-  height: 33px;
+  width: 50px;
+  height: 50px;
   border: 1px solid #ddd;
   border-radius: 50%;
-  padding: 5px;
   background: ${(props) => `url(${props.image})`};
   background-color: rgba(255, 255, 255);
   background-size: cover;

@@ -37,6 +37,8 @@ const TodayOwnGroupCard = (props: TodayOwnGroupCardProps) => {
     navigate,
   } = props;
 
+  console.log(categoryId);
+
   const { image, item } = CategoryModule.findById(categoryId) as CategoryRow;
 
   const coverProps = {
