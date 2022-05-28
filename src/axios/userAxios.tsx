@@ -40,6 +40,18 @@ const userAxios = {
     }
     return user;
   },
+  updateUserProfile: async (body: Partial<UserProfile>) => {
+    const url = getUrl(`/api/users/profile`);
+    const headers = getHeaders();
+    try {
+      await axios.patch(url, body, { headers });
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+  },
   //사용자 정보 조회 api
   // 파라미터 userId => string
   getUser: async (userId: any) => {
