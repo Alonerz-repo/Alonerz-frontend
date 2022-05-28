@@ -45,7 +45,7 @@ const GroupCard = (props: GroupCardProps) => {
     : GroupImageModule.rows[isMorning ? 2 : 3].image;
 
   return (
-    <Style.GroupCardWrapper onClick={onClick}>
+    <Style.GroupCardWrapper>
       <Style.GroupCover image={backgroundImage} gradation={gradation}>
         <Style.GroupTopWrapper>
           <Style.GroupCategoryWrapper>
@@ -55,7 +55,7 @@ const GroupCard = (props: GroupCardProps) => {
             </Style.GroupMemberCount>
           </Style.GroupCategoryWrapper>
         </Style.GroupTopWrapper>
-        <Style.GroupBottomWrapper>
+        <Style.GroupBottomWrapper onClick={onClick}>
           <Style.GroupDday editable={isEditable}>{dDay}</Style.GroupDday>
           <Style.GroupTitle>{title}</Style.GroupTitle>
           <Style.GroupSubTitle>{item}</Style.GroupSubTitle>

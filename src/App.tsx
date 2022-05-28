@@ -22,6 +22,7 @@ import GroupDetailPage from "./pages/GroupDetailPage";
 import OnBoardingPage from "./pages/OnBoardingPage";
 import MainPage from "./pages/MainPage";
 import GroupListPage from "./pages/GroupListPage";
+import ProfileEditPage from "./pages/ProfileEditPage";
 
 declare global {
   interface Window {
@@ -38,7 +39,7 @@ function App() {
   return (
     <div className="App">
       <Container>
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
@@ -50,6 +51,7 @@ function App() {
             <Route path="/user/:userId/follow" element={<FollowLIst />} />
             <Route path="/user/config" element={<UserConfig />} />
             <Route path="/user/config/edit" element={<ModifyUser />} />
+            <Route path="/user/profile/edit" element={<ProfileEditPage />} />
             <Route path="/user/config/blocklist" element={<BlockList />} />
             <Route path="/user/edit" element={<ProfileEdit />} />
             <Route path="/group/create/:option" element={<CreateGroup />} />

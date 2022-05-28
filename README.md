@@ -22,4 +22,10 @@ yanr create react-app 'project_name' --template typescript
 - socket.io (1:1 채팅방 기능)
 - axios
 
- 
+# 로컬 서버 실행
+
+```
+$ sudo yarn global add serve
+$ yarn build
+$ serve -s -l tcp://0.0.0.0:3000 build
+```
