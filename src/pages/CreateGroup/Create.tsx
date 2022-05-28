@@ -232,12 +232,9 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             <ErrorBox>상세 내용을 입력해주세요.</ErrorBox>
           )}
 
-          <Text
-            bold
-            type="line"
-            titleText="이미지 업로드"
-            margin="15px 0 0 0"
-          />
+          <Text bold type="line" titleText="이미지 업로드" margin="15px 0 0 0">
+            (png, jpg, jpeg)
+          </Text>
           {errors.image?.type === "type" && (
             <ErrorBox>{errors.image?.message}</ErrorBox>
           )}
@@ -257,7 +254,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
           width="100%"
           bg="#F84C40"
           color="white"
-          cursor
+          cursor={true}
         >
           생성하기
         </Button>

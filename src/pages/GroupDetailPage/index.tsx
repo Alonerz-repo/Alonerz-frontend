@@ -37,6 +37,9 @@ const ButtonBox = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 999;
+  @media screen and (max-width: 420px) {
+    width: 100%;
+  }
 `;
 
 const RedButton = styled.div`
@@ -69,7 +72,7 @@ const GroupDetailPage = () => {
   const { groupId } = useParams<string>();
   const [group, setGroup] = useState<Group>();
   const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
-    initConfirmModalProps,
+    initConfirmModalProps
   );
   const [alertMoalProps, setAlertModalProps] =
     useState<AlertModalProps>(initAlertModalProps);
@@ -147,7 +150,7 @@ const GroupDetailPage = () => {
     dDay: string,
     isMorning: boolean,
     dateString: string,
-    timeString: string,
+    timeString: string
   ) => {
     const {
       title,
