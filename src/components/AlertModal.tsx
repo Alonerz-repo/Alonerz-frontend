@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 export interface AlertModalProps {
   message: string;
@@ -16,6 +16,9 @@ const Background = styled.div`
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  @media screen and (max-width: 420px) {
+    width: 100%;
+  }
 `;
 
 const ModalContainer = styled.div`
@@ -57,8 +60,8 @@ const CloseButton = styled.div`
 `;
 
 export const initAlertModalProps: AlertModalProps = {
-  message: '',
-  closeLabel: '',
+  message: "",
+  closeLabel: "",
   onClose: () => {},
 };
 
@@ -74,7 +77,7 @@ const AlertModal = (props: AlertModalProps) => {
           <ModalContainer>
             <MessageBox>{message}</MessageBox>
             <CloseButton onClick={onClick}>
-              {closeLabel ? closeLabel : '닫기'}
+              {closeLabel ? closeLabel : "닫기"}
             </CloseButton>
           </ModalContainer>
         </Background>

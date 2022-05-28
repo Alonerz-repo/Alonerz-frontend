@@ -38,7 +38,7 @@ const DatePickerComponent = ({ name, control }: DatePickerProps) => {
       minDate={new Date()}
       selected={value}
       {...inputProps}
-      customInput={<ElementInput></ElementInput>}
+      customInput={<ElementInput inputMode="none" readOnly></ElementInput>}
     />
   );
 };
