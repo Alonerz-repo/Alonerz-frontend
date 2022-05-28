@@ -1,5 +1,4 @@
-import { api, instanse } from "../utils/api";
-import { errorHandler, getHeaders, getUrl } from "../utils/api";
+import { getHeaders, getUrl } from "../utils/api";
 import axios from "axios";
 import cookie from "../utils/cookie";
 import { kakaoRedirectUrl } from "../utils/config";
