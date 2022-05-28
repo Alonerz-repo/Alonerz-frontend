@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TodayGroup, groupAxios } from "../../axios/groupAxios";
-import { useAppSelector } from "../../store/config";
+import { useAppSelect } from "../../store/config.hook";
 import { CardImagesModule } from "./images";
 import TodayOtherGroupCard from "./TodayOtherGroupCard";
 import TodayOwnGroupCards from "./TodayOwnGroupCards";
@@ -39,7 +39,7 @@ const otherGroupCardProps = (cardClickEvents: CardClickEvents) => [
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = useState<TodayGroup[]>([]);
 
   useEffect(() => {
