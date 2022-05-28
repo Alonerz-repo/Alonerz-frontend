@@ -7,7 +7,6 @@ interface ErrorData {
 
 export const userExceptions = {
   modify: async (error: ErrorData) => {
-    console.log("my error", error);
     if (error === undefined) {
       throw Error("Natwork Error!");
     }
@@ -26,7 +25,6 @@ export const userExceptions = {
         err = new Error("잘못된 입력입니다.");
         err.name = statusCode.toString();
         err.message = errMessage;
-        window.alert(err);
         authAxios.refreshUser().then((_) => window.location.replace("/"));
         throw err;
       case 409:

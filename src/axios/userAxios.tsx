@@ -12,6 +12,13 @@ export interface UserProfile {
   profileImageUrl: string;
 }
 
+interface SaveUserProfile {
+  nickname: string | undefined;
+  careerId: number | undefined;
+  yearId: number | undefined;
+  description: string | undefined;
+}
+
 const userAxios = {
   // 사용자 프로필 수정  api
   // 파라미터 user => 객체
@@ -25,6 +32,7 @@ const userAxios = {
       .catch((error) => userExceptions.modify(error.response.data));
     return data;
   },
+  // 프로필 정보 받아오기
   getUserProfile: async (userId: any) => {
     const url = getUrl(`/api/users/${userId}/profile`);
     const headers = getHeaders();
@@ -39,6 +47,50 @@ const userAxios = {
       throw data;
     }
     return user;
+  },
+  // 프로필 정보 수정하기
+  updateUserProfile: async (userProfile: SaveUserProfile) => {
+    console.log(userProfile);
+    const url = getUrl(`/api/users/profile`);
+    const headers = getHeaders();
+    try {
+      await axios.patch(url, userProfile, { headers });
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+  },
+  // 프로필 이미지 등록하기
+  uploadProfileImage: async (image: File) => {
+    const formData = new FormData();
+    formData.append("image", image);
+    const url = getUrl(`/api/users/profileImage`);
+    const headers = { ...getHeaders(), "Content-Type": "multipart/form-data" };
+    let profileImageUrl: string;
+    try {
+      const { data } = await axios.patch(url, formData, { headers });
+      profileImageUrl = data.profileImageUrl;
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+    return profileImageUrl;
+  },
+  deleteProfileImage: async () => {
+    const url = getUrl(`/api/users/profileImage`);
+    const headers = getHeaders();
+    try {
+      await axios.delete(url, { headers });
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
   },
   //사용자 정보 조회 api
   // 파라미터 userId => string

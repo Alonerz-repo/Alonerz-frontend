@@ -5,6 +5,14 @@ import { useAppSelector } from "../../store/config";
 import CareerModule from "../../assets/career";
 import YearModule from "../../assets/year";
 import Header from "../../components/Header";
+import ConfirmModal, {
+  ConfirmModalProps,
+  initConfirmModalProps,
+} from "../../components/ConfirmModal";
+import AlertModal, {
+  AlertModalProps,
+  initAlertModalProps,
+} from "../../components/AlertModal";
 import * as Style from "./styled";
 
 interface UserProfile {
@@ -15,13 +23,30 @@ interface UserProfile {
   description: string;
 }
 
+// TODO : 멘트 구성
+const placeholders = [
+  "이 구역의 맛집 골목대장입니다.",
+  "저는 개발자랍니다!",
+  "디자인",
+];
+const random = Math.abs(Math.ceil(Math.random() * placeholders.length) - 1);
+
 const ProfileEditPage = () => {
   const navigate = useNavigate();
   const { userId } = useAppSelector((state) => state.user);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>();
   const [userProfile, setUserProfile] = useState<UserProfile>();
   const [careerGroup, setCareerGroup] = useState<string>();
+  const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
+    initConfirmModalProps,
+  );
+  const [alertMoalProps, setAlertModalProps] =
+    useState<AlertModalProps>(initAlertModalProps);
 
+  const onCloseAlertModal = () => setAlertModalProps(initAlertModalProps);
+  const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
+
+  // 사용자 프로필 정보 가져오기
   const getUserProfile = useCallback(async () => {
     if (userId === "-1") return;
     try {
@@ -32,22 +57,166 @@ const ProfileEditPage = () => {
       setUserProfile({ userId, nickname, careerId, yearId, description });
       setCareerGroup(group);
     } catch (error: any) {
-      // TODO : 예외처리
       const { statusCode } = error;
-      console.log(statusCode);
+      switch (statusCode) {
+        case 401:
+          return navigate("/login");
+        case 403:
+          return console.log(
+            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동",
+          );
+        case 404:
+          return setAlertModalProps({
+            message: "삭제되었거나 존재하지 않는 사용자입니다.",
+            onClose: () => {
+              onCloseAlertModal();
+              return navigate("/");
+            },
+            closeLabel: "확인",
+          });
+        default:
+          return setAlertModalProps({
+            message: "서버 내부적인 오류가 발생하였습니다.",
+            onClose: onCloseAlertModal,
+            closeLabel: "확인",
+          });
+      }
     }
-  }, [userId]);
+  }, [navigate, userId]);
 
-  const saveUserProfileImage = useCallback(async () => {}, []);
-  const saveUserProfile = useCallback(async () => {
-    console.log(1);
-  }, []);
+  // 프로필 이미지 저장
+  const saveProfileImage = useCallback(
+    async (image: File) => {
+      try {
+        const profileImageUrl = await userAxios.uploadProfileImage(image);
+        setProfileImageUrl(profileImageUrl);
+      } catch (error: any) {
+        const { statusCode } = error;
+        switch (statusCode) {
+          case 400:
+            return setAlertModalProps({
+              message: "이미지 파일 용량이 너무 큽니다.",
+              onClose: onCloseAlertModal,
+              closeLabel: "확인",
+            });
+          case 401:
+            return navigate("/login");
+          case 403:
+            return console.log(
+              "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동",
+            );
+          default:
+            return setAlertModalProps({
+              message: "서버 내부적인 오류가 발생하였습니다.",
+              onClose: onCloseAlertModal,
+              closeLabel: "확인",
+            });
+        }
+      }
+    },
+    [navigate],
+  );
 
+  // 프로필 이미지 삭제
+  const deleteProfileImage = useCallback(async () => {
+    try {
+      await userAxios.deleteProfileImage();
+      setProfileImageUrl(null);
+      onCloseConfirmModal();
+    } catch (error: any) {
+      const { statusCode } = error;
+      switch (statusCode) {
+        case 401:
+          return navigate("/login");
+        case 403:
+          return console.log(
+            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동",
+          );
+        default:
+          return setAlertModalProps({
+            message: "서버 내부적인 오류가 발생하였습니다.",
+            onClose: onCloseAlertModal,
+            closeLabel: "확인",
+          });
+      }
+    }
+  }, [navigate]);
+
+  // 사용자 프로필 정보 저장
+  const saveProfile = useCallback(async () => {
+    const { nickname, careerId, yearId, description } =
+      userProfile as UserProfile;
+    if (!isNaN(Number(nickname)))
+      return setAlertModalProps({
+        message: "닉네임을 입력하세요.",
+        onClose: onCloseAlertModal,
+        closeLabel: "확인",
+      });
+    if (careerId === 0)
+      return setAlertModalProps({
+        message: "직군과 직업을 선택하세요.",
+        onClose: onCloseAlertModal,
+        closeLabel: "확인",
+      });
+    if (yearId === 0)
+      return setAlertModalProps({
+        message: "연차를 선택하세요.",
+        onClose: onCloseAlertModal,
+        closeLabel: "확인",
+      });
+    try {
+      await userAxios.updateUserProfile({
+        nickname,
+        careerId,
+        yearId,
+        description,
+      });
+      return setAlertModalProps({
+        message: "저장되었습니다.",
+        onClose: () => {
+          onCloseAlertModal();
+          return navigate("/");
+        },
+        closeLabel: "확인",
+      });
+    } catch (error: any) {
+      const { statusCode } = error;
+      switch (statusCode) {
+        case 400:
+          return setAlertModalProps({
+            message: "입력란을 다시 확인하세요.",
+            onClose: onCloseAlertModal,
+            closeLabel: "확인",
+          });
+        case 401:
+          return navigate("/login");
+        case 403:
+          return console.log(
+            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동",
+          );
+        case 409:
+          return setAlertModalProps({
+            message: "이미 사용중인 닉네임입니다.",
+            onClose: onCloseAlertModal,
+            closeLabel: "확인",
+          });
+        default:
+          return setAlertModalProps({
+            message: "서버 내부적인 오류가 발생하였습니다.",
+            onClose: onCloseAlertModal,
+            closeLabel: "확인",
+          });
+      }
+    }
+  }, [navigate, userProfile]);
+
+  // 사용자 프로필 정보 불러오기
   useEffect(() => {
     getUserProfile();
     return () => {};
   }, [userId, navigate, getUserProfile]);
 
+  // input<string> 이벤트 핸들러
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value },
@@ -58,6 +227,30 @@ const ProfileEditPage = () => {
     });
   };
 
+  // input<File> 이벤트 핸들러
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { files },
+    } = e;
+    const images = files as FileList;
+    const image = images[0] as File;
+    await saveProfileImage(image);
+  };
+
+  // label Click 이벤트 핸들러
+  const onFileDeleteClick = () => {
+    if (profileImageUrl) {
+      setConfirmMoalProps({
+        message: "프로필 이미지를 삭제하시겠습니까?",
+        yesLabel: "삭제",
+        noLabel: "취소",
+        onOk: deleteProfileImage,
+        onClose: onCloseConfirmModal,
+      });
+    }
+  };
+
+  // select 이벤트 핸들러
   const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {
       target: { name, value },
@@ -102,6 +295,36 @@ const ProfileEditPage = () => {
   const renderProfileImage = () => {
     const imageUrl = profileImageUrl as string;
     return <Style.Profilemage imageUrl={imageUrl} />;
+  };
+
+  // 프로필 이미지 변경 도구 렌더링
+  const renderImageSelector = () => {
+    const inputProps = {
+      id: "input-profile-image",
+      type: "file",
+      accept: "image/*",
+      onChange: onFileChange,
+    };
+
+    const uploadLabelProps = {
+      htmlFor: "input-profile-image",
+    };
+
+    const deleteLabelProps = {
+      onClick: onFileDeleteClick,
+    };
+
+    return (
+      <Style.ImageSelectorWrapper>
+        <Style.ImageInput {...inputProps} />
+        <Style.ImageLabel {...uploadLabelProps}>
+          <Style.ImageUploadIcon />
+        </Style.ImageLabel>
+        <Style.ImageLabel {...deleteLabelProps}>
+          <Style.ImageDeleteIcon />
+        </Style.ImageLabel>
+      </Style.ImageSelectorWrapper>
+    );
   };
 
   // 닉네임 입력 렌더링
@@ -183,31 +406,37 @@ const ProfileEditPage = () => {
     );
   };
 
+  // 한 줄 소개 렌더링
   const renderDescriptionInput = () => {
     const { description } = userProfile as UserProfile;
     const inputProps = {
       name: "description",
       value: description,
       onChange: onInputChange,
-      placeholder: "한 줄로 자신을 소개해보세요.",
+      placeholder: placeholders[random],
       autoComplete: "off",
     };
+
     return <Style.InputField {...inputProps} />;
   };
 
   return (
     <>
+      <AlertModal {...alertMoalProps} />
+      <ConfirmModal {...confirmModalProps} />
       <Header
         type="userEdit"
         text="내 정보 수정"
-        setting={saveUserProfile}
-        btnName="수정"
+        setting={saveProfile}
+        btnName={!isNaN(Number(userProfile?.nickname)) ? "완료" : "수정"}
       />
       {userProfile ? (
         // 사진 등록, 수정, 삭제
         <Style.Wrapper>
-          {renderProfileImage()}
-
+          <Style.ProfileImageWrapper>
+            {renderProfileImage()}
+            {renderImageSelector()}
+          </Style.ProfileImageWrapper>
           <Style.ContentWrapper>
             <Style.ContentColumn>
               {renderLabel("닉네임", true)}

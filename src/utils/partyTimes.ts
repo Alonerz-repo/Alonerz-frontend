@@ -32,9 +32,9 @@ const times = {
     { value: 23, name: "23:00" },
   ],
   listTimes: [
-    {value:"lunch", name:"점심"},
-    {value:"dinner", name:"저녁"},
-  ]
-}
+    { value: "lunch", name: "점심" },
+    { value: "dinner", name: "저녁" },
+  ],
+};
 
-export default times
+export default times;
