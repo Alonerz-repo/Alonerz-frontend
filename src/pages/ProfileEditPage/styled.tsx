@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import selectDropIcon from "./images/01.svg";
+import cameraIcon from "./images/02.svg";
+import uploadIcon from "./images/03.svg";
+import deleteIcon from "./images/04.svg";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -11,20 +14,75 @@ export const Wrapper = styled.div`
   box-sizing: border-box;
 `;
 
+export const ProfileImageWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  background: #eee;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+`;
+
 interface ProfileImageProps {
   imageUrl: string;
 }
 
 export const Profilemage = styled.div<ProfileImageProps>`
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   background: ${(props) =>
-    props.imageUrl ? `url(${props.imageUrl})` : "#ddd"};
+    props.imageUrl ? `url(${props.imageUrl})` : `#fff url(${cameraIcon})`};
+  background-size: ${(props) => (props.imageUrl ? "cover" : "50px")};
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+`;
+
+export const ImageSelectorWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0 0;
+  padding: 5px;
+  box-sizing: border-box;
+`;
+
+export const ImageInput = styled.input`
+  display: none;
+`;
+
+export const ImageLabel = styled.label`
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  &:hover {
+    background: rgba(0, 0, 0, 10%);
+  }
+`;
+
+export const ImageUploadIcon = styled.div`
+  width: 25px;
+  height: 25px;
+  background: url(${uploadIcon});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  border-radius: 50%;
-  cursor: pointer;
+  margin: 0 2px;
+`;
+
+export const ImageDeleteIcon = styled.div`
+  width: 25px;
+  height: 25px;
+  background: url(${deleteIcon});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0 2px;
 `;
 
 export const ContentWrapper = styled.div`
