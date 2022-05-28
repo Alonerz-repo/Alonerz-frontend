@@ -7,12 +7,15 @@ interface Row {
 }
 
 class CareerModule {
+  public groups: string[];
   constructor(
     public readonly rows: Row[] = data.map((row, id) => ({
       ...row,
-      id: id + 1,
+      id,
     })),
-  ) {}
+  ) {
+    this.groups = this.findGroups();
+  }
 
   findGroups() {
     const groups: string[] = [];
@@ -23,8 +26,12 @@ class CareerModule {
     return groups;
   }
 
-  findItemsByGroup(group: string) {
+  findItemsByGroup(group: string): Row[] {
     return this.rows.filter((row: Row) => row.group === group);
+  }
+
+  fintGroupIndex(group: string): number {
+    return this.rows.findIndex((row: Row) => row.group === group);
   }
 
   findById(id: number): Row | undefined {
