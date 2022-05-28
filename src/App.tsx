@@ -22,6 +22,7 @@ import OnBoardingPage from "./pages/OnBoardingPage";
 import MainPage from "./pages/MainPage";
 import GroupListPage from "./pages/GroupListPage";
 import ProfileEditPage from "./pages/ProfileEditPage";
+import ScrollTop from "./utils/ScrollTop";
 
 declare global {
   interface Window {
@@ -39,6 +40,7 @@ function App() {
     <div className="App">
       <Container>
         <BrowserRouter>
+          <ScrollTop />
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/introduce" element={<OnBoardingPage />} />
@@ -78,7 +80,7 @@ const Container = styled.div<ContainerProps>`
   background: #fff;
   @media screen and (max-width: 420px) {
     width: 100%;
-    height: 100%;
+    height: 100vh;
   }
 `;
 

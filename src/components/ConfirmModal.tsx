@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 export interface ConfirmModalProps {
   message: string;
@@ -18,6 +18,9 @@ const Background = styled.div`
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  @media screen and (max-width: 420px) {
+    width: 100%;
+  }
 `;
 
 const ModalContainer = styled.div`
@@ -78,9 +81,9 @@ const YesButton = styled.div`
 `;
 
 export const initConfirmModalProps: ConfirmModalProps = {
-  message: '',
-  yesLabel: '예',
-  noLabel: '아니오',
+  message: "",
+  yesLabel: "예",
+  noLabel: "아니오",
   onOk: () => {},
   onClose: () => {},
 };
@@ -99,10 +102,10 @@ const ConfirmModal = (props: ConfirmModalProps) => {
             <MessageBox>{message}</MessageBox>
             <ButtonBox>
               <NoButton onClick={onNoClick}>
-                {noLabel ? noLabel : '아니오'}
+                {noLabel ? noLabel : "아니오"}
               </NoButton>
               <YesButton onClick={onYesClick}>
-                {yesLabel ? yesLabel : '예'}
+                {yesLabel ? yesLabel : "예"}
               </YesButton>
             </ButtonBox>
           </ModalContainer>

@@ -1,5 +1,5 @@
 const times = {
-  openTimes: [
+    openTimes:[
     { value: 9, name: "9:00" },
     { value: 10, name: "10:00" },
     { value: 11, name: "11:00" },
@@ -14,7 +14,6 @@ const times = {
     { value: 20, name: "20:00" },
     { value: 21, name: "21:00" },
     { value: 22, name: "22:00" },
-    { value: 23, name: "23:00" },
   ],
   closeTimes: [
     { value: 10, name: "10:00" },
@@ -31,7 +30,6 @@ const times = {
     { value: 21, name: "21:00" },
     { value: 22, name: "22:00" },
     { value: 23, name: "23:00" },
-    { value: 24, name: "24:00" },
   ],
   listTimes: [
     { value: "lunch", name: "점심" },

@@ -232,7 +232,12 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             <ErrorBox>상세 내용을 입력해주세요.</ErrorBox>
           )}
 
-          <Text bold type="line" titleText="이미지 업로드" margin="15px 0 0 0">
+          <Text
+            bold
+            type="line"
+            titleText="이미지 업로드"
+            margin="15px 0px 10px 0px"
+          >
             (png, jpg, jpeg)
           </Text>
           {errors.image?.type === "type" && (
