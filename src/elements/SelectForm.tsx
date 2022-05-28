@@ -63,6 +63,7 @@ const SelectForm = ({
   const styles = {
     width,
     margin,
+    cursor: "pointer",
   };
 
   const randerOptions = () => {
