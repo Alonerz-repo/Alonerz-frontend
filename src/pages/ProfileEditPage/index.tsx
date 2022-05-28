@@ -25,9 +25,9 @@ interface UserProfile {
 
 // TODO : 멘트 구성
 const placeholders = [
-  "이 구역의 맛집골목대장이신가요?",
-  "저는! 개발자랍니다!",
-  "디자인 재미있으신가요?",
+  "이 구역의 맛집 골목대장입니다.",
+  "저는 개발자랍니다!",
+  "디자인",
 ];
 const random = Math.abs(Math.ceil(Math.random() * placeholders.length) - 1);
 
