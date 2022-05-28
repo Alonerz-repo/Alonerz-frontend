@@ -56,6 +56,7 @@ const TodayOwnGroupCards = (props: TodayOwnGroupCardsProps) => {
       <Style.GroupDotWrapper>
         {[...Array(count)].map((_, index) => {
           const groupDotProps = {
+            key: `group-dot-${index}`,
             filled: index === current,
             onClick: () => {
               setCurrent(index);
