@@ -1,5 +1,5 @@
 import data from "./data.json";
-const max = 8;
+const max = 9;
 const extension = ".svg";
 
 interface Row {
@@ -14,21 +14,20 @@ class CategoryModule {
       const imageName = ("0" + (id + 1)).slice(-2);
       const image = require(`./${imageName}${extension}`);
       const row: Row = {
-        id,
+        id: id + 1,
         image: String(image),
         item: String(data[id]),
       };
       return row;
-    })
-  ) // public readonly rows: Row[] = data.map((item, id) => ({ id, item })),
-  {}
+    }), // public readonly rows: Row[] = data.map((item, id) => ({ id, item })),
+  ) {}
 
   findById(id: number): Row | undefined {
     return this.rows.find((row) => row.id === id);
   }
 
-  findCategories() : Row[] {
-    return this.rows
+  findCategories(): Row[] {
+    return this.rows;
   }
 }
 

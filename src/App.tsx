@@ -6,7 +6,6 @@ import User from "./pages/User";
 import Login from "./pages/Login";
 import CreateGroup from "./pages/CreateGroup";
 import Redirect from "./pages/KakaoRedirectPage";
-import ModifyUser from "./pages/ModifyUser";
 import UserConfig from "./pages/ConfigList";
 import ProfileEdit from "./pages/ProflieEdit";
 import ConsentForm from "./pages/ConsentForm";
@@ -48,7 +47,6 @@ function App() {
             <Route path="/user/:userId" element={<User />} />
             <Route path="/user/:userId/follow" element={<FollowLIst />} />
             <Route path="/user/config" element={<UserConfig />} />
-            <Route path="/user/config/edit" element={<ModifyUser />} />
             <Route path="/user/profile/edit" element={<ProfileEditPage />} />
             <Route path="/user/config/blocklist" element={<BlockList />} />
             <Route path="/user/edit" element={<ProfileEdit />} />
