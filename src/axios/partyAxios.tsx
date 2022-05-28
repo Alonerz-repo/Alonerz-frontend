@@ -1,5 +1,5 @@
 import axios from "axios";
-import { errorHandler, getHeaders, getUrl } from "../utils/api";
+import { getHeaders, getUrl } from "../utils/api";
 import { userExceptions } from "../exception/user.exception";
 
 // 받아오는 유저 데이터의 인터페이스

@@ -33,7 +33,7 @@ const useUser = (userId: any) => {
       return response ? setUser(response) : setUser(initState);
     };
     data();
-  }, []);
+  }, [userId]);
   return user;
 };
 export default useUser;
