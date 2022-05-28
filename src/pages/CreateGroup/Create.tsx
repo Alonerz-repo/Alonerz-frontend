@@ -6,6 +6,7 @@ import UploadForm from "../../components/UploadForm";
 import { CreateGroupException, CreateStatusCode } from "./exception";
 import data from "../../assets/category";
 import { Available } from "./available";
+import Select from "./Select";
 
 import DatePickerComponent from "../../components/DatePicker";
 import {
@@ -40,6 +41,8 @@ interface CreateProps {
 const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
   const {
     register,
+    getValues,
+    setValue,
     handleSubmit,
     control,
     reset,
@@ -77,11 +80,12 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     setAddress(group?.address ?? "");
   }, [group]);
 
+  // 데이터를 입력받아 제출버튼을 누르면 유효성 확인 후 서버와 통신
   const onSubmit = handleSubmit((data: CreateForm) => {
-    if (data.startAt >= data.endAt) {
+    if (new Date(data.date.setHours(data.startAt ?? 0, 0, 0)) < new Date()) {
       setError("startAt", {
         type: "time",
-        message: "오픈시간은 마감시간보다 빨라야합니다.",
+        message: "현재 날짜, 시간 이전에는 그룹을 생성할 수 없습니다.",
       });
       return;
     }
@@ -198,37 +202,12 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             control={control}
           ></DatePickerComponent>
 
-          <Grid isFlex>
-            <Grid width="40%">
-              <Text
-                bold
-                type="line"
-                titleText="오픈시간"
-                margin="5px 0 5px 0"
-              />
-              <SelectForm
-                width="100%"
-                categories={times.openTimes}
-                name="startAt"
-                control={control}
-              />
-            </Grid>
+          <Select
+            setValue={setValue}
+            register={register}
+            getValues={getValues}
+          ></Select>
 
-            <Grid width="40%">
-              <Text
-                bold
-                type="line"
-                titleText="마감시간"
-                margin="5px 0 5px 0"
-              />
-              <SelectForm
-                width="100%"
-                categories={times.closeTimes}
-                name="endAt"
-                control={control}
-              />
-            </Grid>
-          </Grid>
           {errors.startAt?.type === "time" && (
             <ErrorBox>{errors.startAt.message}</ErrorBox>
           )}
@@ -253,12 +232,9 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
             <ErrorBox>상세 내용을 입력해주세요.</ErrorBox>
           )}
 
-          <Text
-            bold
-            type="line"
-            titleText="이미지 업로드"
-            margin="15px 0 0 0"
-          />
+          <Text bold type="line" titleText="이미지 업로드" margin="15px 0 0 0">
+            (png, jpg, jpeg)
+          </Text>
           {errors.image?.type === "type" && (
             <ErrorBox>{errors.image?.message}</ErrorBox>
           )}
@@ -273,15 +249,15 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
       {/* 컨텐츠가 버튼과 겹치지 않기 위한 area */}
       <div style={{ height: "70px" }}></div>
       <Grid absolute="position:fixed; bottom:0px; width:inherit;">
-        {group ? (
-          <Button width="100%" bg="#F84C40" color="white">
-            수정하기
-          </Button>
-        ) : (
-          <Button width="100%" bg="#F84C40" color="white">
-            생성하기
-          </Button>
-        )}
+        <Button
+          _onClick={onSubmit}
+          width="100%"
+          bg="#F84C40"
+          color="white"
+          cursor={true}
+        >
+          생성하기
+        </Button>
       </Grid>
     </React.Fragment>
   );

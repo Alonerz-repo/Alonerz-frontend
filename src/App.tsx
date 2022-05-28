@@ -78,6 +78,10 @@ const Container = styled.div<ContainerProps>`
   position: relative;
   overflow: scroll;
   background: #fff;
+  @media screen and (max-width: 420px) {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 interface ContainerProps {
