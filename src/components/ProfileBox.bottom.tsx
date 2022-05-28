@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelect } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
+import { setBool } from "../store/slices/changeSlice";
 import boardAxios from "../axios/boardAxios";
 import BackgroundModule from "../assets/background";
 import StickerModule from "../assets/sticker";
@@ -34,6 +35,7 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
   //리덕스의 유저 캐릭터 정보를 데이터를 가져옵니다.
   const Board = useAppSelect((state) => state.char);
 
+  const boolean = false;
   //스테이트에 프로필 정보를 저장합니다.
   const [curChar, setCurChar] = useState<Character>(initialState);
   useEffect(() => {
@@ -52,7 +54,17 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
       stickerOrder: curChar.stickerOrder,
       stickerImageId: index,
     };
-    boardAxios.setSticker(data);
+    boardAxios.setSticker(data).then((res) => {
+      console.log("this is res ", res);
+      dispatch(setBool(!boolean));
+      dispatch(
+        setCharacter({
+          ...Board,
+          stickerImageId: undefined,
+          stickerOrder: undefined,
+        })
+      );
+    });
   };
   //백그라운드 컬러를 스테이트에 갱신합니다.
   const setBackgroundFn = (myColor: any) => {

@@ -3,11 +3,13 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
 import userSlice from "./slices/userSlice";
 import characterSlice from "./slices/characterSlice";
+import changeBool from "./slices/changeSlice";
 
 const logger = createLogger();
 const rootReducer = combineReducers({
   user: userSlice.reducer,
   char: characterSlice,
+  bool: changeBool,
 });
 
 const initialState = {};

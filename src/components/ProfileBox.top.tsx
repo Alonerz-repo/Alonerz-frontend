@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid } from "../elements";
-import { useAppDispatch } from "../store/config.hook";
+import { useAppDispatch, useAppSelect } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
 import BackgroundModule from "../assets/background";
 import CharacterModule from "../assets/characters";
 import StickerModule from "../assets/sticker";
-import HeaderModule from "../assets/header";
 import ProfileIcon from "../assets/profileIcon";
 
 //프로필 캐릭터 스티커용 상단 컴포넌트입니다.
@@ -49,7 +48,8 @@ const StickerImage = styled.img`
 const StickerBox = (props: any) => {
   const { sticker } = props;
   const dispatch = useAppDispatch();
-
+  const curOrder = useAppSelect((state) => state.char);
+  // 프롭스에서 받은 스티커배열을
   const stickerList: Stickers[] = [...sticker.stickers];
   const myStikcer = stickerList.map((value) => {
     let { stickerOrder, stickerImageId } = value;
@@ -63,7 +63,12 @@ const StickerBox = (props: any) => {
 
   //스티커 오더를 리덕스에 저장합니다.
   const curPosition = (index: number) => {
-    dispatch(setCharacter({ ...sticker, stickerOrder: index }));
+    console.log(curOrder.stickerOrder);
+    if (curOrder.stickerOrder !== undefined) {
+      dispatch(setCharacter({ ...sticker, stickerOrder: undefined }));
+    } else {
+      dispatch(setCharacter({ ...sticker, stickerOrder: index }));
+    }
   };
 
   const setST = (myIndex: number) => {

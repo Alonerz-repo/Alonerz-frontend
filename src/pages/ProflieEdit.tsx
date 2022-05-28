@@ -40,6 +40,7 @@ const ProfileEdit = () => {
   const [state, setState] = useState(false);
   // 리덕스에서 사용자의 프로필을 불러옵니다.
   const userChar: Character = useAppSelect((state) => state.char);
+  const curBool = useAppSelect((state) => state.bool);
   const userInfo = useAppSelect((state) => state.user);
   // 유저의 프로필 정보를 변경하는 스테이트 입니다.
   const [curChar, setCurChar] = useState<Character>(initChar);
@@ -61,7 +62,7 @@ const ProfileEdit = () => {
       });
     };
     getBoardAxois();
-  }, []);
+  }, [curBool]);
 
   const saveProfile = () => {
     const data = {
