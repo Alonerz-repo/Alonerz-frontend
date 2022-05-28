@@ -224,15 +224,15 @@ const MyInfo = (props: Props) => {
           />
           <StickerImg
             style={{
-              top: "121px",
-              right: "-8px",
+              bottom: "22px",
+              left: "16px",
             }}
             src={getSticker(2)?.image}
           />
           <StickerImg
             style={{
-              bottom: "22px",
-              left: "16px",
+              top: "121px",
+              right: "-8px",
             }}
             src={getSticker(3)?.image}
           />

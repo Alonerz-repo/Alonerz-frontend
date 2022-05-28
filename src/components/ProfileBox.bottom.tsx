@@ -30,7 +30,9 @@ interface ProflieBoxProps {
 const colorList = BackgroundModule.rows;
 const stickerList = StickerModule.rows;
 
-const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
+const ProfileBoxBottom = (props: any) => {
+  const { setCard }: ProflieBoxProps = props;
+
   const dispatch = useAppDispatch();
   //리덕스의 유저 캐릭터 정보를 데이터를 가져옵니다.
   const Board = useAppSelect((state) => state.char);
@@ -47,25 +49,29 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
     console.log("changed My sticker! ", myST);
   }, [myST]);
 
-  // //스티커 정보를 스테이트에 갱신합니다.
+  //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
-    setMySt(index);
+    // setMySt(index);
+    console.log(Board);
     dispatch(
       setCharacter({
         ...Board,
+        stickerOrder: props.myOrder,
         stickerImageId: index,
       })
     );
     const data = {
-      stickerOrder: curChar.stickerOrder,
+      stickerOrder: props.myOrder,
       stickerImageId: index,
     };
+    console.log("바텀 컴포넌트에서 엑시오스 전달 데이터 ", data);
     boardAxios.setSticker(data).then((_) => {
-      setMyBool(!curBool);
+      // setMyBool(!curBool);
       dispatch(setBool(curBool));
-      console.log("axios response!!");
+      // console.log("axios response!!");
     });
   };
+
   //백그라운드 컬러를 스테이트에 갱신합니다.
   const setBackgroundFn = (myColor: any) => {
     dispatch(

@@ -47,9 +47,7 @@ const StickerImage = styled.img`
 //스티커 컴포넌트
 const StickerBox = (props: any) => {
   const { sticker } = props;
-  const dispatch = useAppDispatch();
-  const curOrder = useAppSelect((state) => state.char);
-  const [myOrder, setMyOrder] = useState<number | undefined>(undefined);
+  console.log("topbox is my sticker is", sticker);
   // 프롭스에서 받은 스티커배열을
   const stickerList: Stickers[] = [...sticker.stickers];
   const myStikcer = stickerList.map((value) => {
@@ -61,21 +59,21 @@ const StickerBox = (props: any) => {
     const image = StickerModule.findById(stickerImageId);
     return { stickerOrder, ...image };
   });
-
-  useEffect(() => {
-    console.log("changed my order number!", myOrder);
-  }, [myOrder]);
+  //test
   //스티커 오더를 리덕스에 저장합니다.
   const curPosition = (index: number) => {
-    console.log("curOrder", curOrder.stickerOrder);
-    console.log("MyOrder", myOrder);
-    if (myOrder !== undefined) {
-      setMyOrder(undefined);
-      dispatch(setCharacter({ ...sticker, stickerOrder: undefined }));
-    } else {
-      setMyOrder(index);
-      dispatch(setCharacter({ ...sticker, stickerOrder: index }));
-    }
+    console.log("curPosition is ", index);
+    props.STorderFN(index);
+
+    // console.log("curOrder", curOrder.stickerOrder);
+    // console.log("MyOrder", myOrder);
+    // if (myOrder !== undefined) {
+    //   setMyOrder(undefined);
+    //   dispatch(setCharacter({ ...sticker, stickerOrder: undefined }));
+    // } else {
+    //   setMyOrder(index);
+    //   dispatch(setCharacter({ ...sticker, stickerOrder: index }));
+    // }
   };
 
   const setST = (myIndex: number) => {
@@ -234,10 +232,11 @@ const CharBox = ({ board }: any) => {
 
 const ProfileBoxTop = (props: any) => {
   const { state, sticker, board } = props;
+
   return (
     <React.Fragment>
       {state ? (
-        <StickerBox sticker={sticker} />
+        <StickerBox sticker={sticker} STorderFN={props.STorderFN} />
       ) : (
         <CharBox board={board} sticker={sticker} />
       )}
