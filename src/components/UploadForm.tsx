@@ -34,6 +34,10 @@ const UploadForm = ({ name, control, imageUrl, margin }: UploadProps) => {
     onChange(file);
   };
 
+  const uploadFile = () => {
+    document.getElementById("upload")?.click();
+  };
+
   React.useEffect(() => {
     setImage(imageUrl);
   }, [imageUrl]);
@@ -42,11 +46,26 @@ const UploadForm = ({ name, control, imageUrl, margin }: UploadProps) => {
     <Grid {...styles}>
       <input
         type="file"
+        id="upload"
         onChange={selectFile}
-        style={{ marginTop: "20px" }}
+        style={{ marginTop: "20px", display: "none" }}
         {...inputProps}
       />
-      {image ? <Image shape="rectangle" src={image.toString()}></Image> : null}
+      {image ? (
+        <Image
+          shape="rectangle"
+          src={image.toString()}
+          onClick={uploadFile}
+        ></Image>
+      ) : (
+        <Image
+          onClick={uploadFile}
+          shape="rectangle"
+          src={baseFile}
+          size="64px"
+          tmpFile
+        ></Image>
+      )}
     </Grid>
   );
 };
