@@ -38,10 +38,28 @@ const ProfileEditPage = () => {
     }
   }, [userId]);
 
+  // 모달창 불러오고
+  // TODO : 이미지 등록 구현
+
   const saveUserProfileImage = useCallback(async () => {}, []);
   const saveUserProfile = useCallback(async () => {
-    console.log(1);
-  }, []);
+    const { nickname, careerId, yearId } = userProfile as UserProfile;
+    // TODO : 예외처리
+    if (nickname === "") return alert("닉네임 입력하셈");
+    if (careerId === 0) return alert("직군/직업 선택하셈");
+    if (yearId === 0) return alert("연차 선택하셈");
+    try {
+      await userAxios.updateUserProfile({
+        ...(userProfile as UserProfile),
+        userId,
+      });
+    } catch (error: any) {
+      // TODO : 예외처리
+      const { message, statusCode } = error;
+      console.log(message);
+      console.log(statusCode);
+    }
+  }, [userProfile]);
 
   useEffect(() => {
     getUserProfile();
@@ -184,14 +202,23 @@ const ProfileEditPage = () => {
   };
 
   const renderDescriptionInput = () => {
+    // TODO : 멘트 구성
+    const placeholders = [
+      "이 구역의 맛집골목대장이신가요?",
+      "저는! 개발자랍니다!",
+      "디자인 재미있으신가요?",
+    ];
+
+    const random = Math.abs(Math.ceil(Math.random() * placeholders.length) - 1);
     const { description } = userProfile as UserProfile;
     const inputProps = {
       name: "description",
       value: description,
       onChange: onInputChange,
-      placeholder: "한 줄로 자신을 소개해보세요.",
+      placeholder: placeholders[random],
       autoComplete: "off",
     };
+
     return <Style.InputField {...inputProps} />;
   };
 
