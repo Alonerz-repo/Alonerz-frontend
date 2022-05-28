@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import loginAxios from '../axios/loginAxios';
-import authAxios from '../axios/authAxios';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import loginAxios from "../axios/loginAxios";
+import authAxios from "../axios/authAxios";
 
 const Redirect = () => {
   const navigate = useNavigate();
@@ -11,14 +11,14 @@ const Redirect = () => {
       //프론트에서 카카오 로그인페이지로 이동하면 카카오에선 백엔드로 응답을 보냅니다.
       //응답을 받은 백엔드에서 이 페이지로 이동요청과 kakaoid를 쿼리스트링으로 보내줍니다.
       //쿼리에서 kakaoid만 분리하여 백엔드로 카카오 아이디를 보내서 사용자 정보를 조회합니다.
-      const kakaoId = new URL(window.location.href).searchParams.get('kakaoId');
+      const kakaoId = new URL(window.location.href).searchParams.get("kakaoId");
 
       try {
         await loginAxios.Login(kakaoId);
         const {
           auth: { needProfile },
         } = await authAxios.authUser();
-        return needProfile ? navigate('/user/config/edit') : navigate('/');
+        return needProfile ? navigate("/user/profile/edit") : navigate("/");
       } catch (err) {
         console.log(err);
       }
