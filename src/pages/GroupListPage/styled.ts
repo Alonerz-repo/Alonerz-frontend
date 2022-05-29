@@ -28,7 +28,7 @@ export const GroupTimeSelect = styled.select`
 `;
 
 export const GroupOrderFilter = styled.select`
-  width: 60px;
+  width: 80px;
   height: 40px;
   border: 0;
   background: #fff;
@@ -136,7 +136,7 @@ export const GroupBottomWrapper = styled.div`
 `;
 
 interface GroupDayProps {
-  editable: boolean;
+  background: string;
 }
 
 export const GroupDday = styled.div<GroupDayProps>`
@@ -144,7 +144,7 @@ export const GroupDday = styled.div<GroupDayProps>`
   color: #fff;
   font-size: 14px;
   font-weight: 500;
-  background: ${(props) => (props.editable ? "#fbb631" : "#959595")};
+  background: ${(props) => props.background};
   border-radius: 15px;
 `;
 

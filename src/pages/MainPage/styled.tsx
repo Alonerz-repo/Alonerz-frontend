@@ -229,11 +229,37 @@ export const GroupCategotyIcon = styled.div<GroupCategoryIconProps>`
   top: -25px;
 `;
 
-export const GroupCategotyItem = styled.div`
+export const BadgeWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+interface DayBadgeProps {
+  badgeColor: string;
+}
+
+export const DayBadge = styled.div<DayBadgeProps>`
+  padding: 5px 10px;
+  margin: -5px 5px 5px 0;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 100%;
+  background-color: ${(props) => props.badgeColor};
+  border-radius: 15px;
+`;
+
+export const CategotyBadge = styled.div`
   padding: 5px 10px;
   margin: -5px 0 5px;
+  color: #fff;
+  font-weight: 500;
   background: #fbb631;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
+  line-height: 100%;
   border-radius: 15px;
 `;

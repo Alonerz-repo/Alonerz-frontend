@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Category from "../assets/category";
 import Header from "../assets/header";
-import { DDayCalculator } from "../utils/tools/calculator";
+import { CheckJoinable } from "../utils/tools/calculator";
 
 type Props = {
   title: string;
@@ -38,12 +38,16 @@ const Card = ({
 
   if (isFlex) {
     const time = `${new Date(startAt ?? "").getHours()}:${new Date(
-      startAt ?? ""
+      startAt ?? "",
     ).getMinutes()} ~ ${new Date(endAt ?? "").getHours()}:${new Date(
-      startAt ?? ""
+      startAt ?? "",
     ).getMinutes()}`;
     const adres = address.split(" ");
     const place = `${adres[0] ?? ""} ${adres[1] ?? ""} ${adres[2] ?? ""}`;
+    const { badgeColor, badgeLabel } = CheckJoinable(
+      startAt as Date,
+      endAt as Date,
+    );
     return (
       <React.Fragment>
         <BackgroundImage isFlex onClick={_onClick} src={src}>
@@ -54,13 +58,13 @@ const Card = ({
                 position: "absolute",
                 bottom: "75px",
                 margin: "0px 0px 0px 11px",
-                background: "#FBB631",
+                background: badgeColor,
                 borderRadius: "15px",
                 fontSize: "12px",
                 padding: "3px 8px",
               }}
             >
-              {DDayCalculator(startAt)}
+              {badgeLabel}
             </div>
           ) : (
             <></>
