@@ -72,7 +72,7 @@ const GroupDetailPage = () => {
   const { groupId } = useParams<string>();
   const [group, setGroup] = useState<Group>();
   const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
-    initConfirmModalProps
+    initConfirmModalProps,
   );
   const [alertMoalProps, setAlertModalProps] =
     useState<AlertModalProps>(initAlertModalProps);
@@ -150,7 +150,7 @@ const GroupDetailPage = () => {
     dDay: string,
     isMorning: boolean,
     dateString: string,
-    timeString: string
+    timeString: string,
   ) => {
     const {
       title,
