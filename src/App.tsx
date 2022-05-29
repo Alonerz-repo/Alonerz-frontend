@@ -9,7 +9,6 @@ import Redirect from "./pages/KakaoRedirectPage";
 import UserConfig from "./pages/ConfigList";
 import ProfileEdit from "./pages/ProflieEdit";
 import ConsentForm from "./pages/ConsentForm";
-import BlockList from "./pages/BlockList";
 import FollowLIst from "./pages/FollowList";
 import EditGroup from "./pages/EditGroup";
 import Chatting from "./pages/Chatting";
@@ -23,6 +22,8 @@ import MainPage from "./pages/MainPage";
 import GroupListPage from "./pages/GroupListPage";
 import ProfileEditPage from "./pages/ProfileEditPage";
 import ScrollTop from "./utils/ScrollTop";
+import UserBlockListPage from "./pages/UserListPage";
+import UserListPage from "./pages/UserListPage";
 
 declare global {
   interface Window {
@@ -48,11 +49,10 @@ function App() {
             <Route path="/groups/:time" element={<GroupListPage />} />
             <Route path="/test" element={<Test />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/user/:userId" element={<User />} />
-            <Route path="/user/:userId/follow" element={<FollowLIst />} />
-            <Route path="/user/config" element={<UserConfig />} />
-            <Route path="/user/profile/edit" element={<ProfileEditPage />} />
-            <Route path="/user/config/blocklist" element={<BlockList />} />
+            <Route
+              path="/user/config/blocklist"
+              element={<UserBlockListPage />}
+            />
             <Route path="/user/edit" element={<ProfileEdit />} />
             <Route path="/group/create/:option" element={<CreateGroup />} />
             <Route path="/chat" element={<Chatting />} />
@@ -61,6 +61,20 @@ function App() {
             <Route path="/group/:groupId" element={<GroupDetailPage />} />
             <Route path="/edit/partyInfo/:groupId" element={<EditGroup />} />
             <Route path="/404" element={<Four />} />
+
+            <Route path="/user">
+              <Route path="config" element={<UserConfig />} />
+              <Route path="profile/edit" element={<ProfileEditPage />} />
+              <Route path=":userId" element={<User />} />
+              <Route path=":userId/follow" element={<FollowLIst />} />
+            </Route>
+            <Route path="/users">
+              {/* type : [ blocks, followers, followings ] */}
+              <Route path=":type" element={<UserListPage />}>
+                <Route path=":otherId" element={<UserListPage />} />
+              </Route>
+            </Route>
+
             <Route path="*" element={<MainPage />} />
           </Routes>
         </BrowserRouter>

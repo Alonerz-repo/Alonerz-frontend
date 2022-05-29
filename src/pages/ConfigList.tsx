@@ -14,7 +14,7 @@ export interface ConfigItem {
 
 const configItems = [
   {
-    label: "내정보 수정",
+    label: "내 프로필 정보",
     onClick: (navigate: NavigateFunction) => () =>
       navigate("/user/profile/edit"),
   },
@@ -32,7 +32,7 @@ const configItems = [
   // },
   {
     label: "차단목록",
-    onClick: (navigate: NavigateFunction) => () => navigate("blocklist"),
+    onClick: (navigate: NavigateFunction) => () => navigate("/users/blocks"),
   },
   // {
   //   label: "공지사항",
