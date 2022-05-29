@@ -141,6 +141,7 @@ const SearchKakaoMapoMap = ({ handleMap, prevX, prevY }: MapProps) => {
   };
 
   const handleKeyPress = (e: any) => {
+    alert(e.key);
     if (e.key === "Enter") {
       e.preventDefault();
       handleSearch();

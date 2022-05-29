@@ -1,6 +1,5 @@
-import { errorHandler, getHeaders, getUrl } from "../utils/api";
+import { getHeaders, getUrl } from "../utils/api";
 import axios from "axios";
-import cookie from "../utils/cookie";
 import { userExceptions } from "../exception/user.exception";
 
 const boardAxios = {

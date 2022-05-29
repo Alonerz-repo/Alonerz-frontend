@@ -1,5 +1,5 @@
 import axios from "axios";
-import { errorHandler, getHeaders, getUrl } from "../utils/api";
+import { getHeaders, getUrl } from "../utils/api";
 
 interface GroupInfo {
   title: string;

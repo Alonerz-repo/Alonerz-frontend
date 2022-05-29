@@ -28,7 +28,7 @@ export const GroupTimeSelect = styled.select`
 `;
 
 export const GroupOrderFilter = styled.select`
-  width: 60px;
+  width: 80px;
   height: 40px;
   border: 0;
   background: #fff;
@@ -95,8 +95,8 @@ interface GroupCategoryIconProps {
 }
 
 export const GroupCategoryIcon = styled.div<GroupCategoryIconProps>`
-  width: 33px;
-  height: 33px;
+  width: 50px;
+  height: 50px;
   border: 1px solid #ddd;
   border-radius: 50%;
   padding: 5px;
@@ -112,7 +112,7 @@ export const GroupCategoryIcon = styled.div<GroupCategoryIconProps>`
 
 export const GroupMemberCount = styled.div`
   padding: 5px 10px;
-  margin: 0 20px 0;
+  margin: 0 5px 0;
   color: #fff;
   background: rgba(0, 0, 0, 40%);
   position: relative;
@@ -136,7 +136,7 @@ export const GroupBottomWrapper = styled.div`
 `;
 
 interface GroupDayProps {
-  editable: boolean;
+  background: string;
 }
 
 export const GroupDday = styled.div<GroupDayProps>`
@@ -144,7 +144,7 @@ export const GroupDday = styled.div<GroupDayProps>`
   color: #fff;
   font-size: 14px;
   font-weight: 500;
-  background: ${(props) => (props.editable ? "#fbb631" : "#959595")};
+  background: ${(props) => props.background};
   border-radius: 15px;
 `;
 

@@ -11,6 +11,6 @@ const useLoginCheck = () => {
       alert("로그인이 필요한 서비스입니다.");
       navigate("/login");
     }
-  }, []);
+  }, [navigate, user.userId]);
 };
 export default useLoginCheck;

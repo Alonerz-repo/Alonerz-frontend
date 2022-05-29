@@ -24,7 +24,7 @@ import {
   TimeFormatter,
   TimeGetter,
 } from "../../utils/tools/formatter";
-import { DDayCalculator } from "../../utils/tools/calculator";
+import { CheckJoinable } from "../../utils/tools/calculator";
 import { Container } from "./styled";
 
 const ButtonBox = styled.div`
@@ -72,7 +72,7 @@ const GroupDetailPage = () => {
   const { groupId } = useParams<string>();
   const [group, setGroup] = useState<Group>();
   const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
-    initConfirmModalProps
+    initConfirmModalProps,
   );
   const [alertMoalProps, setAlertModalProps] =
     useState<AlertModalProps>(initAlertModalProps);
@@ -146,12 +146,7 @@ const GroupDetailPage = () => {
   const onBackClick = () => navigate(-1);
 
   // 그룹 상세 내용 렌더링
-  const renderGroupDetail = (
-    dDay: string,
-    isMorning: boolean,
-    dateString: string,
-    timeString: string
-  ) => {
+  const renderGroupDetail = () => {
     const {
       title,
       categoryId,
@@ -167,7 +162,6 @@ const GroupDetailPage = () => {
 
     const groupDetailProps = {
       title,
-      dDay,
       categoryId,
       imageUrl,
       isMorning,
@@ -180,6 +174,8 @@ const GroupDetailPage = () => {
       placeName,
       createdAt,
       updatedAt,
+      badgeLabel,
+      badgeColor,
     };
     return <GroupDetail {...groupDetailProps} />;
   };
@@ -199,8 +195,8 @@ const GroupDetailPage = () => {
   };
 
   // 수정, 삭제, 참여, 탈퇴 버튼 렌더링
-  const renderGroupButtons = (isEditable: boolean) => {
-    if (!isEditable) {
+  const renderGroupButtons = () => {
+    if (!joinable) {
       return (
         <ButtonBox>
           <GrayButton onClick={onBackClick}>뒤로가기</GrayButton>
@@ -233,21 +229,20 @@ const GroupDetailPage = () => {
   if (!group) return null;
 
   const { startAt, endAt } = group as Group;
-  const dDay = DDayCalculator(startAt);
-  const isEditable = dDay[0] === "D";
   const isMorning = TimeGetter(startAt);
   const dateString = DateFormatter(startAt);
   const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(" ~ ");
+  const { joinable, badgeColor, badgeLabel } = CheckJoinable(startAt, endAt);
 
   return (
     <Container>
       <AlertModal {...alertMoalProps} />
       <ConfirmModal {...confirmModalProps} />
       <Header text="" />
-      {renderGroupDetail(dDay, isMorning, dateString, timeString)}
+      {renderGroupDetail()}
       {renderGroupMembers()}
       {renderGroupComments()}
-      {renderGroupButtons(isEditable)}
+      {renderGroupButtons()}
     </Container>
   );
 };

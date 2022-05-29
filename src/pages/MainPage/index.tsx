@@ -53,7 +53,7 @@ const MainPage = () => {
 
     const { needProfile } = user;
     if (needProfile) {
-      return navigate("/user/config/edit");
+      return navigate("/user/profile/edit");
     }
 
     const getGroups = async () => {
