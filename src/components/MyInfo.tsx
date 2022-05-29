@@ -119,10 +119,8 @@ const MyInfo = (props: Props) => {
 
   getSticker(1);
   //팔로우 페이지에 넘어가기전 props로 팔로잉/팔로우, 유저아이디를 전달합니다.
-  const goToFollowings = () =>
-    navigate("follow", { state: { isfollow: "following", uid: uid } });
-  const goToFollowers = () =>
-    navigate("follow", { state: { isfollow: "follower", uid: uid } });
+  const goToFollowings = () => navigate(`/users/followings/${uid}`);
+  const goToFollowers = () => navigate(`/users/followers/${uid}`);
 
   // 내 커리어 정보
   const renderCareerAndNickname = () => {

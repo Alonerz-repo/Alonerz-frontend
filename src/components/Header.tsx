@@ -2,7 +2,7 @@ import React from "react";
 import { Text } from "../elements";
 import styled from "styled-components";
 import { useAppSelector } from "../store/config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import HeaderModule from "../assets/header";
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
 }
 
 const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
+  const params = useParams();
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
   if (type === "user") {
@@ -124,6 +125,40 @@ const Header = ({ text, type, chat, setting, home, btnName }: Props) => {
         </Wrap>
       </React.Fragment>
     );
+  } else if (type === "follow") {
+    const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const {
+        target: { value },
+      } = e;
+      const { otherId } = params;
+      if (!["followings", "followers"].includes(value)) {
+        return navigate("/");
+      }
+      return navigate(`/users/${value}/${otherId}`);
+    };
+    return (
+      <React.Fragment>
+        <Wrap
+          style={{
+            backgroundColor: "#fff",
+          }}
+        >
+          <GoBack
+            size="20px"
+            src={HeaderModule.rows[0].image}
+            onClick={() => {
+              navigate(-1);
+            }}
+          ></GoBack>
+          <Text bold fontSize="20px" padding="10px">
+            <Select value={text} onChange={onSelectChange}>
+              <Option value="followings">팔로잉</Option>
+              <Option value="followers">팔로워</Option>
+            </Select>
+          </Text>
+        </Wrap>
+      </React.Fragment>
+    );
   }
   return (
     <React.Fragment>
@@ -159,6 +194,7 @@ interface GoBackProps {
   src: string;
   size: string;
 }
+
 const Icon = styled.div<GoBackProps>`
   --size: ${(props) => props.size};
   width: var(--size);
@@ -167,6 +203,7 @@ const Icon = styled.div<GoBackProps>`
   background-size: cover;
   cursor: pointer;
 `;
+
 const GoBack = styled.div<GoBackProps>`
   position: absolute;
   left: 15px;
@@ -178,6 +215,19 @@ const GoBack = styled.div<GoBackProps>`
   background-image: url("${(props) => props.src}");
   background-size: cover;
   cursor: pointer;
+`;
+
+const Select = styled.select`
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 0px;
+  background-color: #fff;
+  width: 80px;
+`;
+
+const Option = styled.option`
+  font-size: 16px;
 `;
 
 export default Header;

@@ -1,11 +1,11 @@
-import { NavigateFunction } from 'react-router-dom';
-import styled from 'styled-components';
-import CareerModule from '../../assets/career';
-import CharacterModule from '../../assets/characters';
-import YearModule from '../../assets/year';
-import { GroupUser } from '../../axios/groupAxios';
-import { Image } from '../../elements';
-import { UserItem } from './styled';
+import { NavigateFunction } from "react-router-dom";
+import styled from "styled-components";
+import CareerModule from "../../assets/career";
+import CharacterModule from "../../assets/characters";
+import YearModule from "../../assets/year";
+import { GroupUser } from "../../axios/groupAxios";
+import { Image } from "../../elements";
+import { UserItem } from "./styled";
 
 interface GroupUserProps {
   user: GroupUser;
@@ -32,15 +32,15 @@ const HostBadge = styled.div`
 `;
 
 const imageProps = (imageUrl: string, characterImageId: number) => ({
-  shape: 'circle',
-  size: '30px',
+  shape: "circle",
+  size: "30px",
   src: imageUrl ? imageUrl : CharacterModule.findById(characterImageId)?.image,
 });
 
 const nicknameProps = (userId: string, navigate: NavigateFunction) => ({
   style: {
     fontWeight: 700,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   onClick: () => {
     navigate(`/user/${userId}`);
