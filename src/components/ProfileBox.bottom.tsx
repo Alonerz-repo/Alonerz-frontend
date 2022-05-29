@@ -32,12 +32,10 @@ const stickerList = StickerModule.rows;
 
 const ProfileBoxBottom = (props: any) => {
   const { setCard }: ProflieBoxProps = props;
-
+  console.log("바텀 프롭스", props);
   const dispatch = useAppDispatch();
   //리덕스의 유저 캐릭터 정보를 데이터를 가져옵니다.
   const Board = useAppSelect((state) => state.char);
-  const [myST, setMySt] = useState(undefined);
-
   const [curBool, setMyBool] = useState(false);
   //스테이트에 프로필 정보를 저장합니다.
   const [curChar, setCurChar] = useState<Character>(initialState);
@@ -45,22 +43,14 @@ const ProfileBoxBottom = (props: any) => {
     setCurChar({ ...initialState, ...Board });
   }, [Board]);
 
-  useEffect(() => {
-    console.log("changed My sticker! ", myST);
-  }, [myST]);
-
   //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
-    // setMySt(index);
-    console.log(Board);
-
     const data = {
       stickerOrder: props.myOrder,
       stickerImageId: index,
     };
     console.log("바텀 컴포넌트에서 엑시오스 전달 데이터 ", data);
     boardAxios.setSticker(data).then((_) => {
-      // setMyBool(!curBool);
       dispatch(setBool(curBool));
       dispatch(
         setCharacter({
@@ -69,7 +59,6 @@ const ProfileBoxBottom = (props: any) => {
           stickerImageId: index,
         })
       );
-      // console.log("axios response!!");
     });
   };
 
@@ -89,9 +78,10 @@ const ProfileBoxBottom = (props: any) => {
     return (
       <React.Fragment>
         {stickerList.map((value) => {
+          console.log("스티커 리스트 밸류", value);
           return (
             <div onClick={() => setStickersFn(value.id)} key={value.id}>
-              <StickerBox style={{ textAlign: "center", cursor: "pointer" }}>
+              <StickerBox style={{}}>
                 <img
                   src={value.image}
                   object-fit="cover"
@@ -159,6 +149,8 @@ const StickerBox = styled(Box)`
   width: 108px;
   height: 108px;
   margin: 10px;
+  text-align: center;
+  cursor: pointer;
 `;
 
 const MyColorBox = styled(Box)`

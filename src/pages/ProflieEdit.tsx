@@ -47,16 +47,18 @@ const ProfileEdit = () => {
   const [alert, setAlert] = useState(initAlertProps);
   const [getBoard, setBoard] = useState<Character>(initChar);
   const [myOrder, setMyOrder] = useState<number | undefined>(undefined);
+  const [selectedColor, setSelectedColor] = useState<any>();
 
   const STorderFN = (index: any) => {
     setMyOrder(index);
   };
+  const STBottomChangeColor = (index: number) => {
+    setSelectedColor(index);
+  };
 
   // 유저의 프로필 정보가 변경될때마다, 리덕스의 정보를 업데이트 합니다.
   useEffect(() => {
-    console.log("최상위 부모 박스!", userChar);
     boardAxios.getSticker(userInfo.userId).then((res) => {
-      console.log("최상위 부모박스에서 겟 스티커 받은 결과", res);
       setCurChar({ ...initChar, ...userChar, ...res });
     });
     setBoard({ ...userChar });
@@ -114,6 +116,7 @@ const ProfileEdit = () => {
           sticker={curChar}
           board={getBoard}
           STorderFN={STorderFN}
+          myOrder={myOrder}
         />
       </Grid>
       <Grid display="flex" justifyContent="flex-start">
@@ -133,7 +136,11 @@ const ProfileEdit = () => {
         </div>
       </Grid>
       <Grid isFlex>
-        <MyProfileBoxBottom setCard={state} myOrder={myOrder} />
+        <MyProfileBoxBottom
+          setCard={state}
+          myOrder={myOrder}
+          STBottomChangeColor={STBottomChangeColor}
+        />
       </Grid>
     </React.Fragment>
   );

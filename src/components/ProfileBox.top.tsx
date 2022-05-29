@@ -47,7 +47,6 @@ const StickerImage = styled.img`
 //스티커 컴포넌트
 const StickerBox = (props: any) => {
   const { sticker } = props;
-  console.log("topbox is my sticker is", sticker);
   // 프롭스에서 받은 스티커배열을
   const stickerList: Stickers[] = [...sticker.stickers];
   const myStikcer = stickerList.map((value) => {
@@ -59,21 +58,9 @@ const StickerBox = (props: any) => {
     const image = StickerModule.findById(stickerImageId);
     return { stickerOrder, ...image };
   });
-  //test
   //스티커 오더를 리덕스에 저장합니다.
   const curPosition = (index: number) => {
-    console.log("curPosition is ", index);
     props.STorderFN(index);
-
-    // console.log("curOrder", curOrder.stickerOrder);
-    // console.log("MyOrder", myOrder);
-    // if (myOrder !== undefined) {
-    //   setMyOrder(undefined);
-    //   dispatch(setCharacter({ ...sticker, stickerOrder: undefined }));
-    // } else {
-    //   setMyOrder(index);
-    //   dispatch(setCharacter({ ...sticker, stickerOrder: index }));
-    // }
   };
 
   const setST = (myIndex: number) => {
@@ -93,43 +80,106 @@ const StickerBox = (props: any) => {
   return (
     <React.Fragment>
       <Box>
-        <div onClick={() => curPosition(0)}>
-          {setST(0) ? (
-            <StickerImage
-              style={{ left: "100px", top: "75px" }}
-              src={getST(0)?.image}
-              alt=""
-            />
-          ) : (
-            <Circle style={{ left: "116px", top: "93px" }}>+</Circle>
-          )}
+        <div onClick={() => curPosition(0)} style={{ cursor: "pointer" }}>
+          <div>
+            {setST(0) ? (
+              <React.Fragment>
+                {props.myOrder === 0 && (
+                  <div
+                    style={{
+                      background: "rgb(0,0,0,10%)",
+                      width: "70px",
+                      height: "70px",
+                      position: "absolute",
+                      left: "100px",
+                      top: "75px",
+                      borderRadius: "50%",
+                    }}
+                  ></div>
+                )}
+
+                <StickerImage
+                  style={{ left: "100px", top: "75px" }}
+                  src={getST(0)?.image}
+                  alt=""
+                ></StickerImage>
+              </React.Fragment>
+            ) : (
+              <Circle style={{ left: "116px", top: "93px" }}>+</Circle>
+            )}
+          </div>
         </div>
-        <div onClick={() => curPosition(1)}>
+        <div onClick={() => curPosition(1)} style={{ cursor: "pointer" }}>
           {setST(1) ? (
-            <StickerImage
-              style={{ right: "94px", top: "75px" }}
-              src={getST(1)?.image}
-            />
+            <React.Fragment>
+              {props.myOrder === 1 && (
+                <div
+                  style={{
+                    background: "rgb(0,0,0,10%)",
+                    width: "70px",
+                    height: "70px",
+                    position: "absolute",
+                    right: "94px",
+                    top: "75px",
+                    borderRadius: "50%",
+                  }}
+                ></div>
+              )}
+              <StickerImage
+                style={{ right: "94px", top: "75px" }}
+                src={getST(1)?.image}
+              />
+            </React.Fragment>
           ) : (
             <Circle style={{ right: "115px", top: "93px" }}>+</Circle>
           )}
         </div>
-        <div onClick={() => curPosition(2)}>
+        <div onClick={() => curPosition(2)} style={{ cursor: "pointer" }}>
           {setST(2) ? (
-            <StickerImage
-              style={{ left: "100px", bottom: "137px" }}
-              src={getST(2)?.image}
-            />
+            <React.Fragment>
+              {props.myOrder === 2 && (
+                <div
+                  style={{
+                    background: "rgb(0,0,0,10%)",
+                    width: "70px",
+                    height: "70px",
+                    position: "absolute",
+                    left: "100px",
+                    bottom: "137px",
+                    borderRadius: "50%",
+                  }}
+                ></div>
+              )}
+              <StickerImage
+                style={{ left: "100px", bottom: "137px" }}
+                src={getST(2)?.image}
+              />
+            </React.Fragment>
           ) : (
             <Circle style={{ left: "116px", bottom: "153px" }}>+</Circle>
           )}
         </div>
-        <div onClick={() => curPosition(3)}>
+        <div onClick={() => curPosition(3)} style={{ cursor: "pointer" }}>
           {setST(3) ? (
-            <StickerImage
-              style={{ right: "94px", bottom: "137px" }}
-              src={getST(3)?.image}
-            />
+            <React.Fragment>
+              {props.myOrder === 3 && (
+                <div
+                  style={{
+                    background: "rgb(0,0,0,10%)",
+                    width: "70px",
+                    height: "70px",
+                    position: "absolute",
+                    right: "94px",
+                    bottom: "137px",
+                    borderRadius: "50%",
+                  }}
+                ></div>
+              )}
+              <StickerImage
+                style={{ right: "94px", bottom: "137px" }}
+                src={getST(3)?.image}
+              />
+            </React.Fragment>
           ) : (
             <Circle style={{ right: "116px", bottom: "153px" }}>+</Circle>
           )}
@@ -232,11 +282,14 @@ const CharBox = ({ board }: any) => {
 
 const ProfileBoxTop = (props: any) => {
   const { state, sticker, board } = props;
-
   return (
     <React.Fragment>
       {state ? (
-        <StickerBox sticker={sticker} STorderFN={props.STorderFN} />
+        <StickerBox
+          sticker={sticker}
+          STorderFN={props.STorderFN}
+          myOrder={props.myOrder}
+        />
       ) : (
         <CharBox board={board} sticker={sticker} />
       )}
