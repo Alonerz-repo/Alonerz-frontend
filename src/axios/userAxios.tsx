@@ -12,6 +12,18 @@ export interface UserProfile {
   profileImageUrl: string;
 }
 
+// 차단, 팔로잉, 팔로워 사용자
+export interface OtherUser {
+  userId: string;
+  nickname: string;
+  profileImageUrl: string | null;
+  characterImageId: number;
+  careerId: 0;
+  yearId: 0;
+  description: string | null;
+  point: number;
+}
+
 interface SaveUserProfile {
   nickname: string | undefined;
   careerId: number | undefined;
@@ -23,7 +35,6 @@ const userAxios = {
   // 사용자 프로필 수정  api
   // 파라미터 user => 객체
   setUser: (user: any) => {
-    console.log(user);
     const url = getUrl("/api/users/profile");
     const headers = getHeaders();
     const data = axios
@@ -33,7 +44,7 @@ const userAxios = {
     return data;
   },
   // 프로필 정보 받아오기
-  getUserProfile: async (userId: any) => {
+  getUserProfile: async (userId: any): Promise<UserProfile> => {
     const url = getUrl(`/api/users/${userId}/profile`);
     const headers = getHeaders();
     let user: UserProfile;
@@ -49,8 +60,7 @@ const userAxios = {
     return user;
   },
   // 프로필 정보 수정하기
-  updateUserProfile: async (userProfile: SaveUserProfile) => {
-    console.log(userProfile);
+  updateUserProfile: async (userProfile: SaveUserProfile): Promise<void> => {
     const url = getUrl(`/api/users/profile`);
     const headers = getHeaders();
     try {
@@ -62,8 +72,8 @@ const userAxios = {
       throw data;
     }
   },
-  // 프로필 이미지 등록하기
-  uploadProfileImage: async (image: File) => {
+  // 프로필 이미지 등록
+  uploadProfileImage: async (image: File): Promise<string> => {
     const formData = new FormData();
     formData.append("image", image);
     const url = getUrl(`/api/users/profileImage`);
@@ -80,11 +90,86 @@ const userAxios = {
     }
     return profileImageUrl;
   },
-  deleteProfileImage: async () => {
+  // 프로필 이미지 삭제
+  deleteProfileImage: async (): Promise<void> => {
     const url = getUrl(`/api/users/profileImage`);
     const headers = getHeaders();
     try {
       await axios.delete(url, { headers });
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+  },
+  //사용자 차단 정보 요청 api
+  getBlockUsers: async (): Promise<OtherUser[]> => {
+    const url = getUrl("/api/blocks");
+    const headers = getHeaders();
+    let users: OtherUser[];
+    try {
+      const { data } = await axios.get(url, { headers });
+      users = data.users;
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+    return users;
+  },
+  // 사용자 차단/해제 요청 api
+  blockOrCancel: async (otherId: string): Promise<void> => {
+    const url = getUrl(`/api/blocks/${otherId}`);
+    const headers = getHeaders();
+    try {
+      await axios.put(url, {}, { headers });
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+  },
+  //사용자 팔로우 정보 요청 api
+  getFollowingUsers: async (otherId: string): Promise<OtherUser[]> => {
+    const url = getUrl(`/api/follows/${otherId}/followings`);
+    const headers = getHeaders();
+    let users: OtherUser[];
+    try {
+      const { data } = await axios.get(url, { headers });
+      users = data.users;
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+    return users;
+  },
+  //사용자 팔로우 정보 요청 api
+  getFollowerUsers: async (otherId: string): Promise<OtherUser[]> => {
+    const url = getUrl(`/api/follows/${otherId}/followers`);
+    const headers = getHeaders();
+    let users: OtherUser[];
+    try {
+      const { data } = await axios.get(url, { headers });
+      users = data.users;
+    } catch (error: any) {
+      const {
+        response: { data },
+      } = error;
+      throw data;
+    }
+    return users;
+  },
+  // 팔로잉/취소 요청
+  followOrCancel: async (otherId: string): Promise<void> => {
+    const url = getUrl(`/api/follows/${otherId}`);
+    const headers = getHeaders();
+    try {
+      await axios.put(url, {}, { headers });
     } catch (error: any) {
       const {
         response: { data },
@@ -106,6 +191,7 @@ const userAxios = {
 
     return data;
   },
+
   // 사용자 팔로우 요청 api
   // 파라미터 userId => string
   setFollowUser: async (userId: any) => {

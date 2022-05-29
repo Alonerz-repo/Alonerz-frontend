@@ -4,6 +4,7 @@ import { groupAxios, SelectGroup } from "../../axios/groupAxios";
 import { useAppSelector } from "../../store/config";
 import Header from "../../components/Header";
 import GroupCard from "./GroupCard";
+import EmptyContent from "../../components/EmptyContent";
 import * as Style from "./styled";
 
 interface Time {
@@ -16,6 +17,13 @@ const times = [
   { key: "all", label: "전체", param: "" },
   { key: "lunch", label: "점심", param: "lunch" },
   { key: "dinner", label: "저녁", param: "dinner" },
+];
+
+const emptyTexts = [
+  "파티가 존재하지 않아요.\n최초로 파티를 생성해보세요!",
+  "참여가능한 파티가 없어요.\n직접 파티를 생성해보세요!",
+  "현재 진행중인 파티가 없어요.",
+  "아직까지 종료된 파티가 없어요.",
 ];
 
 interface CurrentLocation {
@@ -135,6 +143,7 @@ const GroupListPage = () => {
   };
 
   const renderGroups = () => {
+    if (!groups.length) return <EmptyContent text={emptyTexts[filter]} />;
     return (
       <>
         {groups.map((group, index) => {
