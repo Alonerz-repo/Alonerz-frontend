@@ -61,7 +61,6 @@ const userAxios = {
   },
   // 프로필 정보 수정하기
   updateUserProfile: async (userProfile: SaveUserProfile): Promise<void> => {
-    console.log(userProfile);
     const url = getUrl(`/api/users/profile`);
     const headers = getHeaders();
     try {
@@ -111,7 +110,6 @@ const userAxios = {
     let users: OtherUser[];
     try {
       const { data } = await axios.get(url, { headers });
-      console.log(data);
       users = data.users;
     } catch (error: any) {
       const {

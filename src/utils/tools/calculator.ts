@@ -35,7 +35,7 @@ export const CheckJoinable = (startAt: Date, endAt: Date): JoinableState => {
     return { joinable, badgeLabel, badgeColor };
   }
 
-  const joinable = true;
+  const joinable = false;
   if (now >= startTime && now <= endTime) {
     const badgeLabel = "진행중";
     const badgeColor = "#33b700";
