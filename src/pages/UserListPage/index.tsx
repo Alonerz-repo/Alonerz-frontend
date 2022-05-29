@@ -1,6 +1,6 @@
 import { Navigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
-import UserCardList from "../../components/UserCardList";
+import UserCardList from "./UserCardList";
 
 interface UserListPageProps {
   type: "followings" | "followers" | "blocks";
