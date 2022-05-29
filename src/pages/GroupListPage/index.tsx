@@ -57,7 +57,7 @@ const GroupListPage = () => {
   const { userId } = useAppSelector((state) => state.user);
   const { time } = useParams();
   const [groups, setGroups] = useState<SelectGroup[]>([]);
-  const [filter, setFilter] = useState<number>(0);
+  const [filter, setFilter] = useState<number>(1);
 
   const getCurrentLocation = useCallback(() => {
     const { geolocation } = navigator;
