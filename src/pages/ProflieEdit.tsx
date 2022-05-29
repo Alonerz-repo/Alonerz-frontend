@@ -47,13 +47,14 @@ const ProfileEdit = () => {
   const [alert, setAlert] = useState(initAlertProps);
   const [getBoard, setBoard] = useState<Character>(initChar);
   const [myOrder, setMyOrder] = useState<number | undefined>(undefined);
-  const [selectedColor, setSelectedColor] = useState<any>();
+  const [selectedST, setSelectedST] = useState<any>();
 
   const STorderFN = (index: any) => {
     setMyOrder(index);
   };
-  const STBottomChangeColor = (index: number) => {
-    setSelectedColor(index);
+  const STBottomChange = (index: number) => {
+    console.log("탑 박스 버튼 체인지 함수", index);
+    setSelectedST(index);
   };
 
   // 유저의 프로필 정보가 변경될때마다, 리덕스의 정보를 업데이트 합니다.
@@ -139,7 +140,9 @@ const ProfileEdit = () => {
         <MyProfileBoxBottom
           setCard={state}
           myOrder={myOrder}
-          STBottomChangeColor={STBottomChangeColor}
+          selectedST={selectedST}
+          STBottomChange={STBottomChange}
+          setSelectedST={setSelectedST}
         />
       </Grid>
     </React.Fragment>

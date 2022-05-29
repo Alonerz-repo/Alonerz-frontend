@@ -45,11 +45,11 @@ const ProfileBoxBottom = (props: any) => {
 
   //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
+    props.STBottomChange(index);
     const data = {
       stickerOrder: props.myOrder,
       stickerImageId: index,
     };
-    console.log("바텀 컴포넌트에서 엑시오스 전달 데이터 ", data);
     boardAxios.setSticker(data).then((_) => {
       dispatch(setBool(curBool));
       dispatch(
@@ -64,6 +64,7 @@ const ProfileBoxBottom = (props: any) => {
 
   //백그라운드 컬러를 스테이트에 갱신합니다.
   const setBackgroundFn = (myColor: any) => {
+    props.STBottomChange(myColor.id);
     dispatch(
       setCharacter({
         ...Board,
@@ -78,7 +79,27 @@ const ProfileBoxBottom = (props: any) => {
     return (
       <React.Fragment>
         {stickerList.map((value) => {
-          console.log("스티커 리스트 밸류", value);
+          if (props.selectedST === value.id) {
+            return (
+              <div onClick={() => setStickersFn(value.id)} key={value.id}>
+                <StickerBox style={{}}>
+                  <img
+                    src={value.image}
+                    object-fit="cover"
+                    alt=""
+                    style={{
+                      width: "88px",
+                      height: "88px",
+                      position: "relative",
+                      top: "10px",
+                      background: "rgb(0,0,0,10%)",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </StickerBox>
+              </div>
+            );
+          }
           return (
             <div onClick={() => setStickersFn(value.id)} key={value.id}>
               <StickerBox style={{}}>
@@ -123,6 +144,20 @@ const ProfileBoxBottom = (props: any) => {
           ></div>
         </MyColorBox>
         {colorList.map((value: any, index: number) => {
+          if (props.selectedST === value.id && index > 1) {
+            console.log("current!!");
+            return (
+              <div key={value.id} onClick={() => setBackgroundFn(value)}>
+                <MyColorBox
+                  style={{
+                    background: `${value.color}`,
+                    cursor: "pointer",
+                    boxShadow: "3px 3px 3px 3px #999",
+                  }}
+                ></MyColorBox>
+              </div>
+            );
+          }
           if (index > 1) {
             return (
               <div key={value.id} onClick={() => setBackgroundFn(value)}>
