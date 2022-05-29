@@ -221,7 +221,11 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
 
           <Text bold type="line" titleText="장소" margin="5px 0 5px 0" />
           {placeName ?? null}
-          <SearchKakaoMap handleMap={handleMap}></SearchKakaoMap>
+          <SearchKakaoMap
+            handleMap={handleMap}
+            prevX={group?.locationX}
+            prevY={group?.locationY}
+          ></SearchKakaoMap>
           {errors.placeName?.type === "place" && placeName === "" && (
             <ErrorBox>{errors.placeName?.message}</ErrorBox>
           )}
