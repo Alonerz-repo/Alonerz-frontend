@@ -10,8 +10,6 @@ import UserConfig from "./pages/ConfigList";
 import ProfileEdit from "./pages/ProflieEdit";
 import ConsentForm from "./pages/ConsentForm";
 import EditGroup from "./pages/EditGroup";
-import Chatting from "./pages/Chatting";
-import ChatList from "./pages/ChatList";
 import Four from "./pages/404";
 import GroupDetailPage from "./pages/GroupDetailPage";
 import OnBoardingPage from "./pages/OnBoardingPage";
@@ -67,8 +65,6 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="/chat" element={<Chatting />} />
-            <Route path="/chatlist" element={<ChatList />} />
             <Route path="/404" element={<Four />} />
             <Route path="*" element={<MainPage />} />
           </Routes>

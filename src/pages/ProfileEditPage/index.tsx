@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import userAxios from "../../axios/userAxios";
-import { useAppSelector } from "../../store/config";
+import { useAppSelect } from "../../store/config.hook";
 import CareerModule from "../../assets/career";
 import YearModule from "../../assets/year";
 import Header from "../../components/Header";
@@ -35,12 +35,12 @@ interface UserProfile {
 
 const ProfileEditPage = () => {
   const navigate = useNavigate();
-  const { userId } = useAppSelector((state) => state.user);
+  const { userId } = useAppSelect((state) => state.user);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>("");
   const [userProfile, setUserProfile] = useState<UserProfile>();
   const [careerGroup, setCareerGroup] = useState<string>();
   const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
-    initConfirmModalProps,
+    initConfirmModalProps
   );
   const [alertMoalProps, setAlertModalProps] =
     useState<AlertModalProps>(initAlertModalProps);
@@ -71,7 +71,7 @@ const ProfileEditPage = () => {
           return navigate("/login");
         case 403:
           return console.log(
-            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동",
+            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동"
           );
         case 404:
           return setAlertModalProps({
@@ -111,7 +111,7 @@ const ProfileEditPage = () => {
             return navigate("/login");
           case 403:
             return console.log(
-              "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동",
+              "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동"
             );
           default:
             return setAlertModalProps({
@@ -122,7 +122,7 @@ const ProfileEditPage = () => {
         }
       }
     },
-    [navigate],
+    [navigate]
   );
 
   // 프로필 이미지 삭제
@@ -138,7 +138,7 @@ const ProfileEditPage = () => {
           return navigate("/login");
         case 403:
           return console.log(
-            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동",
+            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동"
           );
         default:
           return setAlertModalProps({
@@ -200,7 +200,7 @@ const ProfileEditPage = () => {
           return navigate("/login");
         case 403:
           return console.log(
-            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동",
+            "토큰 재발급 후 다시 실행\n토큰 재발급 실패 시 로그인 페이지로 이동"
           );
         case 409:
           return setAlertModalProps({

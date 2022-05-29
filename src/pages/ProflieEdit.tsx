@@ -40,19 +40,28 @@ const ProfileEdit = () => {
   const [state, setState] = useState(false);
   // 리덕스에서 사용자의 프로필을 불러옵니다.
   const userChar: Character = useAppSelect((state) => state.char);
+  const curBool = useAppSelect((state) => state.bool);
   const userInfo = useAppSelect((state) => state.user);
   // 유저의 프로필 정보를 변경하는 스테이트 입니다.
   const [curChar, setCurChar] = useState<Character>(initChar);
-
   const [alert, setAlert] = useState(initAlertProps);
+  const [getBoard, setBoard] = useState<Character>(initChar);
+  const [myOrder, setMyOrder] = useState<number | undefined>(undefined);
+  const [selectedST, setSelectedST] = useState<any>();
+
+  const STorderFN = (index: any) => {
+    setMyOrder(index);
+  };
+  const STBottomChange = (index: number) => {
+    console.log("탑 박스 버튼 체인지 함수", index);
+    setSelectedST(index);
+  };
 
   // 유저의 프로필 정보가 변경될때마다, 리덕스의 정보를 업데이트 합니다.
   useEffect(() => {
-    setCurChar({ ...initChar, ...userChar });
-  }, [userChar]);
-
-  const [getBoard, setBoard] = useState<Character>(initChar);
-  useEffect(() => {
+    boardAxios.getSticker(userInfo.userId).then((res) => {
+      setCurChar({ ...initChar, ...userChar, ...res });
+    });
     setBoard({ ...userChar });
   }, [userChar]);
 
@@ -65,7 +74,7 @@ const ProfileEdit = () => {
       });
     };
     getBoardAxois();
-  }, []);
+  }, [curBool]);
 
   const saveProfile = () => {
     const data = {
@@ -103,7 +112,13 @@ const ProfileEdit = () => {
       )}
       <AlertModal {...alert} />
       <Grid isFlex>
-        <MyProfileBoxTop state={state} sticker={curChar} board={getBoard} />
+        <MyProfileBoxTop
+          state={state}
+          sticker={curChar}
+          board={getBoard}
+          STorderFN={STorderFN}
+          myOrder={myOrder}
+        />
       </Grid>
       <Grid display="flex" justifyContent="flex-start">
         <div style={{ display: "flex" }}>
@@ -122,7 +137,13 @@ const ProfileEdit = () => {
         </div>
       </Grid>
       <Grid isFlex>
-        <MyProfileBoxBottom setCard={state} />
+        <MyProfileBoxBottom
+          setCard={state}
+          myOrder={myOrder}
+          selectedST={selectedST}
+          STBottomChange={STBottomChange}
+          setSelectedST={setSelectedST}
+        />
       </Grid>
     </React.Fragment>
   );

@@ -45,6 +45,7 @@ const boardAxios = {
     const data = await axios
       .put(url, body, { headers })
       .then((res) => {
+        console.log("setSticker!");
         return res.data;
       })
       .catch((err) => userExceptions.board(err.response.data));

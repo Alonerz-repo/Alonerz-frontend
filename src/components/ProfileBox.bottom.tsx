@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelect } from "../store/config.hook";
 import { setCharacter } from "../store/slices/characterSlice";
+import { setBool } from "../store/slices/changeSlice";
 import boardAxios from "../axios/boardAxios";
 import BackgroundModule from "../assets/background";
 import StickerModule from "../assets/sticker";
@@ -29,33 +30,41 @@ interface ProflieBoxProps {
 const colorList = BackgroundModule.rows;
 const stickerList = StickerModule.rows;
 
-const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
+const ProfileBoxBottom = (props: any) => {
+  const { setCard }: ProflieBoxProps = props;
+  console.log("바텀 프롭스", props);
   const dispatch = useAppDispatch();
   //리덕스의 유저 캐릭터 정보를 데이터를 가져옵니다.
   const Board = useAppSelect((state) => state.char);
-
+  const [curBool, setMyBool] = useState(false);
   //스테이트에 프로필 정보를 저장합니다.
   const [curChar, setCurChar] = useState<Character>(initialState);
   useEffect(() => {
     setCurChar({ ...initialState, ...Board });
   }, [Board]);
 
-  // //스티커 정보를 스테이트에 갱신합니다.
+  //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
-    dispatch(
-      setCharacter({
-        ...Board,
-        stickerImageId: index,
-      })
-    );
+    props.STBottomChange(index);
     const data = {
-      stickerOrder: curChar.stickerOrder,
+      stickerOrder: props.myOrder,
       stickerImageId: index,
     };
-    boardAxios.setSticker(data);
+    boardAxios.setSticker(data).then((_) => {
+      dispatch(setBool(curBool));
+      dispatch(
+        setCharacter({
+          ...Board,
+          stickerOrder: props.myOrder,
+          stickerImageId: index,
+        })
+      );
+    });
   };
+
   //백그라운드 컬러를 스테이트에 갱신합니다.
   const setBackgroundFn = (myColor: any) => {
+    props.STBottomChange(myColor.id);
     dispatch(
       setCharacter({
         ...Board,
@@ -70,9 +79,30 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
     return (
       <React.Fragment>
         {stickerList.map((value) => {
+          if (props.selectedST === value.id) {
+            return (
+              <div onClick={() => setStickersFn(value.id)} key={value.id}>
+                <StickerBox style={{}}>
+                  <img
+                    src={value.image}
+                    object-fit="cover"
+                    alt=""
+                    style={{
+                      width: "88px",
+                      height: "88px",
+                      position: "relative",
+                      top: "10px",
+                      background: "rgb(0,0,0,10%)",
+                      borderRadius: "50%",
+                    }}
+                  />
+                </StickerBox>
+              </div>
+            );
+          }
           return (
             <div onClick={() => setStickersFn(value.id)} key={value.id}>
-              <StickerBox style={{ textAlign: "center", cursor: "pointer" }}>
+              <StickerBox style={{}}>
                 <img
                   src={value.image}
                   object-fit="cover"
@@ -114,6 +144,20 @@ const ProfileBoxBottom = ({ setCard }: ProflieBoxProps) => {
           ></div>
         </MyColorBox>
         {colorList.map((value: any, index: number) => {
+          if (props.selectedST === value.id && index > 1) {
+            console.log("current!!");
+            return (
+              <div key={value.id} onClick={() => setBackgroundFn(value)}>
+                <MyColorBox
+                  style={{
+                    background: `${value.color}`,
+                    cursor: "pointer",
+                    boxShadow: "3px 3px 3px 3px #999",
+                  }}
+                ></MyColorBox>
+              </div>
+            );
+          }
           if (index > 1) {
             return (
               <div key={value.id} onClick={() => setBackgroundFn(value)}>
@@ -140,6 +184,8 @@ const StickerBox = styled(Box)`
   width: 108px;
   height: 108px;
   margin: 10px;
+  text-align: center;
+  cursor: pointer;
 `;
 
 const MyColorBox = styled(Box)`
