@@ -1,4 +1,4 @@
-const max = 31;
+const max = 37;
 const extension = ".svg";
 
 interface Row {
