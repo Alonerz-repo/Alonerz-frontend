@@ -65,7 +65,7 @@ export const SubmitButton = styled.button`
 `;
 
 interface DayBadgeProps {
-  editable: boolean;
+  badgeColor: string;
 }
 
 export const DayBadge = styled.div<DayBadgeProps>`
@@ -73,8 +73,8 @@ export const DayBadge = styled.div<DayBadgeProps>`
   margin: 0 5px 0 0;
   color: #fff;
   font-weight: 500;
-  background-color: ${(props) => (props.editable ? "#ff0000" : "#959595")};
-  border: 2px solid ${(props) => (props.editable ? "#ff0000" : "#959595")};
+  background-color: ${(props) => props.badgeColor};
+  border: 2px solid ${(props) => props.badgeColor};
   border-radius: 30px;
 `;
 

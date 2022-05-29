@@ -19,7 +19,6 @@ import {
 
 interface GroupDetailProps {
   title: string;
-  dDay: string;
   categoryId: number;
   imageUrl: string | null;
   isMorning: boolean;
@@ -32,6 +31,8 @@ interface GroupDetailProps {
   placeName: string;
   createdAt: string;
   updatedAt: string;
+  badgeColor: string;
+  badgeLabel: string;
 }
 
 const imageProps = (imageUrl: string, isMorning: boolean) => ({
@@ -76,12 +77,13 @@ const GroupDetail = (props: GroupDetailProps) => {
   const {
     title,
     imageUrl,
-    dDay,
     isMorning,
     categoryId,
     locationX,
     locationY,
     placeName,
+    badgeLabel,
+    badgeColor,
   } = props;
 
   return (
@@ -90,7 +92,7 @@ const GroupDetail = (props: GroupDetailProps) => {
       <Image {...imageProps(imageUrl as string, isMorning)} />
       <Wrapper>
         <BadgeWrapper>
-          <DayBadge editable={dDay[0] === "D"}>{dDay}</DayBadge>
+          <DayBadge badgeColor={badgeColor}>{badgeLabel}</DayBadge>
           <CategoryBadge>
             {CategoryModule.findById(categoryId)?.item}
           </CategoryBadge>

@@ -1,17 +1,19 @@
 import { IconImageModule } from "./images";
 import { NavigateFunction } from "react-router-dom";
 import CategoryModule from "../../assets/category";
-import * as Style from "./styled";
 import GroupImageModule from "../../assets/group";
+import * as Style from "./styled";
+import { TimeFormatter, TimeGetter } from "../../utils/tools/formatter";
+import { CheckJoinable } from "../../utils/tools/calculator";
 
 interface TodayOwnGroupCardProps {
   groupId: string;
   title: string;
   imageUrl: string | null;
   address: string;
-  isMorning: boolean;
-  timeString: string;
   categoryId: number;
+  startAt: Date;
+  endAt: Date;
   onPreClick(): void;
   onNextClick(): void;
   navigate: NavigateFunction;
@@ -29,17 +31,19 @@ const TodayOwnGroupCard = (props: TodayOwnGroupCardProps) => {
     imageUrl,
     title,
     address,
-    isMorning,
-    timeString,
     categoryId,
+    startAt,
+    endAt,
     onPreClick,
     onNextClick,
     navigate,
   } = props;
 
-  console.log(categoryId);
-
   const { image, item } = CategoryModule.findById(categoryId) as CategoryRow;
+
+  const isMorning = TimeGetter(startAt);
+  const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(" ~ ");
+  const { badgeColor, badgeLabel } = CheckJoinable(startAt, endAt);
 
   const coverProps = {
     imageUrl: imageUrl
@@ -75,7 +79,12 @@ const TodayOwnGroupCard = (props: TodayOwnGroupCardProps) => {
         </Style.GroupButtonWrapper>
         <Style.GroupContentWrapper {...contentProps}>
           <Style.GroupTitle>{title}</Style.GroupTitle>
-          <Style.GroupCategotyItem>{item}</Style.GroupCategotyItem>
+          <Style.BadgeWrapper>
+            <Style.DayBadge badgeColor={badgeColor}>
+              {badgeLabel}
+            </Style.DayBadge>
+            <Style.CategotyBadge>{item}</Style.CategotyBadge>
+          </Style.BadgeWrapper>
           <Style.GroupSubTitle>
             {address} | {timeString}
           </Style.GroupSubTitle>

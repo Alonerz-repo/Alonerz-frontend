@@ -3,7 +3,7 @@ import GroupImageModule from "../../assets/group";
 import { SelectGroup } from "../../axios/groupAxios";
 import { NavigateFunction } from "react-router-dom";
 import { TimeFormatter, TimeGetter } from "../../utils/tools/formatter";
-import { DDayCalculator } from "../../utils/tools/calculator";
+import { CheckJoinable } from "../../utils/tools/calculator";
 import * as Style from "./styled";
 
 interface CategoryRow {
@@ -34,8 +34,7 @@ const GroupCard = (props: GroupCardProps) => {
   } = props;
 
   const { image, item } = CategoryModule.findById(categoryId) as CategoryRow;
-  const dDay = DDayCalculator(startAt);
-  const isEditable = dDay[0] === "D";
+  const { badgeLabel, badgeColor } = CheckJoinable(startAt, endAt);
   const timeString = [TimeFormatter(startAt), TimeFormatter(endAt)].join(" ~ ");
   const isMorning = TimeGetter(startAt);
   const onClick = () => navigate(`/group/${groupId}`);
@@ -56,7 +55,9 @@ const GroupCard = (props: GroupCardProps) => {
           </Style.GroupCategoryWrapper>
         </Style.GroupTopWrapper>
         <Style.GroupBottomWrapper onClick={onClick}>
-          <Style.GroupDday editable={isEditable}>{dDay}</Style.GroupDday>
+          <Style.GroupDday background={badgeColor}>
+            {badgeLabel}
+          </Style.GroupDday>
           <Style.GroupTitle>{title}</Style.GroupTitle>
           <Style.GroupSubTitle>{item}</Style.GroupSubTitle>
           <Style.GroupSubTitle>
