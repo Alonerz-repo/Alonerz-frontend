@@ -58,11 +58,13 @@ const GroupCard = (props: GroupCardProps) => {
           <Style.GroupDday background={badgeColor}>
             {badgeLabel}
           </Style.GroupDday>
-          <Style.GroupTitle>{title}</Style.GroupTitle>
+          <Style.GroupTitle>
+            {title.length > 11 ? `${title.slice(0, 11)}...` : title}
+          </Style.GroupTitle>
           <Style.GroupSubTitle>{item}</Style.GroupSubTitle>
           <Style.GroupSubTitle>
             <Style.LocationIcon />
-            {placeName}
+            {placeName.length > 9 ? `${placeName.slice(0, 9)}...` : placeName}
           </Style.GroupSubTitle>
           <Style.GroupSubTitle>
             <Style.TimeIcon />
