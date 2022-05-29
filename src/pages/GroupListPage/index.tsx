@@ -28,18 +28,55 @@ const initCurrentLocation = {
   y: 126.97812,
 };
 
+const filteredGroups = (groups: SelectGroup[], filterValue: number) => {
+  const now = new Date().getTime();
+  switch (filterValue) {
+    case 1:
+      return groups.filter((group) => {
+        const startTime = new Date(group.startAt).getTime();
+        return startTime > now;
+      });
+    case 2:
+      return groups.filter((group) => {
+        const startTime = new Date(group.startAt).getTime();
+        const endTime = new Date(group.endAt).getTime();
+        return startTime <= now && endTime >= now;
+      });
+    case 3:
+      return groups.filter((group) => {
+        const endTime = new Date(group.endAt).getTime();
+        return endTime < now;
+      });
+    default:
+      return groups;
+  }
+};
+
 const GroupListPage = () => {
   const navigate = useNavigate();
   const { userId } = useAppSelector((state) => state.user);
   const { time } = useParams();
   const [groups, setGroups] = useState<SelectGroup[]>([]);
+  const [filter, setFilter] = useState<number>(0);
+
+  const getCurrentLocation = useCallback(() => {
+    const { geolocation } = navigator;
+    const current = { ...initCurrentLocation };
+    if (geolocation) {
+      geolocation.getCurrentPosition((pos) => {
+        current.x = pos.coords.latitude;
+        current.y = pos.coords.longitude;
+      });
+    }
+    return current;
+  }, []);
 
   const getGroups = useCallback(
-    async (current: CurrentLocation) => {
+    async (current: CurrentLocation, filter: number) => {
       const { x, y } = current;
       const { param } = times.find((item) => item.key === time) as Time;
       const groups = await groupAxios.getGroups(x, y, param);
-      setGroups(groups);
+      setGroups(filteredGroups(groups, filter));
     },
     [time],
   );
@@ -52,23 +89,26 @@ const GroupListPage = () => {
   }, [userId, navigate]);
 
   useEffect(() => {
-    const { geolocation } = navigator;
-    const current = { ...initCurrentLocation };
-    if (geolocation) {
-      geolocation.getCurrentPosition((pos) => {
-        current.x = pos.coords.latitude;
-        current.y = pos.coords.longitude;
-      });
-    }
-    getGroups(current);
+    const current = getCurrentLocation();
+    getGroups(current, filter);
     return () => {};
-  }, [time, getGroups]);
+  }, [time, filter, getCurrentLocation, getGroups]);
 
   const onTimeOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const {
       target: { value },
     } = e;
     return navigate(`/groups/${value}`);
+  };
+
+  const onFilterOptionChange = async (
+    e: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    const {
+      target: { value },
+    } = e;
+    const filterValue = Number(value);
+    setFilter(filterValue);
   };
 
   const renderTimeFilters = () => {
@@ -84,10 +124,11 @@ const GroupListPage = () => {
   const renderOrderFilters = () => {
     return (
       <div>
-        <Style.GroupOrderFilter>
-          <option defaultChecked>정렬</option>
-          <option>거리순</option>
-          <option>시간순</option>
+        <Style.GroupOrderFilter value={filter} onChange={onFilterOptionChange}>
+          <option value={0}>전체</option>
+          <option value={1}>참여가능</option>
+          <option value={2}>진행중</option>
+          <option value={3}>종료</option>
         </Style.GroupOrderFilter>
       </div>
     );

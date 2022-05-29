@@ -28,7 +28,7 @@ export const GroupTimeSelect = styled.select`
 `;
 
 export const GroupOrderFilter = styled.select`
-  width: 60px;
+  width: 80px;
   height: 40px;
   border: 0;
   background: #fff;
