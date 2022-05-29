@@ -15,6 +15,16 @@ import AlertModal, {
 } from "../../components/AlertModal";
 import * as Style from "./styled";
 
+const randomDescriptionPlaceHolder = (): string => {
+  const placeholders = [
+    "이 구역의 맛집 골목대장입니다.",
+    "super 주니어 개발자입니다.",
+    "앤디워홀은 저의 선생님입니다.",
+  ];
+  const random = Math.abs(Math.ceil(Math.random() * placeholders.length) - 1);
+  return placeholders[random];
+};
+
 interface UserProfile {
   userId: string;
   nickname: string;
@@ -23,18 +33,10 @@ interface UserProfile {
   description: string;
 }
 
-// TODO : 멘트 구성
-const placeholders = [
-  "이 구역의 맛집 골목대장입니다.",
-  "저는 개발자랍니다!",
-  "디자인",
-];
-const random = Math.abs(Math.ceil(Math.random() * placeholders.length) - 1);
-
 const ProfileEditPage = () => {
   const navigate = useNavigate();
   const { userId } = useAppSelector((state) => state.user);
-  const [profileImageUrl, setProfileImageUrl] = useState<string | null>();
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>("");
   const [userProfile, setUserProfile] = useState<UserProfile>();
   const [careerGroup, setCareerGroup] = useState<string>();
   const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
@@ -54,7 +56,13 @@ const ProfileEditPage = () => {
       const { nickname, careerId, yearId, description, profileImageUrl } = user;
       const { group } = CareerModule.findById(careerId) as { group: string };
       setProfileImageUrl(profileImageUrl);
-      setUserProfile({ userId, nickname, careerId, yearId, description });
+      setUserProfile({
+        userId,
+        nickname,
+        careerId,
+        yearId,
+        description: description ? description : "",
+      });
       setCareerGroup(group);
     } catch (error: any) {
       const { statusCode } = error;
@@ -413,7 +421,7 @@ const ProfileEditPage = () => {
       name: "description",
       value: description,
       onChange: onInputChange,
-      placeholder: placeholders[random],
+      placeholder: randomDescriptionPlaceHolder(),
       autoComplete: "off",
     };
 
