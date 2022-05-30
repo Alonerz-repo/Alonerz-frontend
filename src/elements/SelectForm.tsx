@@ -73,7 +73,11 @@ const SelectForm = ({
   const randerOptions = () => {
     return categories.map((item: Option): any => {
       const { name, value } = item;
-      return <MyOption label={name} value={value} key={value}></MyOption>;
+      return (
+        <MyOption value={value} key={value}>
+          {name}
+        </MyOption>
+      );
     });
   };
 
