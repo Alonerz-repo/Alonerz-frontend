@@ -37,7 +37,7 @@ const Select = ({ width, margin, register, setValue, getValues }: Props) => {
   const randerStartAtOptions = () => {
     return times.openTimes.map((item: Option): any => {
       const { name, value } = item;
-      return <MyOption label={name} value={value} key={value}></MyOption>;
+      return <option label={name} value={value} key={value}></option>;
     });
   };
 
@@ -47,7 +47,7 @@ const Select = ({ width, margin, register, setValue, getValues }: Props) => {
       if (value <= startNumber) {
         return null;
       }
-      return <MyOption label={name} value={value} key={value}></MyOption>;
+      return <option label={name} value={value} key={value}></option>;
     });
   };
 
@@ -83,12 +83,6 @@ interface MySelectedProps {
   width?: string;
   margin?: string;
 }
-
-const MyOption = styled.option`
-  background: #eeeeee;
-  text-align: unset;
-  color: black;
-`;
 
 const MySelected = styled.select<MySelectedProps>`
   /* text-align: center; */
