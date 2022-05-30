@@ -47,7 +47,11 @@ const Select = ({ width, margin, register, setValue, getValues }: Props) => {
       if (value <= startNumber) {
         return null;
       }
-      return <option label={name} value={value} key={value}></option>;
+      return (
+        <option value={value} key={value}>
+          {name}
+        </option>
+      );
     });
   };
 
