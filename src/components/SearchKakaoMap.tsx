@@ -24,7 +24,7 @@ const SearchKakaoMapoMap = ({ handleMap, prevX, prevY }: MapProps) => {
   let markers: any[] = [];
 
   const markerImage = new window.kakao.maps.MarkerImage(
-    "http://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
+    "https://t1.daumcdn.net/localimg/localimages/07/2018/pc/img/marker_spot.png",
     new window.kakao.maps.Size(28, 38)
   );
 
