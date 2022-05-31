@@ -53,7 +53,6 @@ const ProfileEdit = () => {
     setMyOrder(index);
   };
   const STBottomChange = (index: number) => {
-    console.log("탑 박스 버튼 체인지 함수", index);
     setSelectedST(index);
   };
 

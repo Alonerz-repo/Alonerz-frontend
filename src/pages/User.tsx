@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import partyAxios from "../axios/partyAxios";
 import { useAppSelect } from "../store/config.hook";
 import { Group } from "../common/interface";
+import useCheck from "../useCustom/useLoginCheck";
 
 //유저 프로필 페이지 뷰 입니다.
 const User = () => {
@@ -14,6 +15,7 @@ const User = () => {
   const userInfo = useAppSelect((state) => state.user);
   const [groups, setGroups] = useState<Group[]>([]);
 
+  useCheck();
   useEffect(() => {
     //유저가 참여했던 파티들의 리스트를 요청합니다.
     try {
