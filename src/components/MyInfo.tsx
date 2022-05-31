@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Grid, Text, Image } from "../elements";
-import Card from "../components/Card";
 import { useNavigate } from "react-router-dom";
 import useUser from "../useCustom/useUser";
 import { useAppSelect } from "../store/config.hook";
@@ -12,6 +11,7 @@ import CharacterModule from "../assets/characters";
 import CareerModule from "../assets/career";
 import YearModule from "../assets/year";
 import StickerModule from "../assets/sticker";
+import GroupCard from "../pages/GroupListPage/GroupCard";
 
 interface Props {
   bg?: string;
@@ -168,33 +168,20 @@ const MyInfo = (props: Props) => {
     navigate(`/group/${groupId}`);
   };
   const renderGroups = () => {
-    return groups.map((group: any, key: number) => {
-      const isFlex = true;
-      const {
-        imageUrl,
-        title,
-        placeName,
-        limit,
-        join,
-        groupId,
-        startAt,
-        endAt,
-        categoryId,
-      } = group;
-      const cardProps = {
-        key,
-        title,
-        limit,
-        src: imageUrl,
-        address: placeName,
-        headcount: join,
-        isFlex,
-        startAt,
-        endAt,
-        categoryId,
-      };
-      return <Card {...cardProps} _onClick={() => goToGroups(groupId)} />;
-    });
+    return (
+      <>
+        {groups.map((group, index) => {
+          console.log("그룹 리스트", group);
+          const { groupId } = group;
+          const groupCardProps = {
+            key: `${groupId}-${index}`,
+            group,
+            navigate,
+          };
+          return <GroupCard {...groupCardProps} />;
+        })}
+      </>
+    );
   };
 
   return (

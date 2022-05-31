@@ -86,7 +86,7 @@ const GroupListPage = () => {
       const groups = await groupAxios.getGroups(x, y, param);
       setGroups(filteredGroups(groups, filter));
     },
-    [time],
+    [time]
   );
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const GroupListPage = () => {
   };
 
   const onFilterOptionChange = async (
-    e: React.ChangeEvent<HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const {
       target: { value },
@@ -147,6 +147,7 @@ const GroupListPage = () => {
     return (
       <>
         {groups.map((group, index) => {
+          console.log("그룹 리스트", group);
           const { groupId } = group;
           const groupCardProps = {
             key: `${groupId}-${index}`,
