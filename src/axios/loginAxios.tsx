@@ -20,12 +20,10 @@ const loginAxios = {
       .post(url, body)
       .then((res) => {
         const { accessToken, refreshToken } = res.data;
-
         cookie.set("accessToken", accessToken);
         cookie.set("refreshToken", refreshToken);
       })
       .catch((err) => err.response.data);
-    console.log(data);
     return data;
   },
 
