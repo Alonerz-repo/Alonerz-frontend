@@ -1,7 +1,4 @@
-import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { authUser } from "./store/slices/userSlice";
-import { useAppDispatch } from "./store/config.hook";
 import User from "./pages/User";
 import Login from "./pages/Login";
 import CreateGroup from "./pages/CreateGroup";
@@ -27,11 +24,6 @@ declare global {
 }
 
 function App() {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(authUser());
-  }, [dispatch]);
-
   return (
     <div className="App">
       <Container>

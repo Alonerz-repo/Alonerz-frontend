@@ -26,7 +26,7 @@ const initialState: userInfo = {
 export const authUser = createAsyncThunk(
   "userSlice/auth",
   async (_, thunkAPI) => {
-    const response = authAxsios.authUser().then((res) => {
+    const response = await authAxsios.authUser().then((res) => {
       if (res.auth) {
         return res.auth;
       } else {
@@ -39,7 +39,7 @@ export const authUser = createAsyncThunk(
       }
     });
     return response;
-  },
+  }
 );
 
 //로그아웃 버튼을 클릭하면 사용자 정보를 초기상태로 갱신합니다.
@@ -53,7 +53,7 @@ export const kakaoLogout = createAsyncThunk(
       })
       .catch((err) => err.response.data);
     return response;
-  },
+  }
 );
 
 export const userSlice = createSlice({
