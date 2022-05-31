@@ -8,21 +8,7 @@ import BackgroundModule from "../assets/background";
 import StickerModule from "../assets/sticker";
 
 //프로필(캐릭터, 스티커, 색상)용으로 반복되는 카드들 모음입니다.
-interface Character {
-  Character: number;
-  color: number;
-  stickerOrder: number;
-  stickerImageId: number;
-  stickers: [];
-}
 
-const initialState: Character = {
-  Character: 0,
-  color: 0,
-  stickerOrder: 0,
-  stickerImageId: 0,
-  stickers: [],
-};
 interface ProflieBoxProps {
   setCard?: any;
 }
@@ -32,16 +18,9 @@ const stickerList = StickerModule.rows;
 
 const ProfileBoxBottom = (props: any) => {
   const { setCard }: ProflieBoxProps = props;
-  console.log("바텀 프롭스", props);
   const dispatch = useAppDispatch();
   //리덕스의 유저 캐릭터 정보를 데이터를 가져옵니다.
   const Board = useAppSelect((state) => state.char);
-  const [curBool, setMyBool] = useState(false);
-  //스테이트에 프로필 정보를 저장합니다.
-  const [curChar, setCurChar] = useState<Character>(initialState);
-  useEffect(() => {
-    setCurChar({ ...initialState, ...Board });
-  }, [Board]);
 
   //스티커 정보를 스테이트에 갱신합니다.
   const setStickersFn = (index: any) => {
@@ -51,7 +30,6 @@ const ProfileBoxBottom = (props: any) => {
       stickerImageId: index,
     };
     boardAxios.setSticker(data).then((_) => {
-      dispatch(setBool(curBool));
       dispatch(
         setCharacter({
           ...Board,

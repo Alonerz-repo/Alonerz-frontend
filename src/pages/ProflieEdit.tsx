@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import boardAxios from "../axios/boardAxios";
 import AlertModal from "../components/AlertModal";
 import ConfirmModal from "../components/ConfirmModal";
+import useCheck from "../useCustom/useLoginCheck";
 
 //유저 프로필(캐릭터, 배경색상, 스티커)를 변경하는 페이지 입니다.
 interface Character {
@@ -35,6 +36,7 @@ const initAlertProps = {
 const ProfileEdit = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  useCheck();
 
   // 스티커 / 배경색상 탭을 바꾸는 스테이트 입니다.
   const [state, setState] = useState(false);
@@ -73,7 +75,7 @@ const ProfileEdit = () => {
       });
     };
     getBoardAxois();
-  }, [curBool]);
+  }, [userInfo]);
 
   const saveProfile = () => {
     const data = {
