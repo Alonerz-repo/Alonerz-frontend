@@ -82,6 +82,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
 
   // 데이터를 입력받아 제출버튼을 누르면 유효성 확인 후 서버와 통신
   const onSubmit = handleSubmit((data: CreateForm) => {
+    // 현재시간보다 빠른 시간을 선택할 경우 에러 출력
     if (new Date(data.date.setHours(data.startAt ?? 0, 0, 0)) < new Date()) {
       setError("startAt", {
         type: "time",
@@ -90,6 +91,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
       return;
     }
 
+    // 모임 위치를 설정하지 않은 경우 에러 출력
     if (placeName === "") {
       setError("placeName", {
         type: "place",
@@ -98,6 +100,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
       return;
     }
 
+    // image 형식이 아닌 경우 에러 출력
     if (data.image?.name !== undefined) {
       const file = data.image.name.split(".");
       if (Available.checkImage(file[file.length - 1])) {
@@ -123,8 +126,10 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     }
   });
 
+  // 모달초기화
   const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
   const onCreate = async (group: CreateForm) => {
+    // 그룹 생성시의 모달
     setConfirmMoalProps({
       message: "그룹을 생성하시겠습니까?",
       yesLabel: "생성",
