@@ -130,6 +130,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
   const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
   const onCreate = async (group: CreateForm) => {
     // 그룹 생성시의 모달
+    // 파일 나누기
     setConfirmMoalProps({
       message: "그룹을 생성하시겠습니까?",
       yesLabel: "생성",
