@@ -5,8 +5,8 @@ import styled from "styled-components";
 import UploadForm from "../../components/UploadForm";
 import { CreateGroupException, CreateStatusCode } from "./exception";
 import data from "../../assets/category";
-import { Available } from "./available";
-import Select from "./Select";
+import { Available } from "./validation";
+import SelectTimes from "./SelectTimes";
 
 import DatePickerComponent from "../../components/DatePicker";
 import {
@@ -21,7 +21,6 @@ import Header from "../../components/Header";
 import { transformCreate } from "../../utils/transformData";
 import SearchKakaoMap from "../../components/SearchKakaoMap";
 import { partyAxios, CreateForm } from "../../axios/partyAxios";
-import times from "../../utils/partyTimes";
 import ConfirmModal, {
   ConfirmModalProps,
   initConfirmModalProps,
@@ -119,11 +118,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
       address,
       placeName,
     });
-    if (!group) {
-      onCreate(newData);
-    } else {
-      onEdit(newData, groupId ?? "");
-    }
+    onCreate(newData);
   });
 
   // 모달초기화
@@ -150,26 +145,6 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     });
   };
 
-  const onEdit = (group: CreateForm, groupId: string) => {
-    setConfirmMoalProps({
-      message: "그룹을 수정하시겠습니까?",
-      yesLabel: "수정",
-      noLabel: "취소",
-      onOk: async () => {
-        try {
-          await partyAxios.editParty(group, groupId);
-          onCloseConfirmModal();
-          navigate("/", { replace: true });
-        } catch (error) {
-          const { statusCode } = error as CreateStatusCode;
-          onCloseConfirmModal();
-          CreateGroupException(navigate, setAlertModalProps)[statusCode]();
-        }
-      },
-      onClose: onCloseConfirmModal,
-    });
-  };
-
   const handleMap = (
     locationX: number,
     locationY: number,
@@ -182,6 +157,74 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     setPlaceName(placeName);
   };
 
+  const renderTitle = () => {
+    return (
+      <>
+        <Text bold type="line" titleText="제목" margin="5px 0 5px 0" />
+        <InputForm width="100%" name="title" control={control} />
+        {errors.title?.type === "required" && (
+          <ErrorBox>제목은 필수 입력사항입니다.</ErrorBox>
+        )}
+      </>
+    );
+  };
+
+  const renderCategory = () => {
+    return (
+      <>
+        <Text bold type="line" titleText="카테고리" margin="5px 0 5px 0" />
+        <SelectForm
+          name="categoryId"
+          control={control}
+          categories={categories}
+        ></SelectForm>
+      </>
+    );
+  };
+
+  const renderDate = () => {
+    return (
+      <>
+        <Text bold type="line" titleText="날짜" margin="5px 0 5px 0" />
+        <DatePickerComponent
+          name="date"
+          control={control}
+        ></DatePickerComponent>
+      </>
+    );
+  };
+
+  const renderSelectTimes = () => {
+    return (
+      <>
+        <SelectTimes
+          setValue={setValue}
+          register={register}
+          getValues={getValues}
+        ></SelectTimes>
+      </>
+    );
+  };
+
+  const renderLimit = () => {
+    return (
+      <>
+        <Text bold type="line" titleText="인원" margin="5px 0 5px 0" />
+        <Grid isFlex>
+          <RadioForm control={control} name="limit" v={2} />
+          <RadioForm control={control} name="limit" v={3} />
+          <RadioForm control={control} name="limit" v={4} />
+        </Grid>
+      </>
+    );
+  };
+
+  const timeError = () => {
+    if (errors.startAt?.type === "time") {
+      return <ErrorBox>{errors.startAt.message}</ErrorBox>;
+    }
+  };
+
   return (
     <React.Fragment>
       <AlertModal {...alertModalProps} />
@@ -189,41 +232,12 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
       <form onSubmit={onSubmit}>
         <Header text="파티개설"></Header>
         <Grid padding="0 30px 0 30px">
-          <Text bold type="line" titleText="제목" margin="5px 0 5px 0" />
-          <InputForm width="100%" name="title" control={control} />
-          {errors.title?.type === "required" && (
-            <ErrorBox>제목은 필수 입력사항입니다.</ErrorBox>
-          )}
-
-          <Text bold type="line" titleText="카테고리" margin="5px 0 5px 0" />
-          <SelectForm
-            name="categoryId"
-            control={control}
-            categories={categories}
-          ></SelectForm>
-
-          <Text bold type="line" titleText="날짜" margin="5px 0 5px 0" />
-          <DatePickerComponent
-            name="date"
-            control={control}
-          ></DatePickerComponent>
-
-          <Select
-            setValue={setValue}
-            register={register}
-            getValues={getValues}
-          ></Select>
-
-          {errors.startAt?.type === "time" && (
-            <ErrorBox>{errors.startAt.message}</ErrorBox>
-          )}
-
-          <Text bold type="line" titleText="인원" margin="5px 0 5px 0" />
-          <Grid isFlex>
-            <RadioForm control={control} name="limit" v={2} />
-            <RadioForm control={control} name="limit" v={3} />
-            <RadioForm control={control} name="limit" v={4} />
-          </Grid>
+          {renderTitle()}
+          {renderCategory()}
+          {renderDate()}
+          {renderSelectTimes()}
+          {timeError()}
+          {renderLimit()}
 
           <Text bold type="line" titleText="장소" margin="5px 0 5px 0" />
           {placeName ?? null}
