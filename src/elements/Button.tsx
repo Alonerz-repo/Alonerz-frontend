@@ -56,7 +56,7 @@ const Button = ({
         bg={bg}
         color={color}
         disabled={disabled}
-        cursor={cursor}
+        cursor
       >
         {children}
       </CommonButton>

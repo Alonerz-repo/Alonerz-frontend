@@ -1,31 +1,25 @@
-# 타입스크립트 프로젝트 생성
+# [얼로너즈(Alonerz) Frontend](https://alonerz.com)
+얼로너즈는 다양한 분야의 사람들과 함께 밥을 먹으며, 전문 분야의 지식과 통찰을 얻기 위한 모임 플랫폼 서비스입니다.
 
-[CRA 공식 문서](https://create-react-app.dev/docs/adding-typescript)
-[리덕스 공식 문서](https://redux.js.org/introduction/installation)
-[리덕스툴킷 공식 문서](https://redux-toolkit.js.org/introduction/getting-started)
+> 2017년 트렌드 키워드인 `aloner`는 혼자라는 뜻의 `alone`과 명사형 접미사 `er`가 혼합된 '혼자인 삶을 즐기는 사람들'이라는 의미의 단어입니다. 저희 서비스는 사람들 간의 생산적인 모임을 제공하기 위해 '우리'를 뜻하는 `us`를 `z`로 표기하여 Alonerz로 명명하였습니다.
 
-타입스크립트 프로젝트 생성 `yarn`
+# Contributors
 
-```cli
-yanr create react-app 'project_name' --template typescript
-```
+|                프론트엔드                |
+| :--------------------------------------: |
+|  [김형중](https://github.com/fomula91)   |
+| [김민우](https://github.com/purplephone) |
 
-사용될 라이브러리
+# Architecture
 
-- react-router-dom v6
-- redux
-- redux-toolkit
-- @types/redux logger
-- @types/react-redux
-- styled-components
-- kakao map api (지도 사용)
-- socket.io (1:1 채팅방 기능)
-- axios
+![alonerz-1 drawio](https://user-images.githubusercontent.com/70950533/169298516-23e6d109-606f-411a-bfef-8f0727cbf4d1.png)
 
-# 로컬 서버 실행
-
-```
-$ sudo yarn global add serve
-$ yarn build
-$ serve -s -l tcp://0.0.0.0:3000 build
-```
+# Technical Stacks
+<div>
+<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img src="https://img.shields.io/badge/ReactRouter-CA4245?style=for-the-badge&logo=ReactRouter&logoColor=black">
+<img src="https://img.shields.io/badge/ReduxToolkit-764ABC?style=for-the-badge&logo=Redux&logoColor=black">
+<img src="https://img.shields.io/badge/styledComponents-DB7093?style=for-the-badge&logo=styled-components&logoColor=black">
+<img src="https://img.shields.io/badge/Kakao-FFCD00?style=for-the-badge&logo=Kakaos&logoColor=black">
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=black">
+</div>
