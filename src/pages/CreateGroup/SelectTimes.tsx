@@ -26,7 +26,13 @@ interface Props {
 }
 
 // 컴포넌트
-const Select = ({ width, margin, register, setValue, getValues }: Props) => {
+const SelectTimes = ({
+  width,
+  margin,
+  register,
+  setValue,
+  getValues,
+}: Props) => {
   const [start, setStart] = React.useState<number>();
   const styles = {
     width,
@@ -104,4 +110,4 @@ const MySelected = styled.select<MySelectedProps>`
   padding: 0px 20px;
 `;
 
-export default Select;
+export default SelectTimes;
