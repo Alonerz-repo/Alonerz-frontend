@@ -21,4 +21,5 @@
 <img src="https://img.shields.io/badge/ReduxToolkit-764ABC?style=for-the-badge&logo=Redux&logoColor=black">
 <img src="https://img.shields.io/badge/styledComponents-DB7093?style=for-the-badge&logo=styled-components&logoColor=black">
 <img src="https://img.shields.io/badge/Kakao-FFCD00?style=for-the-badge&logo=Kakaos&logoColor=black">
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=black">
 </div>
