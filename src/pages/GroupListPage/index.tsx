@@ -147,7 +147,6 @@ const GroupListPage = () => {
     return (
       <>
         {groups.map((group, index) => {
-          console.log("그룹 리스트", group);
           const { groupId } = group;
           const groupCardProps = {
             key: `${groupId}-${index}`,

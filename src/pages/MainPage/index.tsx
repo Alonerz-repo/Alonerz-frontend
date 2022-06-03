@@ -7,7 +7,7 @@ import TodayOtherGroupCard from "./TodayOtherGroupCard";
 import TodayOwnGroupCards from "./TodayOwnGroupCards";
 import Header from "../../components/Header";
 import * as Style from "./styled";
-import { authUser } from "../../store/slices/userSlice";
+import authUser from "../../useCustom/useLoginCheck";
 
 interface CardClickEvents {
   lunchCreateClick(): void;
@@ -40,13 +40,9 @@ const otherGroupCardProps = (cardClickEvents: CardClickEvents) => [
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
   const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = useState<TodayGroup[]>([]);
-
-  useEffect(() => {
-    dispatch(authUser());
-  }, []);
+  authUser();
   useEffect(() => {
     if (!localStorage.getItem("__alonerz__visit__")) {
       return navigate("/introduce");

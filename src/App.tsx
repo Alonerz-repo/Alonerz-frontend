@@ -7,7 +7,6 @@ import UserConfig from "./pages/ConfigList";
 import ProfileEdit from "./pages/ProflieEdit";
 import ConsentForm from "./pages/ConsentForm";
 import EditGroup from "./pages/EditGroup";
-import Four from "./pages/404";
 import GroupDetailPage from "./pages/GroupDetailPage";
 import OnBoardingPage from "./pages/OnBoardingPage";
 import MainPage from "./pages/MainPage";
@@ -57,7 +56,6 @@ function App() {
               </Route>
             </Route>
 
-            <Route path="/404" element={<Four />} />
             <Route path="*" element={<MainPage />} />
           </Routes>
         </BrowserRouter>

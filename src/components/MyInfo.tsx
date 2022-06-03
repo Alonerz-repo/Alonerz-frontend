@@ -92,7 +92,6 @@ const MyInfo = (props: Props) => {
     careerId,
     yearId,
     nickname,
-    point,
     followingUserCount,
     followerUserCount,
     description,
@@ -164,14 +163,10 @@ const MyInfo = (props: Props) => {
   // 내 참여 그룹 목록
   const gridProps = { padding: "20px", isFlex: true };
 
-  const goToGroups = (groupId: string) => {
-    navigate(`/group/${groupId}`);
-  };
   const renderGroups = () => {
     return (
       <>
         {groups.map((group, index) => {
-          console.log("그룹 리스트", group);
           const { groupId } = group;
           const groupCardProps = {
             key: `${groupId}-${index}`,
