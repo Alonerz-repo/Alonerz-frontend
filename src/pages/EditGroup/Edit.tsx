@@ -57,7 +57,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
   const [locationX, setLocationX] = useState<number>();
   const [locationY, setLocationY] = useState<number>();
   const [confirmModalProps, setConfirmMoalProps] = useState<ConfirmModalProps>(
-    initConfirmModalProps
+    initConfirmModalProps,
   );
   const [alertModalProps, setAlertModalProps] =
     useState<AlertModalProps>(initAlertModalProps);
@@ -85,7 +85,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     if (new Date(data.date.setHours(data.startAt ?? 0, 0, 0)) < new Date()) {
       setError("startAt", {
         type: "time",
-        message: "현재 날짜, 시간 이전에는 그룹을 생성할 수 없습니다.",
+        message: "현재 날짜, 시간 이전에는 파티를 생성할 수 없습니다.",
       });
       return;
     }
@@ -126,7 +126,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
   const onCloseConfirmModal = () => setConfirmMoalProps(initConfirmModalProps);
   const onCreate = async (group: CreateForm) => {
     setConfirmMoalProps({
-      message: "그룹을 생성하시겠습니까?",
+      message: "파티를 생성하시겠습니까?",
       yesLabel: "생성",
       noLabel: "취소",
       onOk: async () => {
@@ -146,7 +146,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
 
   const onEdit = (group: CreateForm, groupId: string) => {
     setConfirmMoalProps({
-      message: "그룹을 수정하시겠습니까?",
+      message: "내용을 수정하시겠습니까?",
       yesLabel: "수정",
       noLabel: "취소",
       onOk: async () => {
@@ -168,7 +168,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     locationX: number,
     locationY: number,
     address: string,
-    placeName: string
+    placeName: string,
   ) => {
     setLocationX(locationX);
     setLocationY(locationY);
@@ -181,7 +181,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
       <AlertModal {...alertModalProps} />
       <ConfirmModal {...confirmModalProps} />
       <form onSubmit={onSubmit}>
-        <Header text="파티개설"></Header>
+        <Header text="파티수정"></Header>
         <Grid padding="0 30px 0 30px">
           <Text bold type="line" titleText="제목" margin="5px 0 5px 0" />
           <InputForm width="100%" name="title" control={control} />

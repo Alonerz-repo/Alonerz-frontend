@@ -54,12 +54,13 @@ const Line = styled.div`
 
 const ConfigList = () => {
   const navigate = useNavigate();
+
   const renderConfigItems = () => {
     return configItems.map((item: ConfigItem, key: number) => {
       const { label, onClick } = item;
       const positionProps = { key, onClick: onClick(navigate) };
       return (
-        <Position {...positionProps}>
+        <Position {...positionProps} style={{ cursor: "pointer" }}>
           <Text margin={margin}>{label}</Text>
           <Line />
         </Position>

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TodayGroup, groupAxios } from "../../axios/groupAxios";
-import { useAppSelect } from "../../store/config.hook";
+import { useAppSelect, useAppDispatch } from "../../store/config.hook";
 import { CardImagesModule } from "./images";
 import TodayOtherGroupCard from "./TodayOtherGroupCard";
 import TodayOwnGroupCards from "./TodayOwnGroupCards";
 import Header from "../../components/Header";
 import * as Style from "./styled";
+import { authUser } from "../../store/slices/userSlice";
 
 interface CardClickEvents {
   lunchCreateClick(): void;
@@ -39,9 +40,13 @@ const otherGroupCardProps = (cardClickEvents: CardClickEvents) => [
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const user = useAppSelect((state) => state.user);
   const [groups, setGroups] = useState<TodayGroup[]>([]);
 
+  useEffect(() => {
+    dispatch(authUser());
+  }, []);
   useEffect(() => {
     if (!localStorage.getItem("__alonerz__visit__")) {
       return navigate("/introduce");

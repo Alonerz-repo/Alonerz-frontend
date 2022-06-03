@@ -85,7 +85,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     if (new Date(data.date.setHours(data.startAt ?? 0, 0, 0)) < new Date()) {
       setError("startAt", {
         type: "time",
-        message: "현재 날짜, 시간 이전에는 그룹을 생성할 수 없습니다.",
+        message: "현재 날짜, 시간 이전에는 파티를 생성할 수 없습니다.",
       });
       return;
     }
@@ -127,7 +127,7 @@ const Create = ({ group, time, groupId, imageUrl }: CreateProps) => {
     // 그룹 생성시의 모달
     // 파일 나누기
     setConfirmMoalProps({
-      message: "그룹을 생성하시겠습니까?",
+      message: "파티를 생성하시겠습니까?",
       yesLabel: "생성",
       noLabel: "취소",
       onOk: async () => {
